@@ -38,6 +38,9 @@ To get a local copy up and running follow these simple example steps.
     * linux or macOS: 
 
     ```sh
+    mkdir Interlink #Important
+    git clone https://github.com/interlink-project/interlink-project
+    cd interlink-project
     make setup
     ```
     ![Setup](docs/images/main/setup.gif)
@@ -49,6 +52,7 @@ To get a local copy up and running follow these simple example steps.
     * linux or macOS:
     
     ```sh
+    # from interlink-project
     make builddev
     ```
 
@@ -59,6 +63,7 @@ To get a local copy up and running follow these simple example steps.
     * linux or macOS: 
     
     ```sh
+    # from interlink-project
     make up
     ```
 
@@ -69,6 +74,7 @@ To get a local copy up and running follow these simple example steps.
     * linux or macOS: 
     
     ```sh
+    # from interlink-project
     make seed
     ```
 
