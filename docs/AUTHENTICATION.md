@@ -82,7 +82,7 @@ If authentication through headers was used, we would have two alternatives:
 
   Drawbacks:
   
-  * All services MUST BE behind the same sitename (being allowed subdomains). Locally, this is achieved by the **proxy** microservice, powered by Traefik (take a look in [ARCHITECTURE.md](ARCHITECTURE.md)).
+  * All services MUST BE behind the same sitename (being allowed subdomains). Locally, this is achieved by the **proxy** microservice, powered by Traefik (take a look in [ARCHITECTURE.md](/docs/ARCHITECTURE.md)).
     * MAIN FRONTEND: http://localhost/
     * BACKEND MICROSERVICES:
       * Auth microservice: http://localhost/coproduction (most important because is the service that sets the cookie)

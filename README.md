@@ -40,7 +40,7 @@ To get a local copy up and running follow these simple example steps.
     ```sh
     make setup
     ```
-    ![Setup](images/main/setup.gif)
+    ![Setup](docs/images/main/setup.gif)
     
     * windows: *soon*
 
@@ -88,9 +88,9 @@ To get a local copy up and running follow these simple example steps.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-* [AUTHENTICATION.md](AUTHENTICATION.md)
-* [ARCHITECTURE.md](ARCHITECTURE.md)
-* [DATA_MODEL.md](DATA_MODEL.md)
-* [INTERLINKERS.md](INTERLINKERS.md)
-* [TECHNOLOGIES.md](TECHNOLOGIES.md)
-* [MONITORING.md](MONITORING.md)
+* [AUTHENTICATION.md](docs/AUTHENTICATION.md)
+* [ARCHITECTURE.md](docs/ARCHITECTURE.md)
+* [DATA_MODEL.md](docs/DATA_MODEL.md)
+* [INTERLINKERS.md](docs/INTERLINKERS.md)
+* [TECHNOLOGIES.md](docs/TECHNOLOGIES.md)
+* [MONITORING.md](docs/MONITORING.md)

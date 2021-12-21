@@ -15,6 +15,9 @@ No. Each interlinker is treated as an independent component, so they can be deve
 ## API structure
 
 1. **Create new asset:** POST /*interlinker_name*/api/v1/assets/
+
+Accepts specific data and authorization data
+
 1. **Get existing asset:** GET /*interlinker_name*/api/v1/assets/{id}
 1. **Update existing asset:** PUT /*interlinker_name*/api/v1/assets/{id}
 1. **Delete existing asset:** DELETE /*interlinker_name*/api/v1/assets/{id}
@@ -23,63 +26,53 @@ No. Each interlinker is treated as an independent component, so they can be deve
 
 Ideally, these interlinkers have to expose an specifically structured API, which runs business logic for their operation and a user interface that will be integrated through iframes in the main frontend.
 
+![Interlinkers API](images/interlinkers/interlinkersapi.png)
 
 
 ### Interlinkers list:
 
-* **forum**:
+#### Forum
+
   * Functionality: allows users to create channels and send messages through them. 
   * Asset meaning: *forum room* where channels can be created.
+  * Docker-compose diagram:
+
+![Forum microservice](images/docker-composes/forum.docker-compose.png)
+
   * GUI demo ( /forum/api/v1/assets/{id}/gui ):
 
-    ![Forum gui](/images/interlinkers/forum.png)
+    ![Forum gui](images/interlinkers/forum.png)
 
     And its integration in the main frontend with an iframe:
 
-    ![Forum integration](/images/interlinkers/forumintegration.png)
+    ![Forum integration](images/interlinkers/forumintegration.png)
 
 
   * Docs: http://localhost/forum/docs
 
-* **voting tool** (NOT IMPLEMENTED YET):
+#### Googledrive
+
+  * Functionality: stores files in Google Drive.
+  * Asset meaning: *file* stored in Google Drive. Can be word, slides or spreadsheet
+  * Docs: http://localhost/googledrive/docs
+
+![Googledrive microservice](images/docker-composes/googledrive.docker-compose.png)
+
+#### Filemanager
+  * Functionality: stores files in AWS S3 (currently in file system for simplicity).
+  * Asset meaning: *file* stored in file directory (in future file in AWS S3 buckets)
+  * Docs: http://localhost/filemanager/docs
+
+![Filemanager microservice](images/docker-composes/filemanager.docker-compose.png)
+
+#### Voting tool (NOT IMPLEMENTED YET):
   * Functionality: allows users to vote. 
   * Asset meaning: *voting* where users can vote for an option.
   * GUI demo:
   * Docs: 
 
-* **repository** (NOT IMPLEMENTED YET):
-  * Functionality: allows users to store files in a repository (collection of files) using file backends (next section). 
-  * Asset meaning: *repository* where files can be managed.
-  * GUI demo:
-  * Docs: 
+#### Gitmanager (NOT IMPLEMENTED YET):
 
-### Data
-* **mongodb**: NoSQL database for all interlinkers
-
-
-## File backends (filebackends.docker-compose.yml)
-
-Similar to interlinkers, these components expose an API (with the same structure) to store files. Instead, they do not provide a GUI endpoint.
-
-1. **Create new asset:** POST /*interlinker_name*/api/v1/assets/
-1. **Get existing asset:** GET /*interlinker_name*/api/v1/assets/{id}
-1. **Update existing asset:** PUT /*interlinker_name*/api/v1/assets/{id}
-1. **Delete existing asset:** DELETE /*interlinker_name*/api/v1/assets/{id}
-1. **Clone existing asset:** POST /*interlinker_name*/api/v1/assets/{id}/clone
-
-* **googledrive**:
-  * Functionality: stores files in Google Drive.
-  * Asset meaning: *file* stored in Google Drive. Can be word, slides or spreadsheet
-  * Docs: http://localhost/googledrive/docs
-
-* **filemanager**:
-  * Functionality: stores files in AWS S3.
-  * Asset meaning: *file* stored in file directory (in future may be integrated with AWS S3 buckets)
-  * Docs: http://localhost/filemanager/docs
-
-* **gitmanager** (NOT IMPLEMENTED YET):
   * Functionality: stores files in github repositories, being able to see versions (commits) and the diffs.
   * Asset meaning: GitHub repository.
   * Docs: 
-
-  ![File backends](/images/filebackends.png)
