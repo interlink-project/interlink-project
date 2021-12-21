@@ -19,6 +19,7 @@ net: ## Creates needed network to communicate through different docker-compose f
 setup: ## Clones backend, frontend and every interlinker repository
 	# rm -rf .git || true
 	
+	cd .. && git clone https://github.com/interlink-project/backend-proxy
 	cd .. && git clone https://github.com/interlink-project/backend-auth
 	cd .. && git clone https://github.com/interlink-project/backend-teammanagement
 	cd .. && git clone https://github.com/interlink-project/backend-catalogue
@@ -33,8 +34,7 @@ setup: ## Clones backend, frontend and every interlinker repository
 .PHONY: down
 down: ## Stops all containers and removes volumes
 	cd .. && docker-compose -f frontend/docker-compose.yml down --volumes --remove-orphans
-	docker-compose -f proxy.docker-compose.yml -f proxy.docker-compose.override.yml down --volumes --remove-orphans
-	docker-compose -f monitoring.docker-compose.yml -f monitoring.docker-compose.override.yml down --volumes --remove-orphans
+	cd .. && docker-compose -f backend-proxy/docker-compose.yml -f backend-proxy/docker-compose.dev.yml down --volumes --remove-orphans
 	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml down --volumes --remove-orphans
 	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml down --volumes --remove-orphans
 	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml down --volumes --remove-orphans
@@ -50,8 +50,7 @@ down: ## Stops all containers and removes volumes
 .PHONY: up
 up: down net ## Run containers (restarts them if already running)
 	# cd .. && docker-compose -f frontend/docker-compose.yml up -d
-	docker-compose -f proxy.docker-compose.yml -f proxy.docker-compose.override.yml up -d
-	# docker-compose -f monitoring.docker-compose.yml -f monitoring.docker-compose.override.yml up -d
+	cd .. && docker-compose -f backend-proxy/docker-compose.yml -f backend-proxy/docker-compose.dev.yml up -d
 	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml up -d
 	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml up -d
 	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml up -d
@@ -68,7 +67,7 @@ up: down net ## Run containers (restarts them if already running)
 builddev: ## Build containers
 	cd .. && docker-compose -f frontend/docker-compose.yml build
 	docker-compose -f proxy.docker-compose.yml -f proxy.docker-compose.override.yml build
-	docker-compose -f monitoring.docker-compose.yml -f monitoring.docker-compose.override.yml build
+	cd .. && docker-compose -f backend-proxy/docker-compose.yml -f backend-proxy/docker-compose.dev.yml build
 	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml build
 	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml build
 	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml build
@@ -83,8 +82,7 @@ builddev: ## Build containers
 .PHONY: buildprod
 buildprod: ## Build containers
 	cd .. && docker-compose -f frontend/docker-compose.yml build
-	docker-compose -f proxy.docker-compose.yml build
-	docker-compose -f monitoring.docker-compose.yml build
+	cd .. && docker-compose -f backend-proxy/docker-compose.yml build
 	cd .. && docker-compose -f backend-auth/docker-compose.yml build
 	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml build
 	cd .. && docker-compose -f backend-catalogue/docker-compose.yml build
