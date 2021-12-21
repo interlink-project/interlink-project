@@ -38,7 +38,7 @@ To get a local copy up and running follow these simple example steps.
     * linux or macOS: 
 
     ```sh
-    mkdir Interlink #Important
+    mkdir interlink && cd interlink #Important because "make setup" will create directories on parent
     git clone https://github.com/interlink-project/interlink-project
     cd interlink-project
     make setup
