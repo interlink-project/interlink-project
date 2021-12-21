@@ -49,7 +49,7 @@ To get a local copy up and running follow these simple example steps.
     * linux or macOS:
     
     ```sh
-    make build
+    make builddev
     ```
 
     * windows: *soon*
@@ -60,6 +60,16 @@ To get a local copy up and running follow these simple example steps.
     
     ```sh
     make up
+    ```
+
+    * windows: *soon*
+
+1. (Optional) Seed databases with data
+
+    * linux or macOS: 
+    
+    ```sh
+    make seed
     ```
 
     * windows: *soon*

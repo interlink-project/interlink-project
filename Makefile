@@ -63,15 +63,16 @@ up: down net ## Run containers (restarts them if already running)
 	cd .. && docker-compose -f interlinker-etherpad/docker-compose.yml -f interlinker-etherpad/docker-compose.integrated.yml up -d
 	# cd .. && docker-compose -f interlinker-forum/docker-compose.yml -f interlinker-forum/docker-compose.integrated.yml up -d
 
-.PHONY: build
-build: ## Build containers
+
+.PHONY: builddev
+builddev: ## Build containers
 	cd .. && docker-compose -f frontend/docker-compose.yml build
 	docker-compose -f proxy.docker-compose.yml -f proxy.docker-compose.override.yml build
 	docker-compose -f monitoring.docker-compose.yml -f monitoring.docker-compose.override.yml build
-	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml down build
-	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml down build
-	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml down build
-	cd .. && docker-compose -f backend-coproduction/docker-compose.yml -f backend-coproduction/docker-compose.integrated.yml down build
+	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml build
+	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml build
+	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml build
+	cd .. && docker-compose -f backend-coproduction/docker-compose.yml -f backend-coproduction/docker-compose.integrated.yml build
 	
 	# interlinkers
 	cd .. && docker-compose -f interlinker-googledrive/docker-compose.yml -f interlinker-googledrive/docker-compose.integrated.yml build
@@ -79,8 +80,24 @@ build: ## Build containers
 	cd .. && docker-compose -f interlinker-forum/docker-compose.yml -f interlinker-forum/docker-compose.integrated.yml build
 	cd .. && docker-compose -f interlinker-filemanager/docker-compose.yml -f interlinker-filemanager/docker-compose.integrated.yml build
 
+.PHONY: buildprod
+buildprod: ## Build containers
+	cd .. && docker-compose -f frontend/docker-compose.yml build
+	docker-compose -f proxy.docker-compose.yml build
+	docker-compose -f monitoring.docker-compose.yml build
+	cd .. && docker-compose -f backend-auth/docker-compose.yml build
+	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml build
+	cd .. && docker-compose -f backend-catalogue/docker-compose.yml build
+	cd .. && docker-compose -f backend-coproduction/docker-compose.yml build
+	
+	# interlinkers
+	cd .. && docker-compose -f interlinker-googledrive/docker-compose.yml build
+	cd .. && docker-compose -f interlinker-etherpad/docker-compose.yml build
+	cd .. && docker-compose -f interlinker-forum/docker-compose.yml build
+	cd .. && docker-compose -f interlinker-filemanager/docker-compose.yml build
+
 .PHONY: upb
-upb: down net build up ## Build and run containers
+upb: down net builddev up ## Build and run containers
 
 .PHONY: test
 test: upb ## Test containers
@@ -88,9 +105,15 @@ test: upb ## Test containers
 	cd ../interlinker-filemanager && ./tests-start.sh
 	cd ../interlinker-etherpad && ./tests-start.sh
 
+.PHONY: seed
+seed: ## Set initial data
+	cd ../backend-teammanagement && docker-compose exec teammanagement python /app/app/initial_data.py
+	cd ../backend-catalogue && docker-compose exec catalogue python /app/app/initial_data.py
+	cd ../backend-coproduction && docker-compose exec coproduction python /app/app/initial_data.py
+
 .PHONY: diagrams
 diagrams: ## Test containers
 	rm -rf images/docker-composes
 	mkdir -p images/docker-composes
 	sh diagrams.sh 
-	find .. -name "*.docker-compose.png" -exec mv -f {} ./images/docker-composes \;
+	find .. -maxdepth 1 -name "*.docker-compose.png" -exec mv -f {} ./images/docker-composes \;
