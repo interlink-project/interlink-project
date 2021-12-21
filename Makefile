@@ -1,0 +1,96 @@
+SHELL := /bin/bash
+# include .env
+# export $(shell sed 's/=.*//' .env)
+
+ifeq (service,$(firstword $(MAKECMDGOALS)))
+  RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  $(eval $(RUN_ARGS):;@:)
+endif
+
+.PHONY: help
+help: ## Show this help
+	@egrep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+.PHONY: net
+net: ## Creates needed network to communicate through different docker-compose files
+	docker network create traefik-public || true
+
+.PHONY: setup
+setup: ## Clones backend, frontend and every interlinker repository
+	# rm -rf .git || true
+	
+	cd .. && git clone https://github.com/interlink-project/backend-auth
+	cd .. && git clone https://github.com/interlink-project/backend-teammanagement
+	cd .. && git clone https://github.com/interlink-project/backend-catalogue
+	cd .. && git clone https://github.com/interlink-project/backend-coproduction
+	cd .. && git clone https://github.com/interlink-project/frontend
+	# interlinkers
+	cd .. && git clone https://github.com/interlink-project/interlinker-filemanager
+	cd .. && git clone https://github.com/interlink-project/interlinker-googledrive
+	cd .. && git clone https://github.com/interlink-project/interlinker-forum
+	cd .. && git clone https://github.com/interlink-project/interlinker-etherpad
+	
+.PHONY: down
+down: ## Stops all containers and removes volumes
+	cd .. && docker-compose -f frontend/docker-compose.yml down --volumes --remove-orphans
+	docker-compose -f proxy.docker-compose.yml -f proxy.docker-compose.override.yml down --volumes --remove-orphans
+	docker-compose -f monitoring.docker-compose.yml -f monitoring.docker-compose.override.yml down --volumes --remove-orphans
+	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml down --volumes --remove-orphans
+	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml down --volumes --remove-orphans
+	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml down --volumes --remove-orphans
+	cd .. && docker-compose -f backend-coproduction/docker-compose.yml -f backend-coproduction/docker-compose.integrated.yml down --volumes --remove-orphans
+	
+	# interlinkers
+	cd .. && docker-compose -f interlinker-googledrive/docker-compose.yml -f interlinker-googledrive/docker-compose.integrated.yml down --volumes --remove-orphans
+	cd .. && docker-compose -f interlinker-etherpad/docker-compose.yml -f interlinker-etherpad/docker-compose.integrated.yml down --volumes --remove-orphans
+	cd .. && docker-compose -f interlinker-forum/docker-compose.yml -f interlinker-forum/docker-compose.integrated.yml down --volumes --remove-orphans
+	cd .. && docker-compose -f interlinker-filemanager/docker-compose.yml -f interlinker-filemanager/docker-compose.integrated.yml down --volumes --remove-orphans
+	# cd .. && docker network rm traefik-public || true
+
+.PHONY: up
+up: down net ## Run containers (restarts them if already running)
+	# cd .. && docker-compose -f frontend/docker-compose.yml up -d
+	docker-compose -f proxy.docker-compose.yml -f proxy.docker-compose.override.yml up -d
+	# docker-compose -f monitoring.docker-compose.yml -f monitoring.docker-compose.override.yml up -d
+	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml up -d
+	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml up -d
+	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml up -d
+	cd .. && docker-compose -f backend-coproduction/docker-compose.yml -f backend-coproduction/docker-compose.integrated.yml up -d
+	
+	# interlinkers
+	cd .. && docker-compose -f interlinker-googledrive/docker-compose.yml -f interlinker-googledrive/docker-compose.integrated.yml up -d
+	cd .. && docker-compose -f interlinker-filemanager/docker-compose.yml -f interlinker-filemanager/docker-compose.integrated.yml up -d
+	cd .. && docker-compose -f interlinker-etherpad/docker-compose.yml -f interlinker-etherpad/docker-compose.integrated.yml up -d
+	# cd .. && docker-compose -f interlinker-forum/docker-compose.yml -f interlinker-forum/docker-compose.integrated.yml up -d
+
+.PHONY: build
+build: ## Build containers
+	cd .. && docker-compose -f frontend/docker-compose.yml build
+	docker-compose -f proxy.docker-compose.yml -f proxy.docker-compose.override.yml build
+	docker-compose -f monitoring.docker-compose.yml -f monitoring.docker-compose.override.yml build
+	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml down build
+	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml down build
+	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml down build
+	cd .. && docker-compose -f backend-coproduction/docker-compose.yml -f backend-coproduction/docker-compose.integrated.yml down build
+	
+	# interlinkers
+	cd .. && docker-compose -f interlinker-googledrive/docker-compose.yml -f interlinker-googledrive/docker-compose.integrated.yml build
+	cd .. && docker-compose -f interlinker-etherpad/docker-compose.yml -f interlinker-etherpad/docker-compose.integrated.yml build
+	cd .. && docker-compose -f interlinker-forum/docker-compose.yml -f interlinker-forum/docker-compose.integrated.yml build
+	cd .. && docker-compose -f interlinker-filemanager/docker-compose.yml -f interlinker-filemanager/docker-compose.integrated.yml build
+
+.PHONY: upb
+upb: down net build up ## Build and run containers
+
+.PHONY: test
+test: upb ## Test containers
+	cd ../interlinker-googledrive && ./tests-start.sh
+	cd ../interlinker-filemanager && ./tests-start.sh
+	cd ../interlinker-etherpad && ./tests-start.sh
+
+.PHONY: diagrams
+diagrams: ## Test containers
+	rm -rf images/docker-composes
+	mkdir -p images/docker-composes
+	sh diagrams.sh 
+	find .. -name "*.docker-compose.png" -exec mv -f {} ./images/docker-composes \;
