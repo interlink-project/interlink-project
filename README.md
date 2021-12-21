@@ -40,6 +40,7 @@ To get a local copy up and running follow these simple example steps.
     ```sh
     make setup
     ```
+    ![Setup](images/main/setup.gif)
     
     * windows: *soon*
 
