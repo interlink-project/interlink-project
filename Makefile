@@ -114,4 +114,4 @@ diagrams: ## Test containers
 	rm -rf images/docker-composes
 	mkdir -p images/docker-composes
 	sh diagrams.sh 
-	find .. -maxdepth 1 -name "*.docker-compose.png" -exec mv -f {} ./images/docker-composes \;
+	find .. -maxdepth 1 -name "*.docker-compose.png" -exec mv -f {} ./docs/images/docker-composes \;

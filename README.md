@@ -3,7 +3,9 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-
+  <a href="https://github.com/interlink-project/frontend">
+    <img src="docs/images/logo.png" alt="Logo" width="172" height="80">
+  </a>
   <h3 align="center">Interlink collaborative environment orquestrator</h3>
 
   <p align="center">
