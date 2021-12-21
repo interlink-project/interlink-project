@@ -1,13 +1,6 @@
 
 
 ## About technologies used
-1. Traefik:
-    * **What**: Traefik is an open-source reverse proxy and load balancer. The router provides a reload-less reconfiguration, metrics, monitoring and circuit breakers that are essential when running microservices. 
-    * **Where**: 
-      * proxy
-    * **Why**:
-      * **Discovery**: Unlike Nginx and HAProxy, Traefik is more suitable for application scenarios that require service discovery and service registration. For example, Traefik and Docker are very easy to combine, only need to specify the label (see "How are this interlinkers integrated?" section). 
-      * It also integrates nicely with **Let's Encrypt** to provide SSL termination as well as infrastructure components such as Kubernetes, Docker Swarm or Amazon ECS to automatically pick up new services or instances to include in its load balancing.
 
 1. <a href="https://github.com/tiangolo/fastapi" class="external-link" target="_blank">FastAPI</a>:
     * **Where**: 

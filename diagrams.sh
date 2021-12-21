@@ -1,3 +1,4 @@
+cd .. 
 docker run --rm -it --name dcv -v $(pwd):/input pmsipilot/docker-compose-viz render -m image backend-coproduction/docker-compose.yml && mv docker-compose.png coproduction.docker-compose.png
 docker run --rm -it --name dcv -v $(pwd):/input pmsipilot/docker-compose-viz render -m image backend-catalogue/docker-compose.yml && mv docker-compose.png catalogue.docker-compose.png
 docker run --rm -it --name dcv -v $(pwd):/input pmsipilot/docker-compose-viz render -m image backend-auth/docker-compose.yml && mv docker-compose.png auth.docker-compose.png
