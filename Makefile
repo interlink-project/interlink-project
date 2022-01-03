@@ -20,6 +20,7 @@ setup: ## Clones backend, frontend and every interlinker repository
 	# rm -rf .git || true
 	
 	cd .. && git clone https://github.com/interlink-project/backend-proxy
+	cd .. && git clone https://github.com/interlink-project/backend-acl
 	cd .. && git clone https://github.com/interlink-project/backend-auth
 	cd .. && git clone https://github.com/interlink-project/backend-teammanagement
 	cd .. && git clone https://github.com/interlink-project/backend-catalogue
@@ -33,8 +34,9 @@ setup: ## Clones backend, frontend and every interlinker repository
 	
 .PHONY: down
 down: ## Stops all containers and removes volumes
-	cd .. && docker-compose -f frontend/docker-compose.yml down --volumes --remove-orphans
+	cd .. && docker-compose -f frontend/docker-compose.yml -f frontend/docker-compose.integrated.yml down --volumes --remove-orphans
 	cd .. && docker-compose -f backend-proxy/docker-compose.yml -f backend-proxy/docker-compose.dev.yml down --volumes --remove-orphans
+	cd .. && docker-compose -f backend-acl/docker-compose.yml -f backend-acl/docker-compose.integrated.yml down --volumes --remove-orphans
 	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml down --volumes --remove-orphans
 	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml down --volumes --remove-orphans
 	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml down --volumes --remove-orphans
@@ -49,8 +51,9 @@ down: ## Stops all containers and removes volumes
 
 .PHONY: up
 up: down net ## Run containers (restarts them if already running)
-	# cd .. && docker-compose -f frontend/docker-compose.yml up -d
+	cd .. && docker-compose -f frontend/docker-compose.yml -f frontend/docker-compose.integrated.yml up -d
 	cd .. && docker-compose -f backend-proxy/docker-compose.yml -f backend-proxy/docker-compose.dev.yml up -d
+	cd .. && docker-compose -f backend-acl/docker-compose.yml -f backend-acl/docker-compose.integrated.yml up -d
 	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml up -d
 	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml up -d
 	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml up -d
@@ -65,9 +68,9 @@ up: down net ## Run containers (restarts them if already running)
 
 .PHONY: builddev
 builddev: ## Build containers
-	cd .. && docker-compose -f frontend/docker-compose.yml build
-	docker-compose -f proxy.docker-compose.yml -f proxy.docker-compose.override.yml build
+	cd .. && docker-compose -f frontend/docker-compose.yml -f frontend/docker-compose.integrated.yml build
 	cd .. && docker-compose -f backend-proxy/docker-compose.yml -f backend-proxy/docker-compose.dev.yml build
+	cd .. && docker-compose -f backend-acl/docker-compose.yml -f backend-acl/docker-compose.integrated.yml build
 	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml build
 	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml build
 	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml build
@@ -83,6 +86,7 @@ builddev: ## Build containers
 buildprod: ## Build containers
 	cd .. && docker-compose -f frontend/docker-compose.yml build
 	cd .. && docker-compose -f backend-proxy/docker-compose.yml build
+	cd .. && docker-compose -f backend-acl/docker-compose.yml build
 	cd .. && docker-compose -f backend-auth/docker-compose.yml build
 	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml build
 	cd .. && docker-compose -f backend-catalogue/docker-compose.yml build
@@ -105,10 +109,10 @@ test: upb ## Test containers
 
 .PHONY: seed
 seed: ## Set initial data
-	cd ../backend-teammanagement && docker-compose exec teammanagement python /app/app/initial_data.py
 	cd ../backend-catalogue && docker-compose exec catalogue python /app/app/initial_data.py
 	cd ../backend-coproduction && docker-compose exec coproduction python /app/app/initial_data.py
-
+	python3 initial_data.py
+	
 .PHONY: diagrams
 diagrams: ## Test containers
 	rm -rf images/docker-composes
