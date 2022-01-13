@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - "basic_deployment"
-
+    paths:
+      - docker/postgres/**
 jobs:
   docker:
     runs-on: ubuntu-latest
