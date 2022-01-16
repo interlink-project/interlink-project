@@ -46,81 +46,94 @@ update: ## Updates all repositories
 	
 .PHONY: down
 down: ## Stops all containers and removes volumes
-	cd .. && docker-compose -f backend-proxy/docker-compose.yml -f backend-proxy/docker-compose.dev.yml down --volumes --remove-orphans
-	cd .. && docker-compose -f backend-acl/docker-compose.yml -f backend-acl/docker-compose.integrated.yml down --volumes --remove-orphans
-	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml down --volumes --remove-orphans
-	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml down --volumes --remove-orphans
-	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml down --volumes --remove-orphans
-	cd .. && docker-compose -f backend-coproduction/docker-compose.yml -f backend-coproduction/docker-compose.integrated.yml down --volumes --remove-orphans
-	
-	cd .. && docker-compose -f frontend/docker-compose.yml -f frontend/docker-compose.integrated.yml down --volumes --remove-orphans
+	cd ../backend-acl && make down
+	cd ../backend-auth && make down
+	cd ../backend-catalogue && make down
+	cd ../backend-coproduction && make down
+	cd ../backend-teammanagement && make down
+
 	# interlinkers
-	cd .. && docker-compose -f interlinker-googledrive/docker-compose.yml -f interlinker-googledrive/docker-compose.integrated.yml down --volumes --remove-orphans
-	cd .. && docker-compose -f interlinker-etherpad/docker-compose.yml -f interlinker-etherpad/docker-compose.integrated.yml down --volumes --remove-orphans
-	cd .. && docker-compose -f interlinker-forum/docker-compose.yml -f interlinker-forum/docker-compose.integrated.yml down --volumes --remove-orphans
-	cd .. && docker-compose -f interlinker-filemanager/docker-compose.yml -f interlinker-filemanager/docker-compose.integrated.yml down --volumes --remove-orphans
+	cd ../interlinker-etherpad && make down
+	cd ../interlinker-filemanager && make down
+	cd ../interlinker-forum && make down
+	cd ../interlinker-googledrive && make down
+	cd ../interlinker-survey && make down
+
+	cd ../frontend && make down
+	cd ../backend-proxy && make down
 	docker network rm traefik-public || true
 
 .PHONY: up
 up: down net ## Run containers (restarts them if already running)
-	cd .. && docker-compose -f backend-proxy/docker-compose.yml -f backend-proxy/docker-compose.dev.yml up -d
-	cd .. && docker-compose -f backend-acl/docker-compose.yml -f backend-acl/docker-compose.integrated.yml up -d
-	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml up -d
-	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml up -d
-	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml up -d
-	cd .. && docker-compose -f backend-coproduction/docker-compose.yml -f backend-coproduction/docker-compose.integrated.yml up -d
-	
-	cd .. && docker-compose -f frontend/docker-compose.yml -f frontend/docker-compose.nginx.yml up -d
+	cd ../backend-proxy && make up
+
+	# platform components
+	cd ../backend-acl && make integrated
+	cd ../backend-auth && make integrated
+	cd ../backend-catalogue && make integrated
+	cd ../backend-coproduction && make integrated
+	cd ../backend-teammanagement && make integrated
 
 	# interlinkers
-	cd .. && docker-compose -f interlinker-googledrive/docker-compose.yml -f interlinker-googledrive/docker-compose.integrated.yml up -d
-	cd .. && docker-compose -f interlinker-filemanager/docker-compose.yml -f interlinker-filemanager/docker-compose.integrated.yml up -d
-	cd .. && docker-compose -f interlinker-etherpad/docker-compose.yml -f interlinker-etherpad/docker-compose.integrated.yml up -d
-	# cd .. && docker-compose -f interlinker-forum/docker-compose.yml -f interlinker-forum/docker-compose.integrated.yml up -d
+	cd ../interlinker-etherpad && make integrated
+	cd ../interlinker-filemanager && make integrated
+	cd ../interlinker-forum && make integrated
+	cd ../interlinker-googledrive && make integrated
+	cd ../interlinker-survey && make integrated
 
+	# frontend
+	cd ../frontend && make integrated
 
-.PHONY: builddev
-builddev: ## Build containers
-	cd .. && docker-compose -f frontend/docker-compose.yml -f frontend/docker-compose.integrated.yml build
-	
-	cd .. && docker-compose -f backend-proxy/docker-compose.yml -f backend-proxy/docker-compose.dev.yml build
-	cd .. && docker-compose -f backend-acl/docker-compose.yml -f backend-acl/docker-compose.integrated.yml build
-	cd .. && docker-compose -f backend-auth/docker-compose.yml -f backend-auth/docker-compose.integrated.yml build
-	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml -f backend-teammanagement/docker-compose.integrated.yml build
-	cd .. && docker-compose -f backend-catalogue/docker-compose.yml -f backend-catalogue/docker-compose.integrated.yml build
-	cd .. && docker-compose -f backend-coproduction/docker-compose.yml -f backend-coproduction/docker-compose.integrated.yml build
-	
+.PHONY: catalogue
+catalogue: down net ## Run containers (restarts them if already running)
+	cd ../backend-proxy && make up
+
+	cd ../backend-auth && make integrated
+	cd ../backend-catalogue && make integrated
+	cd ../backend-acl && make integrated
+
+	# cd ../interlinker-filemanager && make integrated
+	# cd ../interlinker-googledrive && make integrated
+	# cd ../interlinker-survey && make integrated
+
+	cd ../frontend && make integrated
+
+.PHONY: devbuild
+devbuild: ## Build containers
+	cd ../backend-acl && make devbuild
+	cd ../backend-auth && make devbuild
+	cd ../backend-catalogue && make devbuild
+	cd ../backend-coproduction && make devbuild
+	cd ../backend-teammanagement && make devbuild
+	cd ../backend-proxy && make up
+
 	# interlinkers
-	cd .. && docker-compose -f interlinker-googledrive/docker-compose.yml -f interlinker-googledrive/docker-compose.integrated.yml build
-	cd .. && docker-compose -f interlinker-etherpad/docker-compose.yml -f interlinker-etherpad/docker-compose.integrated.yml build
-	cd .. && docker-compose -f interlinker-forum/docker-compose.yml -f interlinker-forum/docker-compose.integrated.yml build
-	cd .. && docker-compose -f interlinker-filemanager/docker-compose.yml -f interlinker-filemanager/docker-compose.integrated.yml build
+	cd ../interlinker-etherpad && make devbuild
+	cd ../interlinker-filemanager && make devbuild
+	cd ../interlinker-forum && make devbuild
+	cd ../interlinker-googledrive && make devbuild
+	cd ../interlinker-survey && make devbuild
+	cd ../frontend && make devbuild
 
-.PHONY: buildprod
-buildprod: ## Build containers
-	cd .. && docker-compose -f frontend/docker-compose.yml build
-	
-	cd .. && docker-compose -f backend-proxy/docker-compose.yml build
-	cd .. && docker-compose -f backend-acl/docker-compose.yml build
-	cd .. && docker-compose -f backend-auth/docker-compose.yml build
-	cd .. && docker-compose -f backend-teammanagement/docker-compose.yml build
-	cd .. && docker-compose -f backend-catalogue/docker-compose.yml build
-	cd .. && docker-compose -f backend-coproduction/docker-compose.yml build
-	
+.PHONY: prodbuild
+prodbuild: ## Build containers
+	cd ../backend-acl && make prodbuild
+	cd ../backend-auth && make prodbuild
+	cd ../backend-catalogue && make prodbuild
+	cd ../backend-coproduction && make prodbuild
+	cd ../backend-teammanagement && make prodbuild
+	cd ../backend-proxy && make up
+
 	# interlinkers
-	cd .. && docker-compose -f interlinker-googledrive/docker-compose.yml build
-	cd .. && docker-compose -f interlinker-etherpad/docker-compose.yml build
-	cd .. && docker-compose -f interlinker-forum/docker-compose.yml build
-	cd .. && docker-compose -f interlinker-filemanager/docker-compose.yml build
+	cd ../interlinker-etherpad && make prodbuild
+	cd ../interlinker-filemanager && make prodbuild
+	cd ../interlinker-forum && make prodbuild
+	cd ../interlinker-googledrive && make prodbuild
+	cd ../interlinker-survey && make prodbuild
+	cd ../frontend && make prodbuild
 
 .PHONY: upb
 upb: down net builddev up ## Build and run containers
-
-.PHONY: test
-test: upb ## Test containers
-	cd ../interlinker-googledrive && ./tests-start.sh
-	cd ../interlinker-filemanager && ./tests-start.sh
-	cd ../interlinker-etherpad && ./tests-start.sh
 
 .PHONY: seed
 seed: ## Set initial data
