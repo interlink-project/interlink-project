@@ -22,7 +22,6 @@ setup: ## Clones all components
 	cd .. && git clone https://github.com/interlink-project/backend-proxy
 	cd .. && git clone https://github.com/interlink-project/backend-acl
 	cd .. && git clone https://github.com/interlink-project/backend-auth
-	cd .. && git clone https://github.com/interlink-project/backend-teammanagement
 	cd .. && git clone https://github.com/interlink-project/backend-catalogue
 	cd .. && git clone https://github.com/interlink-project/backend-coproduction
 	# interlinkers
@@ -42,7 +41,6 @@ update: ## Updates all repositories
 	cd ../backend-catalogue && git pull origin master
 	cd ../backend-coproduction && git pull origin master
 	cd ../backend-proxy && git pull origin master
-	cd ../backend-teammanagement && git pull origin master
 	
 .PHONY: down
 down: ## Stops all containers and removes volumes
@@ -50,7 +48,6 @@ down: ## Stops all containers and removes volumes
 	cd ../backend-auth && make down
 	cd ../backend-catalogue && make down
 	cd ../backend-coproduction && make down
-	cd ../backend-teammanagement && make down
 
 	# interlinkers
 	cd ../interlinker-etherpad && make down
@@ -72,7 +69,6 @@ up: down net ## Run containers (restarts them if already running)
 	cd ../backend-auth && make integrated
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
-	cd ../backend-teammanagement && make integrated
 
 	# interlinkers
 	cd ../interlinker-etherpad && make integrated
@@ -84,19 +80,15 @@ up: down net ## Run containers (restarts them if already running)
 	# frontend
 	cd ../frontend && make integrated
 
-.PHONY: catalogue
-catalogue: down net ## Run containers (restarts them if already running)
+.PHONY: restart
+restart: ## Run containers (restarts them if already running)
 	cd ../backend-proxy && make up
-
 	cd ../backend-auth && make integrated
 	cd ../backend-catalogue && make integrated
+	cd ../backend-coproduction && make integrated
 	cd ../backend-acl && make integrated
-
-	# cd ../interlinker-filemanager && make integrated
-	# cd ../interlinker-googledrive && make integrated
-	# cd ../interlinker-survey && make integrated
-
-	cd ../frontend && make integrated
+	cd ../interlinker-googledrive && make integrated
+	cd ../interlinker-survey && make integrated
 
 .PHONY: devbuild
 devbuild: ## Build containers
@@ -104,7 +96,6 @@ devbuild: ## Build containers
 	cd ../backend-auth && make devbuild
 	cd ../backend-catalogue && make devbuild
 	cd ../backend-coproduction && make devbuild
-	cd ../backend-teammanagement && make devbuild
 	cd ../backend-proxy && make up
 
 	# interlinkers
@@ -121,7 +112,6 @@ prodbuild: ## Build containers
 	cd ../backend-auth && make prodbuild
 	cd ../backend-catalogue && make prodbuild
 	cd ../backend-coproduction && make prodbuild
-	cd ../backend-teammanagement && make prodbuild
 	cd ../backend-proxy && make up
 
 	# interlinkers
@@ -139,7 +129,6 @@ upb: down net builddev up ## Build and run containers
 seed: ## Set initial data
 	cd ../backend-catalogue && make seed
 	cd ../backend-coproduction && make seed
-	python3 initial_data.py
 	
 .PHONY: diagrams
 diagrams: ## Test containers
