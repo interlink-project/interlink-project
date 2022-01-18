@@ -17,4 +17,8 @@ jobs:
           username: ${{ secrets.DEV_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            whoami
+            cd datadrive/data/interlink-project
+            git pull --ff-only
+            cd envs/base
+            docker-compose pull
+            docker-compose up -d
