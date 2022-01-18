@@ -1,4 +1,4 @@
 FROM postgres:12
 
-# needed for database localization https://sqlalchemy-utils.readthedocs.io/en/latest/internationalization.html
-COPY ./hstore.sql /docker-entrypoint-initdb.d
+COPY create-multiple-postgresql-databases.sh /docker-entrypoint-initdb.d/
+RUN chmod +x /docker-entrypoint-initdb.d/create-multiple-postgresql-databases.sh
