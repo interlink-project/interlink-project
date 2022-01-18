@@ -72,8 +72,8 @@ up: down net ## Run containers (restarts them if already running)
 
 	# interlinkers
 	cd ../interlinker-etherpad && make integrated
-	cd ../interlinker-filemanager && make integrated
-	cd ../interlinker-forum && make integrated
+	# cd ../interlinker-filemanager && make integrated
+	# cd ../interlinker-forum && make integrated
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
 
@@ -89,6 +89,7 @@ restart: ## Run containers (restarts them if already running)
 	cd ../backend-acl && make integrated
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
+	cd ../interlinker-etherpad && make integrated
 
 .PHONY: devbuild
 devbuild: ## Build containers
