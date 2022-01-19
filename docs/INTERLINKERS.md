@@ -9,23 +9,25 @@ An *interlinker* is a tool that is used to create assets by *instantiating* them
 
 * **Knowledge interlinkers**:
   
-  Refer to assets made by users that can be used as templates. For example, an user can create a google drive word document using **googledrive** interlinker and add some text to it. Now, the user this document could be reused, as if it was a template. 
+  Refer to assets made by users that can be used as templates. For example, an user can create a google drive word document using **googledrive** interlinker and add some text to it. Now, this document could be reused, as if it was a template. 
 
-  A knowledge interlinker points to the interlinker used to create an asset (backend) and the id of the specific asset that should be cloned (genesis_asset_id). 
+  A knowledge interlinker points to the software interlinker used to create an asset (softwareinterlinker_id) and the id of the specific asset that should be treated as the template (genesis_asset_id). 
 
-  ![Google Drive instantiator](images/interlinkers/integration/model.png)
+  ![Interlinkers models](images/interlinkers/integration/model.png)
 
-### Regarding software interlinkers... how are they integrated? are all them built with the same technologies?
-
-No. Each interlinker is treated as an independent component, so they can be developed with any framework or tool (MEAN, MERN, django, NextJS... the possibilities are infinite). 
 
 ## API Endpoints needed for SOFTWARE INTERLINKERS integration
+
+Each interlinker is treated as an independent component, so they can be developed with any framework or tool (MEAN, MERN, django, NextJS... the possibilities are infinite). But they all need to expose these endpoints to integrate them: 
 
 1. **Asset instantiator GUI:** GET 
 
     * **WHAT:** basic GUI por asset instantiation. This is gonna be iframed.
     * **Method:** GET
     * **URL:** /*interlinker_name*/api/v1/assets/instantiator/
+    * Messages for the main frontend integration:
+      * When initialized, send a message to the parent like { 'code': 'initialized', } 
+      * When asset created, send a message to the parent like { 'code': 'asset_created', 'message': data of the asset }
     * Examples:
       * googledrive interlinker: file input
       * survey: form drag and drop creator
@@ -52,21 +54,24 @@ No. Each interlinker is treated as an independent component, so they can be deve
     * **WHAT:** clones asset given an id.
     * **Method:** POST
     * **URL:** /*interlinker_name*/api/v1/assets/{id}/clone/
-    > :warning: If not specified, this interlinker could not be used to generate knowledge interlinkers.
+
+> :warning: If /clone/ not specified, the interlinker could not be used to generate knowledge interlinkers.
+  
 
 
 ## Example flow with Google Drive interlinker
 
+VIDEO: https://youtu.be/N3jB3lwOsRo
 1. **Asset instantiator:**  /*interlinker_name*/api/v1/assets/instantiator/
 
 Renders a file input.
 ![Google Drive instantiator](images/interlinkers/integration/googledrive.png)
 
-When users selects a file, it is made a POST request to /api/v1/assets/ **OF THE INTERLINKER** with the data needed for the asset instantiation (in this case, the file). When response received, a message to the parent is sent with the asset data:
+When users selects a file, a POST request to /api/v1/assets/ **OF THE INTERLINKER** is made with the data needed for the asset instantiation (in this case, the file). When response received, a message to the parent is sent with the asset data:
 
 ![Google Drive instantiator](images/interlinkers/integration/code.png)
 
-When the main frontend receives the message, makes a POST request to /coproduction/api/v1/assets/ to store that asset for the task where the user has pressed "Add asset" button.
+When the **Collaborative Environment frontend** receives the message, makes a POST request to /coproduction/api/v1/assets/ to store that asset for the task where the user has pressed "Add asset" button.
 
 ![Google Drive instantiator](images/interlinkers/integration/frontend.png)
 
