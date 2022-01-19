@@ -1,4 +1,4 @@
-## Interlinkers (interlinkers.docker-compose.yml)
+## Interlinkers integration
 This project is intended to sum up the different interlinkers developed for the project. But, ¿what is an interlinker?
 
 An *interlinker* is a tool that is used to create assets by *instantiating* them. These interlinkers can be classified by its *nature*: **software** or **knowledge**.

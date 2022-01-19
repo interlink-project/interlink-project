@@ -86,31 +86,24 @@ To get a local copy up and running follow these simple example steps.
 
   Take a look at the Makefile and inside component folders; there, you will see three docker-composes:
 
-  1. **docker-compose.yml**: Production ready containers that are attached to the traefik-public network
+  1. **docker-compose.prod.yml**: Production ready containers that are attached to the traefik-public network
     
-    docker-compose up
-  
-  would run containers in production mode
+    docker-compose -f docker-compose.prod.yml up
 
-  2. **docker-compose.solodev.yml**: overrides main docker-compose file to create development containers for solo-development.  
+  2. **docker-compose.devsolo.yml**: run containers in standalone development mode and a database microservice.
   
-    docker-compose -f docker-compose.yml -f docker-compose.solodev.yml up
+    docker-compose -f docker-compose.devsolo.yml up
   
-  would run containers in standalone development mode
+  3. **docker-compose.devintegrated.yml**: creates development containers that are attached to the traefik-public network (adding traefik labels to enable routing and load balancing)
 
-  3. **docker-compose.integrated.yml**: overrides main docker-compose file to create development containers that are attached to the traefik-public network (adding traefik labels to enable routing and load balancing)
-
-    docker-compose -f docker-compose.yml -f docker-compose.integrated.yml up 
-  
-  would run containers in development mode, but implementing *traefik-public* network and labels
+    docker-compose -f docker-compose.devintegrated.yml up 
 
 
 ## More documentation
-* [AUTHENTICATION.md](docs/AUTHENTICATION.md)
-* [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-* [DATA_MODEL.md](docs/DATA_MODEL.md)
 * [INTERLINKERS.md](docs/INTERLINKERS.md)
-* [TECHNOLOGIES.md](docs/TECHNOLOGIES.md)
+* [AUTHENTICATION.md](docs/AUTHENTICATION.md)
+* [ROUTING.md](docs/ROUTING.md)
+* [DATA_MODEL.md](docs/DATA_MODEL.md)
 * [MONITORING.md](docs/MONITORING.md)
 
 <p align="right">(<a href="#top">back to top</a>)</p>

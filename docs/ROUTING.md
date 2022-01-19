@@ -1,42 +1,4 @@
 
-## Backend microservices
-* **auth**: 
-  * Docs: http://localhost/auth/docs
-  * Models: none
-  * Dependencies: **db** running
-  * Docker-compose diagram:
-
-![Auth microservice](images/docker-composes/auth.docker-compose.png)
-
-* **teammanagement**: 
-  * Docs: http://localhost/teammanagement/docs
-  * Models: *teams, memberships*
-  * Dependencies: **db** running
-  * Docker-compose diagram:
-
-![Team management microservice](images/docker-composes/teammanagement.docker-compose.png)
-
-* **catalogue**:
-  * Docs: http://localhost/catalogue/docs
-  * Models: artefact, interlinker, publicservice, rating, questioncomment, functionality, problemdomain
-  * Dependencies: **db** running
-  * Docker-compose diagram:
-
-![Catalogue microservice](images/docker-composes/catalogue.docker-compose.png)
-
-* **coproduction**:
-  * Docs: http://localhost/coproduction/docs
-  * Models: asset, task, taskinstantiation, phase, phaseinstantiation, objective, objectiveinstantiation, coproductionprocess, coproductionschema
-  * Dependencies: **catalogue** healthy, **redis** running
-  * **redis**: as message broker for coproduction and coproductionworker microservices
-  * Docker-compose diagram:
-
-![Coproduction microservice](images/docker-composes/coproduction.docker-compose.png)
-
-* **coproductionworker**: uses **Celery**, a task queue implementation for Python web applications used to asynchronously execute work outside the HTTP request-response cycle. This service can import and use models and code from the rest of the coproduction microservice selectively to run repetetive or concurrent tasks.
-  * https://medium.com/swlh/python-developers-celery-is-a-must-learn-technology-heres-how-to-get-started-578f5d63fab3
-
-
 ## Routing
 
 Load balancing and reverse proxy with **Traefik** (http://localhost:8090/dashboard/). 
@@ -67,12 +29,15 @@ labels:
 ### Result
 * **MAIN FRONTEND:** http://localhost/
 * **BACKEND MICROSERVICES:**
-  * Auth microservice: http://localhost/coproduction (most important because is the service that sets the cookie)
+  * Auth microservice: http://localhost/auth (most important because is the service that sets the cookie)
   * Coproduction microservice: http://localhost/coproduction
-  * Users microservice: http://localhost/users
   * Catalogue microservice: http://localhost/catalogue
+  * ACL microservice: http://localhost/acl
+
 * **INTERLINKERS:**
   * Forum microservice: http://localhost/forum
   * Googledrive microservice: http://localhost/googledrive
   * Filemanager microservice: http://localhost/filemanager
+  * Survey microservice: http://localhost/survey
+
   ...
