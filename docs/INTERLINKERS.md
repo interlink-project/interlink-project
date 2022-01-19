@@ -20,7 +20,7 @@ An *interlinker* is a tool that is used to create assets by *instantiating* them
     * Survey: create survey templates for specific aspects that users could reuse (such us "Survey for interlinker quality assurance")
     * Google Drive: create document, slides or sheet templates
     * Etherpad: create document templates
-    
+
     ...
 
 
@@ -28,7 +28,7 @@ An *interlinker* is a tool that is used to create assets by *instantiating* them
 
 Each interlinker is treated as an independent component, so they can be developed with any framework or tool (MEAN, MERN, django, NextJS... the possibilities are infinite). But they all need to expose these endpoints to integrate them: 
 
-1. **Asset instantiator GUI:** GET 
+1. **GUI for asset instantiation:** GET 
 
     * **WHAT:** basic GUI por asset instantiation. This is gonna be iframed.
     * **Method:** GET
@@ -41,21 +41,23 @@ Each interlinker is treated as an independent component, so they can be develope
       * survey: form drag and drop creator
       * etherpad: text input for specifying a name
 
-2. **Delete existing asset:** 
 
-    * **WHAT:** deletes assets by id
-    * **Method:** DELETE
-    * **URL:** /*interlinker_name*/api/v1/assets/{id}
-
-3. **Shows GUI for given asset:** 
+2. **GUI for given asset:** 
 
     * **WHAT:** shows GUI for given asset.
     * **Method:** GET
     * **URL:** /*interlinker_name*/api/v1/assets/{id}/gui/
     * Examples:
-      * googledrive interlinker: redirects to Google Drive document
+      * googledrive interlinker: redirects to Google Drive domain where document is located (for example https://docs.google.com/document/d/{id}/edit)
       * forum: renders GUI developed with react
       * etherpad: renders an iframe that shows etherpad GUI running in a diferent location (such as /etherpad/p/{padID})
+
+3. **Delete existing asset:** 
+
+    * **WHAT:** deletes assets by id
+    * **Method:** DELETE
+    * **URL:** /*interlinker_name*/api/v1/assets/{id}
+
 
 4. [OPTIONAL] **Clones asset:** 
 
@@ -70,16 +72,16 @@ Each interlinker is treated as an independent component, so they can be develope
 ## Example flow with Google Drive interlinker
 
 VIDEO: https://youtu.be/N3jB3lwOsRo
-1. **Asset instantiator:**  /*interlinker_name*/api/v1/assets/instantiator/
+1. **Asset instantiator:**  /googledrive/api/v1/assets/instantiator/
 
-Renders a file input.
+Renders a file input that has a listener attached:
 ![Google Drive instantiator](images/interlinkers/integration/googledrive.png)
 
-When users selects a file, a POST request to /api/v1/assets/ **OF THE INTERLINKER** is made with the data needed for the asset instantiation (in this case, the file). When response received, a message to the parent is sent with the asset data:
+When users selects a file, a POST request to /api/v1/assets/ **OF THE INTERLINKER** (in this case /googledrive/api/v1/assets/) is made with the data needed for the asset instantiation (in this case, the file). When response received, a message to the parent is sent with the asset data:
 
-![Google Drive instantiator](images/interlinkers/integration/code.png)
+![Google Drive instantiator code](images/interlinkers/integration/code.png)
 
 When the **Collaborative Environment frontend** receives the message, makes a POST request to /coproduction/api/v1/assets/ to store that asset for the task where the user has pressed "Add asset" button.
 
-![Google Drive instantiator](images/interlinkers/integration/frontend.png)
+![Collaborative environment message listener](images/interlinkers/integration/frontend.png)
 
