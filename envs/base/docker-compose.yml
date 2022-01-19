@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   proxy:
-    container_name: traefik
+    container_name: ${STACK_NAME?Variable not set}-traefik
     image: traefik:v2.2
     ports:
       - "80:80"
@@ -30,7 +30,7 @@ services:
 
   frontend:
     image: "interlinkproject/frontend:latest"
-    container_name: frontend
+    container_name: ${STACK_NAME?Variable not set}-frontend
     env_file:
       - .env
     environment:
@@ -44,13 +44,13 @@ services:
       - traefik-public
 
   redis:
-    container_name: redis
+    container_name: ${STACK_NAME?Variable not set}-redis
     image: redis:6-alpine
     networks:
       - default
 
   db:
-    container_name: db
+    container_name: ${STACK_NAME?Variable not set}-db
     image: interlinkproject/postgres:latest
     #volumes:
     #  - app-db-data:/var/lib/postgresql/data/pgdata
@@ -69,7 +69,7 @@ services:
 
   coproduction:
     image: interlinkproject/backend-coproduction:latest
-    container_name: coproduction-prod
+    container_name: ${STACK_NAME?Variable not set}-coproduction
     env_file:
       - .env
     environment:
@@ -94,7 +94,7 @@ services:
 
   coproductionworker:
     image: interlinkproject/backend-coproduction:latest
-    container_name: coproductionworker-prod
+    container_name: ${STACK_NAME?Variable not set}-coproductionworker
     command: ["bash", "./worker-start.sh"]
     depends_on:
       - db
@@ -112,7 +112,7 @@ services:
 
   catalogue:
     image: interlinkproject/backend-catalogue:latest
-    container_name: catalogue-integrated
+    container_name: ${STACK_NAME?Variable not set}-catalogue
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=http://${DOMAIN?Variable not set}/catalogue
@@ -134,7 +134,7 @@ services:
 
   mongodb:
     image: bitnami/mongodb:latest
-    container_name: mongodb
+    container_name: ${STACK_NAME?Variable not set}-mongodb
     env_file:
       - .env
     healthcheck:
@@ -148,7 +148,7 @@ services:
       - default
   auth:
     image: interlinkproject/backend-auth:latest
-    container_name: auth
+    container_name: ${STACK_NAME?Variable not set}-auth
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=http://${DOMAIN?Variable not set}/auth
@@ -171,7 +171,7 @@ services:
 
   acl:
     image: interlinkproject/backend-acl:latest
-    container_name: acl
+    container_name: ${STACK_NAME?Variable not set}-acl
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=http://${DOMAIN?Variable not set}/acl
