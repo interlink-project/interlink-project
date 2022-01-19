@@ -15,6 +15,14 @@ An *interlinker* is a tool that is used to create assets by *instantiating* them
 
   ![Interlinkers models](images/interlinkers/integration/model.png)
 
+  This allows us to create knowledge interlinkers based on any software interlinker (with some conditions, as it is going to be explained later):
+
+    * Survey: create survey templates for specific aspects that users could reuse (such us "Survey for interlinker quality assurance")
+    * Google Drive: create document, slides or sheet templates
+    * Etherpad: create document templates
+    
+    ...
+
 
 ## API Endpoints needed for SOFTWARE INTERLINKERS integration
 
