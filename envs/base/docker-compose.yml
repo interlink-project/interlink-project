@@ -153,7 +153,7 @@ services:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=http://${DOMAIN?Variable not set}/auth
       - PORT=${PORT}
-      - BASE_PATH=
+      - BASE_PATH=/auth
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majorit
       - DATABASE_NAME=data
       - COLLECTION_NAME=users
@@ -164,8 +164,6 @@ services:
       - traefik.docker.network=traefik-public
       - traefik.http.routers.${STACK_NAME?Variable not set}-auth-http.rule=PathPrefix(`/auth`)
       - traefik.http.services.${STACK_NAME?Variable not set}-auth.loadbalancer.server.port=${PORT}
-      - traefik.http.routers.${STACK_NAME?Variable not set}-auth-http.middlewares=auth-stripprefix
-      - traefik.http.middlewares.auth-stripprefix.stripprefix.prefixes=/auth
     networks:
       - traefik-public
       - default
@@ -177,7 +175,7 @@ services:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=http://${DOMAIN?Variable not set}/acl
       - PORT=${PORT}
-      - BASE_PATH=
+      - BASE_PATH=/acl
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - DATABASE_NAME=data
       - COLLECTION_NAME=acl_resources

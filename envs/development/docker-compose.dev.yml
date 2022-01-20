@@ -75,7 +75,7 @@ services:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=https://${DOMAIN?Variable not set}/auth
       - PORT=${PORT}
-      - BASE_PATH=
+      - BASE_PATH=/auth
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - DATABASE_NAME=data
       - COLLECTION_NAME=acl_resources
@@ -86,8 +86,6 @@ services:
       - "traefik.http.routers.${STACK_NAME?Variable not set}-auth.tls.certresolver=letsencrypt"
       - "traefik.http.routers.${STACK_NAME?Variable not set}-auth.tls=true"
       - "traefik.http.routers.${STACK_NAME?Variable not set}-auth.rule=Host(`${DOMAIN}`) && PathPrefix(`/auth`)"
-      - traefik.http.routers.${STACK_NAME?Variable not set}-auth.middlewares=auth-stripprefix
-      - traefik.http.middlewares.auth-stripprefix.stripprefix.prefixes=/auth
 
   acl:
     image: interlinkproject/backend-acl:latest
@@ -95,7 +93,7 @@ services:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=https://${DOMAIN?Variable not set}/acl
       - PORT=${PORT}
-      - BASE_PATH=
+      - BASE_PATH=/acl
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majorit
       - DATABASE_NAME=data
       - COLLECTION_NAME=users
