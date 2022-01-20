@@ -1,10 +1,13 @@
-name: update-dev-environments
+name: update-dev-environment
 on:
   repository_dispatch:
     types: [update-dev-environment]
   push:
     branches:
-      - "basic_deployment"
+      - "master"
+    paths:
+      - envs/base/**
+      - envs/development/**
 
 jobs:
   deploy:

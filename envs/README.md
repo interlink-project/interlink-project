@@ -31,7 +31,7 @@ docker-compose -f base/docker-compose.yml --env-file base/.env logs catalogue
 
 ## Development Environment
 
-This development environment will be kept with the edge of development (main or master branches of all the components). It will be deployed at https://dev.interlink-project.eu.
+This development environment will be kept with the edge of development (main or master branches of all the components). It will be deployed at [dev.interlink-project.eu](https://dev.interlink-project.eu).
 
 The commands for deploying are the following:
 
