@@ -73,7 +73,7 @@ services:
     image: interlinkproject/backend-auth:latest
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
-      - SERVER_HOST=https://${DOMAIN?Variable not set}/acl
+      - SERVER_HOST=https://${DOMAIN?Variable not set}/auth
       - PORT=${PORT}
       - BASE_PATH=
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
@@ -92,7 +92,7 @@ services:
     image: interlinkproject/backend-acl:latest
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
-      - SERVER_HOST=https://${DOMAIN?Variable not set}/auth
+      - SERVER_HOST=https://${DOMAIN?Variable not set}/acl
       - PORT=${PORT}
       - BASE_PATH=
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majorit
