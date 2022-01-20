@@ -19,6 +19,6 @@ jobs:
           script: |
             cd /datadrive/data/interlink-project
             git pull --ff-only
-            cd envs/base
-            docker-compose pull
-            docker-compose up -d
+            cd envs
+            docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml --env-file development/.env pull
+            docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml --env-file development/.env up -d
