@@ -77,6 +77,7 @@ services:
       - PORT=${PORT}
       - BASE_PATH=
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
+      - DATABASE_NAME=data
       - COLLECTION_NAME=acl_resources
     labels:
       - traefik.enable=true
@@ -96,6 +97,7 @@ services:
       - PORT=${PORT}
       - BASE_PATH=
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majorit
+      - DATABASE_NAME=data
       - COLLECTION_NAME=users
     labels:
       - traefik.enable=true
