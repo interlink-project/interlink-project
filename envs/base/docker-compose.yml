@@ -155,6 +155,7 @@ services:
       - PORT=${PORT}
       - BASE_PATH=
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majorit
+      - DATABASE_NAME=data
       - COLLECTION_NAME=users
     env_file:
       - .env
@@ -178,6 +179,7 @@ services:
       - PORT=${PORT}
       - BASE_PATH=
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
+      - DATABASE_NAME=data
       - COLLECTION_NAME=acl_resources
     env_file:
       - .env
