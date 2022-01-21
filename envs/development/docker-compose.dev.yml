@@ -2,7 +2,7 @@ version: "3.3"
 services:
 
   proxy:
-    container_name: ${STACK_NAME?Variable not set}-traefik
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-traefik
     image: traefik:v2.2
     ports:
       - "80:80"
@@ -28,7 +28,7 @@ services:
       # Enable the Dashboard and API
       - --api
       # Enable the Dashboard and API in insecure mode for local development
-      #- --api.insecure=true
+      - --api.insecure=true
       - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
       - "--certificatesresolvers.letsencrypt.acme.email=apps@interlink-project.eu"
       - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
@@ -36,25 +36,25 @@ services:
   frontend:
     image: "interlinkproject/frontend:latest"
     environment:
-      - REACT_APP_BASE_URI=http://dev.interlink-project.eu
+      - REACT_APP_BASE_URI=https://dev.interlink-project.eu
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.services.${STACK_NAME?Variable not set}-frontend.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-frontend.tls=true"
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-frontend.rule=Host(`${DOMAIN}`) && PathPrefix(`/`)"
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-frontend.loadbalancer.server.port=${PORT}
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-frontend.tls=true"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-frontend.rule=Host(`${DOMAIN}`) && PathPrefix(`/`)"
 
   coproduction:
     image: interlinkproject/backend-coproduction:latest
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.services.${STACK_NAME?Variable not set}-coproduction.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-coproduction.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-coproduction.tls=true"
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-coproduction.rule=Host(`${DOMAIN}`) && PathPrefix(`/coproduction`)"
-      - traefik.http.routers.${STACK_NAME?Variable not set}-coproduction.middlewares=coproduction-stripprefix
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-coproduction.loadbalancer.server.port=${PORT}
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.tls=true"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.rule=Host(`${DOMAIN}`) && PathPrefix(`/coproduction`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.middlewares=coproduction-stripprefix
       - traefik.http.middlewares.coproduction-stripprefix.stripprefix.prefixes=/coproduction
 
   catalogue:
@@ -62,11 +62,11 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.services.${STACK_NAME?Variable not set}-catalogue.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-catalogue.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-catalogue.tls=true"
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-catalogue.rule=Host(`${DOMAIN}`) && PathPrefix(`/catalogue`)"
-      - traefik.http.routers.${STACK_NAME?Variable not set}-catalogue.middlewares=catalogue-stripprefix
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-catalogue.loadbalancer.server.port=${PORT}
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue.tls=true"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue.rule=Host(`${DOMAIN}`) && PathPrefix(`/catalogue`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue.middlewares=catalogue-stripprefix
       - traefik.http.middlewares.catalogue-stripprefix.stripprefix.prefixes=/catalogue
 
   auth:
@@ -77,15 +77,14 @@ services:
       - PORT=${PORT}
       - BASE_PATH=/auth
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
-      - DATABASE_NAME=data
       - COLLECTION_NAME=acl_resources
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.services.${STACK_NAME?Variable not set}-auth.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-auth.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-auth.tls=true"
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-auth.rule=Host(`${DOMAIN}`) && PathPrefix(`/auth`)"
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-auth.loadbalancer.server.port=${PORT}
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-auth.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-auth.tls=true"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-auth.rule=Host(`${DOMAIN}`) && PathPrefix(`/auth`)"
 
   acl:
     image: interlinkproject/backend-acl:latest
@@ -95,14 +94,13 @@ services:
       - PORT=${PORT}
       - BASE_PATH=/acl
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majorit
-      - DATABASE_NAME=data
       - COLLECTION_NAME=users
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.services.${STACK_NAME?Variable not set}-acl.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-acl.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-acl.tls=true"
-      - "traefik.http.routers.${STACK_NAME?Variable not set}-acl.rule=Host(`${DOMAIN}`) && PathPrefix(`/acl`)"
-      - traefik.http.routers.${STACK_NAME?Variable not set}-acl.middlewares=acl-stripprefix
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-acl.loadbalancer.server.port=${PORT}
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.tls=true"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.rule=Host(`${DOMAIN}`) && PathPrefix(`/acl`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.middlewares=acl-stripprefix
       - traefik.http.middlewares.acl-stripprefix.stripprefix.prefixes=/acl

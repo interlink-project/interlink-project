@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   proxy:
-    container_name: ${STACK_NAME?Variable not set}-traefik
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-traefik
     image: traefik:v2.2
     ports:
       - "80:80"
@@ -26,11 +26,11 @@ services:
       # Enable the Dashboard and API
       - --api
       # Enable the Dashboard and API in insecure mode for local development
-      - --api.insecure=true
+      #- --api.insecure=true
 
   frontend:
     image: "interlinkproject/frontend:latest"
-    container_name: ${STACK_NAME?Variable not set}-frontend
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-frontend
     env_file:
       - .env
     environment:
@@ -38,27 +38,24 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.routers.${STACK_NAME?Variable not set}-frontend-http.rule=PathPrefix(`/`)
-      - traefik.http.services.${STACK_NAME?Variable not set}-frontend.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-frontend-http.rule=PathPrefix(`/`)
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-frontend.loadbalancer.server.port=${PORT}
     networks:
       - traefik-public
 
   redis:
-    container_name: ${STACK_NAME?Variable not set}-redis
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-redis
     image: redis:6-alpine
     networks:
       - default
 
   db:
-    container_name: ${STACK_NAME?Variable not set}-db
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-db
     image: interlinkproject/postgres:latest
     #volumes:
     #  - app-db-data:/var/lib/postgresql/data/pgdata
     env_file:
       - .env
-    environment:
-      - PGDATA=/var/lib/postgresql/data/pgdata
-      - POSTGRES_MULTIPLE_DATABASES=coproduction,catalogue
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
@@ -69,7 +66,7 @@ services:
 
   coproduction:
     image: interlinkproject/backend-coproduction:latest
-    container_name: ${STACK_NAME?Variable not set}-coproduction
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-coproduction
     env_file:
       - .env
     environment:
@@ -84,9 +81,9 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.routers.${STACK_NAME?Variable not set}-coproduction-http.rule=PathPrefix(`/coproduction`)
-      - traefik.http.services.${STACK_NAME?Variable not set}-coproduction.loadbalancer.server.port=${PORT}
-      - traefik.http.routers.${STACK_NAME?Variable not set}-coproduction-http.middlewares=coproduction-stripprefix
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction-http.rule=PathPrefix(`/coproduction`)
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-coproduction.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction-http.middlewares=coproduction-stripprefix
       - traefik.http.middlewares.coproduction-stripprefix.stripprefix.prefixes=/coproduction
     networks:
       - traefik-public
@@ -94,7 +91,7 @@ services:
 
   coproductionworker:
     image: interlinkproject/backend-coproduction:latest
-    container_name: ${STACK_NAME?Variable not set}-coproductionworker
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-coproductionworker
     command: ["bash", "./worker-start.sh"]
     depends_on:
       - db
@@ -112,7 +109,7 @@ services:
 
   catalogue:
     image: interlinkproject/backend-catalogue:latest
-    container_name: ${STACK_NAME?Variable not set}-catalogue
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-catalogue
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=http://${DOMAIN?Variable not set}/catalogue
@@ -124,9 +121,9 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.routers.${STACK_NAME?Variable not set}-catalogue-http.rule=PathPrefix(`/catalogue`)
-      - traefik.http.services.${STACK_NAME?Variable not set}-catalogue.loadbalancer.server.port=${PORT}
-      - traefik.http.routers.${STACK_NAME?Variable not set}-catalogue-http.middlewares=catalogue-stripprefix
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue-http.rule=PathPrefix(`/catalogue`)
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-catalogue.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue-http.middlewares=catalogue-stripprefix
       - traefik.http.middlewares.catalogue-stripprefix.stripprefix.prefixes=/catalogue
     networks:
       - traefik-public
@@ -134,7 +131,7 @@ services:
 
   mongodb:
     image: bitnami/mongodb:latest
-    container_name: ${STACK_NAME?Variable not set}-mongodb
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-mongodb
     env_file:
       - .env
     healthcheck:
@@ -146,47 +143,46 @@ services:
       start_period: 20s
     networks:
       - default
+  
   auth:
     image: interlinkproject/backend-auth:latest
-    container_name: ${STACK_NAME?Variable not set}-auth
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-auth
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=http://${DOMAIN?Variable not set}/auth
       - PORT=${PORT}
       - BASE_PATH=/auth
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majorit
-      - DATABASE_NAME=data
       - COLLECTION_NAME=users
     env_file:
       - .env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.routers.${STACK_NAME?Variable not set}-auth-http.rule=PathPrefix(`/auth`)
-      - traefik.http.services.${STACK_NAME?Variable not set}-auth.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-auth-http.rule=PathPrefix(`/auth`)
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-auth.loadbalancer.server.port=${PORT}
     networks:
       - traefik-public
       - default
 
   acl:
     image: interlinkproject/backend-acl:latest
-    container_name: ${STACK_NAME?Variable not set}-acl
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-acl
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=http://${DOMAIN?Variable not set}/acl
       - PORT=${PORT}
       - BASE_PATH=/acl
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
-      - DATABASE_NAME=data
       - COLLECTION_NAME=acl_resources
     env_file:
       - .env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.routers.${STACK_NAME?Variable not set}-acl-http.rule=PathPrefix(`/acl`)
-      - traefik.http.services.${STACK_NAME?Variable not set}-acl.loadbalancer.server.port=${PORT}
-      - traefik.http.routers.${STACK_NAME?Variable not set}-acl-http.middlewares=acl-stripprefix
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl-http.rule=PathPrefix(`/acl`)
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-acl.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl-http.middlewares=acl-stripprefix
       - traefik.http.middlewares.acl-stripprefix.stripprefix.prefixes=/acl
     networks:
       - traefik-public
