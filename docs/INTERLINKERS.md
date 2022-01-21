@@ -32,7 +32,7 @@ Each interlinker is treated as an independent component, so they can be develope
 
     * **WHAT:** basic GUI por asset instantiation. This is gonna be iframed.
     * **Method:** GET
-    * **URL:** /*interlinker_name*/api/v1/assets/instantiator/
+    * **URL:** /*interlinker_name*/assets/instantiator/
     * Messages for the main frontend integration:
       * When initialized, send a message to the parent like { 'code': 'initialized', } 
       * When asset created, send a message to the parent like { 'code': 'asset_created', 'message': data of the asset }
@@ -41,12 +41,11 @@ Each interlinker is treated as an independent component, so they can be develope
       * survey: form drag and drop creator
       * etherpad: text input for specifying a name
 
-
 2. **GUI for given asset:** 
 
     * **WHAT:** shows GUI for given asset.
     * **Method:** GET
-    * **URL:** /*interlinker_name*/api/v1/assets/{id}/gui/
+    * **URL:** /*interlinker_name*/assets/{id}/gui/
     * Examples:
       * googledrive interlinker: redirects to Google Drive domain where document is located (for example https://docs.google.com/document/d/{id}/edit)
       * forum: renders GUI developed with react
@@ -56,23 +55,26 @@ Each interlinker is treated as an independent component, so they can be develope
 
     * **WHAT:** deletes assets by id
     * **Method:** DELETE
-    * **URL:** /*interlinker_name*/api/v1/assets/{id}
+    * **URL:** /*interlinker_name*/assets/{id}
 
 
 4. [OPTIONAL] **Clones asset:** 
 
     * **WHAT:** clones asset given an id.
     * **Method:** POST
-    * **URL:** /*interlinker_name*/api/v1/assets/{id}/clone/
+    * **URL:** /*interlinker_name*/assets/{id}/clone/
 
 > :warning: If /clone/ not specified, the interlinker could not be used to generate knowledge interlinkers.
   
+Furthermore, interlinkers can implement any other endpoints needed for its functionality. For example, Google Drive interlinker implements:
+
+![Google Drive API](images/interlinkers/integration/API.png)
 
 
 ## Example flow with Google Drive interlinker
 
 VIDEO: https://youtu.be/N3jB3lwOsRo
-1. **Asset instantiator:**  /googledrive/api/v1/assets/instantiator/
+1. **Asset instantiator:**  /googledrive/assets/instantiator/
 
 Renders a file input that has a listener attached:
 ![Google Drive instantiator](images/interlinkers/integration/googledrive.png)
