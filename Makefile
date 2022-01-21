@@ -24,11 +24,11 @@ setup: ## Clones all components
 	cd .. && git clone https://github.com/interlink-project/backend-auth
 	cd .. && git clone https://github.com/interlink-project/backend-catalogue
 	cd .. && git clone https://github.com/interlink-project/backend-coproduction
+	cd .. && git clone https://github.com/interlink-project/backend-channels
 	# interlinkers
 	cd .. && git clone https://github.com/interlink-project/interlinker-survey
 	cd .. && git clone https://github.com/interlink-project/interlinker-filemanager
 	cd .. && git clone https://github.com/interlink-project/interlinker-googledrive
-	cd .. && git clone https://github.com/interlink-project/interlinker-forum
 	cd .. && git clone https://github.com/interlink-project/interlinker-etherpad
 
 
@@ -49,11 +49,11 @@ down: ## Stops all containers and removes volumes
 	cd ../backend-auth && make down
 	cd ../backend-catalogue && make down
 	cd ../backend-coproduction && make down
+	cd ../backend-channels && make down
 
 	# interlinkers
 	cd ../interlinker-etherpad && make down
 	cd ../interlinker-filemanager && make down
-	cd ../interlinker-forum && make down
 	cd ../interlinker-googledrive && make down
 	cd ../interlinker-survey && make down
 
@@ -70,11 +70,11 @@ up: down net ## Run containers (restarts them if already running)
 	cd ../backend-auth && make integrated
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
+	cd ../backend-channels && make integrated
 
 	# interlinkers
 	cd ../interlinker-etherpad && make integrated
 	# cd ../interlinker-filemanager && make integrated
-	# cd ../interlinker-forum && make integrated
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
 
@@ -87,23 +87,25 @@ restart: ## Run containers (restarts them if already running)
 	cd ../backend-auth && make integrated
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
+	cd ../backend-channels && make integrated
 	cd ../backend-acl && make integrated
+
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
 	cd ../interlinker-etherpad && make integrated
 
 .PHONY: devbuild
 devbuild: ## Build containers
-	cd ../backend-acl && make devbuild
+	cd ../backend-proxy && make up
 	cd ../backend-auth && make devbuild
 	cd ../backend-catalogue && make devbuild
 	cd ../backend-coproduction && make devbuild
-	cd ../backend-proxy && make up
-
+	cd ../backend-channels && make devbuild
+	cd ../backend-acl && make devbuild
+	
 	# interlinkers
 	cd ../interlinker-etherpad && make devbuild
 	cd ../interlinker-filemanager && make devbuild
-	cd ../interlinker-forum && make devbuild
 	cd ../interlinker-googledrive && make devbuild
 	cd ../interlinker-survey && make devbuild
 	cd ../frontend && make devbuild
@@ -114,12 +116,12 @@ prodbuild: ## Build containers
 	cd ../backend-auth && make prodbuild
 	cd ../backend-catalogue && make prodbuild
 	cd ../backend-coproduction && make prodbuild
+	cd ../backend-channels && make prodbuild
 	cd ../backend-proxy && make up
 
 	# interlinkers
 	cd ../interlinker-etherpad && make prodbuild
 	cd ../interlinker-filemanager && make prodbuild
-	cd ../interlinker-forum && make prodbuild
 	cd ../interlinker-googledrive && make prodbuild
 	cd ../interlinker-survey && make prodbuild
 	cd ../frontend && make prodbuild
