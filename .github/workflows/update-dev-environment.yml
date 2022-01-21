@@ -27,5 +27,5 @@ jobs:
             docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml --env-file development/.env up -d
             docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml exec catalogue python /app/app/pre_start.py
             docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml exec coproduction python /app/app/pre_start.py
-	          docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml exec catalogue python /app/app/initial_data.py
-	          docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml exec coproduction python /app/app/initial_data.py
+            docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml exec catalogue python /app/app/initial_data.py
+            docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml exec coproduction python /app/app/initial_data.py
