@@ -93,7 +93,7 @@ services:
       - SERVER_HOST=https://${DOMAIN?Variable not set}/acl
       - PORT=${PORT}
       - BASE_PATH=/acl
-      - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majorit
+      - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=users
     labels:
       - traefik.enable=true
