@@ -35,48 +35,33 @@ To get a local copy up and running follow these simple example steps.
 
 ### Installation
 
-1. Setup the project 
-
-    * linux or macOS: 
+* linux or macOS: 
 
     ```sh
     mkdir interlink && cd interlink #Important because "make setup" will create directories on parent
-    git clone https://github.com/interlink-project/interlink-project
-    cd interlink-project
+    git clone https://github.com/interlink-project/interlink-project && cd interlink-project
     make setup
+    ```
+
+    To START all containers:
+    ```sh
+    # from /interlink-project
+    make down # will last couple minutes
+    ```
+
+    To STOP all containers:
+    ```sh
+    # from /interlink-project
+    make down
     ```
     ![Setup](docs/images/main/setup.gif)
     
-    * windows: *soon*
-
-1. Build all components
-
-    * linux or macOS:
-    
-    ```sh
-    # from interlink-project
-    make builddev
-    ```
-
-    * windows: *soon*
-
-1. Run all the components integrated
+1. (Optional) Seed databases with data **can throw errors because we are constantly making changes to the database model**
 
     * linux or macOS: 
     
     ```sh
-    # from interlink-project
-    make up
-    ```
-
-    * windows: *soon*
-
-1. (Optional) Seed databases with data
-
-    * linux or macOS: 
-    
-    ```sh
-    # from interlink-project
+    # from /interlink-project
     make seed
     ```
 
