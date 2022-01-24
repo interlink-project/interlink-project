@@ -93,12 +93,12 @@ To get a local copy up and running follow these simple example steps.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+ssh -i id_rsa interlink@dev.interlink-project.eu
 docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml --env-file development/.env up -d
-
 docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml --env-file development/.env down
 
 docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml exec -T catalogue python /app/app/initial_data.py
 
 docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml exec -T coproduction python /app/app/initial_data.py
 
-docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml logs acl
+docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml logs auth

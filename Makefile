@@ -27,7 +27,6 @@ setup: ## Clones all components
 	cd .. && git clone https://github.com/interlink-project/backend-channels
 	# interlinkers
 	cd .. && git clone https://github.com/interlink-project/interlinker-survey
-	cd .. && git clone https://github.com/interlink-project/interlinker-filemanager
 	cd .. && git clone https://github.com/interlink-project/interlinker-googledrive
 	cd .. && git clone https://github.com/interlink-project/interlinker-etherpad
 
@@ -53,7 +52,6 @@ down: ## Stops all containers and removes volumes
 
 	# interlinkers
 	cd ../interlinker-etherpad && make down
-	cd ../interlinker-filemanager && make down
 	cd ../interlinker-googledrive && make down
 	cd ../interlinker-survey && make down
 
@@ -74,7 +72,6 @@ up: down net ## Run containers (restarts them if already running)
 
 	# interlinkers
 	cd ../interlinker-etherpad && make integrated
-	# cd ../interlinker-filemanager && make integrated
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
 
@@ -105,7 +102,6 @@ devbuild: ## Build containers
 	
 	# interlinkers
 	cd ../interlinker-etherpad && make devbuild
-	cd ../interlinker-filemanager && make devbuild
 	cd ../interlinker-googledrive && make devbuild
 	cd ../interlinker-survey && make devbuild
 	cd ../frontend && make devbuild
@@ -121,7 +117,6 @@ prodbuild: ## Build containers
 
 	# interlinkers
 	cd ../interlinker-etherpad && make prodbuild
-	cd ../interlinker-filemanager && make prodbuild
 	cd ../interlinker-googledrive && make prodbuild
 	cd ../interlinker-survey && make prodbuild
 	cd ../frontend && make prodbuild
