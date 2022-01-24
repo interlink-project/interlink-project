@@ -19,7 +19,6 @@ net: ## Creates needed network to communicate through different docker-compose f
 setup: ## Clones all components
 	cd .. && git clone https://github.com/interlink-project/frontend
 	# platform components
-	cd .. && git clone https://github.com/interlink-project/backend-proxy
 	cd .. && git clone https://github.com/interlink-project/backend-acl
 	cd .. && git clone https://github.com/interlink-project/backend-auth
 	cd .. && git clone https://github.com/interlink-project/backend-catalogue
@@ -35,12 +34,10 @@ setup: ## Clones all components
 update: ## Updates all repositories
 	cd ../frontend && git pull origin master
 	# platform components
-	cd ../backend-proxy && git pull origin master
 	cd ../backend-acl && git pull origin master
 	cd ../backend-auth && git pull origin master
 	cd ../backend-catalogue && git pull origin master
 	cd ../backend-coproduction && git pull origin master
-	cd ../backend-proxy && git pull origin master
 	
 .PHONY: down
 down: ## Stops all containers and removes volumes
@@ -56,12 +53,13 @@ down: ## Stops all containers and removes volumes
 	cd ../interlinker-survey && make down
 
 	cd ../frontend && make down
-	cd ../backend-proxy && make down
+	
+	cd ./envs/local && docker-compose down --volumes --remove-orphans
 	docker network rm traefik-public || true
 
 .PHONY: up
 up: down net ## Run containers (restarts them if already running)
-	cd ../backend-proxy && make up
+	cd ./envs/local && docker-compose up -d
 
 	# platform components
 	cd ../backend-acl && make integrated
@@ -80,7 +78,6 @@ up: down net ## Run containers (restarts them if already running)
 
 .PHONY: restart
 restart: ## Run containers (restarts them if already running)
-	cd ../backend-proxy && make up
 	cd ../backend-auth && make integrated
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
@@ -91,9 +88,13 @@ restart: ## Run containers (restarts them if already running)
 	cd ../interlinker-survey && make integrated
 	cd ../interlinker-etherpad && make integrated
 
-.PHONY: devbuild
-devbuild: ## Build containers
-	cd ../backend-proxy && make up
+	cd ./envs/local && docker-compose down --volumes --remove-orphans
+	cd ./envs/local && docker-compose up -d
+
+.PHONY: build
+build: ## Build containers
+	cd ./envs/local && docker-compose build
+
 	cd ../backend-auth && make devbuild
 	cd ../backend-catalogue && make devbuild
 	cd ../backend-coproduction && make devbuild
@@ -106,23 +107,8 @@ devbuild: ## Build containers
 	cd ../interlinker-survey && make devbuild
 	cd ../frontend && make devbuild
 
-.PHONY: prodbuild
-prodbuild: ## Build containers
-	cd ../backend-acl && make prodbuild
-	cd ../backend-auth && make prodbuild
-	cd ../backend-catalogue && make prodbuild
-	cd ../backend-coproduction && make prodbuild
-	cd ../backend-channels && make prodbuild
-	cd ../backend-proxy && make up
-
-	# interlinkers
-	cd ../interlinker-etherpad && make prodbuild
-	cd ../interlinker-googledrive && make prodbuild
-	cd ../interlinker-survey && make prodbuild
-	cd ../frontend && make prodbuild
-
 .PHONY: upb
-upb: down net builddev up ## Build and run containers
+upb: down net build up ## Build and run containers
 
 .PHONY: seed
 seed: ## Set initial data
