@@ -148,3 +148,53 @@ services:
       - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.rule=Host(`${DOMAIN}`) && PathPrefix(`/survey`)"
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.middlewares=survey-stripprefix
       - traefik.http.middlewares.survey-stripprefix.stripprefix.prefixes=/survey
+
+  etherwrapper:
+    image: interlinkproject/interlinker-etherpad:etherwrapper-latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-etherwrapper
+    environment:
+      - SERVER_NAME=${DOMAIN?Variable not set}
+      - SERVER_HOST=http://${DOMAIN?Variable not set}/etherwrapper
+      - PORT=${PORT}
+      - BASE_PATH=/etherwrapper
+      - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
+      - COLLECTION_NAME=etherpad_assets
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.loadbalancer.server.port=${PORT}
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.tls=true"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.rule=Host(`${DOMAIN}`) && PathPrefix(`/etherwrapper`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.middlewares=etherwrapper-stripprefix
+      - traefik.http.middlewares.etherwrapper-stripprefix.stripprefix.prefixes=/etherwrapper
+
+  etherpad:
+    image: interlinkproject/interlinker-etherpad:etherpad-latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-etherpad
+    environment:
+      - TITLE=${ETHERPAD_TITLE}
+      - PORT=${ETHERPAD_PORT}
+      - DEFAULT_PAD_TEXT=${ETHERPAD_DEFAULT_PAD_TEXT}
+      - ADMIN_PASSWORD=${ETHERPAD_ADMIN_PASSWORD}
+      - ADMIN_USER=${ETHERPAD_ADMIN_USER}
+      - REQUIRE_SESSION=${ETHERPAD_REQUIRE_SESSION}
+      - EDIT_ONLY=${ETHERPAD_EDIT_ONLY}
+      - SERVER_NAME=${DOMAIN?Variable not set}
+      - SERVER_HOST=http://${DOMAIN?Variable not set}/etherpad
+      - BASE_PATH=/etherpad
+      - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
+      - COLLECTION_NAME=etherpad_assets
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-etherpad.loadbalancer.server.port=${ETHERPAD_PORT}
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.tls=true"
+      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.rule=Host(`${DOMAIN}`) && PathPrefix(`/etherpad`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.middlewares=etherpad-stripprefix
+      - traefik.http.middlewares.etherpad-stripprefix.stripprefix.prefixes=/etherpad
