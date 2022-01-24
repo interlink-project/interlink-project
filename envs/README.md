@@ -41,6 +41,12 @@ docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml 
 docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml --env-file development/.env up -d
 ```
 
+Get service status with:
+
+```bash
+docker-compose -f base/docker-compose.yml -f development/docker-compose.dev.yml --env-file development/.env ps
+```
+
 To load initial data:
 
 ```bash

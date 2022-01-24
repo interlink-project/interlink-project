@@ -188,6 +188,52 @@ services:
       - traefik-public
       - default
 
+  googledrive:
+    image: interlinkproject/interlinker-googledrive:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-googledrive
+    environment:
+      - SERVER_NAME=${DOMAIN?Variable not set}
+      - SERVER_HOST=http://${DOMAIN?Variable not set}/googledrive
+      - PORT=${PORT}
+      - BASE_PATH=/googledrive
+      - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
+      - COLLECTION_NAME=googledrive_assets
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive-http.rule=PathPrefix(`/googledrive`)
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-googledrive.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive-http.middlewares=googledrive-stripprefix
+      - traefik.http.middlewares.googledrive-stripprefix.stripprefix.prefixes=/googledrive
+    networks:
+      - traefik-public
+      - default
+
+  survey:
+    image: interlinkproject/interlinker-survey:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-survey
+    environment:
+      - SERVER_NAME=${DOMAIN?Variable not set}
+      - SERVER_HOST=http://${DOMAIN?Variable not set}/survey
+      - PORT=${PORT}
+      - BASE_PATH=/survey
+      - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
+      - COLLECTION_NAME=survey_assets
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey-http.rule=PathPrefix(`/survey`)
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-survey.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey-http.middlewares=survey-stripprefix
+      - traefik.http.middlewares.survey-stripprefix.stripprefix.prefixes=/survey
+    networks:
+      - traefik-public
+      - default
+
 networks:
   traefik-public:
     external: true
