@@ -95,17 +95,17 @@ restart: ## Run containers (restarts them if already running)
 build: ## Build containers
 	cd ./envs/local && docker-compose build
 
-	cd ../backend-auth && make devbuild
-	cd ../backend-catalogue && make devbuild
-	cd ../backend-coproduction && make devbuild
-	cd ../backend-channels && make devbuild
-	cd ../backend-acl && make devbuild
+	cd ../backend-auth && make build
+	cd ../backend-catalogue && make build
+	cd ../backend-coproduction && make build
+	cd ../backend-channels && make build
+	cd ../backend-acl && make build
 	
 	# interlinkers
-	cd ../interlinker-etherpad && make devbuild
-	cd ../interlinker-googledrive && make devbuild
-	cd ../interlinker-survey && make devbuild
-	cd ../frontend && make devbuild
+	cd ../interlinker-etherpad && make build
+	cd ../interlinker-googledrive && make build
+	cd ../interlinker-survey && make build
+	cd ../frontend && make build
 
 .PHONY: upb
 upb: down net build up ## Build and run containers

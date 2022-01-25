@@ -35,8 +35,8 @@ services:
     container_name: postgresqldb
     image: postgres-integrated
     build:
-      context: ./postgres
-      dockerfile: Dockerfile.postgres
+      context: ../../docker/postgres
+      dockerfile: Dockerfile
     #volumes:
     #  - app-db-data:/var/lib/postgresql/data/pgdata
     env_file:
