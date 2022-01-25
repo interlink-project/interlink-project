@@ -1,6 +1,7 @@
 version: "3.3"
 services:
 
+  # Traefik Service
   proxy:
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-traefik
     image: traefik:v2.2
@@ -8,11 +9,8 @@ services:
       - "80:80"
       - "443:443"
       - "8090:8080"
-    networks:
-      - traefik-public
-      - default
     volumes:
-      - "../development/letsencrypt:/letsencrypt"
+      - ../development/letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
     command:
       # Enable Docker in Traefik, so that it reads labels from Docker services
@@ -29,48 +27,143 @@ services:
       - --api
       # Enable the Dashboard and API in insecure mode for local development
       - --api.insecure=true
-      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
-      - "--certificatesresolvers.letsencrypt.acme.email=apps@interlink-project.eu"
-      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.email=apps@interlink-project.eu
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+    networks:
+      - traefik-public
+      - default
 
+  # Frontend Service
   frontend:
     image: "interlinkproject/frontend:latest"
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-frontend
     environment:
       - REACT_APP_BASE_URI=https://dev.interlink-project.eu
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-frontend.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-frontend.tls=true"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-frontend.rule=Host(`${DOMAIN}`) && PathPrefix(`/`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-frontend.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-frontend.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-frontend.rule=Host(`${DOMAIN}`) && PathPrefix(`/`)
+    networks:
+      - traefik-public
 
+  # Redis Service
+  redis:
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-redis
+    image: redis:6-alpine
+    networks:
+      - default
+
+  # Postgres Service
+  db:
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-db
+    image: interlinkproject/postgres:latest
+    #volumes:
+    #  - app-db-data:/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - default
+
+  # MongoDB Service
+  mongodb:
+    image: bitnami/mongodb:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-mongodb
+    env_file:
+      - .env
+    healthcheck:
+      test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u $MONGODB_ROOT_USER -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - default
+
+  # Coproduction Service
   coproduction:
     image: interlinkproject/backend-coproduction:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-coproduction
+    env_file:
+      - .env
+    environment:
+      - SERVER_NAME=${DOMAIN?Variable not set}
+      - SERVER_HOST=https://${DOMAIN?Variable not set}/coproduction
+      - PORT=${PORT}
+      - BASE_PATH=/coproduction
+      - POSTGRES_DB=coproduction
+    depends_on:
+      db:
+        condition: service_healthy
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-coproduction.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.tls=true"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.rule=Host(`${DOMAIN}`) && PathPrefix(`/coproduction`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.rule=Host(`${DOMAIN}`) && PathPrefix(`/coproduction`)
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.middlewares=coproduction-stripprefix
       - traefik.http.middlewares.coproduction-stripprefix.stripprefix.prefixes=/coproduction
+    networks:
+      - traefik-public
+      - default
 
+  # Coproduction Worker Service
+  coproductionworker:
+    image: interlinkproject/backend-coproduction:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-coproductionworker
+    command: [ "bash", "./worker-start.sh" ]
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
+    environment:
+      - SERVER_NAME=${DOMAIN?Variable not set}
+      - SERVER_HOST=https://${DOMAIN?Variable not set}
+      - PORT=${PORT}
+      - BASE_PATH=/coproduction
+      - POSTGRES_DB=coproduction
+    networks:
+      - default
+
+  # Catalogue Service
   catalogue:
     image: interlinkproject/backend-catalogue:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-catalogue
+    environment:
+      - SERVER_NAME=${DOMAIN?Variable not set}
+      - SERVER_HOST=https://${DOMAIN?Variable not set}/catalogue
+      - PORT=${PORT}
+      - BASE_PATH=/catalogue
+      - POSTGRES_DB=catalogue
+    env_file:
+      - .env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-catalogue.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue.tls=true"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue.rule=Host(`${DOMAIN}`) && PathPrefix(`/catalogue`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue.rule=Host(`${DOMAIN}`) && PathPrefix(`/catalogue`)
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-catalogue.middlewares=catalogue-stripprefix
       - traefik.http.middlewares.catalogue-stripprefix.stripprefix.prefixes=/catalogue
+    networks:
+      - traefik-public
+      - default
 
+  # Auth Service
   auth:
     image: interlinkproject/backend-auth:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-auth
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=https://${DOMAIN?Variable not set}/auth
@@ -78,16 +171,23 @@ services:
       - BASE_PATH=/auth
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=users
+    env_file:
+      - .env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-auth.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-auth.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-auth.tls=true"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-auth.rule=Host(`${DOMAIN}`) && PathPrefix(`/auth`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-auth.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-auth.tls=true"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-auth.rule=Host(`${DOMAIN}`) && PathPrefix(`/auth`)
+    networks:
+      - traefik-public
+      - default
 
+  # ACL Service
   acl:
     image: interlinkproject/backend-acl:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-acl
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=https://${DOMAIN?Variable not set}/acl
@@ -95,16 +195,22 @@ services:
       - BASE_PATH=/acl
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=acl_resources
+    env_file:
+      - .env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-acl.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.tls=true"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.rule=Host(`${DOMAIN}`) && PathPrefix(`/acl`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.tls.certresolver=letsencrypt"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.tls=true"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.rule=Host(`${DOMAIN}`) && PathPrefix(`/acl`)
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.middlewares=acl-stripprefix
       - traefik.http.middlewares.acl-stripprefix.stripprefix.prefixes=/acl
+    networks:
+      - traefik-public
+      - default
 
+  # Google Drive Interlinker
   googledrive:
     image: interlinkproject/interlinker-googledrive:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-googledrive
@@ -121,12 +227,16 @@ services:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-googledrive.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive.tls=true"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive.rule=Host(`${DOMAIN}`) && PathPrefix(`/googledrive`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive.tls=true"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive.rule=Host(`${DOMAIN}`) && PathPrefix(`/googledrive`)
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive.middlewares=googledrive-stripprefix
       - traefik.http.middlewares.googledrive-stripprefix.stripprefix.prefixes=/googledrive
+    networks:
+      - traefik-public
+      - default
 
+  # Survey Interlinker
   survey:
     image: interlinkproject/interlinker-survey:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-survey
@@ -143,12 +253,16 @@ services:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-survey.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.tls=true"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.rule=Host(`${DOMAIN}`) && PathPrefix(`/survey`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.rule=Host(`${DOMAIN}`) && PathPrefix(`/survey`)
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.middlewares=survey-stripprefix
       - traefik.http.middlewares.survey-stripprefix.stripprefix.prefixes=/survey
+    networks:
+      - traefik-public
+      - default
 
+  # Etherwrapper Interlinker Service
   etherwrapper:
     image: interlinkproject/interlinker-etherpad:etherwrapper-latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-etherwrapper
@@ -165,12 +279,16 @@ services:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.loadbalancer.server.port=${PORT}
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.tls=true"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.rule=Host(`${DOMAIN}`) && PathPrefix(`/etherwrapper`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.rule=Host(`${DOMAIN}`) && PathPrefix(`/etherwrapper`)
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherwrapper.middlewares=etherwrapper-stripprefix
       - traefik.http.middlewares.etherwrapper-stripprefix.stripprefix.prefixes=/etherwrapper
+    networks:
+      - traefik-public
+      - default
 
+  # Etherpad Interlinker Service
   etherpad:
     image: interlinkproject/interlinker-etherpad:etherpad-latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-etherpad
@@ -193,8 +311,15 @@ services:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-etherpad.loadbalancer.server.port=${ETHERPAD_PORT}
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.tls=true"
-      - "traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.rule=Host(`${DOMAIN}`) && PathPrefix(`/etherpad`)"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.rule=Host(`${DOMAIN}`) && PathPrefix(`/etherpad`)
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.middlewares=etherpad-stripprefix
       - traefik.http.middlewares.etherpad-stripprefix.stripprefix.prefixes=/etherpad
+    networks:
+      - traefik-public
+      - default
+
+networks:
+  traefik-public:
+    external: true
