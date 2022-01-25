@@ -214,11 +214,37 @@ services:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-acl.loadbalancer.server.port=${PORT}
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.tls.certresolver=letsencrypt"
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.tls=true"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.rule=Host(`${DOMAIN}`) && PathPrefix(`/acl`)
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.middlewares=acl-stripprefix
       - traefik.http.middlewares.acl-stripprefix.stripprefix.prefixes=/acl
+    networks:
+      - traefik-public
+      - default
+
+  # Channels Service (Websocket)
+  channels:
+    image: interlinkproject/backend-channels:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-channels
+    environment:
+      - SERVER_NAME=${DOMAIN?Variable not set}
+      - SERVER_HOST=https://${DOMAIN?Variable not set}/channels
+      - PORT=${PORT}
+      - BASE_PATH=/channels
+      - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
+      - COLLECTION_NAME=channels_assets
+    env_file:
+      - ../development/.env
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-channels.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-channels.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-channels.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-channels.rule=Host(`${DOMAIN}`) && PathPrefix(`/channels`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-channels.middlewares=channels-stripprefix
+      - traefik.http.middlewares.channels-stripprefix.stripprefix.prefixes=/channels
     networks:
       - traefik-public
       - default
@@ -241,7 +267,7 @@ services:
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-googledrive.loadbalancer.server.port=${PORT}
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive.tls.certresolver=letsencrypt
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive.tls=true"
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive.rule=Host(`${DOMAIN}`) && PathPrefix(`/googledrive`)
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-googledrive.middlewares=googledrive-stripprefix
       - traefik.http.middlewares.googledrive-stripprefix.stripprefix.prefixes=/googledrive
