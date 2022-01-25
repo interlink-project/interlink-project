@@ -1,2 +1,3 @@
 .DS_Store
 **/letsencrypt/acme.json
+envs/*/loomio/

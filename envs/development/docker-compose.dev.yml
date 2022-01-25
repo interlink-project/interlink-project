@@ -64,7 +64,7 @@ services:
     #volumes:
     #  - app-db-data:/var/lib/postgresql/data/pgdata
     env_file:
-      - .env
+      - ../development/.env
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
       interval: 10s
@@ -73,12 +73,25 @@ services:
     networks:
       - default
 
+  # PGAdmin (do not expose)
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - "5050:5050"
+    depends_on:
+      - db
+    env_file:
+      - ../development/.env
+    networks:
+      - default
+
   # MongoDB Service
   mongodb:
     image: bitnami/mongodb:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-mongodb
     env_file:
-      - .env
+      - ../development/.env
     healthcheck:
       test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u $MONGODB_ROOT_USER -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
       interval: 10s
@@ -93,7 +106,7 @@ services:
     image: interlinkproject/backend-coproduction:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-coproduction
     env_file:
-      - .env
+      - ../development/.env
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=https://${DOMAIN?Variable not set}/coproduction
@@ -125,7 +138,7 @@ services:
       - db
       - redis
     env_file:
-      - .env
+      - ../development/.env
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=https://${DOMAIN?Variable not set}
@@ -146,7 +159,7 @@ services:
       - BASE_PATH=/catalogue
       - POSTGRES_DB=catalogue
     env_file:
-      - .env
+      - ../development/.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -172,7 +185,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=users
     env_file:
-      - .env
+      - ../development/.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -196,7 +209,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=acl_resources
     env_file:
-      - .env
+      - ../development/.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -222,7 +235,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=googledrive_assets
     env_file:
-      - .env
+      - ../development/.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -248,7 +261,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=survey_assets
     env_file:
-      - .env
+      - ../development/.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -274,7 +287,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=etherpad_assets
     env_file:
-      - .env
+      - ../development/.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -307,7 +320,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=etherpad_assets
     env_file:
-      - .env
+      - ../development/.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -317,6 +330,78 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.rule=Host(`${DOMAIN}`) && PathPrefix(`/etherpad`)
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-etherpad.middlewares=etherpad-stripprefix
       - traefik.http.middlewares.etherpad-stripprefix.stripprefix.prefixes=/etherpad
+    networks:
+      - traefik-public
+      - default
+
+  loomio:
+    image: interlinkproject/interlinker-loomio:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-loomio
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ../development/loomio/uploads:/loomio/public/system
+      - ../development/loomio/storage:/loomio/storage
+      - ../development/loomio/files:/loomio/public/files
+      - ../development/loomio/plugins:/loomio/plugins/docker
+      - ../development/loomio/import:/import
+      - ../development/loomio/tmp:/loomio/tmp
+    env_file:
+      - ../development/.env
+    depends_on:
+      - db
+      - redis
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-loomio.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.rule=Host(`loomio.${DOMAIN}`)
+    networks:
+      - traefik-public
+      - default
+
+  loomioworker:
+    image: interlinkproject/interlinker-loomio:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-loomioworker
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
+      - REDIS_URL=redis://redis:6379
+      - TASK=worker
+    volumes:
+      - ../development/loomio/uploads:/loomio/public/system
+      - ../development/loomio/storage:/loomio/storage
+      - ../development/loomio/files:/loomio/public/files
+      - ../development/loomio/plugins:/loomio/plugins/docker
+      - ../development/loomio/tmp:/loomio/tmp
+    env_file:
+      - ../development/.env
+    networks:
+      - traefik-public
+      - default
+
+  loomiochannels:
+    image: loomio/loomio_channel_server:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-loomiochannels
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - VIRTUAL_HOST=channels.loomio.${DOMAIN?Variable not set}
+      - SITE_NAME=channels.loomio.${DOMAIN?Variable not set}
+      - LETSENCRYPT_HOST=channels.loomio.${DOMAIN?Variable not set}
+      - LETSENCRYPT_EMAIL=apps@interlink-project.eu
+    env_file:
+      - ../development/.env
+    depends_on:
+      - redis
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-loomiochannels.loadbalancer.server.port=5000
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomiochannels.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomiochannels.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomiochannels.rule=Host(`channels.loomio.${DOMAIN}`)
     networks:
       - traefik-public
       - default
