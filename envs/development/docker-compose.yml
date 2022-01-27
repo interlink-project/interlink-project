@@ -10,7 +10,7 @@ services:
       - "443:443"
       - "8090:8080"
     volumes:
-      - ../development/letsencrypt:/letsencrypt
+      - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
     command:
       # Enable Docker in Traefik, so that it reads labels from Docker services
@@ -64,7 +64,7 @@ services:
     #volumes:
     #  - app-db-data:/var/lib/postgresql/data/pgdata
     env_file:
-      - ../development/.env
+      - ./.env
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
       interval: 10s
@@ -82,7 +82,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ../development/.env
+      - ./.env
     networks:
       - default
 
@@ -91,7 +91,7 @@ services:
     image: bitnami/mongodb:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-mongodb
     env_file:
-      - ../development/.env
+      - ./.env
     healthcheck:
       test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u $MONGODB_ROOT_USER -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
       interval: 10s
@@ -106,7 +106,7 @@ services:
     image: interlinkproject/backend-coproduction:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-coproduction
     env_file:
-      - ../development/.env
+      - ./.env
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=https://${DOMAIN?Variable not set}/coproduction
@@ -138,7 +138,7 @@ services:
       - db
       - redis
     env_file:
-      - ../development/.env
+      - ./.env
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=https://${DOMAIN?Variable not set}
@@ -159,7 +159,7 @@ services:
       - BASE_PATH=/catalogue
       - POSTGRES_DB=catalogue
     env_file:
-      - ../development/.env
+      - ./.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -185,7 +185,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=users
     env_file:
-      - ../development/.env
+      - ./.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -209,7 +209,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=acl_resources
     env_file:
-      - ../development/.env
+      - ./.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -235,7 +235,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=channels_assets
     env_file:
-      - ../development/.env
+      - ./.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -261,7 +261,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=googledrive_assets
     env_file:
-      - ../development/.env
+      - ./.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -287,7 +287,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=survey_assets
     env_file:
-      - ../development/.env
+      - ./.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -315,7 +315,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=etherpad_assets
     env_file:
-      - ../development/.env
+      - ./.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -350,7 +350,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=etherpad_assets
     env_file:
-      - ../development/.env
+      - ./.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -371,14 +371,14 @@ services:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
       - REDIS_URL=redis://redis:6379
     volumes:
-      - ../development/loomio/uploads:/loomio/public/system
-      - ../development/loomio/storage:/loomio/storage
-      - ../development/loomio/files:/loomio/public/files
-      - ../development/loomio/plugins:/loomio/plugins/docker
-      - ../development/loomio/import:/import
-      - ../development/loomio/tmp:/loomio/tmp
+      - ./loomio/uploads:/loomio/public/system
+      - ./loomio/storage:/loomio/storage
+      - ./loomio/files:/loomio/public/files
+      - ./loomio/plugins:/loomio/plugins/docker
+      - ./loomio/import:/import
+      - ./loomio/tmp:/loomio/tmp
     env_file:
-      - ../development/.env
+      - ./.env
     depends_on:
       - db
       - redis
@@ -401,13 +401,13 @@ services:
       - REDIS_URL=redis://redis:6379
       - TASK=worker
     volumes:
-      - ../development/loomio/uploads:/loomio/public/system
-      - ../development/loomio/storage:/loomio/storage
-      - ../development/loomio/files:/loomio/public/files
-      - ../development/loomio/plugins:/loomio/plugins/docker
-      - ../development/loomio/tmp:/loomio/tmp
+      - ./loomio/uploads:/loomio/public/system
+      - ./loomio/storage:/loomio/storage
+      - ./loomio/files:/loomio/public/files
+      - ./loomio/plugins:/loomio/plugins/docker
+      - ./loomio/tmp:/loomio/tmp
     env_file:
-      - ../development/.env
+      - ./.env
     networks:
       - traefik-public
       - default
@@ -422,7 +422,7 @@ services:
       - LETSENCRYPT_HOST=channels.loomio.${DOMAIN?Variable not set}
       - LETSENCRYPT_EMAIL=apps@interlink-project.eu
     env_file:
-      - ../development/.env
+      - ./.env
     depends_on:
       - redis
     labels:
