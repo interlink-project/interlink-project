@@ -18,7 +18,7 @@ An *interlinker* is a tool that is used to create assets by *instantiating* them
   This allows us to create knowledge interlinkers based on any software interlinker (with some conditions, as it is going to be explained later):
 
     * Survey: create survey templates for specific aspects that users could reuse (such us "Survey for interlinker quality assurance")
-    * Google Drive: create document, slides or sheet templates
+    * Googledrive: (google apps) create document, slides or sheet templates
     * Etherpad: create document templates
 
     ...
@@ -66,22 +66,22 @@ Each interlinker is treated as an independent component, so they can be develope
 
 > :warning: If /clone/ not specified, the interlinker could not be used to generate knowledge interlinkers.
   
-Furthermore, interlinkers can implement any other endpoints needed for its functionality. For example, Google Drive interlinker implements:
+Furthermore, interlinkers can implement any other endpoints needed for its functionality. For example, Googledrive interlinker implements:
 
-![Google Drive API](images/interlinkers/integration/API.png)
+![Googledrive API](images/interlinkers/integration/API.png)
 
 
-## Example flow with Google Drive interlinker
+## Example flow with Googledrive interlinker
 
 VIDEO: https://youtu.be/N3jB3lwOsRo
 1. **Asset instantiator:**  /googledrive/assets/instantiator/
 
 Renders a file input that has a listener attached:
-![Google Drive instantiator](images/interlinkers/integration/googledrive.png)
+![Googledrive instantiator](images/interlinkers/integration/googledrive.png)
 
 When users selects a file, a POST request to /api/v1/assets/ **OF THE INTERLINKER** (in this case /googledrive/api/v1/assets/) is made with the data needed for the asset instantiation (in this case, the file). When response received, a message to the parent is sent with the asset data:
 
-![Google Drive instantiator code](images/interlinkers/integration/code.png)
+![Googledrive instantiator code](images/interlinkers/integration/code.png)
 
 When the **Collaborative Environment frontend** receives the message, makes a POST request to /coproduction/api/v1/assets/ to store that asset for the task where the user has pressed "Add asset" button.
 

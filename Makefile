@@ -27,7 +27,7 @@ setup: ## Clones all components
 	# interlinkers
 	cd .. && git clone https://github.com/interlink-project/interlinker-survey
 	cd .. && git clone https://github.com/interlink-project/interlinker-googledrive
-	cd .. && git clone https://github.com/interlink-project/interlinker-etherpad
+	cd .. && git clone https://github.com/interlink-project/interlinker-ceditor
 
 
 .PHONY: update
@@ -48,7 +48,7 @@ down: ## Stops all containers and removes volumes
 	cd ../backend-channels && make down
 
 	# interlinkers
-	cd ../interlinker-etherpad && make down
+	cd ../interlinker-ceditor && make down
 	cd ../interlinker-googledrive && make down
 	cd ../interlinker-survey && make down
 
@@ -69,7 +69,7 @@ up: down net ## Run containers (restarts them if already running)
 	cd ../backend-channels && make integrated
 
 	# interlinkers
-	cd ../interlinker-etherpad && make integrated
+	cd ../interlinker-ceditor && make integrated
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
 
@@ -86,7 +86,7 @@ restart: ## Run containers (restarts them if already running)
 
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
-	cd ../interlinker-etherpad && make integrated
+	cd ../interlinker-ceditor && make integrated
 
 	cd ./envs/local && docker-compose down --volumes --remove-orphans
 	cd ./envs/local && docker-compose up -d
@@ -102,7 +102,7 @@ build: ## Build containers
 	cd ../backend-acl && make build
 	
 	# interlinkers
-	cd ../interlinker-etherpad && make build
+	cd ../interlinker-ceditor && make build
 	cd ../interlinker-googledrive && make build
 	cd ../interlinker-survey && make build
 	cd ../frontend && make build

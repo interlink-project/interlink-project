@@ -249,7 +249,7 @@ services:
       - traefik-public
       - default
 
-  # Google Drive Interlinker
+  # Googledrive Interlinker
   googledrive:
     image: interlinkproject/interlinker-googledrive:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-googledrive
@@ -303,7 +303,7 @@ services:
 
   # Ceditor Interlinker Service
   ceditor:
-    image: interlinkproject/interlinker-etherpad:ceditor-latest
+    image: interlinkproject/interlinker-ceditor:ceditor-latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-ceditor
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
@@ -329,7 +329,7 @@ services:
 
   # Etherpad Interlinker Service
   etherpad:
-    image: interlinkproject/interlinker-etherpad:etherpad-latest
+    image: interlinkproject/interlinker-ceditor:etherpad-latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-etherpad
     environment:
       - TITLE=${ETHERPAD_TITLE}

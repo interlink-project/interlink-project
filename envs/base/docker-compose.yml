@@ -235,7 +235,7 @@ services:
       - default
 
   etherwrapper:
-    image: interlinkproject/interlinker-etherpad:etherwrapper-latest
+    image: interlinkproject/interlinker-ceditor:etherwrapper-latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-etherwrapper
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
@@ -258,7 +258,7 @@ services:
       - default
 
   etherpad:
-    image: interlinkproject/interlinker-etherpad:etherpad-latest
+    image: interlinkproject/interlinker-ceditor:etherpad-latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-etherpad
     environment:
       - TITLE=${ETHERPAD_TITLE}

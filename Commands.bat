@@ -21,7 +21,7 @@ docker-compose -f backend/proxy.docker-compose.yml -f backend/proxy.docker-compo
 docker-compose -f backend/backend.docker-compose.yml -f backend/backend.docker-compose.override.yml down --volumes --remove-orphans
 docker-compose -f backend/monitoring.docker-compose.yml -f backend/monitoring.docker-compose.override.yml down --volumes --remove-orphans
 docker-compose -f interlinker-googledrive/docker-compose.yml -f interlinker-googledrive/docker-compose.integrated.yml down --volumes --remove-orphans
-docker-compose -f interlinker-etherpad/docker-compose.yml -f interlinker-etherpad/docker-compose.integrated.yml down --volumes --remove-orphans
+docker-compose -f interlinker-ceditor/docker-compose.yml -f interlinker-ceditor/docker-compose.integrated.yml down --volumes --remove-orphans
 docker-compose -f interlinker-forum/docker-compose.yml -f interlinker-forum/docker-compose.integrated.yml down --volumes --remove-orphans
 docker-compose -f interlinker-filemanager/docker-compose.yml -f interlinker-filemanager/docker-compose.integrated.yml down --volumes --remove-orphans
 
@@ -32,7 +32,7 @@ git clone https://github.com/interlink-project/frontend
 git clone https://github.com/interlink-project/interlinker-filemanager
 git clone https://github.com/interlink-project/interlinker-googledrive
 git clone https://github.com/interlink-project/interlinker-forum
-git clone https://github.com/interlink-project/interlinker-etherpad
+git clone https://github.com/interlink-project/interlinker-ceditor
 
 :Build
 docker-compose -f frontend/docker-compose.yml build
@@ -40,7 +40,7 @@ docker-compose -f backend/proxy.docker-compose.yml -f backend/proxy.docker-compo
 docker-compose -f backend/backend.docker-compose.yml -f backend/backend.docker-compose.override.yml build
 docker-compose -f backend/monitoring.docker-compose.yml -f backend/monitoring.docker-compose.override.yml build
 docker-compose -f interlinker-googledrive/docker-compose.yml -f interlinker-googledrive/docker-compose.integrated.yml build
-docker-compose -f interlinker-etherpad/docker-compose.yml -f interlinker-etherpad/docker-compose.integrated.yml build
+docker-compose -f interlinker-ceditor/docker-compose.yml -f interlinker-ceditor/docker-compose.integrated.yml build
 docker-compose -f interlinker-forum/docker-compose.yml -f interlinker-forum/docker-compose.integrated.yml build
 docker-compose -f interlinker-filemanager/docker-compose.yml -f interlinker-filemanager/docker-compose.integrated.yml buildGOTO End
 
@@ -50,7 +50,7 @@ GOTO Net
 docker-compose -f backend/proxy.docker-compose.yml -f backend/proxy.docker-compose.override.yml up -d
 docker-compose -f backend/backend.docker-compose.yml -f backend/backend.docker-compose.override.yml up -d
 docker-compose -f interlinker-googledrive/docker-compose.yml -f interlinker-googledrive/docker-compose.integrated.yml up -d
-docker-compose -f interlinker-etherpad/docker-compose.yml -f interlinker-etherpad/docker-compose.integrated.yml up -d
+docker-compose -f interlinker-ceditor/docker-compose.yml -f interlinker-ceditor/docker-compose.integrated.yml up -d
 docker-compose -f interlinker-forum/docker-compose.yml -f interlinker-forum/docker-compose.integrated.yml up -d
 docker-compose -f interlinker-filemanager/docker-compose.yml -f interlinker-filemanager/docker-compose.integrated.yml up -d
 GOTO End
