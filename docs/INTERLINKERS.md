@@ -24,11 +24,11 @@ An *interlinker* is a tool that is used to create assets by *instantiating* them
     ...
 
 
-## API Endpoints needed for SOFTWARE INTERLINKERS integration
+## Endpoints needed for SOFTWARE INTERLINKERS integration
 
 Each interlinker is treated as an independent component, so they can be developed with any framework or tool (MEAN, MERN, django, NextJS... the possibilities are infinite). But they all need to expose these endpoints to integrate them: 
 
-1. **GUI for asset instantiation:** GET 
+1. **Asset instantiator:**  
 
     * **WHAT:** basic GUI por asset instantiation. This is gonna be iframed.
     * **Method:** GET
@@ -41,24 +41,35 @@ Each interlinker is treated as an independent component, so they can be develope
       * survey: form drag and drop creator
       * etherpad: text input for specifying a name
 
-2. **GUI for given asset:** 
+2. **Viewer for given asset:** 
 
     * **WHAT:** shows GUI for given asset.
     * **Method:** GET
-    * **URL:** /*interlinker_name*/assets/{id}/gui/
+    * **URL:** /*interlinker_name*/assets/{id}/viewer/
     * Examples:
       * googledrive interlinker: redirects to Google Drive domain where document is located (for example https://docs.google.com/document/d/{id}/edit)
       * forum: renders GUI developed with react
       * etherpad: renders an iframe that shows etherpad GUI running in a diferent location (such as /etherpad/p/{padID})
 
-3. **Delete existing asset:** 
+4. **Delete existing asset:** 
 
     * **WHAT:** deletes assets by id
     * **Method:** DELETE
     * **URL:** /*interlinker_name*/assets/{id}
 
 
-4. [OPTIONAL] **Clones asset:** 
+3. **[OPTIONAL] Editor for given asset:** 
+
+    * **WHAT:** shows GUI for given asset.
+    * **Method:** GET
+    * **URL:** /*interlinker_name*/assets/{id}/editor/
+    * Examples:
+      * googledrive interlinker: no
+      * forum: no
+      * etherpad: no
+      * survey: renders a GUI for modifying the asset
+
+4. **[OPTIONAL] Cloner for given asset:** 
 
     * **WHAT:** clones asset given an id.
     * **Method:** POST

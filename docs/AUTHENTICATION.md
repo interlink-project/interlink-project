@@ -40,12 +40,12 @@ This authentication is managed by **auth** microservice, that exposes these endp
 ## Advantages and drawbacks of cookie authentication
 
 
-To understand the advantages of this authentication we must really understand how the different services are integrated in the frontend. If we look again at the example of how the interlinker **forum** is integrated into the frontend, we will see that it is done through an iframe that loads the path "/forum/api/v1/assets/{id}/gui".
+To understand the advantages of this authentication we must really understand how the different services are integrated in the frontend. If we look again at the example of how the interlinker **forum** is integrated into the frontend, we will see that it is done through an iframe that loads the path "/forum/assets/{id}/viewer/".
 
 ![Forum integration](images/interlinkers/forumintegration.png)
 
 ```
-<iframe src="/forum/api/v1/assets/{id}/gui" frameBorder="0"></iframe>
+<iframe src="/forum/assets/{id}/viewer/" frameBorder="0"></iframe>
 ```
 
 ### Alternatives ("authorization" header):
@@ -55,7 +55,7 @@ To understand the advantages of this authentication we must really understand ho
 * We should find a plausible way to pass the access token to the service contained in the iframe. One way to do this would be to inject it as a parameter in the iframe's src, which would expose the token:
 
 ```
-<iframe src="/forum/api/v1/assets/{id}/gui?access_token={access_token}"></iframe>
+<iframe src="/forum/assets/{id}/viewer?access_token={access_token}"></iframe>
 ```
 
 ### Advantages of using cookie-based auth:
