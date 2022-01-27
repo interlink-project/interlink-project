@@ -75,8 +75,8 @@ services:
 
   # PGAdmin (do not expose)
   pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-pgadmin
+    image: dpage/pgadmin4:latest
     ports:
       - "5050:5050"
     depends_on:
