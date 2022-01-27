@@ -303,7 +303,9 @@ services:
 
   # Ceditor Interlinker Service
   ceditor:
-    image: interlinkproject/interlinker-ceditor:ceditor-latest
+    # TODO: change back when the images is available 
+    # image: interlinkproject/interlinker-ceditor:ceditor-latest
+    image: interlinkproject/interlinker-etherpad:etherwrapper-latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-ceditor
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
@@ -329,7 +331,9 @@ services:
 
   # Etherpad Interlinker Service
   etherpad:
-    image: interlinkproject/interlinker-ceditor:etherpad-latest
+    # TODO: change back when the images is available
+    # image: interlinkproject/interlinker-ceditor:etherpad-latest
+    image: interlinkproject/interlinker-etherpad:etherpad-latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-etherpad
     environment:
       - TITLE=${ETHERPAD_TITLE}
@@ -435,3 +439,5 @@ services:
 networks:
   traefik-public:
     external: true
+  default:
+    name: ${PLATFORM_STACK_NAME?Variable not set}-default
