@@ -103,7 +103,7 @@ Furthermore, interlinkers can implement any other endpoints needed for its funct
 ![APIS](images/interlinkers/integration/APIS.png)
 
 
-In conclusion:
+### In conclusion:
 
 ```
 /                           GET       redirects to swagger / redoc DOCS (maybe not possible)
