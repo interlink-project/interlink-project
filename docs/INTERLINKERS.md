@@ -28,69 +28,99 @@ An *interlinker* is a tool that is used to create assets by *instantiating* them
 
 Each interlinker is treated as an independent component, so they can be developed with any framework or tool (MEAN, MERN, django, NextJS... the possibilities are infinite). But they all need to expose these endpoints to integrate them: 
 
-1. **Asset instantiator:**  
+1. **Instantiate assets:**  
 
     * **WHAT:** basic GUI por asset instantiation. This is gonna be iframed.
     * **Method:** GET
-    * **URL:** /*interlinker_name*/assets/instantiator/
+    * **URL:** /assets/instantiate
     * Messages for the main frontend integration:
       * When initialized, send a message to the parent like { 'code': 'initialized', } 
       * When asset created, send a message to the parent like { 'code': 'asset_created', 'message': data of the asset }
     * Examples:
-      * googledrive interlinker: file input
-      * survey: form drag and drop creator
+      * googledrive interlinker (left): file input
+      * survey interlinker (right): form name and description
+
+      ![Google Drive instantiate](images/interlinkers/integration/instantiators.png)
+
+      
       * etherpad: text input for specifying a name
 
-2. **Viewer for given asset:** 
+2. **Data of given asset:** 
+
+    * **WHAT:** returns data for given asset.
+    * **Method:** GET
+    * **URL:** /assets/{id}
+    * Examples:
+      * googledrive interlinker (left)
+      * survey interlinker (right)
+      
+      ![Asset data](images/interlinkers/integration/datas.png)
+
+      
+
+3. **Viewer for given asset:** 
 
     * **WHAT:** shows GUI for given asset.
     * **Method:** GET
-    * **URL:** /*interlinker_name*/assets/{id}/viewer/
+    * **URL:** /assets/{id}/view
     * Examples:
-      * googledrive interlinker: redirects to Google Drive domain where document is located (for example https://docs.google.com/document/d/{id}/edit)
-      * forum: renders GUI developed with react
+      * googledrive interlinker (left): redirects to Google Drive
+      * survey (right): renders HTML
+
+      ![Asset data](images/interlinkers/integration/viewers.png)
+
       * etherpad: renders an iframe that shows etherpad GUI running in a diferent location (such as /etherpad/p/{padID})
 
 4. **Delete existing asset:** 
 
     * **WHAT:** deletes assets by id
     * **Method:** DELETE
-    * **URL:** /*interlinker_name*/assets/{id}
+    * **URL:** /assets/{id}
 
 
-3. **[OPTIONAL] Editor for given asset:** 
+5. **[OPTIONAL] Editor for given asset:** 
 
-    * **WHAT:** shows GUI for given asset.
+    * **WHAT:** shows GUI for editing some asset.
     * **Method:** GET
-    * **URL:** /*interlinker_name*/assets/{id}/editor/
+    * **URL:** /assets/{id}/edit
     * Examples:
-      * googledrive interlinker: no
-      * forum: no
-      * etherpad: no
-      * survey: renders a GUI for modifying the asset
+      * googledrive interlinker: not necessary
+      * etherpad: not necessary
+      * survey: renders a GUI for modifying the survey
 
-4. **[OPTIONAL] Cloner for given asset:** 
+      ![Asset data](images/interlinkers/integration/editor.png)
+
+4. **[OPTIONAL] Clone given asset:** 
 
     * **WHAT:** clones asset given an id.
     * **Method:** POST
-    * **URL:** /*interlinker_name*/assets/{id}/clone/
+    * **URL:** /assets/{id}/clone
 
 > :warning: If /clone/ not specified, the interlinker could not be used to generate knowledge interlinkers.
   
-Furthermore, interlinkers can implement any other endpoints needed for its functionality. For example, Googledrive interlinker implements:
+Furthermore, interlinkers can implement any other endpoints needed for its functionality. For example, Googledrive (left) and survey (right) interlinker implements:
 
-![Googledrive API](images/interlinkers/integration/API.png)
+![APIS](images/interlinkers/integration/APIS.png)
 
 
+In conclusion:
+
+```
+/                           GET       redirects to swagger / redoc DOCS (maybe not possible)
+/assets/instantiate         GET       GUI for asset creation
+/assets/{ASSET_ID}          GET       JSON data of asset
+/assets/{ASSET_ID}/view     GET       GUI for the interaction with the asset
+/assets/{ASSET_ID}          DELETE    Deletes asset and returns No content
+/assets/{ASSET_ID}/edit     GET       [OPTIONAL] GUI for asset editing
+/assets/{ASSET_ID}/clone    POST      [OPTIONAL] Clones the asset and returns JSON data
+
+... custom endpoints needed for its own logic
+```
 ## Example flow with Googledrive interlinker
 
 VIDEO: https://youtu.be/N3jB3lwOsRo
-1. **Asset instantiator:**  /googledrive/assets/instantiator/
 
-Renders a file input that has a listener attached:
-![Googledrive instantiator](images/interlinkers/integration/googledrive.png)
-
-When users selects a file, a POST request to /api/v1/assets/ **OF THE INTERLINKER** (in this case /googledrive/api/v1/assets/) is made with the data needed for the asset instantiation (in this case, the file). When response received, a message to the parent is sent with the asset data:
+When the user selects a file, a POST request to /api/v1/assets **OF THE INTERLINKER** (in this case /googledrive/api/v1/assets) is made with the data needed for the asset instantiation (in this case, the file). When response received, a message to the parent is sent with the asset data:
 
 ![Googledrive instantiator code](images/interlinkers/integration/code.png)
 
