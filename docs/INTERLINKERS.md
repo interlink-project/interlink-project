@@ -96,7 +96,7 @@ Each interlinker is treated as an independent component, so they can be develope
     * **Method:** POST
     * **URL:** /assets/{id}/clone
 
-> :warning: If /clone/ not specified, the interlinker could not be used to generate knowledge interlinkers.
+> :warning: If /clone not specified, the interlinker can not be used to generate knowledge interlinkers.
   
 Furthermore, interlinkers can implement any other endpoints needed for its functionality. For example, Googledrive (left) and survey (right) interlinker implements:
 
