@@ -303,9 +303,7 @@ services:
 
   # Ceditor Interlinker Service
   ceditor:
-    # TODO: change back when the images is available 
-    # image: interlinkproject/interlinker-ceditor:ceditor-latest
-    image: interlinkproject/interlinker-etherpad:etherwrapper-latest
+    image: interlinkproject/interlinker-ceditor:ceditor-latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-ceditor
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
