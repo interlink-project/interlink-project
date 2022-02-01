@@ -3,7 +3,7 @@ name: build-and-publish-docker-postgres
 on:
   push:
     branches:
-      - "basic_deployment"
+      - "master"
     paths:
       - docker/postgres/**
 jobs:
