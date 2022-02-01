@@ -31,8 +31,8 @@ services:
       - traefik.http.routers.${STACK_NAME?Variable not set}-traefik-public-http.rule=Host(`${DOMAIN?Variable not set}`)
       - traefik.http.services.${STACK_NAME?Variable not set}-traefik-public.loadbalancer.server.port=80
 
-  postgresqldb:
-    container_name: postgresqldb
+  db:
+    container_name: db
     image: postgres-integrated
     build:
       context: ../../docker/postgres
@@ -51,7 +51,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.labels.${STACK_NAME?Variable not set}.app-db-data == true
+          - node.labels.${STACK_NAME?Variable not set}.db-data == true
     networks:
       - traefik-public
 
@@ -61,7 +61,7 @@ services:
     ports:
       - "5050:5050"
     depends_on:
-      - postgresqldb
+      - db
     env_file:
       - .env
     networks:
