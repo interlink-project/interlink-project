@@ -4,9 +4,13 @@ https://github.com/interlink-project/interlink-project/actions
 ssh -i id_rsa interlink@dev.interlink-project.eu
 cd /datadrive/data/interlink-project/envs/development
 
+docker-compose down (-v)
+docker-compose stop service
+docker-compose pull
 docker-compose up -d
-docker-compose down
+
 docker-compose exec -T catalogue python /app/app/initial_data.py
 docker-compose exec -T coproduction python /app/app/initial_data.py
-docker-compose logs auth
+docker-compose exec -T loomio rake db:setup 
+docker-compose logs <service>
 docker-compose run etherwrapper /bin/bash

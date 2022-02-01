@@ -28,6 +28,7 @@ setup: ## Clones all components
 	cd .. && git clone https://github.com/interlink-project/interlinker-survey
 	cd .. && git clone https://github.com/interlink-project/interlinker-googledrive
 	cd .. && git clone https://github.com/interlink-project/interlinker-ceditor
+	cd .. && git clone https://github.com/interlink-project/interlinker-externalresourcemanager
 
 
 .PHONY: update
@@ -51,6 +52,7 @@ down: ## Stops all containers and removes volumes
 	cd ../interlinker-ceditor && make down
 	cd ../interlinker-googledrive && make down
 	cd ../interlinker-survey && make down
+	cd ../interlinker-externalresourcemanager && make down
 
 	cd ../frontend && make down
 	
@@ -72,12 +74,16 @@ up: down net ## Run containers (restarts them if already running)
 	cd ../interlinker-ceditor && make integrated
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
+	cd ../interlinker-externalresourcemanager && make integrated
 
 	# frontend
 	cd ../frontend && make integrated
 
 .PHONY: restart
 restart: ## Run containers (restarts them if already running)
+	cd ./envs/local && docker-compose down --volumes --remove-orphans
+	cd ./envs/local && docker-compose up -d
+
 	cd ../backend-auth && make integrated
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
@@ -87,9 +93,7 @@ restart: ## Run containers (restarts them if already running)
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
 	cd ../interlinker-ceditor && make integrated
-
-	cd ./envs/local && docker-compose down --volumes --remove-orphans
-	cd ./envs/local && docker-compose up -d
+	cd ../interlinker-externalresourcemanager && make integrated
 
 .PHONY: build
 build: ## Build containers
@@ -105,6 +109,8 @@ build: ## Build containers
 	cd ../interlinker-ceditor && make build
 	cd ../interlinker-googledrive && make build
 	cd ../interlinker-survey && make build
+	cd ../interlinker-externalresourcemanager && make build
+
 	cd ../frontend && make build
 
 .PHONY: upb

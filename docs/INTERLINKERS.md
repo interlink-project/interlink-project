@@ -109,6 +109,7 @@ Furthermore, interlinkers can implement any other endpoints needed for its funct
 /                           GET       redirects to swagger / redoc DOCS (maybe not possible)
 /assets/instantiate         GET       GUI for asset creation
 /assets/{ASSET_ID}          GET       JSON data of asset
+/assets/{ASSET_ID}          POST      [OPTIONAL] Posts data for asset creation and return JSON of asset
 /assets/{ASSET_ID}/view     GET       GUI for the interaction with the asset
 /assets/{ASSET_ID}          DELETE    Deletes asset and returns No content
 /assets/{ASSET_ID}/edit     GET       [OPTIONAL] GUI for asset editing
