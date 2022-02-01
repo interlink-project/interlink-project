@@ -461,3 +461,6 @@ networks:
     external: true
   default:
     name: ${PLATFORM_STACK_NAME?Variable not set}-default
+  
+volumes:
+  db-data:
