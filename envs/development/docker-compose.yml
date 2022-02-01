@@ -61,10 +61,29 @@ services:
   db:
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-db
     image: interlinkproject/postgres:latest
-    #volumes:
-    #  - app-db-data:/var/lib/postgresql/data/pgdata
+    volumes:
+      - db-data:/var/lib/postgresql/data/pgdata
     env_file:
       - ./.env
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=loomio_production
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - default
+  
+  db2:
+    # we do not want persistence for this databases YET (no volumes, whereas db has volumes)
+    # TODO: delete this microservice and replace POSTGRES_SERVER=db2 by POSTGRES_SERVER=db (in this docker-compose catalogue and coproduction micros)
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-db2
+    image: interlinkproject/postgres:latest
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=coproduction,catalogue
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
       interval: 10s
@@ -113,6 +132,7 @@ services:
       - PORT=${PORT}
       - BASE_PATH=/coproduction
       - POSTGRES_DB=coproduction
+      - POSTGRES_SERVER=db2 # TODO: remove this
     depends_on:
       db:
         condition: service_healthy
@@ -145,6 +165,7 @@ services:
       - PORT=${PORT}
       - BASE_PATH=/coproduction
       - POSTGRES_DB=coproduction
+      - POSTGRES_SERVER=db2 # TODO: remove this
     networks:
       - default
 
@@ -158,6 +179,7 @@ services:
       - PORT=${PORT}
       - BASE_PATH=/catalogue
       - POSTGRES_DB=catalogue
+      - POSTGRES_SERVER=db2 # TODO: remove this
     env_file:
       - ./.env
     labels:
