@@ -383,7 +383,7 @@ services:
       - default
 
   externalresourcemanager:
-    image: interlinkproject/interlinker-externalresourcemanager:externalresourcemanager-latest
+    image: interlinkproject/interlinker-externalresourcemanager:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-externalresourcemanager
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
