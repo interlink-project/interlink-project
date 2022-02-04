@@ -441,6 +441,10 @@ services:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
       - REDIS_URL=redis://redis:6379
       - TASK=worker
+      - AAC_APP_SECRET=${DEV_LOOMIO_AAC_APP_SECRET}
+      - SECRET_COOKIE_TOKEN=${DEV_LOOMIO_SECRET_COOKIE_TOKEN}
+      - SMTP_USERNAME=${DEV_LOOMIO_SMTP_USERNAME}
+      - SMTP_PASSWORD=${DEV_LOOMIO_SMTP_PASSWORD}
     volumes:
       - ./loomio/uploads:/loomio/public/system
       - ./loomio/storage:/loomio/storage
