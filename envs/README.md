@@ -25,7 +25,11 @@ In addition, for the environments that are expected to be publicly available, it
 
 ## Environment Deployment
 
-All environments are self-contained and can be deployed using Docker Compose. Each of the folders will eventually contain a `docker-compose.yml` file and one or several environment files with environment varibiables used by the deployment. Special care is required with secrets in production environments.
+All environments are self-contained and can be deployed using Docker Compose. Each of the folders will eventually contain a `docker-compose.yml` file and one or several environment files with environment varibiables used by the deployment. Special care is required with secrets in production environments. 
+
+One possibility is to define secrets at the level of this repository and refer the corresponding properties in the docker-compose 'environment' settings. In this case it is necessary to explicitly export the secret in the script, e.g., ``export FOO=${{ secrets.BAR }}``.
+
+
 
 The deployment and management of the different components is done with standard docker-compose commads executed from the corresponding environment folder in the machine that is expected to host the deploymennt.
 
