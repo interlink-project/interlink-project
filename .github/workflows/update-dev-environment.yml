@@ -12,19 +12,18 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env: 
-      DEV_LOOMIO_AAC_APP_SECRET: ${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
-      DEV_LOOMIO_SECRET_COOKIE_TOKEN: ${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
-      DEV_LOOMIO_SMTP_USERNAME: ${{ secrets.DEV_LOOMIO_SMTP_USERNAME }}
-      DEV_LOOMIO_SMTP_PASSWORD: ${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}
-
     steps:
       - name: Deploy Dev SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEV_HOST }}
-          username: ${{ secrets.DEV_USERNAME }}
+          username: ${{ secrets.DEV_USERNAME }
           key: ${{ secrets.SSH_KEY }}
+          env:
+            DEV_LOOMIO_AAC_APP_SECRET: ${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
+            DEV_LOOMIO_SECRET_COOKIE_TOKEN: ${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
+            DEV_LOOMIO_SMTP_USERNAME: ${{ secrets.DEV_LOOMIO_SMTP_USERNAME }}
+            DEV_LOOMIO_SMTP_PASSWORD: ${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}
           script: |
             cd /datadrive/data/interlink-project
             git pull --ff-only
