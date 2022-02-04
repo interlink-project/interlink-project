@@ -24,7 +24,9 @@ jobs:
           host: ${{ secrets.DEV_HOST }}
           username: ${{ secrets.DEV_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
+          envs: DEV_LOOMIO_AAC_APP_SECRET,DEV_LOOMIO_SECRET_COOKIE_TOKEN,DEV_LOOMIO_SMTP_USERNAME,DEV_LOOMIO_SMTP_PASSWORD
           script: |
+            echo "VAR DEV_LOOMIO_SMTP_USERNAME = $DEV_LOOMIO_SMTP_USERNAME"
             cd /datadrive/data/interlink-project
             git pull --ff-only
             cd envs/development
