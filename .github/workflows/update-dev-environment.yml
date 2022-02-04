@@ -12,6 +12,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env: 
+      DEV_LOOMIO_AAC_APP_SECRET: ${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
+      DEV_LOOMIO_SECRET_COOKIE_TOKEN: ${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
+      DEV_LOOMIO_SMTP_USERNAME: ${{ secrets.DEV_LOOMIO_SMTP_USERNAME }}
+      DEV_LOOMIO_SMTP_PASSWORD: ${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}
+
     steps:
       - name: Deploy Dev SSH
         uses: appleboy/ssh-action@master
