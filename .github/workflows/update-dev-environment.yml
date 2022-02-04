@@ -22,7 +22,7 @@ jobs:
           DEV_LOOMIO_SMTP_PASSWORD: ${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}        
         with:
           host: ${{ secrets.DEV_HOST }}
-          username: ${{ secrets.DEV_USERNAME }
+          username: ${{ secrets.DEV_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /datadrive/data/interlink-project
