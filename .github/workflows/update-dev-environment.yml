@@ -21,6 +21,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /datadrive/data/interlink-project
+            # unencrypt secrets.gpg
+            gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.SECRETS_ENCRYPTION_KEY }}" --output .secrets .secrets.gpg
             git pull --ff-only
             cd envs/development
             docker-compose pull

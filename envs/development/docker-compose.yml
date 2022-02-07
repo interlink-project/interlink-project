@@ -127,6 +127,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-coproduction
     env_file:
       - ./.env
+      - ./.secrets
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=https://${DOMAIN?Variable not set}/coproduction
@@ -160,6 +161,7 @@ services:
       - redis
     env_file:
       - ./.env
+      - ./.secrets
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - SERVER_HOST=https://${DOMAIN?Variable not set}
@@ -183,6 +185,7 @@ services:
       - POSTGRES_SERVER=db2 # TODO: remove this
     env_file:
       - ./.env
+      - ./.secrets
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -209,6 +212,7 @@ services:
       - COLLECTION_NAME=users
     env_file:
       - ./.env
+      - ./.secrets
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -233,6 +237,7 @@ services:
       - COLLECTION_NAME=acl_resources
     env_file:
       - ./.env
+      - ./.secrets
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -259,6 +264,7 @@ services:
       - COLLECTION_NAME=channels_assets
     env_file:
       - ./.env
+      - ./.secrets
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -284,6 +290,7 @@ services:
       - COLLECTION_NAME=googledrive_assets
     env_file:
       - ./.env
+      - ./.secrets
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -309,6 +316,7 @@ services:
       - COLLECTION_NAME=survey_assets
     env_file:
       - ./.env
+      - ./.secrets
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -334,6 +342,7 @@ services:
       - COLLECTION_NAME=etherpad_assets
     env_file:
       - ./.env
+      - ./.secrets
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -364,6 +373,7 @@ services:
       - COLLECTION_NAME=etherpad_assets
     env_file:
       - ./.env
+      - ./.secrets
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -388,6 +398,7 @@ services:
       - COLLECTION_NAME=externalresourcemanager_assets
     env_file:
       - ./.env
+      - ./.secrets
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -416,6 +427,7 @@ services:
       - ./loomio/tmp:/loomio/tmp
     env_file:
       - ./.env
+      - ./.secrets
     depends_on:
       - db
       - redis
@@ -445,6 +457,7 @@ services:
       - ./loomio/tmp:/loomio/tmp
     env_file:
       - ./.env
+      - ./.secrets
     networks:
       - traefik-public
       - default
@@ -460,6 +473,7 @@ services:
       - LETSENCRYPT_EMAIL=apps@interlink-project.eu
     env_file:
       - ./.env
+      - ./.secrets
     depends_on:
       - redis
     labels:
