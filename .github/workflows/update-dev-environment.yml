@@ -34,8 +34,8 @@ jobs:
             git pull --ff-only
             cd envs/development
             docker-compose pull
-            docker-compose up -d
             docker-compose restart db2
+            docker-compose up -d
             # docker-compose exec -T catalogue python /app/app/pre_start.py
             # docker-compose exec -T coproduction python /app/app/pre_start.py
             # docker-compose exec -T catalogue python /app/app/initial_data.py
