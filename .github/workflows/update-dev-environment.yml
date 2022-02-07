@@ -28,7 +28,6 @@ jobs:
           script: |
             export DEV_LOOMIO_SMTP_USERNAME=${{ secrets.DEV_LOOMIO_SMTP_USERNAME }}
             export DEV_LOOMIO_AAC_APP_SECRET=${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
-            export CLIENT_SECRET=${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
             export DEV_LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
             export DEV_LOOMIO_SMTP_PASSWORD=${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}        
             cd /datadrive/data/interlink-project
@@ -36,6 +35,7 @@ jobs:
             cd envs/development
             docker-compose pull
             docker-compose up -d
+            docker-compose restart db2
             # docker-compose exec -T catalogue python /app/app/pre_start.py
             # docker-compose exec -T coproduction python /app/app/pre_start.py
             # docker-compose exec -T catalogue python /app/app/initial_data.py
