@@ -2,4 +2,3 @@
 **/letsencrypt/acme.json
 envs/*/loomio/
 envs/*/letsencrypt/
-.secrets

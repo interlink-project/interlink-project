@@ -28,11 +28,10 @@ jobs:
           script: |
             export DEV_LOOMIO_SMTP_USERNAME=${{ secrets.DEV_LOOMIO_SMTP_USERNAME }}
             export DEV_LOOMIO_AAC_APP_SECRET=${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
+            export CLIENT_SECRET=${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
             export DEV_LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
             export DEV_LOOMIO_SMTP_PASSWORD=${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}        
             cd /datadrive/data/interlink-project
-            # unencrypt secrets.gpg
-            gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.SECRETS_ENCRYPTION_KEY }}" --output .secrets .secrets.gpg
             git pull --ff-only
             cd envs/development
             docker-compose pull
