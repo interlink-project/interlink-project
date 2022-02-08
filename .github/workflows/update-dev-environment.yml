@@ -38,3 +38,5 @@ jobs:
             docker-compose up -d
             docker-compose exec -T catalogue python /app/app/pre_start.py
             docker-compose exec -T catalogue ./seed.sh
+            docker-compose exec -T coproduction python /app/app/pre_start.py
+            docker-compose exec -T coproduction ./seed.sh

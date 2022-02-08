@@ -10,7 +10,7 @@ docker-compose pull
 docker-compose up -d
 
 docker-compose exec -T catalogue ./seed.sh
-docker-compose exec -T coproduction python /app/app/initial_data.py
+docker-compose exec -T coproduction ./seed.sh
 docker-compose exec -T loomio rake db:setup 
 docker-compose logs <service>
 docker-compose run etherwrapper /bin/bash

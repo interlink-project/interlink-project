@@ -63,7 +63,7 @@ docker-compose exec catalogue python /app/app/pre_start.py
 docker-compose exec coproduction python /app/app/pre_start.py
 # load initial data
 docker-compose exec catalogue ./seed.sh
-docker-compose exec coproduction python /app/app/initial_data.py
+docker-compose exec coproduction ./seed.sh
 ```
 
 To get specific service logs:
