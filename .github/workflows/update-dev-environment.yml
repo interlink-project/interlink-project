@@ -35,6 +35,7 @@ jobs:
             cd envs/development
             docker-compose down
             docker-compose pull
+            docker network create traefik-public
             docker-compose up -d
             docker-compose exec -T catalogue python /app/app/pre_start.py
             docker-compose exec -T catalogue ./seed.sh
