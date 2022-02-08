@@ -376,6 +376,9 @@ services:
     networks:
       - traefik-public
       - default
+    depends_on:
+      db:
+        condition: service_healthy
 
   externalresourcemanager:
     image: interlinkproject/interlinker-externalresourcemanager:latest
