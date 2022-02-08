@@ -62,7 +62,7 @@ To pre-start and load initial default data for some of the services we can do:
 docker-compose exec catalogue python /app/app/pre_start.py
 docker-compose exec coproduction python /app/app/pre_start.py
 # load initial data
-docker-compose exec catalogue exec catalogue ./seed.sh
+docker-compose exec catalogue ./seed.sh
 docker-compose exec coproduction python /app/app/initial_data.py
 ```
 
