@@ -9,7 +9,7 @@ docker-compose stop service
 docker-compose pull
 docker-compose up -d
 
-docker-compose exec -T catalogue python /app/app/initial_data.py
+docker-compose exec -T catalogue exec catalogue ./seed.sh
 docker-compose exec -T coproduction python /app/app/initial_data.py
 docker-compose exec -T loomio rake db:setup 
 docker-compose logs <service>
