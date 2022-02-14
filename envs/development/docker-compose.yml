@@ -127,8 +127,8 @@ services:
     env_file:
       - ./.env
     environment:
+      - PROTOCOL=https://
       - SERVER_NAME=${DOMAIN?Variable not set}
-      - SERVER_HOST=https://${DOMAIN?Variable not set}/coproduction
       - PORT=${PORT}
       - BASE_PATH=/coproduction
       - POSTGRES_DB=coproduction
@@ -160,8 +160,8 @@ services:
     env_file:
       - ./.env
     environment:
+      - PROTOCOL=https://
       - SERVER_NAME=${DOMAIN?Variable not set}
-      - SERVER_HOST=https://${DOMAIN?Variable not set}
       - PORT=${PORT}
       - BASE_PATH=/coproduction
       - POSTGRES_DB=coproduction
@@ -174,8 +174,8 @@ services:
     image: interlinkproject/backend-catalogue:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-catalogue
     environment:
+      - PROTOCOL=http://
       - SERVER_NAME=${DOMAIN?Variable not set}
-      - SERVER_HOST=https://${DOMAIN?Variable not set}/catalogue
       - PORT=${PORT}
       - BASE_PATH=/catalogue
       - POSTGRES_DB=catalogue
@@ -200,8 +200,8 @@ services:
     image: interlinkproject/backend-auth:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-auth
     environment:
+      - PROTOCOL=http://
       - SERVER_NAME=${DOMAIN?Variable not set}
-      - SERVER_HOST=https://${DOMAIN?Variable not set}/auth
       - PORT=${PORT}
       - BASE_PATH=/auth
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
@@ -220,57 +220,31 @@ services:
       - traefik-public
       - default
 
-  # ACL Service
-  acl:
-    image: interlinkproject/backend-acl:latest
-    container_name: ${PLATFORM_STACK_NAME?Variable not set}-acl
-    environment:
-      - SERVER_NAME=${DOMAIN?Variable not set}
-      - SERVER_HOST=https://${DOMAIN?Variable not set}/acl
-      - PORT=${PORT}
-      - BASE_PATH=/acl
-      - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
-      - COLLECTION_NAME=acl_resources
-    env_file:
-      - ./.env
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-acl.loadbalancer.server.port=${PORT}
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.tls.certresolver=letsencrypt
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.rule=Host(`${DOMAIN}`) && PathPrefix(`/acl`)
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-acl.middlewares=acl-stripprefix
-      - traefik.http.middlewares.acl-stripprefix.stripprefix.prefixes=/acl
-    networks:
-      - traefik-public
-      - default
-
-  # Channels Service (Websocket)
-  channels:
-    image: interlinkproject/backend-channels:latest
-    container_name: ${PLATFORM_STACK_NAME?Variable not set}-channels
-    environment:
-      - SERVER_NAME=${DOMAIN?Variable not set}
-      - SERVER_HOST=https://${DOMAIN?Variable not set}/channels
-      - PORT=${PORT}
-      - BASE_PATH=/channels
-      - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
-      - COLLECTION_NAME=channels_assets
-    env_file:
-      - ./.env
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-channels.loadbalancer.server.port=${PORT}
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-channels.tls.certresolver=letsencrypt
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-channels.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-channels.rule=Host(`${DOMAIN}`) && PathPrefix(`/channels`)
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-channels.middlewares=channels-stripprefix
-      - traefik.http.middlewares.channels-stripprefix.stripprefix.prefixes=/channels
-    networks:
-      - traefik-public
-      - default
+  # # Channels Service (Websocket)
+  # channels:
+  #   image: interlinkproject/backend-channels:latest
+  #   container_name: ${PLATFORM_STACK_NAME?Variable not set}-channels
+  #   environment:
+  #     - SERVER_NAME=${DOMAIN?Variable not set}
+  #     - SERVER_HOST=https://${DOMAIN?Variable not set}/channels
+  #     - PORT=${PORT}
+  #     - BASE_PATH=/channels
+  #     - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
+  #     - COLLECTION_NAME=channels_assets
+  #   env_file:
+  #     - ./.env
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.docker.network=traefik-public
+  #     - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-channels.loadbalancer.server.port=${PORT}
+  #     - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-channels.tls.certresolver=letsencrypt
+  #     - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-channels.tls=true
+  #     - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-channels.rule=Host(`${DOMAIN}`) && PathPrefix(`/channels`)
+  #     - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-channels.middlewares=channels-stripprefix
+  #     - traefik.http.middlewares.channels-stripprefix.stripprefix.prefixes=/channels
+  #   networks:
+  #     - traefik-public
+  #     - default
 
   # Googledrive Interlinker
   googledrive:

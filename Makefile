@@ -19,7 +19,6 @@ net: ## Creates needed network to communicate through different docker-compose f
 setup: ## Clones all components
 	cd .. && git clone https://github.com/interlink-project/frontend
 	# platform components
-	cd .. && git clone https://github.com/interlink-project/backend-acl
 	cd .. && git clone https://github.com/interlink-project/backend-auth
 	cd .. && git clone https://github.com/interlink-project/backend-catalogue
 	cd .. && git clone https://github.com/interlink-project/backend-coproduction
@@ -35,14 +34,12 @@ setup: ## Clones all components
 update: ## Updates all repositories
 	cd ../frontend && git pull origin master
 	# platform components
-	cd ../backend-acl && git pull origin master
 	cd ../backend-auth && git pull origin master
 	cd ../backend-catalogue && git pull origin master
 	cd ../backend-coproduction && git pull origin master
 	
 .PHONY: down
 down: ## Stops all containers and removes volumes
-	cd ../backend-acl && make down
 	cd ../backend-auth && make down
 	cd ../backend-catalogue && make down
 	cd ../backend-coproduction && make down
@@ -59,12 +56,11 @@ down: ## Stops all containers and removes volumes
 	cd ./envs/local && docker-compose down --volumes --remove-orphans
 	docker network rm traefik-public || true
 
-.PHONY: up
-up: down net ## Run containers (restarts them if already running)
+.PHONY: start
+start: down net ## Run containers (restarts them if already running)
 	cd ./envs/local && docker-compose up -d
 
 	# platform components
-	cd ../backend-acl && make integrated
 	cd ../backend-auth && make integrated
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
@@ -88,7 +84,6 @@ restart: ## Run containers (restarts them if already running)
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
 	cd ../backend-channels && make integrated
-	cd ../backend-acl && make integrated
 
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
@@ -103,7 +98,6 @@ build: ## Build containers
 	cd ../backend-catalogue && make build
 	cd ../backend-coproduction && make build
 	cd ../backend-channels && make build
-	cd ../backend-acl && make build
 	
 	# interlinkers
 	cd ../interlinker-ceditor && make build
@@ -120,6 +114,9 @@ upb: down net build up ## Build and run containers
 seed: ## Set initial data
 	cd ../backend-catalogue && make seed
 	cd ../backend-coproduction && make seed
+	
+.PHONY: up
+up: start seed ## Run containers and seeds them with data
 	
 .PHONY: diagrams
 diagrams: ## Test containers

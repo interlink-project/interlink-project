@@ -30,7 +30,32 @@ services:
       - traefik.docker.network=traefik-public
       - traefik.http.routers.${STACK_NAME?Variable not set}-traefik-public-http.rule=Host(`${DOMAIN?Variable not set}`)
       - traefik.http.services.${STACK_NAME?Variable not set}-traefik-public.loadbalancer.server.port=80
-
+  
+  portainer:
+    # https://rafrasenberg.com/posts/docker-container-management-with-traefik-v2-and-portainer/
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - traefik-public
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./portainer-data:/data
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${STACK_NAME?Variable not set}-portainer-http.rule=PathPrefix(`/portainer`)
+      - traefik.http.services.${STACK_NAME?Variable not set}-portainer.loadbalancer.server.port=9000
+      - traefik.http.routers.${STACK_NAME?Variable not set}-portainer-http.middlewares=portainer-stripprefix
+      - traefik.http.middlewares.portainer-stripprefix.stripprefix.prefixes=/portainer
+     # - "traefik.http.routers.portainer-secure.entrypoints=websecure"
+      #- "traefik.http.routers.portainer-secure.rule=Host(`portainer.yourdomain.com`)"
+      #- "traefik.http.routers.portainer-secure.service=portainer"
+      #- "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      
   db:
     container_name: db
     image: postgres-integrated
