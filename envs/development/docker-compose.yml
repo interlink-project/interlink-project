@@ -174,7 +174,7 @@ services:
     image: interlinkproject/backend-catalogue:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-catalogue
     environment:
-      - PROTOCOL=http://
+      - PROTOCOL=https://
       - SERVER_NAME=${DOMAIN?Variable not set}
       - PORT=${PORT}
       - BASE_PATH=/catalogue
@@ -200,7 +200,7 @@ services:
     image: interlinkproject/backend-auth:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-auth
     environment:
-      - PROTOCOL=http://
+      - PROTOCOL=https://
       - SERVER_NAME=${DOMAIN?Variable not set}
       - PORT=${PORT}
       - BASE_PATH=/auth
