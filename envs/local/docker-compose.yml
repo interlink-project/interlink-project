@@ -36,6 +36,7 @@ services:
     image: portainer/portainer-ce:latest
     container_name: portainer
     restart: unless-stopped
+    command: --admin-password "${PORTAINER_PASSWORD}"
     security_opt:
       - no-new-privileges:true
     networks:
@@ -43,7 +44,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./portainer-data:/data
+      # - ./portainer-data:/data
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
