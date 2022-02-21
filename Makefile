@@ -22,7 +22,7 @@ setup: ## Clones all components
 	cd .. && git clone https://github.com/interlink-project/backend-auth
 	cd .. && git clone https://github.com/interlink-project/backend-catalogue
 	cd .. && git clone https://github.com/interlink-project/backend-coproduction
-	cd .. && git clone https://github.com/interlink-project/backend-channels
+	# cd .. && git clone https://github.com/interlink-project/backend-channels
 	# interlinkers
 	cd .. && git clone https://github.com/interlink-project/interlinker-survey
 	cd .. && git clone https://github.com/interlink-project/interlinker-googledrive
@@ -64,7 +64,7 @@ start: down net ## Run containers (restarts them if already running)
 	cd ../backend-auth && make integrated
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
-	cd ../backend-channels && make integrated
+	# cd ../backend-channels && make integrated
 
 	# interlinkers
 	cd ../interlinker-ceditor && make integrated
@@ -83,7 +83,7 @@ restart: ## Run containers (restarts them if already running)
 	cd ../backend-auth && make integrated
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
-	cd ../backend-channels && make integrated
+	# cd ../backend-channels && make integrated
 
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
@@ -97,7 +97,7 @@ build: ## Build containers
 	cd ../backend-auth && make build
 	cd ../backend-catalogue && make build
 	cd ../backend-coproduction && make build
-	cd ../backend-channels && make build
+	# cd ../backend-channels && make build
 	
 	# interlinkers
 	cd ../interlinker-ceditor && make build

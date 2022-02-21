@@ -34,6 +34,25 @@ services:
       - traefik-public
       - default
 
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - traefik-public
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${STACK_NAME?Variable not set}-portainer-http.rule=PathPrefix(`/portainer`)
+      - traefik.http.services.${STACK_NAME?Variable not set}-portainer.loadbalancer.server.port=9000
+      - traefik.http.routers.${STACK_NAME?Variable not set}-portainer-http.middlewares=portainer-stripprefix
+      - traefik.http.middlewares.portainer-stripprefix.stripprefix.prefixes=/portainer
+      
   # Frontend Service
   frontend:
     image: "interlinkproject/frontend:latest"
