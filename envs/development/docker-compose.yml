@@ -48,9 +48,9 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.routers.${STACK_NAME?Variable not set}-portainer-http.rule=PathPrefix(`/portainer`)
-      - traefik.http.services.${STACK_NAME?Variable not set}-portainer.loadbalancer.server.port=9000
-      - traefik.http.routers.${STACK_NAME?Variable not set}-portainer-http.middlewares=portainer-stripprefix
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer-http.rule=PathPrefix(`/portainer`)
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-portainer.loadbalancer.server.port=9000
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer-http.middlewares=portainer-stripprefix
       - traefik.http.middlewares.portainer-stripprefix.stripprefix.prefixes=/portainer
       
   # Frontend Service
