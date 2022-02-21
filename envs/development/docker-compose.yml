@@ -424,6 +424,7 @@ services:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-loomio.loadbalancer.server.port=${PORT}
+      - traefik.http.middlewares.testHeader.headers.customrequestheaders.contentSecurityPolicy=frame-ancestors 'self' *.${MAIN_DOMAIN};
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.rule=Host(`loomio.${DOMAIN}`)
