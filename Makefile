@@ -43,7 +43,7 @@ down: ## Stops all containers and removes volumes
 	cd ../backend-auth && make down
 	cd ../backend-catalogue && make down
 	cd ../backend-coproduction && make down
-	cd ../backend-channels && make down
+	# cd ../backend-channels && make down
 
 	# interlinkers
 	cd ../interlinker-ceditor && make down
