@@ -48,8 +48,8 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.tls.certresolver=letsencrypt
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-coproduction.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer-http.rule=PathPrefix(`/portainer`)
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-portainer.loadbalancer.server.port=9000
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer-http.middlewares=portainer-stripprefix
