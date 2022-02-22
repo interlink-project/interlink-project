@@ -30,6 +30,16 @@ services:
       - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
       - --certificatesresolvers.letsencrypt.acme.email=apps@interlink-project.eu
       - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+    # labels:
+      # - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+      # - "traefik.http.routers.http-catchall.entrypoints=web"
+      # - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+      # - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      # - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Content-Security-Policy=frame-ancestors 'self' ${DOMAIN} *.${MAIN_DOMAIN}
+      # - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.X-Frame-Options=ALLOW-FROM https://${MAIN_DOMAIN}
+      # - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Access-Control-Allow-Origin=*
+      # - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Access-Control-Allow-Methods=DELETE, POST, PUT, GET, OPTIONS
+      # - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Access-Control-Allow-Headers=Content-Type, Authorization, X-Requested-With
     networks:
       - traefik-public
       - default
@@ -426,7 +436,8 @@ services:
       - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Content-Security-Policy=frame-ancestors 'self' ${DOMAIN} *.${MAIN_DOMAIN}
       - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.X-Frame-Options=ALLOW-FROM https://${MAIN_DOMAIN}
       - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Access-Control-Allow-Origin=*
-      - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.accessControlAllowOriginList=*
+      - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Access-Control-Allow-Methods=DELETE, POST, PUT, GET, OPTIONS
+      - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Access-Control-Allow-Headers=Content-Type, Authorization, X-Requested-With
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.middlewares=iframeHeaders
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls=true
@@ -517,13 +528,6 @@ services:
     restart: always
     env_file:
       - ./.env
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.loadbalancer.server.port=5000
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls.certresolver=letsencrypt
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.rule=Host(`augmenterservice.${DOMAIN}`)
     networks:
       - traefik-public
       - default
@@ -570,6 +574,13 @@ services:
     depends_on:
       - elasticsearch
       - surveymod
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.loadbalancer.server.port=5000
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.rule=Host(`augmenterservice.${DOMAIN}`)
 
   surveymod:
     image: interlinkproject/publicservice-servicepedia:surveymod-latest
