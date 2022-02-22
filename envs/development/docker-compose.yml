@@ -52,7 +52,7 @@ services:
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-portainer.loadbalancer.server.port=9000
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer-http.middlewares=portainer-stripprefix
       - traefik.http.middlewares.portainer-stripprefix.stripprefix.prefixes=/portainer
-      
+
   # Frontend Service
   frontend:
     image: "interlinkproject/frontend:latest"
@@ -427,8 +427,10 @@ services:
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-loomio.loadbalancer.server.port=${PORT}
       - traefik.http.middlewares.testHeader.headers.customresponseheaders.Content-Security-Policy=frame-ancestors 'self' ${DOMAIN} *.${MAIN_DOMAIN}
       - traefik.http.middlewares.testHeader.headers.customresponseheaders.X-Frame-Options=ALLOW-FROM https://${MAIN_DOMAIN}
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.middlewares=testHeader 
+      - traefik.http.middlewares.testHeader.headers.customresponseheaders.Access-Control-Allow-Origin=https://${MAIN_DOMAIN}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.middlewares=testHeader
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls.certresolver=letsencrypt
+
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.rule=Host(`loomio.${DOMAIN}`)
     networks:
@@ -487,6 +489,6 @@ networks:
     external: true
   default:
     name: ${PLATFORM_STACK_NAME?Variable not set}-default
-  
+
 volumes:
   db-data:
