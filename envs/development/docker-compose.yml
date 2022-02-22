@@ -577,8 +577,8 @@ services:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.loadbalancer.server.port=5000
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls.certresolver=letsencrypt
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls=true
+      # - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls.certresolver=letsencrypt
+      # - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.rule=Host(`augmenterservice.${DOMAIN}`)
 
   surveymod:
