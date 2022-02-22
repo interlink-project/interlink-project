@@ -537,7 +537,7 @@ services:
       - SURVEYINTERLINK_URL=https://${DOMAIN}/surveymod
       - SURVEYAPI_VERSION=v1
       - HOSTAUGMENTER=0.0.0.0
-      - PORTAUGMENTER=5000
+      - PORTAUGMENTER=${PORT}
       - DEBUG=True
       - ELASTICSEARCH_INDEX=annotator
       - AUTH_ON=False
@@ -576,9 +576,9 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.loadbalancer.server.port=5000
-      # - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls.certresolver=letsencrypt
-      # - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls=true
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.rule=Host(`augmenterservice.${DOMAIN}`)
 
   surveymod:
