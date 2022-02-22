@@ -147,7 +147,6 @@ services:
     env_file:
       - ./.env
     environment:
-      - PROTOCOL=https://
       - SERVER_NAME=${DOMAIN?Variable not set}
       - PORT=${PORT}
       - BASE_PATH=/coproduction
@@ -180,7 +179,6 @@ services:
     env_file:
       - ./.env
     environment:
-      - PROTOCOL=https://
       - SERVER_NAME=${DOMAIN?Variable not set}
       - PORT=${PORT}
       - BASE_PATH=/coproduction
@@ -194,7 +192,6 @@ services:
     image: interlinkproject/backend-catalogue:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-catalogue
     environment:
-      - PROTOCOL=https://
       - SERVER_NAME=${DOMAIN?Variable not set}
       - PORT=${PORT}
       - BASE_PATH=/catalogue
@@ -220,7 +217,6 @@ services:
     image: interlinkproject/backend-auth:latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-auth
     environment:
-      - PROTOCOL=https://
       - SERVER_NAME=${DOMAIN?Variable not set}
       - PORT=${PORT}
       - BASE_PATH=/auth
@@ -410,12 +406,12 @@ services:
       - SMTP_PASSWORD=${DEV_LOOMIO_SMTP_PASSWORD}
 
     volumes:
-      - ./loomio/uploads:/loomio/public/system
-      - ./loomio/storage:/loomio/storage
-      - ./loomio/files:/loomio/public/files
-      - ./loomio/plugins:/loomio/plugins/docker
-      - ./loomio/import:/import
-      - ./loomio/tmp:/loomio/tmp
+      - loomio-uploads:/loomio/public/system
+      - loomio-storage:/loomio/storage
+      - loomio-files:/loomio/public/files
+      - loomio-plugins:/loomio/plugins/docker
+      - loomio-import:/import
+      - loomio-tmp:/loomio/tmp
     env_file:
       - ./.env
     depends_on:
@@ -449,11 +445,11 @@ services:
       - SMTP_USERNAME=${DEV_LOOMIO_SMTP_USERNAME}
       - SMTP_PASSWORD=${DEV_LOOMIO_SMTP_PASSWORD}
     volumes:
-      - ./loomio/uploads:/loomio/public/system
-      - ./loomio/storage:/loomio/storage
-      - ./loomio/files:/loomio/public/files
-      - ./loomio/plugins:/loomio/plugins/docker
-      - ./loomio/tmp:/loomio/tmp
+      - loomio-uploads:/loomio/public/system
+      - loomio-storage:/loomio/storage
+      - loomio-files:/loomio/public/files
+      - loomio-plugins:/loomio/plugins/docker
+      - loomio-tmp:/loomio/tmp
     env_file:
       - ./.env
     networks:
@@ -530,7 +526,7 @@ services:
       - traefik-public
       - default
     environment:
-    # TODO: verify secrets
+      # TODO: verify secrets
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - SURVEYINTERLINK_URL=https://${DOMAIN}/surveymod
       - SURVEYAPI_VERSION=v1
@@ -577,7 +573,6 @@ services:
     image: interlinkproject/publicservice-servicepedia:surveymod-latest
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-surveymod
     environment:
-      - PROTOCOL=https://
       - SERVER_NAME=${DOMAIN?Variable not set}
       - PORT=${PORT}
       - BASE_PATH=/surveymod
@@ -597,7 +592,7 @@ services:
     networks:
       - traefik-public
       - default
-      
+
 networks:
   traefik-public:
     external: true
@@ -605,6 +600,13 @@ networks:
     name: ${PLATFORM_STACK_NAME?Variable not set}-default
 
 volumes:
+  loomio-uploads:
+  loomio-storage:
+  loomio-files:
+  loomio-plugins:
+  loomio-import:
+  loomio-tmp:
+
   db-data:
   elasticsearch-data:
   elasticsearch-config:
