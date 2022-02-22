@@ -424,8 +424,8 @@ services:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-loomio.loadbalancer.server.port=${PORT}
-      - traefik.http.middlewares.testHeader.headers.framedeny=false
-      - traefik.http.middlewares.testHeader.headers.customresponseheaders.contentSecurityPolicy=default-src 'self' *.${MAIN_DOMAIN};frame-ancestors 'self' *.${MAIN_DOMAIN};style-src 'self' 'unsafe-inline';script-src 'self' 'unsafe-inline' 'unsafe-eval';img-src 'self' data:;font-src 'self' data:"
+      - traefik.http.middlewares.testHeader.headers.customresponseheaders.customFrameOptionsValue=ALLOW-FROM https://${MAIN_DOMAIN}
+      - traefik.http.middlewares.testHeader.headers.customresponseheaders.contentSecurityPolicy=frame-ancestors 'self' ${DOMAIN} *.${MAIN_DOMAIN}
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.middlewares=testHeader 
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls=true
