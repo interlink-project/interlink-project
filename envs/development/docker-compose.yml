@@ -59,6 +59,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME?Variable not set}-frontend
     environment:
       - REACT_APP_COMPLETE_DOMAIN=https://${DOMAIN}
+      - DOMAIN=${DOMAIN}
       - NODE_ENV=production
     labels:
       - traefik.enable=true
