@@ -431,7 +431,6 @@ services:
       - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.accessControlAllowOriginList=*
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.middlewares=iframeHeaders
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls.certresolver=letsencrypt
-
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.rule=Host(`loomio.${DOMAIN}`)
     networks:
@@ -485,6 +484,120 @@ services:
       - traefik-public
       - default
 
+  # service augmenter
+
+  elasticsearch:
+    image: elasticsearch:1.7.6-alpine
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-elasticsearch
+    environment:
+      - node.name=elasticsearch
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+      - discovery.zen.ping.unicast.hosts=127.0.0.1
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+      - elasticsearch-config:/usr/share/elasticsearch/config
+    env_file:
+      - ./.env
+    networks:
+      - default
+
+  augmenterservice:
+    image: interlinkproject/publicservice-servicepedia:augmenterservice-latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-augmenterservice
+    restart: always
+    env_file:
+      - ./.env
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.loadbalancer.server.port=5000
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.rule=Host(`augmenterservice.${DOMAIN}`)
+    networks:
+      - traefik-public
+      - default
+    environment:
+    # TODO: verify secrets
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - SURVEYINTERLINK_URL=https://${DOMAIN}/surveymod
+      - SURVEYAPI_VERSION=v1
+      - HOSTAUGMENTER=0.0.0.0
+      - PORTAUGMENTER=5000
+      - SERVICEPEDIA_URL=https://augmenterservice.${DOMAIN}
+      - DEBUG=True
+      - ELASTICSEARCH_INDEX=annotator
+      - AUTH_ON=False
+      - AUTHZ_ON=False
+      - MAIL_SERVER=smtp.gmail.com
+      - MAIL_PORT=587
+      - MAIL_USERNAME=interlinkdeusto@gmail.com
+      - MAIL_PASSWORD=${DEV_MAIL_PASSWORD}
+      - MAIL_DEFAULT_SENDER=interlinkdeusto@gmail.com
+      - MAIL_USE_TLS=True
+      - MAIL_USE_SSL=False
+      - MAIL_MAX_EMAILS=None
+      - MAIL_ASCII_ATTACHMENTS=False
+      - MAX_CONTENT_LENGTH=3145728
+      - UPLOAD_EXTENSIONS=[".pdf",".docx"]
+      - UPLOAD_PATH=uploads
+      - USE_SESSION_FOR_NEXT=True
+      - SWAGGER_URL=/docs
+      - API_URL=/static/swagger.yaml
+      - BABEL_DEFAULT_LOCALE=en
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${DEV_LOOMIO_AAC_APP_SECRET}
+      - ISSUER=${AAC_HOST}
+      - AUTH_URI=https://aac.platform.smartcommunitylab.it/oauth/authorize
+      - TOKEN_URI=https://aac.platform.smartcommunitylab.it/oauth/token
+      - TOKEN_INTROSPECTION_URI=https://aac.platform.smartcommunitylab.it/oauth/introspect
+      - REDIRECT_URI=https://augmenterservice.${DOMAIN}/oidc_callback
+      - USERINFO_URI=https://aac.platform.smartcommunitylab.it/userinfo
+      - END_SESSION_ENDPOINT=https://aac.platform.smartcommunitylab.it/endsession
+      - CONSUMER_KEY="6E1C924B-C03B-4F7F-97DE-B72EE2338B39"
+      - CONSUMER_TTL=86400
+      - CRYPT_KEY="qF_uizNn_HP4HaT_jsYemyK-qDHBuJUGA1C5MZl8xAg="
+    depends_on:
+      - elasticsearch
+      - surveymod
+
+  surveymod:
+    image: interlinkproject/publicservice-servicepedia:surveymod-latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-surveymod
+    environment:
+      - PROTOCOL=https://
+      - SERVER_NAME=${DOMAIN?Variable not set}
+      - PORT=${PORT}
+      - BASE_PATH=/surveymod
+      - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
+      - COLLECTION_NAME=surveymod
+    env_file:
+      - ./.env
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-surveymod.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveymod.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveymod.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveymod.rule=Host(`${DOMAIN}`) && PathPrefix(`/surveymod`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveymod.middlewares=surveymod-stripprefix
+      - traefik.http.middlewares.surveymod-stripprefix.stripprefix.prefixes=/surveymod
+    networks:
+      - traefik-public
+      - default
+      
 networks:
   traefik-public:
     external: true
@@ -493,3 +606,5 @@ networks:
 
 volumes:
   db-data:
+  elasticsearch-data:
+  elasticsearch-config:
