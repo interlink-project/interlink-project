@@ -4,7 +4,7 @@ on:
     types: [update-dev-environment]
   push:
     branches:
-      - "master"
+      - "*"
     paths:
       - envs/base/**
       - envs/development/**
