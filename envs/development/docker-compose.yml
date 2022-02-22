@@ -591,6 +591,7 @@ services:
       - BASE_PATH=/surveymod
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=surveymod
+      - SERVICEPEDIA_URL=http://127.0.0.1:${PORT_SERVICEPEDIA}
     env_file:
       - ./.env
     labels:
