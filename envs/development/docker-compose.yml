@@ -61,7 +61,7 @@ services:
       - traefik.http.routers.frontend.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer-http.rule==Host(`portainer.${DOMAIN}`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer.rule==Host(`portainer.${DOMAIN}`)
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-portainer.loadbalancer.server.port=9000
 
   # Frontend Service
