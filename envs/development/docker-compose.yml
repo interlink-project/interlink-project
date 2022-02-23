@@ -598,8 +598,10 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.rule=Host(`augmenterservice.${DOMAIN}`)
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.rule=Host(`${DOMAIN}`) && PathPrefix(`/augmenterservice`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.middlewares=augmenterservice-stripprefix
+      - traefik.http.middlewares.augmenterservice-stripprefix.stripprefix.prefixes=/augmenterservice
 
   surveymod:
     image: interlinkproject/publicservice-servicepedia:surveymod-latest
@@ -610,7 +612,7 @@ services:
       - BASE_PATH=/surveymod
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=surveymod
-      - SERVICEPEDIA_URL=https://augmenterservice.${DOMAIN}
+      - SERVICEPEDIA_URL=https://${DOMAIN}/augmenterservice
     env_file:
       - ./.env
     labels:
