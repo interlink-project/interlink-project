@@ -555,8 +555,10 @@ services:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - SURVEYINTERLINK_URL=https://${DOMAIN}/surveymod
       - SURVEYAPI_VERSION=v1
-      - HOSTAUGMENTER=0.0.0.0
-      - PORTAUGMENTER=${PORT}
+      - HOST=0.0.0.0
+      - PORT=${PORT}
+      - PROTOCOL=http://
+      - BASE_PATH=
       - DEBUG=True
       - ELASTICSEARCH_INDEX=annotator
       - AUTH_ON=False
