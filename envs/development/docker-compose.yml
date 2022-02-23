@@ -58,10 +58,10 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.routers.frontend.entrypoints=websecure
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer.rule==Host(`portainer.${DOMAIN}`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer.rule=Host(`portainer.${DOMAIN}`)
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-portainer.loadbalancer.server.port=9000
 
   # Frontend Service
@@ -575,10 +575,11 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.rule=Host(`augmenterservice.${DOMAIN}`)
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.loadbalancer.server.port=${PORT}
 
   surveymod:
     image: interlinkproject/publicservice-servicepedia:surveymod-latest
