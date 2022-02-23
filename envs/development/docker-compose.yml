@@ -58,12 +58,11 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
+      - traefik.http.routers.frontend.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer-http.rule=PathPrefix(`/portainer`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer-http.rule==Host(`portainer.${DOMAIN}`)
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-portainer.loadbalancer.server.port=9000
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-portainer-http.middlewares=portainer-stripprefix
-      - traefik.http.middlewares.portainer-stripprefix.stripprefix.prefixes=/portainer
 
   # Frontend Service
   frontend:
@@ -436,7 +435,7 @@ services:
       - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Content-Security-Policy=frame-ancestors 'self' ${DOMAIN} *.${MAIN_DOMAIN}
       - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.X-Frame-Options=ALLOW-FROM https://${MAIN_DOMAIN}
       - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Access-Control-Allow-Origin=*
-      - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Access-Control-Allow-Methods=DELETE, POST, PUT, GET, OPTIONS
+      - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Access-Control-Allow-Methods=GET, POST, PUT, DELETE, OPTIONS
       - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Access-Control-Allow-Headers=Content-Type, Authorization, X-Requested-With
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.middlewares=iframeHeaders
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-loomio.tls.certresolver=letsencrypt
