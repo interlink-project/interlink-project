@@ -36,7 +36,7 @@ services:
       - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
 
       # staging
-      - --certificatesResolvers.sample.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesResolvers.letsencrypt.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
       
     labels:
       - traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)
