@@ -558,7 +558,8 @@ services:
       - HOST=0.0.0.0
       - PORT=${PORT}
       - PROTOCOL=http://
-      - BASE_PATH=
+      - BASE_PATH=/augmenterservice
+      - SCRIPT_NAME=/augmenterservice
       - DEBUG=True
       - ELASTICSEARCH_INDEX=annotator
       - AUTH_ON=False
@@ -602,8 +603,8 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls=true
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.loadbalancer.server.port=${PORT}
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.rule=Host(`${DOMAIN}`) && PathPrefix(`/augmenterservice`)
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.middlewares=augmenterservice-stripprefix
-      - traefik.http.middlewares.augmenterservice-stripprefix.stripprefix.prefixes=/augmenterservice
+    command: gunicorn --bind 0.0.0.0:80 --workers 2 "app.main:create_app()"
+      
 
   surveymod:
     image: interlinkproject/publicservice-servicepedia:surveymod-latest
