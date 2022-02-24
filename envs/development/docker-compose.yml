@@ -173,6 +173,8 @@ services:
       - BASE_PATH=/coproduction
       - POSTGRES_DB=coproduction
       - POSTGRES_SERVER=db2 # TODO: remove this
+      - CATALOGUE_SERVICE_NAME=catalogue
+      - CATALOGUE_PORT=80
     depends_on:
       db:
         condition: service_healthy
