@@ -36,7 +36,7 @@ services:
       - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
 
       # staging
-      - --certificatesResolvers.letsencrypt.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
+      # - --certificatesResolvers.letsencrypt.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
       
     labels:
       - traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)
@@ -559,9 +559,9 @@ services:
       - SURVEYAPI_VERSION=v1
       - HOST=0.0.0.0
       - PORT=${PORT}
-      - PROTOCOL=http://
-      - BASE_PATH=/augmenterservice
-      - SCRIPT_NAME=/augmenterservice
+      - PROTOCOL=https://
+      - BASE_PATH=
+      - SCRIPT_NAME=
       - DEBUG=True
       - ELASTICSEARCH_INDEX=annotator
       - AUTH_ON=False
@@ -588,7 +588,7 @@ services:
       - AUTH_URI=https://aac.platform.smartcommunitylab.it/oauth/authorize
       - TOKEN_URI=https://aac.platform.smartcommunitylab.it/oauth/token
       - TOKEN_INTROSPECTION_URI=https://aac.platform.smartcommunitylab.it/oauth/introspect
-      - REDIRECT_URI=https://${DOMAIN}/augmenterservice/oidc_callback
+      - REDIRECT_URI=https://${DOMAIN}/oidc_callback
       - USERINFO_URI=https://aac.platform.smartcommunitylab.it/userinfo
       - END_SESSION_ENDPOINT=https://aac.platform.smartcommunitylab.it/endsession
       - CONSUMER_KEY="6E1C924B-C03B-4F7F-97DE-B72EE2338B39"
@@ -604,7 +604,7 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.tls=true
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.loadbalancer.server.port=${PORT}
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.rule=Host(`${DOMAIN}`) && PathPrefix(`/augmenterservice`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.rule=Host(`servicepedia.${DOMAIN}`)
     command: gunicorn --bind 0.0.0.0:80 --workers 1 "app.main:create_app()"
       
 

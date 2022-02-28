@@ -50,12 +50,17 @@ Each interlinker is treated as an independent component, so they can be develope
     * **WHAT:** returns data for given asset.
     * **Method:** GET
     * **URL:** /assets/{id}
-    * Examples:
-      * googledrive interlinker (left)
-      * survey interlinker (right)
       
-      ![Asset data](images/interlinkers/integration/datas.png)
-
+    It must return these values 
+    
+    ```
+    {
+      "name": string,
+      "created_at": datetime,
+      "updated_at": datetime,
+      "icon": optional string
+    }
+    ```
       
 
 3. **Viewer for given asset:** 
