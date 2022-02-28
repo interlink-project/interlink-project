@@ -554,6 +554,7 @@ services:
       - default
     environment:
       # TODO: verify secrets
+      - VIRTUAL_HOST=servicepedia.${DOMAIN?Variable not set}
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - SURVEYINTERLINK_URL=https://${DOMAIN}/surveymod
       - SURVEYAPI_VERSION=v1
@@ -617,7 +618,7 @@ services:
       - BASE_PATH=/surveymod
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=surveymod
-      - SERVICEPEDIA_URL=https://${DOMAIN}/augmenterservice
+      - SERVICEPEDIA_URL=https://servicepedia.${DOMAIN}
     env_file:
       - ./.env
     labels:
