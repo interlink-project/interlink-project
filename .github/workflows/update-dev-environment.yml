@@ -33,7 +33,6 @@ jobs:
             export DEV_LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
             export DEV_LOOMIO_SMTP_PASSWORD=${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}        
             export DEV_LOOMIO_DEVISE_SECRET=${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
-            echo "VAR DEV_LOOMIO_SECRET_COOKIE_TOKEN = $DEV_LOOMIO_SECRET_COOKIE_TOKEN"
             cd /datadrive/data/interlink-project
             git pull --ff-only
             cd envs/development
