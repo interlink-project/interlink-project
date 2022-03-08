@@ -571,11 +571,11 @@ services:
       - ELASTICSEARCH_INDEX=annotator
       - AUTH_ON=False
       - AUTHZ_ON=False
-      - MAIL_SERVER=smtp.gmail.com
-      - MAIL_PORT=587
-      - MAIL_USERNAME=interlinkdeusto@gmail.com
-      - MAIL_PASSWORD=${DEV_MAIL_PASSWORD}
-      - MAIL_DEFAULT_SENDER=interlinkdeusto@gmail.com
+      - MAIL_SERVER=13.92.213.150
+      - MAIL_PORT=25
+      - MAIL_USERNAME=${DEV_LOOMIO_SMTP_USERNAME}
+      - MAIL_PASSWORD=${DEV_LOOMIO_SMTP_PASSWORD}
+      - MAIL_DEFAULT_SENDER=no-reply@interlink-project.eu
       - MAIL_USE_TLS=True
       - MAIL_USE_SSL=False
       - MAIL_MAX_EMAILS=None
