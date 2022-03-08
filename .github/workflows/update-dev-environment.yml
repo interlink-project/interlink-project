@@ -20,17 +20,19 @@ jobs:
           DEV_LOOMIO_SECRET_COOKIE_TOKEN: ${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
           DEV_LOOMIO_SMTP_USERNAME: ${{ secrets.DEV_LOOMIO_SMTP_USERNAME }}
           DEV_LOOMIO_SMTP_PASSWORD: ${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}        
+          DEV_LOOMIO_DEVISE_SECRET: ${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}        
         with:
           host: ${{ secrets.DEV_HOST }}
           username: ${{ secrets.DEV_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          envs: DEV_LOOMIO_AAC_APP_SECRET,DEV_LOOMIO_SECRET_COOKIE_TOKEN,DEV_LOOMIO_SMTP_USERNAME,DEV_LOOMIO_SMTP_PASSWORD
+          envs: DEV_LOOMIO_AAC_APP_SECRET,DEV_LOOMIO_SECRET_COOKIE_TOKEN,DEV_LOOMIO_SMTP_USERNAME,DEV_LOOMIO_SMTP_PASSWORD,DEV_LOOMIO_DEVISE_SECRET
           script: |
             export DEV_LOOMIO_SMTP_USERNAME=${{ secrets.DEV_LOOMIO_SMTP_USERNAME }}
             export DEV_LOOMIO_AAC_APP_SECRET=${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
             export DEV_MAIL_PASSWORD=${{ secrets.DEV_MAIL_PASSWORD }}
             export DEV_LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
             export DEV_LOOMIO_SMTP_PASSWORD=${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}        
+            export DEV_LOOMIO_DEVISE_SECRET=${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
             cd /datadrive/data/interlink-project
             git pull --ff-only
             cd envs/development
