@@ -44,3 +44,4 @@ jobs:
             docker-compose exec -T catalogue ./seed.sh
             docker-compose exec -T coproduction python /app/app/pre_start.py
             docker-compose exec -T coproduction ./seed.sh
+            docker system prune -a -f
