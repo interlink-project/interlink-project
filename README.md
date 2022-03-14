@@ -85,6 +85,7 @@ To get a local copy up and running follow these simple example steps.
 
 
 ## More documentation
+* [CI_CD_policies.md](docs/CI_CD_policies.md)
 * [INTERLINKERS.md](docs/INTERLINKERS.md)
 * [AUTHENTICATION.md](docs/AUTHENTICATION.md)
 * [ROUTING.md](docs/ROUTING.md)
