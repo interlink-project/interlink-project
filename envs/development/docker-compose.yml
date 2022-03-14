@@ -560,7 +560,7 @@ services:
       # TODO: verify secrets
       - VIRTUAL_HOST=servicepedia.${DOMAIN?Variable not set}
       - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - SURVEYINTERLINK_URL=https://${DOMAIN}/surveymod
+      - SURVEYINTERLINK_URL=https://${DOMAIN}/survey
       - AUTHINTERLINK_URL=https://${DOMAIN}/auth
       - SURVEYAPI_VERSION=v1
       - HOST=0.0.0.0
