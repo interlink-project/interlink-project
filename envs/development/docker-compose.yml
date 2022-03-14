@@ -603,6 +603,7 @@ services:
     depends_on:
       - elasticsearch
       - surveymod
+      - auth
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
