@@ -24,7 +24,7 @@ Once the entire INTERLINK SW release is tagged, this should trigger execution of
 
 Once both UT and IT completed in "green", i.e. on successfull (OK, without errors) termination of UT + IT pipelines, a new pipeline building docker images should launch.
 
-## Environments
+## Continuous Deployment (CD) & Environments
 
 There might be the following three environments:
 - Local
