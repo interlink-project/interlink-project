@@ -602,7 +602,6 @@ services:
       - CRYPT_KEY="qF_uizNn_HP4HaT_jsYemyK-qDHBuJUGA1C5MZl8xAg="
     depends_on:
       - elasticsearch
-      - surveymod
       - auth
     labels:
       - traefik.enable=true
@@ -613,33 +612,6 @@ services:
       - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.loadbalancer.server.port=${PORT}
       - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-augmenterservice.rule=Host(`servicepedia.${DOMAIN}`)
     command: gunicorn  --log-level debug --bind 0.0.0.0:80 --workers 1 "app.main:create_app()"
-      
-
-  surveymod:
-    image: interlinkproject/publicservice-servicepedia:surveymod-latest
-    container_name: ${PLATFORM_STACK_NAME?Variable not set}-surveymod
-    environment:
-      - SERVER_NAME=${DOMAIN?Variable not set}
-      - PORT=${PORT}
-      - BASE_PATH=/surveymod
-      - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
-      - COLLECTION_NAME=surveymod
-      - SERVICEPEDIA_URL=https://servicepedia.${DOMAIN}
-    env_file:
-      - ./.env
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-surveymod.loadbalancer.server.port=${PORT}
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveymod.entrypoints=websecure
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveymod.tls.certresolver=letsencrypt
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveymod.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveymod.rule=Host(`${DOMAIN}`) && PathPrefix(`/surveymod`)
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveymod.middlewares=surveymod-stripprefix
-      - traefik.http.middlewares.surveymod-stripprefix.stripprefix.prefixes=/surveymod
-    networks:
-      - traefik-public
-      - default
 
 networks:
   traefik-public:
