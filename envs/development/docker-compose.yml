@@ -561,6 +561,7 @@ services:
       - VIRTUAL_HOST=servicepedia.${DOMAIN?Variable not set}
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - SURVEYINTERLINK_URL=https://${DOMAIN}/surveymod
+      - AUTHINTERLINK_URL=http://${DOMAIN}/auth
       - SURVEYAPI_VERSION=v1
       - HOST=0.0.0.0
       - PORT=${PORT}
