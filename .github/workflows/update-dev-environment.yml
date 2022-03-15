@@ -2,6 +2,10 @@ name: update-dev-environment
 on:
   repository_dispatch:
     types: [update-dev-environment]
+
+  release:
+    types: [ published ]
+
   push:
     branches:
       - "*"
@@ -9,10 +13,34 @@ on:
       - envs/base/**
       - envs/development/**
 
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment deployment'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+        - development
+        - demo
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - name: set env
+        run: |
+          if [[  ${{ github.event_name }} == 'release' ]]; then
+            echo "environment=demo" >> $GITHUB_ENV
+          else
+            if [[ -z "${{ github.event.inputs.environment }}" ]]; then
+             echo "environment=development" >> $GITHUB_ENV
+            else
+             echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+            fi
+          fi         
+
       - name: Deploy Dev SSH
         uses: appleboy/ssh-action@master
         env:
@@ -35,11 +63,11 @@ jobs:
             export DEV_LOOMIO_DEVISE_SECRET=${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
             cd /datadrive/data/interlink-project
             git pull --ff-only
-            cd envs/development
+            cd envs/${{ env.environment }}
             docker-compose down
             docker-compose pull
             docker network create traefik-public
-            docker-compose up -d
+            docker-compose up --env-file=.env -d
             docker-compose exec -T catalogue python /app/app/pre_start.py
             docker-compose exec -T catalogue ./seed.sh
             docker-compose exec -T coproduction python /app/app/pre_start.py
