@@ -81,7 +81,7 @@ jobs:
             git pull --ff-only
             cd envs/development
             docker-compose --env-file .env.${{ env.environment }} down --remove-orphans
-            docker-compose pull
+            docker-compose --env-file .env.${{ env.environment }} pull
             docker network create traefik-public
             docker-compose --env-file .env.${{ env.environment }} up -d
             sleep 10
