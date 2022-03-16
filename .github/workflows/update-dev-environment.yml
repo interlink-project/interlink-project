@@ -38,7 +38,7 @@ jobs:
             if [[ -z "${{ github.event.inputs.environment }}" ]]; then
               echo "environment=development" >> $GITHUB_ENV
             else
-              if [[ ${{ github.event.inputs.environment }} == 'demo' ]]; then
+              if [[ "${{ github.event.inputs.environment }}" == 'demo' ]]; then
                 echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
                 echo "HOST=${{ secrets.DEMO_HOST }}" >> $GITHUB_ENV
               else
