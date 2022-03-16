@@ -314,28 +314,28 @@ services:
       - traefik-public
       - default
 
-  # Survey Interlinker
-  survey:
-    image: interlinkproject/interlinker-survey:latest
-    container_name: ${PLATFORM_STACK_NAME?Variable not set}-survey
+  # Survey Editor Interlinker
+  surveyeditor:
+    image: interlinkproject/interlinker-surveyeditor:latest
+    container_name: ${PLATFORM_STACK_NAME?Variable not set}-surveyeditor
     environment:
       - SERVER_NAME=${DOMAIN?Variable not set}
       - PORT=${PORT}
-      - BASE_PATH=/survey
+      - BASE_PATH=/surveyeditor
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
-      - COLLECTION_NAME=survey_assets
+      - COLLECTION_NAME=surveyeditor_assets
     env_file:
       - ./.env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-survey.loadbalancer.server.port=${PORT}
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.entrypoints=websecure
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.tls.certresolver=letsencrypt
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.rule=Host(`${DOMAIN}`) && PathPrefix(`/survey`)
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-survey.middlewares=survey-stripprefix
-      - traefik.http.middlewares.survey-stripprefix.stripprefix.prefixes=/survey
+      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-surveyeditor.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveyeditor.entrypoints=websecure
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveyeditor.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveyeditor.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveyeditor.rule=Host(`${DOMAIN}`) && PathPrefix(`/surveyeditor`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-surveyeditor.middlewares=surveyeditor-stripprefix
+      - traefik.http.middlewares.surveyeditor-stripprefix.stripprefix.prefixes=/surveyeditor
     networks:
       - traefik-public
       - default
@@ -560,7 +560,7 @@ services:
       # TODO: verify secrets
       - VIRTUAL_HOST=servicepedia.${DOMAIN?Variable not set}
       - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - SURVEYINTERLINK_URL=https://${DOMAIN}/survey
+      - SURVEYINTERLINK_URL=https://${DOMAIN}/surveyeditor
       - AUTHINTERLINK_URL=https://${DOMAIN}/auth
       - SURVEYAPI_VERSION=v1
       - HOST=0.0.0.0
