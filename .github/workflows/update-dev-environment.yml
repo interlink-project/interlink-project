@@ -33,11 +33,18 @@ jobs:
         run: |
           if [[  ${{ github.event_name }} == 'release' ]]; then
             echo "environment=demo" >> $GITHUB_ENV
+            echo "HOST=${{ secrets.DEMO_HOST }}" >> $GITHUB_ENV
           else
             if [[ -z "${{ github.event.inputs.environment }}" ]]; then
              echo "environment=development" >> $GITHUB_ENV
             else
-             echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+              if [[  ${{ github.event.inputs.environment }} == 'demo' ]]; then
+                echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+                echo "HOST=${{ secrets.DEMO_HOST }}" >> $GITHUB_ENV
+              else
+                echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+                echo "HOST=${{ secrets.DEV_HOST }}" >> $GITHUB_ENV
+              fi
             fi
           fi         
 
@@ -50,7 +57,7 @@ jobs:
           DEV_LOOMIO_SMTP_PASSWORD: ${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}        
           DEV_LOOMIO_DEVISE_SECRET: ${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}        
         with:
-          host: ${{ secrets.DEV_HOST }}
+          host: ${{ env.HOST }}
           username: ${{ secrets.DEV_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           envs: DEV_LOOMIO_AAC_APP_SECRET,DEV_LOOMIO_SECRET_COOKIE_TOKEN,DEV_LOOMIO_SMTP_USERNAME,DEV_LOOMIO_SMTP_PASSWORD,DEV_LOOMIO_DEVISE_SECRET
@@ -63,11 +70,11 @@ jobs:
             export DEV_LOOMIO_DEVISE_SECRET=${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
             cd /datadrive/data/interlink-project
             git pull --ff-only
-            cd envs/${{ env.environment }}
+            cd envs/development
             docker-compose down
             docker-compose pull
             docker network create traefik-public
-            docker-compose --env-file .env up -d
+            docker-compose --env-file .env.${{ env.environment }} up -d
             sleep 10
             docker-compose exec -T catalogue python /app/app/pre_start.py
             docker-compose exec -T catalogue ./seed.sh
