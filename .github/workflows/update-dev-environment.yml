@@ -80,7 +80,7 @@ jobs:
             cd /datadrive/data/interlink-project
             git pull --ff-only
             cd envs/development
-            docker-compose down --remove-orphans
+            docker-compose --env-file .env.${{ env.environment }} down --remove-orphans
             docker-compose pull
             docker network create traefik-public
             docker-compose --env-file .env.${{ env.environment }} up -d
