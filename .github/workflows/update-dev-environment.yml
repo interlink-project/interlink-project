@@ -67,7 +67,7 @@ jobs:
             docker-compose down
             docker-compose pull
             docker network create traefik-public
-            docker-compose up --env-file=.env -d
+            docker-compose --env-file .env up -d
             docker-compose exec -T catalogue python /app/app/pre_start.py
             docker-compose exec -T catalogue ./seed.sh
             docker-compose exec -T coproduction python /app/app/pre_start.py
