@@ -8,9 +8,9 @@ on:
 
   push:
     branches:
-      - "*"
+      - "master"
     paths:
-      - envs/base/**
+      - .github/workflows/**
       - envs/development/**
 
   workflow_dispatch:
