@@ -39,7 +39,7 @@ jobs:
           if [[ "${{ github.event_name }}" == 'release' ]]; then
             set_demo
 
-          # else, deploy development
+          # else, check input value
           else
             
             # if not value in the input, assume that the trigger is a commit on another repository, so deploy development
@@ -48,7 +48,6 @@ jobs:
             
             # if input variable present, deploy depending on its value
             else
-              
               if [[ "${{ github.event.inputs.environment }}" == 'demo' ]]; then
                 set_demo
               else
