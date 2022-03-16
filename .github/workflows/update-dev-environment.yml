@@ -32,8 +32,8 @@ jobs:
       - name: set env
         run: |
           # functions to avoid repeating
-          set_demo() { echo "environment=demo" >> $GITHUB_ENV; echo "HOST=${{ secrets.DEMO_HOST }}" >> $GITHUB_ENV }
-          set_dev() { echo "environment=development" >> $GITHUB_ENV; echo "HOST=${{ secrets.DEV_HOST }}" >> $GITHUB_ENV }
+          set_demo() { echo "environment=demo" >> $GITHUB_ENV; echo "HOST=${{ secrets.DEMO_HOST }}" >> $GITHUB_ENV ; }
+          set_dev() { echo "environment=development" >> $GITHUB_ENV; echo "HOST=${{ secrets.DEV_HOST }}" >> $GITHUB_ENV ; }
 
           # if a release, deploy demo
           if [[ "${{ github.event_name }}" == 'release' ]]; then
