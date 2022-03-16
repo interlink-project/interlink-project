@@ -572,13 +572,11 @@ services:
       - ELASTICSEARCH_INDEX=annotator
       - AUTH_ON=False
       - AUTHZ_ON=False
-      - MAIL_SERVER=13.92.213.150
+      - MAIL_SERVER=mail.interlink-project.eu
       - MAIL_PORT=25
-      - MAIL_USERNAME=${DEV_LOOMIO_SMTP_USERNAME}
-      - MAIL_PASSWORD=${DEV_LOOMIO_SMTP_PASSWORD}
       - MAIL_DEFAULT_SENDER=no-reply@interlink-project.eu
       - MAIL_USE_TLS=False
-      - MAIL_USE_SSL=True
+      - MAIL_USE_SSL=False
       - MAIL_MAX_EMAILS=None
       - MAIL_ASCII_ATTACHMENTS=False
       - MAX_CONTENT_LENGTH=3145728
@@ -586,7 +584,7 @@ services:
       - UPLOAD_PATH=uploads
       - USE_SESSION_FOR_NEXT=True
       - SWAGGER_URL=/docs
-      - API_URL=/static/swagger.yaml
+      - API_URL=app/static/swagger.yaml
       - BABEL_DEFAULT_LOCALE=en
       - CLIENT_ID=${CLIENT_ID}
       - CLIENT_SECRET=${DEV_LOOMIO_AAC_APP_SECRET}
