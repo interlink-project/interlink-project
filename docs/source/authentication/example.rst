@@ -1,21 +1,5 @@
-
-## How is authentication achieved?
-### Auth microservice
-
-This authentication is managed by **auth** microservice, that exposes these endpoints:
-* /auth/login: redirects to the OIDC provider frontend, where the users can log in. Accepts *redirect_on_callback*, which is set to a cookie.
-
-![Auth1](images/auth/loginendpoint.png)
-
-* /auth/callback: callback for the OIDC provider, gets tokens returned by the OIDC provider and sets the access_token to *auth_token* cookie [samesite](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite). Then, redirects the browser to the path specified by the *redirect_on_callback* cookie after deleting it.
-
-![Auth1](images/auth/callbackendpoint.png)
-
-* /auth/logout: deletes *auth_token* and redirects browser to / , where main frontend is located.
-
-![Auth1](images/auth/logoutendpoint.png)
-
-### Flow
+Auth flow example
+---------------------
 
 1. User has not logged in yet (there is no cookie).
 
@@ -44,9 +28,8 @@ To understand the advantages of this authentication we must really understand ho
 
 ![Forum integration](images/interlinkers/forumintegration.png)
 
-```
 <iframe src="/forum/assets/{id}/viewer/" frameBorder="0"></iframe>
-```
+
 
 ### Alternatives ("authorization" header):
 

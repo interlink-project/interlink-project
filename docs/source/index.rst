@@ -10,6 +10,11 @@ Welcome to Interlink's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   environments/index.md
+   datamodel/index.md
+   authentication/authentication.rst
+   interlinkers/index.md
+   cicd/index.md
 
 
 Indices and tables

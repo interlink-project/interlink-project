@@ -1,2 +1,4 @@
 furo
 sphinx
+sphinx-togglebutton
+myst-parser

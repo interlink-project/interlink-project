@@ -28,6 +28,9 @@ author = 'Interlink team'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx_togglebutton',
+    'sphinx.ext.autosectionlabel',
+    'myst_parser'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -50,3 +53,8 @@ html_theme = 'furo'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}

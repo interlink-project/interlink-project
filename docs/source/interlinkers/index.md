@@ -1,4 +1,4 @@
-## Interlinkers integration
+# Interlinkers integration
 This project is intended to sum up the different interlinkers developed for the project. But, ¿what is an interlinker?
 
 An *interlinker* is a tool that is used to create assets by *instantiating* them. These interlinkers can be classified by its *nature*: **software** or **knowledge**.
@@ -13,7 +13,7 @@ An *interlinker* is a tool that is used to create assets by *instantiating* them
 
   A knowledge interlinker points to the software interlinker used to create an asset (softwareinterlinker_id) and the id of the specific asset that should be treated as the template (genesis_asset_id). 
 
-  ![Interlinkers models](images/interlinkers/integration/model.png)
+  ![Interlinkers models](images/integration/model.png)
 
   This allows us to create knowledge interlinkers based on any software interlinker (with some conditions, as it is going to be explained later):
 
@@ -40,7 +40,7 @@ Each interlinker is treated as an independent component, so they can be develope
       * googledrive interlinker (left): file input
       * survey interlinker (right): form name and description
 
-      ![Google Drive instantiate](images/interlinkers/integration/instantiators.png)
+      ![Google Drive instantiate](images/integration/instantiators.png)
 
       
       * etherpad: text input for specifying a name
@@ -72,7 +72,7 @@ Each interlinker is treated as an independent component, so they can be develope
       * googledrive interlinker (left): redirects to Google Drive
       * survey (right): renders HTML
 
-      ![Asset data](images/interlinkers/integration/viewers.png)
+      ![Asset data](images/integration/viewers.png)
 
       * etherpad: renders an iframe that shows etherpad GUI running in a diferent location (such as /etherpad/p/{padID})
 
@@ -93,7 +93,7 @@ Each interlinker is treated as an independent component, so they can be develope
       * etherpad: not necessary
       * survey: renders a GUI for modifying the survey
 
-      ![Asset data](images/interlinkers/integration/editor.png)
+      ![Asset data](images/integration/editor.png)
 
 4. **[OPTIONAL] Clone given asset:** 
 
@@ -105,7 +105,7 @@ Each interlinker is treated as an independent component, so they can be develope
   
 Furthermore, interlinkers can implement any other endpoints needed for its functionality. For example, Googledrive (left) and survey (right) interlinker implements:
 
-![APIS](images/interlinkers/integration/APIS.png)
+![APIS](images/integration/APIS.png)
 
 
 ### In conclusion:
@@ -128,9 +128,9 @@ VIDEO: https://youtu.be/N3jB3lwOsRo
 
 When the user selects a file, a POST request to /api/v1/assets **OF THE INTERLINKER** (in this case /googledrive/api/v1/assets) is made with the data needed for the asset instantiation (in this case, the file). When response received, a message to the parent is sent with the asset data:
 
-![Googledrive instantiator code](images/interlinkers/integration/code.png)
+![Googledrive instantiator code](images/integration/code.png)
 
 When the **Collaborative Environment frontend** receives the message, makes a POST request to /coproduction/api/v1/assets/ to store that asset for the task where the user has pressed "Add asset" button.
 
-![Collaborative environment message listener](images/interlinkers/integration/frontend.png)
+![Collaborative environment message listener](images/integration/frontend.png)
 
