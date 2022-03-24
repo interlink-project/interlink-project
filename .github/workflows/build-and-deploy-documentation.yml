@@ -1,8 +1,11 @@
-name: Build and Deploy
+name: Generate documentation and deploy to Pages
 on:
   push:
     branches:
       - "master"
+    ## run if changes in docs directory
+    paths:
+      - docs
   
 jobs:
   build-and-deploy:
