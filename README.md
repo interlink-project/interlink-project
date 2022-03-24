@@ -54,7 +54,7 @@ To get a local copy up and running follow these simple example steps.
     # from /interlink-project
     make down
     ```
-    ![Setup](docs/images/main/setup.gif)
+    ![Setup](mddocs/images/main/setup.gif)
     
 1. (Optional) Seed databases with data **can throw errors because we are constantly making changes to the database model**
 
@@ -85,11 +85,11 @@ To get a local copy up and running follow these simple example steps.
 
 
 ## More documentation
-* [CI_CD_policies.md](docs/CI_CD_policies.md)
-* [INTERLINKERS.md](docs/INTERLINKERS.md)
-* [AUTHENTICATION.md](docs/AUTHENTICATION.md)
-* [ROUTING.md](docs/ROUTING.md)
-* [DATA_MODEL.md](docs/DATA_MODEL.md)
-* [MONITORING.md](docs/MONITORING.md)
+* [CI_CD_policies.md](mddocs/CI_CD_policies.md)
+* [INTERLINKERS.md](mddocs/INTERLINKERS.md)
+* [AUTHENTICATION.md](mddocs/AUTHENTICATION.md)
+* [ROUTING.md](mddocs/ROUTING.md)
+* [DATA_MODEL.md](mddocs/DATA_MODEL.md)
+* [MONITORING.md](mddocs/MONITORING.md)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
