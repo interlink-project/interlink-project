@@ -20,7 +20,7 @@ jobs:
 
       - name: Install and Build
         run: |
-          cd docs && make generate
+          cd docs && pip3 install -r requirements.txt && make generate
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.5
