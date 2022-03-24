@@ -24,13 +24,12 @@ on:
         - development
         - demo
 
-# Ensures that only one deploy task per branch/environment will run at a time.
-concurrency:
-  group: environment-${{ github.ref }}
-  cancel-in-progress: true
-  
 jobs:
   deploy:
+    # Ensures that only one deploy task per branch/environment will run at a time.
+    concurrency:
+      group: environment-${{ github.ref }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
