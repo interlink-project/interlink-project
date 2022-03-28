@@ -56,6 +56,10 @@ services:
     networks:
       - traefik-public
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   portainer:
     image: portainer/portainer-ce:latest
@@ -76,6 +80,10 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-portainer.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME}-portainer.rule=Host(`portainer.${DOMAIN}`)
       - traefik.http.services.${PLATFORM_STACK_NAME}-portainer.loadbalancer.server.port=9000
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # Frontend Service
   frontend:
@@ -99,6 +107,10 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-frontend.rule=Host(`${DOMAIN}`) && PathPrefix(`/`)
     networks:
       - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # Redis Service
   redis:
@@ -106,6 +118,10 @@ services:
     image: redis:6-alpine
     networks:
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # Postgres Service
   db:
@@ -124,6 +140,11 @@ services:
       retries: 5
     networks:
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
   db2:
     # we do not want persistence for this databases YET (no volumes, whereas db has volumes)
     # TODO: delete this microservice and replace POSTGRES_SERVER=db2 by POSTGRES_SERVER=db (in this docker-compose catalogue and coproduction micros)
@@ -140,6 +161,10 @@ services:
       retries: 5
     networks:
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # PGAdmin (do not expose)
   pgadmin:
@@ -153,6 +178,10 @@ services:
       - ./.env.${ENVIRONMENT?Variable not set}
     networks:
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # MongoDB Service
   mongodb:
@@ -168,6 +197,10 @@ services:
       # start_period: 20s
     networks:
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # Coproduction Service
   coproduction:
@@ -199,6 +232,10 @@ services:
     networks:
       - traefik-public
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # Coproduction Worker Service
   coproductionworker:
@@ -218,6 +255,10 @@ services:
       - POSTGRES_SERVER=db2 # TODO: remove this
     networks:
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # Catalogue Service
   catalogue:
@@ -244,6 +285,10 @@ services:
     networks:
       - traefik-public
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # Auth Service
   auth:
@@ -269,6 +314,10 @@ services:
     networks:
       - traefik-public
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # # Channels Service (Websocket)
   # channels:
@@ -321,6 +370,10 @@ services:
     networks:
       - traefik-public
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # Survey Editor Interlinker
   surveyeditor:
@@ -347,6 +400,10 @@ services:
     networks:
       - traefik-public
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # Ceditor Interlinker Service
   ceditor:
@@ -373,6 +430,10 @@ services:
     networks:
       - traefik-public
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # Ceditor Interlinker Service etherpad
   etherpad:
@@ -407,6 +468,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   externalresourcemanager:
     image: interlinkproject/interlinker-externalresourcemanager:latest
@@ -432,6 +497,10 @@ services:
     networks:
       - traefik-public
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomio:
     image: interlinkproject/interlinker-loomio:latest
@@ -475,6 +544,10 @@ services:
     networks:
       - traefik-public
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomioworker:
     image: interlinkproject/interlinker-loomio:latest
@@ -500,6 +573,10 @@ services:
     networks:
       - traefik-public
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomiochannels:
     image: loomio/loomio_channel_server:latest
@@ -525,6 +602,10 @@ services:
     networks:
       - traefik-public
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # service augmenter
 
@@ -554,6 +635,10 @@ services:
       - ./.env.${ENVIRONMENT?Variable not set}
     networks:
       - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   augmenterservice:
     image: interlinkproject/publicservice-servicepedia:augmenterservice-latest
@@ -618,6 +703,10 @@ services:
       - traefik.http.services.${PLATFORM_STACK_NAME}-augmenterservice.loadbalancer.server.port=${PORT}
       - traefik.http.routers.${PLATFORM_STACK_NAME}-augmenterservice.rule=Host(`servicepedia.${DOMAIN}`)
     command: gunicorn  --log-level debug --bind 0.0.0.0:80 --workers 1 "app.main:create_app()"
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
 networks:
   traefik-public:
