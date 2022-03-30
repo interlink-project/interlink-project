@@ -96,10 +96,6 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.routers.services.${PLATFORM_STACK_NAME}-frontend-http.entrypoints=web
-      - traefik.http.routers.services.${PLATFORM_STACK_NAME}-frontend-http.rule=Host(`${DOMAIN}`) && PathPrefix(`/`)
-      - traefik.http.routers.services.${PLATFORM_STACK_NAME}-frontend-http.middlewares=${PLATFORM_STACK_NAME}-frontend--https
-      - traefik.http.middlewares.${PLATFORM_STACK_NAME}-frontend-https.redirectscheme.scheme=https
       - traefik.http.services.${PLATFORM_STACK_NAME}-frontend.loadbalancer.server.port=${PORT}
       - traefik.http.routers.${PLATFORM_STACK_NAME}-frontend.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME}-frontend.tls.certresolver=letsencrypt
