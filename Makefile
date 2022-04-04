@@ -22,28 +22,20 @@ setup: ## Clones all components
 	cd .. && git clone https://github.com/interlink-project/backend-auth
 	cd .. && git clone https://github.com/interlink-project/backend-catalogue
 	cd .. && git clone https://github.com/interlink-project/backend-coproduction
-	# cd .. && git clone https://github.com/interlink-project/backend-channels
+	cd .. && git clone https://github.com/interlink-project/backend-logging
+
 	# interlinkers
 	cd .. && git clone https://github.com/interlink-project/interlinker-survey
 	cd .. && git clone https://github.com/interlink-project/interlinker-googledrive
 	cd .. && git clone https://github.com/interlink-project/interlinker-ceditor
 	cd .. && git clone https://github.com/interlink-project/interlinker-externalresourcemanager
-
-
-.PHONY: update
-update: ## Updates all repositories
-	cd ../frontend && git pull origin master
-	# platform components
-	cd ../backend-auth && git pull origin master
-	cd ../backend-catalogue && git pull origin master
-	cd ../backend-coproduction && git pull origin master
 	
 .PHONY: down
 down: ## Stops all containers and removes volumes
 	cd ../backend-auth && make down
 	cd ../backend-catalogue && make down
 	cd ../backend-coproduction && make down
-	# cd ../backend-channels && make down
+	cd ../backend-logging && make down
 
 	# interlinkers
 	cd ../interlinker-ceditor && make down
@@ -64,7 +56,7 @@ start: down net ## Run containers (restarts them if already running)
 	cd ../backend-auth && make integrated
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
-	# cd ../backend-channels && make integrated
+	cd ../backend-logging && make integrated
 
 	# interlinkers
 	cd ../interlinker-ceditor && make integrated
@@ -83,7 +75,7 @@ restart: ## Run containers (restarts them if already running)
 	cd ../backend-auth && make integrated
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
-	# cd ../backend-channels && make integrated
+	cd ../backend-logging && make integrated
 
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
@@ -97,7 +89,7 @@ build: ## Build containers
 	cd ../backend-auth && make build
 	cd ../backend-catalogue && make build
 	cd ../backend-coproduction && make build
-	# cd ../backend-channels && make build
+	cd ../backend-logging && make build
 	
 	# interlinkers
 	cd ../interlinker-ceditor && make build
