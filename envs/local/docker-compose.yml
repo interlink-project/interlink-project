@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.7"
 services:
   proxy:
     container_name: traefik
@@ -117,8 +117,7 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_ROOT_USER}
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_ROOT_PASSWORD}
     depends_on:
-      mongodb:
-        condition: service_healthy
+      - mongodb
     networks:
       - traefik-public
 
