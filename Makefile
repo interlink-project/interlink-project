@@ -67,21 +67,6 @@ start: down net ## Run containers (restarts them if already running)
 	# frontend
 	cd ../frontend && make integrated
 
-.PHONY: restart
-restart: ## Run containers (restarts them if already running)
-	cd ./envs/local && docker-compose down --volumes --remove-orphans
-	cd ./envs/local && docker-compose up -d
-
-	cd ../backend-auth && make integrated
-	cd ../backend-catalogue && make integrated
-	cd ../backend-coproduction && make integrated
-	cd ../backend-logging && make integrated
-
-	cd ../interlinker-googledrive && make integrated
-	cd ../interlinker-survey && make integrated
-	cd ../interlinker-ceditor && make integrated
-	cd ../interlinker-externalresourcemanager && make integrated
-
 .PHONY: build
 build: ## Build containers
 	cd ./envs/local && docker-compose build
@@ -107,6 +92,24 @@ seed: ## Set initial data
 	cd ../backend-catalogue && make seed
 	cd ../backend-coproduction && make seed
 	
+.PHONY: restartcontainers
+restartcontainers: ## Run containers (restarts them if already running) except FRONTEND
+	cd ./envs/local && docker-compose down --volumes --remove-orphans
+	cd ./envs/local && docker-compose up -d
+
+	cd ../backend-auth && make integrated
+	cd ../backend-catalogue && make integrated
+	cd ../backend-coproduction && make integrated
+	cd ../backend-logging && make integrated
+
+	cd ../interlinker-googledrive && make integrated
+	cd ../interlinker-survey && make integrated
+	cd ../interlinker-ceditor && make integrated
+	cd ../interlinker-externalresourcemanager && make integrated
+
+.PHONY: restart
+restart: restartcontainers seed ## Run containers (restarts them if already running)	
+
 .PHONY: up
 up: start seed ## Run containers and seeds them with data
 	

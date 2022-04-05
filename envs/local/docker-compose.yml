@@ -36,7 +36,7 @@ services:
     image: portainer/portainer-ce:latest
     container_name: portainer
     restart: unless-stopped
-    command: --admin-password "${PORTAINER_PASSWORD}"
+    # command: --admin-password "${PORTAINER_PASSWORD}"
     security_opt:
       - no-new-privileges:true
     networks:
@@ -52,10 +52,6 @@ services:
       - traefik.http.services.${STACK_NAME?Variable not set}-portainer.loadbalancer.server.port=9000
       - traefik.http.routers.${STACK_NAME?Variable not set}-portainer-http.middlewares=portainer-stripprefix
       - traefik.http.middlewares.portainer-stripprefix.stripprefix.prefixes=/portainer
-     # - "traefik.http.routers.portainer-secure.entrypoints=websecure"
-      #- "traefik.http.routers.portainer-secure.rule=Host(`portainer.yourdomain.com`)"
-      #- "traefik.http.routers.portainer-secure.service=portainer"
-      #- "traefik.http.services.portainer.loadbalancer.server.port=9000"
       
   db:
     container_name: db
