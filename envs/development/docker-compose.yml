@@ -681,7 +681,7 @@ services:
       - AUTH_URI=https://aac.platform.smartcommunitylab.it/oauth/authorize
       - TOKEN_URI=https://aac.platform.smartcommunitylab.it/oauth/token
       - TOKEN_INTROSPECTION_URI=https://aac.platform.smartcommunitylab.it/oauth/introspect
-      - REDIRECT_URI=https://${DOMAIN}/oidc_callback
+      - REDIRECT_URI=https://${DOMAIN}/callback
       - USERINFO_URI=https://aac.platform.smartcommunitylab.it/userinfo
       - END_SESSION_ENDPOINT=https://aac.platform.smartcommunitylab.it/endsession
       - CONSUMER_KEY="6E1C924B-C03B-4F7F-97DE-B72EE2338B39"
