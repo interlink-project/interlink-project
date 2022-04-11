@@ -30,6 +30,10 @@ services:
       - traefik.docker.network=traefik-public
       - traefik.http.routers.${STACK_NAME?Variable not set}-traefik-public-http.rule=Host(`${DOMAIN?Variable not set}`)
       - traefik.http.services.${STACK_NAME?Variable not set}-traefik-public.loadbalancer.server.port=80
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
   
   portainer:
     # https://rafrasenberg.com/posts/docker-container-management-with-traefik-v2-and-portainer/
@@ -52,6 +56,10 @@ services:
       - traefik.http.services.${STACK_NAME?Variable not set}-portainer.loadbalancer.server.port=9000
       - traefik.http.routers.${STACK_NAME?Variable not set}-portainer-http.middlewares=portainer-stripprefix
       - traefik.http.middlewares.portainer-stripprefix.stripprefix.prefixes=/portainer
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
       
   db:
     container_name: db
@@ -76,6 +84,10 @@ services:
           - node.labels.${STACK_NAME?Variable not set}.db-data == true
     networks:
       - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   pgadmin:
     container_name: pgadmin
@@ -88,6 +100,10 @@ services:
       - .env
     networks:
       - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   mongodb:
     image: bitnami/mongodb:latest
@@ -102,6 +118,10 @@ services:
       start_period: 20s
     networks:
       - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   mongo-express:
     image: mongo-express
@@ -120,6 +140,10 @@ services:
       - mongodb
     networks:
       - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -137,6 +161,10 @@ services:
       retries: 3
     networks:
       - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
 networks:
   traefik-public:
