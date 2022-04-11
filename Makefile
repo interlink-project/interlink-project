@@ -87,11 +87,6 @@ build: ## Build containers
 .PHONY: upb
 upb: down net build up ## Build and run containers
 
-.PHONY: seed
-seed: ## Set initial data
-	cd ../backend-catalogue && make seed
-	cd ../backend-coproduction && make seed
-	
 .PHONY: restartcontainers
 restartcontainers: ## Run containers (restarts them if already running) except FRONTEND
 	cd ./envs/local && docker-compose down --volumes --remove-orphans
@@ -106,6 +101,10 @@ restartcontainers: ## Run containers (restarts them if already running) except F
 	cd ../interlinker-survey && make integrated
 	cd ../interlinker-ceditor && make integrated
 	cd ../interlinker-externalresourcemanager && make integrated
+
+.PHONY: seed
+seed: ## Run containers (restarts them if already running)	
+	cd ../backend-catalogue && make localseed
 
 .PHONY: restart
 restart: restartcontainers seed ## Run containers (restarts them if already running)	
