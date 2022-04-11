@@ -28,7 +28,6 @@ setup: ## Clones all components
 	cd .. && git clone https://github.com/interlink-project/interlinker-survey
 	cd .. && git clone https://github.com/interlink-project/interlinker-googledrive
 	cd .. && git clone https://github.com/interlink-project/interlinker-ceditor
-	cd .. && git clone https://github.com/interlink-project/interlinker-externalresourcemanager
 	
 .PHONY: down
 down: ## Stops all containers and removes volumes
@@ -41,7 +40,6 @@ down: ## Stops all containers and removes volumes
 	cd ../interlinker-ceditor && make down
 	cd ../interlinker-googledrive && make down
 	cd ../interlinker-survey && make down
-	cd ../interlinker-externalresourcemanager && make down
 
 	cd ../frontend && make down
 	
@@ -62,7 +60,6 @@ start: down net ## Run containers (restarts them if already running)
 	cd ../interlinker-ceditor && make integrated
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
-	cd ../interlinker-externalresourcemanager && make integrated
 
 	# frontend
 	cd ../frontend && make integrated
@@ -80,7 +77,6 @@ build: ## Build containers
 	cd ../interlinker-ceditor && make build
 	cd ../interlinker-googledrive && make build
 	cd ../interlinker-survey && make build
-	cd ../interlinker-externalresourcemanager && make build
 
 	cd ../frontend && make build
 
@@ -100,7 +96,6 @@ restartcontainers: ## Run containers (restarts them if already running) except F
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
 	cd ../interlinker-ceditor && make integrated
-	cd ../interlinker-externalresourcemanager && make integrated
 
 .PHONY: seed
 seed: ## Run containers (restarts them if already running)	
