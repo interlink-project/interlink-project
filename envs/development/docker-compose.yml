@@ -296,7 +296,7 @@ services:
       - BASE_PATH=/auth
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=users
-      - CLIENT_SECRET=${DEV_LOOMIO_AAC_APP_SECRET}
+      - CLIENT_SECRET=${LOOMIO_AAC_APP_SECRET}
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     labels:
@@ -504,12 +504,12 @@ services:
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
       - REDIS_URL=redis://redis:6379
-      - AAC_APP_SECRET=${DEV_LOOMIO_AAC_APP_SECRET}
-      - SECRET_COOKIE_TOKEN=${DEV_LOOMIO_SECRET_COOKIE_TOKEN}
-      - SECRET_KEY_BASE=${DEV_LOOMIO_SECRET_COOKIE_TOKEN}
-      - DEVISE_SECRET=${DEV_LOOMIO_DEVISE_SECRET}
-      - SMTP_USERNAME=${DEV_LOOMIO_SMTP_USERNAME}
-      - SMTP_PASSWORD=${DEV_LOOMIO_SMTP_PASSWORD}
+      - AAC_APP_SECRET=${LOOMIO_AAC_APP_SECRET}
+      - SECRET_COOKIE_TOKEN=${LOOMIO_SECRET_COOKIE_TOKEN}
+      - SECRET_KEY_BASE=${LOOMIO_SECRET_COOKIE_TOKEN}
+      - DEVISE_SECRET=${LOOMIO_DEVISE_SECRET}
+      - SMTP_USERNAME=${LOOMIO_SMTP_USERNAME}
+      - SMTP_PASSWORD=${LOOMIO_SMTP_PASSWORD}
 
     volumes:
       - loomio-uploads:/loomio/public/system
@@ -552,12 +552,12 @@ services:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
       - REDIS_URL=redis://redis:6379
       - TASK=worker
-      - AAC_APP_SECRET=${DEV_LOOMIO_AAC_APP_SECRET}
-      - SECRET_COOKIE_TOKEN=${DEV_LOOMIO_SECRET_COOKIE_TOKEN}
-      - SECRET_KEY_BASE=${DEV_LOOMIO_SECRET_COOKIE_TOKEN}
-      - DEVISE_SECRET=${DEV_LOOMIO_DEVISE_SECRET}
-      - SMTP_USERNAME=${DEV_LOOMIO_SMTP_USERNAME}
-      - SMTP_PASSWORD=${DEV_LOOMIO_SMTP_PASSWORD}
+      - AAC_APP_SECRET=${LOOMIO_AAC_APP_SECRET}
+      - SECRET_COOKIE_TOKEN=${LOOMIO_SECRET_COOKIE_TOKEN}
+      - SECRET_KEY_BASE=${LOOMIO_SECRET_COOKIE_TOKEN}
+      - DEVISE_SECRET=${LOOMIO_DEVISE_SECRET}
+      - SMTP_USERNAME=${LOOMIO_SMTP_USERNAME}
+      - SMTP_PASSWORD=${LOOMIO_SMTP_PASSWORD}
     volumes:
       - loomio-uploads:/loomio/public/system
       - loomio-storage:/loomio/storage
@@ -676,7 +676,7 @@ services:
       - API_URL=app/static/swagger.yaml
       - BABEL_DEFAULT_LOCALE=en
       - CLIENT_ID=${CLIENT_ID}
-      - CLIENT_SECRET=${DEV_LOOMIO_AAC_APP_SECRET}
+      - CLIENT_SECRET=${LOOMIO_AAC_APP_SECRET}
       - ISSUER=${AAC_HOST}
       - AUTH_URI=https://aac.platform.smartcommunitylab.it/oauth/authorize
       - TOKEN_URI=https://aac.platform.smartcommunitylab.it/oauth/token
@@ -756,6 +756,9 @@ services:
       - ./grafana/dashboards:/var/lib/grafana/dashboards
       - grafana-dashboards:/var/lib/grafana
       - grafana-data:/etc/grafana/
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public

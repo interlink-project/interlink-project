@@ -1,0 +1,52 @@
+name: update-varam-environment
+on:
+  repository_dispatch:
+    types: [update-varam-environment]
+
+  release:
+    types: [ published ]
+    tags: varam.**
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    # Ensures that only one deploy task per branch/environment will run at a time.
+    concurrency:
+      group: environment-${{ github.ref }}
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Dev SSH
+        uses: appleboy/ssh-action@master
+        env:
+          LOOMIO_AAC_APP_SECRET: ${{ secrets.VARAM_LOOMIO_AAC_APP_SECRET }}
+          LOOMIO_SECRET_COOKIE_TOKEN: ${{ secrets.VARAM_LOOMIO_SECRET_COOKIE_TOKEN }}
+          LOOMIO_SMTP_USERNAME: ${{ secrets.VARAM_LOOMIO_SMTP_USERNAME }}
+          LOOMIO_SMTP_PASSWORD: ${{ secrets.VARAM_LOOMIO_SMTP_PASSWORD }}
+          LOOMIO_DEVISE_SECRET: ${{ secrets.VARAM_LOOMIO_DEVISE_SECRET }}
+        with:
+          host: ${{ secrets.VARAM_HOST }}
+          username: ${{ secrets.VARAM_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          envs: LOOMIO_AAC_APP_SECRET,LOOMIO_SECRET_COOKIE_TOKEN,LOOMIO_SMTP_USERNAME,LOOMIO_SMTP_PASSWORD,LOOMIO_DEVISE_SECRET
+          script: |
+            export LOOMIO_SMTP_USERNAME=${{ secrets.VARAM_LOOMIO_SMTP_USERNAME }}
+            export LOOMIO_AAC_APP_SECRET=${{ secrets.VARAM_LOOMIO_AAC_APP_SECRET }}
+            export MAIL_PASSWORD=${{ secrets.VARAM_MAIL_PASSWORD }}
+            export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.VARAM_LOOMIO_SECRET_COOKIE_TOKEN }}
+            export LOOMIO_SMTP_PASSWORD=${{ secrets.VARAM_LOOMIO_SMTP_PASSWORD }}        
+            export LOOMIO_DEVISE_SECRET=${{ secrets.VARAM_LOOMIO_DEVISE_SECRET }}
+            export ENVIRONMENT=zgz
+            cd /datadrive/data/interlink-project
+            git pull --ff-only
+            cd envs/zgz
+            docker-compose --env-file .env.varam down --remove-orphans
+            docker-compose --env-file .env.varam pull
+            docker network create traefik-public
+            docker-compose --env-file .env.varam up -d
+            sleep 10
+            docker-compose exec -T catalogue python /app/app/pre_start.py
+            docker-compose exec -T catalogue ./seed.sh
+            docker-compose exec -T coproduction python /app/app/pre_start.py
+            docker-compose exec -T coproduction ./seed.sh

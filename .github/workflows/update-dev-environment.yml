@@ -74,12 +74,12 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           envs: DEV_LOOMIO_AAC_APP_SECRET,DEV_LOOMIO_SECRET_COOKIE_TOKEN,DEV_LOOMIO_SMTP_USERNAME,DEV_LOOMIO_SMTP_PASSWORD,DEV_LOOMIO_DEVISE_SECRET
           script: |
-            export DEV_LOOMIO_SMTP_USERNAME=${{ secrets.DEV_LOOMIO_SMTP_USERNAME }}
-            export DEV_LOOMIO_AAC_APP_SECRET=${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
-            export DEV_MAIL_PASSWORD=${{ secrets.DEV_MAIL_PASSWORD }}
-            export DEV_LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
-            export DEV_LOOMIO_SMTP_PASSWORD=${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}        
-            export DEV_LOOMIO_DEVISE_SECRET=${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
+            export LOOMIO_SMTP_USERNAME=${{ secrets.DEV_LOOMIO_SMTP_USERNAME }}
+            export LOOMIO_AAC_APP_SECRET=${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
+            export MAIL_PASSWORD=${{ secrets.DEV_MAIL_PASSWORD }}
+            export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
+            export LOOMIO_SMTP_PASSWORD=${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}
+            export LOOMIO_DEVISE_SECRET=${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
             export ENVIRONMENT=${{ env.environment }}
             cd /datadrive/data/interlink-project
             git pull --ff-only
