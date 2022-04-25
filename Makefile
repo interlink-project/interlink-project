@@ -55,6 +55,7 @@ start: down net ## Run containers (restarts them if already running)
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
 	cd ../backend-logging && make integrated
+	cd ../backend-monitoring && make integrated
 
 	# interlinkers
 	cd ../interlinker-ceditor && make integrated
@@ -92,6 +93,7 @@ restartcontainers: ## Run containers (restarts them if already running) except F
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
 	cd ../backend-logging && make integrated
+	cd ../backend-monitoring && make integrated
 
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
@@ -110,6 +112,7 @@ restartcontainers: ## Run containers (restarts them if already running) except F
 	cd ../backend-catalogue && make integrated
 	cd ../backend-coproduction && make integrated
 	cd ../backend-logging && make integrated
+	cd ../backend-monitoring && make integrated
 
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
