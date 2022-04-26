@@ -942,6 +942,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DATABASE: weblate
       POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
 
     labels:
       - traefik.enable=true
