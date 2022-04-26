@@ -954,8 +954,6 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-weblate.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME}-weblate.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-weblate.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-weblate.middlewares=${PLATFORM_STACK_NAME}-weblate-stripprefix
-      - traefik.http.middlewares.${PLATFORM_STACK_NAME}-weblate-stripprefix.stripprefix.prefixes=/weblate
     networks:
       - default
       - traefik-public
