@@ -4,8 +4,7 @@ on:
     types: [update-mef-environment]
 
   release:
-    types: [ published ]
-    tags: mef.**
+    tags: **mef**
 
   workflow_dispatch:
 

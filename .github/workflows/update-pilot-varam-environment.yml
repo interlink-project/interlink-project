@@ -4,8 +4,7 @@ on:
     types: [update-varam-environment]
 
   release:
-    types: [ published ]
-    tags: varam.**
+    tags: **varam**
 
   workflow_dispatch:
 
@@ -37,7 +36,7 @@ jobs:
             export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.VARAM_LOOMIO_SECRET_COOKIE_TOKEN }}
             export LOOMIO_SMTP_PASSWORD=${{ secrets.VARAM_LOOMIO_SMTP_PASSWORD }}        
             export LOOMIO_DEVISE_SECRET=${{ secrets.VARAM_LOOMIO_DEVISE_SECRET }}
-            export ENVIRONMENT=zgz
+            export ENVIRONMENT=varam
             cd /datadrive/data/interlink-project
             git pull --ff-only
             cd envs/zgz
