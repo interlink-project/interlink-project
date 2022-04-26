@@ -24,7 +24,6 @@ jobs:
           LOOMIO_SMTP_USERNAME: ${{ secrets.MEF_LOOMIO_SMTP_USERNAME }}
           LOOMIO_SMTP_PASSWORD: ${{ secrets.MEF_LOOMIO_SMTP_PASSWORD }}
           LOOMIO_DEVISE_SECRET: ${{ secrets.MEF_LOOMIO_DEVISE_SECRET }}
-          ENVIRONMENT: mef
         with:
           host: ${{ secrets.MEF_HOST }}
           username: ${{ secrets.MEF_USERNAME }}
@@ -42,8 +41,8 @@ jobs:
             export GRAFANA_PASSWORD=${{ secrets.MEF_GRAFANA_PASSWORD }}
             export ENVIRONMENT=mef
             cd /datadrive/data/
-            git clone https://github.com/interlink-project/interlink-project.git
-            cd interlink-project/envs/development
+            git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only)
+            cd /datadrive/data/interlink-project/envs/development
             docker-compose --env-file .env.mef down --remove-orphans
             docker-compose --env-file .env.mef pull
             docker network create traefik-public || true
