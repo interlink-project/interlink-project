@@ -919,8 +919,8 @@ services:
     - weblate-data:/app/data
     restart: always
     depends_on:
-    - database
-    - cache
+    - db
+    - weblate-cache
     environment:
       WEBLATE_SITE_DOMAIN: ${DOMAIN}
       WEBLATE_EMAIL_HOST: ${SMTP_SERVER}
