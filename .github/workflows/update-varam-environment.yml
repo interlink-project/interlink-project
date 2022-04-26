@@ -37,8 +37,8 @@ jobs:
             export LOOMIO_SMTP_PASSWORD=${{ secrets.VARAM_LOOMIO_SMTP_PASSWORD }}        
             export LOOMIO_DEVISE_SECRET=${{ secrets.VARAM_LOOMIO_DEVISE_SECRET }}
             export ENVIRONMENT=varam
-            mkdir -p /datadrive/data/interlink-project
-            cd /datadrive/data/interlink-project
+            cd /datadrive/data/
+            git clone https://github.com/interlink-project/interlink-project.git
             git pull --ff-only
             cd envs/development
             docker-compose --env-file .env.varam down --remove-orphans
