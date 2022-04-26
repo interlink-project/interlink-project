@@ -1,4 +1,4 @@
-name: update-mef-environment
+name: update-mef-environment_
 on:
   repository_dispatch:
     types: [update-mef-environment]
