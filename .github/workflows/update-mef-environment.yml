@@ -3,8 +3,7 @@ on:
   repository_dispatch:
     types: [update-mef-environment]
 
-  release:
-    types: [published]
+  push:
     tags:        
       - mef.**
 

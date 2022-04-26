@@ -3,7 +3,7 @@ on:
   repository_dispatch:
     types: [update-zgz-environment]
 
-  release:
+  push:
     tags:
       - zgz**
 

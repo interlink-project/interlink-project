@@ -3,7 +3,7 @@ on:
   repository_dispatch:
     types: [update-varam-environment]
 
-  release:
+  push:
     tags:
       - varam**
 
