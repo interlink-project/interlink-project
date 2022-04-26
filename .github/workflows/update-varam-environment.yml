@@ -36,6 +36,8 @@ jobs:
             export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.VARAM_LOOMIO_SECRET_COOKIE_TOKEN }}
             export LOOMIO_SMTP_PASSWORD=${{ secrets.VARAM_LOOMIO_SMTP_PASSWORD }}        
             export LOOMIO_DEVISE_SECRET=${{ secrets.VARAM_LOOMIO_DEVISE_SECRET }}
+            export GRAFANA_USERNAME=${{ secrets.VARAM_GRAFANA_USERNAME }}
+            export GRAFANA_PASSWORD=${{ secrets.VARAM_GRAFANA_PASSWORD }}
             export ENVIRONMENT=varam
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git

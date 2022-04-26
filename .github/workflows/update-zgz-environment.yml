@@ -36,6 +36,8 @@ jobs:
             export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.ZGZ_LOOMIO_SECRET_COOKIE_TOKEN }}
             export LOOMIO_SMTP_PASSWORD=${{ secrets.ZGZ_LOOMIO_SMTP_PASSWORD }}        
             export LOOMIO_DEVISE_SECRET=${{ secrets.ZGZ_LOOMIO_DEVISE_SECRET }}
+            export GRAFANA_USERNAME=${{ secrets.ZGZ_GRAFANA_USERNAME }}
+            export GRAFANA_PASSWORD=${{ secrets.ZGZ_GRAFANA_PASSWORD }}
             export ENVIRONMENT=zgz
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git
