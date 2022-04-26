@@ -89,10 +89,15 @@ services:
   frontend:
     image: "interlinkproject/frontend:latest"
     container_name: ${PLATFORM_STACK_NAME}-frontend
+    volumes:
+      - ${FRONTEND_CUSTOMIZATION_IMAGES_PATH}:/usr/share/nginx/html/public/customization
     environment:
       - REACT_APP_COMPLETE_DOMAIN=https://${DOMAIN}
-      - DOMAIN=${DOMAIN}
+      - DOMAIN
       - NODE_ENV=production
+      - REACT_APP_PRIMARY_COLOR=${PRIMARY_COLOR}
+      - REACT_APP_DEFAULT_LANGUAGE=${DEFAULT_LANGUAGE}
+      - REACT_APP_ALLOWED_LANGUAGES=${ALLOWED_LANGUAGES}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -212,6 +217,8 @@ services:
       - POSTGRES_SERVER=db2 # TODO: remove this
       - CATALOGUE_SERVICE_NAME=catalogue
       - CATALOGUE_PORT=80
+      - DEFAULT_LANGUAGE
+      - ALLOWED_LANGUAGES
     depends_on:
       db:
         condition: service_healthy
@@ -249,6 +256,8 @@ services:
       - BASE_PATH=/coproduction
       - POSTGRES_DB=coproduction
       - POSTGRES_SERVER=db2 # TODO: remove this
+      - DEFAULT_LANGUAGE
+      - ALLOWED_LANGUAGES
     networks:
       - default
     logging:
@@ -266,6 +275,8 @@ services:
       - BASE_PATH=/catalogue
       - POSTGRES_DB=catalogue
       - POSTGRES_SERVER=db2 # TODO: remove this
+      - DEFAULT_LANGUAGE
+      - ALLOWED_LANGUAGES
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     labels:
@@ -899,6 +910,73 @@ services:
 #      options:
 #        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
         
+  ### LOCALIZATION
+  weblate:
+    image: weblate/weblate
+    tmpfs:
+    - /app/cache
+    volumes:
+    - weblate-data:/app/data
+    restart: always
+    depends_on:
+    - database
+    - cache
+    environment:
+      WEBLATE_SITE_DOMAIN: ${DOMAIN}
+      WEBLATE_EMAIL_HOST: ${SMTP_SERVER}
+      WEBLATE_EMAIL_HOST_USER: ${LOOMIO_SMTP_USERNAME}
+      WEBLATE_EMAIL_HOST_PASSWORD: ${LOOMIO_SMTP_PASSWORD}
+      WEBLATE_DEBUG: 1
+      WEBLATE_LOGLEVEL: DEBUG
+      WEBLATE_SITE_TITLE: Weblate
+      WEBLATE_ADMIN_NAME: Weblate Admin
+      WEBLATE_ADMIN_EMAIL: weblate@example.com
+      WEBLATE_ADMIN_PASSWORD: admin
+      WEBLATE_SERVER_EMAIL: weblate@example.com
+      WEBLATE_DEFAULT_FROM_EMAIL: weblate@example.com
+      WEBLATE_ALLOWED_HOSTS: "*"
+      WEBLATE_REGISTRATION_OPEN: 1
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-weblate.rule=Host(`${DOMAIN}`)  && PathPrefix(`/weblate`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-weblate.service=${PLATFORM_STACK_NAME}-weblate
+      - traefik.http.services.${PLATFORM_STACK_NAME}-weblate.loadbalancer.server.port=8080
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-weblate.entrypoints=websecure
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-weblate.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-weblate.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-weblate.middlewares=${PLATFORM_STACK_NAME}-weblate-stripprefix
+      - traefik.http.middlewares.${PLATFORM_STACK_NAME}-weblate-stripprefix.stripprefix.prefixes=/weblate
+    networks:
+      - default
+      - traefik-public
+
+  database:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_PASSWORD: weblate
+      POSTGRES_USER: weblate
+      POSTGRES_DATABASE: weblate
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 
+    volumes:
+    - postgres-data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - default
+
+  cache:
+    image: redis:6-alpine
+    restart: always
+    command: [redis-server, --save, '60', '1']
+    volumes:
+    - redis-data:/data
+    networks:
+      - default
+  
 networks:
   traefik-public:
     external: true
@@ -924,3 +1002,7 @@ volumes:
   prometheus-data:
   loki-data:
 #  alertmanager-data:
+
+  weblate-data:
+  postgres-data:
+  redis-data:
