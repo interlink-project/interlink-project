@@ -58,7 +58,12 @@ jobs:
                 set_dev
               fi
             fi
-          fi         
+          fi  
+
+      - name: Dump redis logs
+        uses: jwalton/gh-docker-logs@v1
+        with:
+          tail: '100'
 
       - name: Deploy Dev SSH
         uses: appleboy/ssh-action@master
