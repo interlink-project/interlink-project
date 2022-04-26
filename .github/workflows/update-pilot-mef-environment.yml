@@ -27,7 +27,7 @@ jobs:
         with:
           host: ${{ secrets.MEF_HOST }}
           username: ${{ secrets.MEF_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.MEF_SSH_KEY }}
           envs: LOOMIO_AAC_APP_SECRET,LOOMIO_SECRET_COOKIE_TOKEN,LOOMIO_SMTP_USERNAME,LOOMIO_SMTP_PASSWORD,LOOMIO_DEVISE_SECRET
           script: |
             export LOOMIO_SMTP_USERNAME=${{ secrets.MEF_LOOMIO_SMTP_USERNAME }}

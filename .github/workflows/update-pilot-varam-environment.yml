@@ -27,7 +27,7 @@ jobs:
         with:
           host: ${{ secrets.VARAM_HOST }}
           username: ${{ secrets.VARAM_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.VARAM_SSH_KEY }}
           envs: LOOMIO_AAC_APP_SECRET,LOOMIO_SECRET_COOKIE_TOKEN,LOOMIO_SMTP_USERNAME,LOOMIO_SMTP_PASSWORD,LOOMIO_DEVISE_SECRET
           script: |
             export LOOMIO_SMTP_USERNAME=${{ secrets.VARAM_LOOMIO_SMTP_USERNAME }}

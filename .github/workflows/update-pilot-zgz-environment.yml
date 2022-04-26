@@ -27,7 +27,7 @@ jobs:
         with:
           host: ${{ secrets.ZGZ_HOST }}
           username: ${{ secrets.ZGZ_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.ZGZ_SSH_KEY }}
           envs: LOOMIO_AAC_APP_SECRET,LOOMIO_SECRET_COOKIE_TOKEN,LOOMIO_SMTP_USERNAME,LOOMIO_SMTP_PASSWORD,LOOMIO_DEVISE_SECRET
           script: |
             export LOOMIO_SMTP_USERNAME=${{ secrets.ZGZ_LOOMIO_SMTP_USERNAME }}
