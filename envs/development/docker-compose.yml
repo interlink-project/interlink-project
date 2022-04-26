@@ -936,6 +936,7 @@ services:
       WEBLATE_DEFAULT_FROM_EMAIL: weblate@example.com
       WEBLATE_ALLOWED_HOSTS: "*"
       WEBLATE_REGISTRATION_OPEN: 1
+      WEBLATE_URL_PREFIX: /weblate
       REDIS_HOST: weblate-cache
       REDIS_PORT: 6379
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
