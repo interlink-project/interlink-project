@@ -4,7 +4,7 @@ on:
     types: [update-zgz-environment]
 
   release:
-    tags: **zgz**
+    tags: zgz**
 
   workflow_dispatch:
 
