@@ -14,7 +14,7 @@ scrape_configs:
       - targets:
           - localhost
         labels:
-          job: varlog
+          job: system
           __path__: /var/log/*log
 
   - job_name: user-logging
