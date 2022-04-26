@@ -1,7 +1,7 @@
-name: update-mef-environment_
+name: update-mef-environment
 on:
   repository_dispatch:
-    types: [update-mef-environment_]
+    types: [update-mef-environment]
 
   release:
     types: [published]
