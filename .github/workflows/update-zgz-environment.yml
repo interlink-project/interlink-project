@@ -39,8 +39,8 @@ jobs:
             export GRAFANA_USERNAME=${{ secrets.ZGZ_GRAFANA_USERNAME }}
             export GRAFANA_PASSWORD=${{ secrets.ZGZ_GRAFANA_PASSWORD }}
             export ENVIRONMENT=zgz
-            cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git
+            cd interlink-project/envs/development
             git pull --ff-only
             cd envs/development
             docker-compose --env-file .env.zgz down --remove-orphans

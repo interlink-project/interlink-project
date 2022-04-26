@@ -42,8 +42,7 @@ jobs:
             export ENVIRONMENT=mef
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git
-            git pull --ff-only
-            cd envs/development
+            cd interlink-project/envs/development
             docker-compose --env-file .env.mef down --remove-orphans
             docker-compose --env-file .env.mef pull
             docker network create traefik-public

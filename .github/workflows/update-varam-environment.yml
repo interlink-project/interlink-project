@@ -41,8 +41,7 @@ jobs:
             export ENVIRONMENT=varam
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git
-            git pull --ff-only
-            cd envs/development
+            cd interlink-project/envs/development
             docker-compose --env-file .env.varam down --remove-orphans
             docker-compose --env-file .env.varam pull
             docker network create traefik-public
