@@ -24,6 +24,7 @@ jobs:
           LOOMIO_SMTP_USERNAME: ${{ secrets.MEF_LOOMIO_SMTP_USERNAME }}
           LOOMIO_SMTP_PASSWORD: ${{ secrets.MEF_LOOMIO_SMTP_PASSWORD }}
           LOOMIO_DEVISE_SECRET: ${{ secrets.MEF_LOOMIO_DEVISE_SECRET }}
+          ENVIRONMENT: mef
         with:
           host: ${{ secrets.MEF_HOST }}
           username: ${{ secrets.MEF_USERNAME }}
