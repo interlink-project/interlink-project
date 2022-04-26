@@ -90,6 +90,7 @@ jobs:
             docker-compose --env-file .env.${{ env.environment }} down --remove-orphans
             docker-compose --env-file .env.${{ env.environment }} pull
             docker network create traefik-public
+            docker network create grafana-network
             docker-compose --env-file .env.${{ env.environment }} up -d
             sleep 10
             docker-compose exec -T catalogue python /app/app/pre_start.py

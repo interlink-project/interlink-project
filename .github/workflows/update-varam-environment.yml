@@ -46,6 +46,7 @@ jobs:
             docker-compose --env-file .env.varam down --remove-orphans
             docker-compose --env-file .env.varam pull
             docker network create traefik-public
+            docker network create grafana-network
             docker-compose --env-file .env.varam up -d
             sleep 10
             docker-compose exec -T catalogue python /app/app/pre_start.py
