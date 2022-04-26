@@ -18,17 +18,10 @@ jobs:
     steps:
       - name: Deploy Dev SSH
         uses: appleboy/ssh-action@master
-        env:
-          LOOMIO_AAC_APP_SECRET: ${{ secrets.VARAM_LOOMIO_AAC_APP_SECRET }}
-          LOOMIO_SECRET_COOKIE_TOKEN: ${{ secrets.VARAM_LOOMIO_SECRET_COOKIE_TOKEN }}
-          LOOMIO_SMTP_USERNAME: ${{ secrets.VARAM_LOOMIO_SMTP_USERNAME }}
-          LOOMIO_SMTP_PASSWORD: ${{ secrets.VARAM_LOOMIO_SMTP_PASSWORD }}
-          LOOMIO_DEVISE_SECRET: ${{ secrets.VARAM_LOOMIO_DEVISE_SECRET }}
         with:
           host: ${{ secrets.VARAM_HOST }}
           username: ${{ secrets.VARAM_USERNAME }}
           key: ${{ secrets.VARAM_SSH_KEY }}
-          envs: LOOMIO_AAC_APP_SECRET,LOOMIO_SECRET_COOKIE_TOKEN,LOOMIO_SMTP_USERNAME,LOOMIO_SMTP_PASSWORD,LOOMIO_DEVISE_SECRET
           script: |
             export LOOMIO_SMTP_USERNAME=${{ secrets.VARAM_LOOMIO_SMTP_USERNAME }}
             export LOOMIO_AAC_APP_SECRET=${{ secrets.VARAM_LOOMIO_AAC_APP_SECRET }}
@@ -40,8 +33,8 @@ jobs:
             export GRAFANA_PASSWORD=${{ secrets.VARAM_GRAFANA_PASSWORD }}
             export ENVIRONMENT=varam
             cd /datadrive/data/
-            git clone https://github.com/interlink-project/interlink-project.git
-            cd interlink-project/envs/development
+            git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only)
+            cd /datadrive/data/interlink-project/envs/development
             docker-compose --env-file .env.varam down --remove-orphans
             docker-compose --env-file .env.varam pull
             docker network create traefik-public || true
