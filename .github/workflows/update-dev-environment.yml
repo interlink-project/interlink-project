@@ -67,7 +67,7 @@ jobs:
           DEV_LOOMIO_SECRET_COOKIE_TOKEN: ${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
           DEV_LOOMIO_SMTP_USERNAME: ${{ secrets.DEV_LOOMIO_SMTP_USERNAME }}
           DEV_LOOMIO_SMTP_PASSWORD: ${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}        
-          DEV_LOOMIO_DEVISE_SECRET: ${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}        
+          DEV_LOOMIO_DEVISE_SECRET: ${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
         with:
           host: ${{ env.HOST }}
           username: ${{ secrets.DEV_USERNAME }}
@@ -88,8 +88,8 @@ jobs:
             cd interlink-project/envs/development
             docker-compose --env-file .env.${{ env.environment }} down --remove-orphans
             docker-compose --env-file .env.${{ env.environment }} pull
-            docker network create traefik-public
-            docker network create grafana-network
+            docker network create traefik-public || true
+            docker network create grafana-network || true
             docker-compose --env-file .env.${{ env.environment }} up -d
             sleep 10
             docker-compose exec -T catalogue python /app/app/pre_start.py

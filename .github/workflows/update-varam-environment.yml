@@ -44,8 +44,8 @@ jobs:
             cd interlink-project/envs/development
             docker-compose --env-file .env.varam down --remove-orphans
             docker-compose --env-file .env.varam pull
-            docker network create traefik-public
-            docker network create grafana-network
+            docker network create traefik-public || true
+            docker network create grafana-network || true
             docker-compose --env-file .env.varam up -d
             sleep 10
             docker-compose exec -T catalogue python /app/app/pre_start.py

@@ -45,8 +45,8 @@ jobs:
             cd envs/development
             docker-compose --env-file .env.zgz down --remove-orphans
             docker-compose --env-file .env.zgz pull
-            docker network create traefik-public
-            docker network create grafana-network
+            docker network create traefik-public || true
+            docker network create grafana-network || true
             docker-compose --env-file .env.zgz up -d
             sleep 10
             docker-compose exec -T catalogue python /app/app/pre_start.py
