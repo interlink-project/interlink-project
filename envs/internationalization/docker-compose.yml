@@ -32,6 +32,7 @@ services:
     - db
     - weblate-cache
     environment:
+      WEBLATE_ENABLE_HTTPS: 1
       WEBLATE_SITE_DOMAIN: ${DOMAIN}
       WEBLATE_EMAIL_HOST: ${SMTP_SERVER}
       WEBLATE_EMAIL_HOST_USER: ${SMTP_USERNAME}
