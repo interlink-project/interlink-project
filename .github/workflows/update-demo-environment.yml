@@ -11,22 +11,22 @@ jobs:
       cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy Dev SSH
+      - name: Deploy Demo SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEMO_HOST }}
           username: ${{ secrets.DEMO_USERNAME }}
-          key: ${{ secrets.DEMO_SSH_KEY }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
-            export LOOMIO_SMTP_USERNAME=${{ secrets.DEMO_LOOMIO_SMTP_USERNAME }}
-            export LOOMIO_AAC_APP_SECRET=${{ secrets.DEMO_LOOMIO_AAC_APP_SECRET }}
-            export MAIL_PASSWORD=${{ secrets.DEMO_MAIL_PASSWORD }}
-            export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.DEMO_LOOMIO_SECRET_COOKIE_TOKEN }}
-            export LOOMIO_SMTP_PASSWORD=${{ secrets.DEMO_LOOMIO_SMTP_PASSWORD }}        
-            export LOOMIO_DEVISE_SECRET=${{ secrets.DEMO_LOOMIO_DEVISE_SECRET }}
-            export LOOMIO_DEVISE_SECRET=${{ secrets.DEMO_LOOMIO_DEVISE_SECRET }}
-            export GRAFANA_USERNAME=${{ secrets.DEMO_GRAFANA_USERNAME }}
-            export GRAFANA_PASSWORD=${{ secrets.DEMO_GRAFANA_PASSWORD }}
+            export LOOMIO_SMTP_USERNAME=${{ secrets.DEV_LOOMIO_SMTP_USERNAME }}
+            export LOOMIO_AAC_APP_SECRET=${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
+            export MAIL_PASSWORD=${{ secrets.DEV_MAIL_PASSWORD }}
+            export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
+            export LOOMIO_SMTP_PASSWORD=${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}        
+            export LOOMIO_DEVISE_SECRET=${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
+            export LOOMIO_DEVISE_SECRET=${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
+            export GRAFANA_USERNAME=${{ secrets.DEV_GRAFANA_USERNAME }}
+            export GRAFANA_PASSWORD=${{ secrets.DEV_GRAFANA_PASSWORD }}
             export ENVIRONMENT=demo
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only)
@@ -39,5 +39,3 @@ jobs:
             sleep 10
             docker-compose exec -T catalogue python /app/app/pre_start.py
             docker-compose exec -T catalogue ./seed.sh
-            docker-compose exec -T coproduction python /app/app/pre_start.py
-            docker-compose exec -T coproduction ./seed.sh

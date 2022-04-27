@@ -1,5 +1,6 @@
 name: update-dev-environment
 on:
+  workflow_dispatch:
   repository_dispatch:
     types: [update-dev-environment]
 
@@ -13,57 +14,18 @@ on:
       - .github/workflows/update-dev-environment.yml
       - envs/development/**
 
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment deployment'
-        required: true
-        default: 'development'
-        type: choice
-        options:
-        - development
-        - demo
-
 jobs:
   deploy:
     # Ensures that only one deploy task per branch/environment will run at a time.
-#    concurrency:
-#      group: environment-${{ github.ref }}
-#      cancel-in-progress: true
+    concurrency:
+      group: environment-${{ github.ref }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: set env
-        run: |
-          # functions to avoid repeating
-          set_demo() { echo "environment=demo" >> $GITHUB_ENV; echo "HOST=${{ secrets.DEMO_HOST }}" >> $GITHUB_ENV ; }
-          set_dev() { echo "environment=development" >> $GITHUB_ENV; echo "HOST=${{ secrets.DEV_HOST }}" >> $GITHUB_ENV ; }
-
-          # if a release, deploy demo
-          if [[ "${{ github.event_name }}" == 'release' ]]; then
-            set_demo
-
-          # else, check input value
-          else
-            
-            # if not value in the input, assume that the trigger is a commit on another repository, so deploy development
-            if [[ -z "${{ github.event.inputs.environment }}" ]]; then
-              set_dev
-            
-            # if input variable present, deploy depending on its value
-            else
-              if [[ "${{ github.event.inputs.environment }}" == 'demo' ]]; then
-                set_demo
-              else
-                set_dev
-              fi
-            fi
-          fi  
-
       - name: Deploy Dev SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ env.HOST }}
+          host: ${{ secrets.DEV_HOST }}
           username: ${{ secrets.DEV_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
@@ -71,21 +33,20 @@ jobs:
             export LOOMIO_AAC_APP_SECRET=${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
             export MAIL_PASSWORD=${{ secrets.DEV_MAIL_PASSWORD }}
             export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
-            export LOOMIO_SMTP_PASSWORD=${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}
+            export LOOMIO_SMTP_PASSWORD=${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}        
+            export LOOMIO_DEVISE_SECRET=${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
             export LOOMIO_DEVISE_SECRET=${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
             export GRAFANA_USERNAME=${{ secrets.DEV_GRAFANA_USERNAME }}
             export GRAFANA_PASSWORD=${{ secrets.DEV_GRAFANA_PASSWORD }}
-            export ENVIRONMENT=${{ env.environment }}
+            export ENVIRONMENT=development
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only)
             cd /datadrive/data/interlink-project/envs/development
-            docker-compose --env-file .env.${{ env.environment }} down --remove-orphans
-            docker-compose --env-file .env.${{ env.environment }} pull
+            docker-compose --env-file .env.development down --remove-orphans
+            docker-compose --env-file .env.development pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose --env-file .env.${{ env.environment }} up -d
+            docker-compose --env-file .env.development up -d
             sleep 10
             docker-compose exec -T catalogue python /app/app/pre_start.py
             docker-compose exec -T catalogue ./seed.sh
-            docker-compose exec -T coproduction python /app/app/pre_start.py
-            docker-compose exec -T coproduction ./seed.sh
