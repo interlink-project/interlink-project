@@ -1,0 +1,43 @@
+name: update-demo-environment
+on:
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    # Ensures that only one deploy task per branch/environment will run at a time.
+    concurrency:
+      group: environment-${{ github.ref }}
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Dev SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEMO_HOST }}
+          username: ${{ secrets.DEMO_USERNAME }}
+          key: ${{ secrets.DEMO_SSH_KEY }}
+          script: |
+            export LOOMIO_SMTP_USERNAME=${{ secrets.DEMO_LOOMIO_SMTP_USERNAME }}
+            export LOOMIO_AAC_APP_SECRET=${{ secrets.DEMO_LOOMIO_AAC_APP_SECRET }}
+            export MAIL_PASSWORD=${{ secrets.DEMO_MAIL_PASSWORD }}
+            export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.DEMO_LOOMIO_SECRET_COOKIE_TOKEN }}
+            export LOOMIO_SMTP_PASSWORD=${{ secrets.DEMO_LOOMIO_SMTP_PASSWORD }}        
+            export LOOMIO_DEVISE_SECRET=${{ secrets.DEMO_LOOMIO_DEVISE_SECRET }}
+            export LOOMIO_DEVISE_SECRET=${{ secrets.DEMO_LOOMIO_DEVISE_SECRET }}
+            export GRAFANA_USERNAME=${{ secrets.DEMO_GRAFANA_USERNAME }}
+            export GRAFANA_PASSWORD=${{ secrets.DEMO_GRAFANA_PASSWORD }}
+            export ENVIRONMENT=demo
+            cd /datadrive/data/
+            git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only)
+            cd /datadrive/data/interlink-project/envs/development
+            docker-compose --env-file .env.demo down --remove-orphans
+            docker-compose --env-file .env.demo pull
+            docker network create traefik-public || true
+            docker network create grafana-network || true
+            docker-compose --env-file .env.demo up -d
+            sleep 10
+            docker-compose exec -T catalogue python /app/app/pre_start.py
+            docker-compose exec -T catalogue ./seed.sh
+            docker-compose exec -T coproduction python /app/app/pre_start.py
+            docker-compose exec -T coproduction ./seed.sh
