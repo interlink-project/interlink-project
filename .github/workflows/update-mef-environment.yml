@@ -1,11 +1,5 @@
 name: update-mef-environment
 on:
-  repository_dispatch:
-    types: [update-mef-environment]
-
-  push:
-    tags:        
-      - mef.**
 
   workflow_dispatch:
 

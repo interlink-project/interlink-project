@@ -1,11 +1,5 @@
 name: update-varam-environment
 on:
-  repository_dispatch:
-    types: [update-varam-environment]
-
-  push:
-    tags:
-      - varam**
 
   workflow_dispatch:
 

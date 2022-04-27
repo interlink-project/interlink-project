@@ -1,11 +1,5 @@
 name: update-zgz-environment
 on:
-  repository_dispatch:
-    types: [update-zgz-environment]
-
-  push:
-    tags:
-      - zgz**
 
   workflow_dispatch:
 
