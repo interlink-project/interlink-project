@@ -90,7 +90,7 @@ services:
     image: "interlinkproject/frontend:latest"
     container_name: ${PLATFORM_STACK_NAME}-frontend
     volumes:
-      - ${FRONTEND_CUSTOMIZATION_IMAGES_PATH}:/usr/share/nginx/html/public/customization
+      - ${FRONTEND_CUSTOMIZATION_IMAGES_PATH}:/usr/share/nginx/html/static/customization
     environment:
       - REACT_APP_COMPLETE_DOMAIN=https://${DOMAIN}
       - DOMAIN
