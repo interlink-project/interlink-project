@@ -39,8 +39,7 @@ jobs:
             export GRAFANA_USERNAME=${{ secrets.DEV_GRAFANA_USERNAME }}
             export GRAFANA_PASSWORD=${{ secrets.DEV_GRAFANA_PASSWORD }}
             export ENVIRONMENT=development
-            cd /datadrive/data/
-            git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only)
+            git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || (cd /datadrive/data/interlink-project && git pull --ff-only)
             cd /datadrive/data/interlink-project/envs/development
             docker-compose --env-file .env.development down --remove-orphans
             docker-compose --env-file .env.development pull
@@ -48,5 +47,5 @@ jobs:
             docker network create grafana-network || true
             docker-compose --env-file .env.development up -d
             sleep 10
-            docker-compose exec -T catalogue python /app/app/pre_start.py
-            docker-compose exec -T catalogue ./seed.sh
+            docker-compose --env-file .env.development exec -T catalogue python /app/app/pre_start.py
+            docker-compose --env-file .env.development exec -T catalogue ./seed.sh
