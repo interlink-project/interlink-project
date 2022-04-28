@@ -9,10 +9,15 @@ on:
 
   push:
     branches:
-      - "master"
+      - "master"      
     paths:
-      - .github/workflows/update-dev-environment.yml
-      - envs/development/**
+      - ".github/workflows/update-dev-environment.yml"
+      - "envs/development/**"
+      # do not update when envs for other environments change
+      - "!envs/development/.env.demo"
+      - "!envs/development/.env.mef"
+      - "!envs/development/.env.varam"
+      - "!envs/development/.env.zgz"
 
 jobs:
   deploy:
