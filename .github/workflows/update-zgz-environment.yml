@@ -31,7 +31,7 @@ jobs:
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only)
             cd /datadrive/data/interlink-project/envs
-            git checkout "${{ github.ref }}"
+            git checkout ${{ github.ref }}
             docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz down --remove-orphans
             docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz pull
             docker network create traefik-public || true

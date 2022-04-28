@@ -2,27 +2,3 @@ version: "3.9"
 
 ## customizable docker compose to override services in default demo docker-compose.yml
 ##########################################################################
-services:
-  portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    networks:
-      - traefik-public
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-portainer.entrypoints=websecure
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-portainer.tls.certresolver=letsencrypt
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-portainer.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-portainer.rule=Host(`portainer.${DOMAIN}`)
-      - traefik.http.services.${PLATFORM_STACK_NAME}-portainer.loadbalancer.server.port=9000
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
