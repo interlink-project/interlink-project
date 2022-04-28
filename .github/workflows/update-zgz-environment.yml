@@ -29,11 +29,11 @@ jobs:
             export ENVIRONMENT=zgz
             export ENVIRONMENTPATH=pilot-zgz/.env.zgz
             cd /datadrive/data/
-            git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only origin master)
+            git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only origin ${{ github.ref_name }})
             cd /datadrive/data/interlink-project/envs
             git checkout ${{ github.ref }}
-            docker-compose -f /datadrive/data/interlink-project/envs/demo/docker-compose.yml -f /datadrive/data/interlink-project/envs/pilot-zgz/docker-compose.zgz.yml --env-file /datadrive/data/interlink-project/envs/pilot-zgz/.env.zgz down --remove-orphans
-            docker-compose -f /datadrive/data/interlink-project/envs/demo/docker-compose.yml -f /datadrive/data/interlink-project/envs/pilot-zgz/docker-compose.zgz.yml --env-file /datadrive/data/interlink-project/envs/pilot-zgz/.env.zgz pull
+            docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz down --remove-orphans
+            docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-filepilot-zgz/.env.zgz pull
             docker network create traefik-public || true
             docker network create grafana-network || true
             docker-compose -f /datadrive/data/interlink-project/envs/demo/docker-compose.yml -f /datadrive/data/interlink-project/envs/pilot-zgz/docker-compose.zgz.yml --env-file /datadrive/data/interlink-project/envs/pilot-zgz/.env.zgz up -d
