@@ -33,7 +33,7 @@ jobs:
             cd /datadrive/data/interlink-project/envs
             git checkout ${{ github.name_ref }}
             docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz down --remove-orphans
-            docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-filepilot-zgz/.env.zgz pull
+            docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz pull
             docker network create traefik-public || true
             docker network create grafana-network || true
             docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz up -d
