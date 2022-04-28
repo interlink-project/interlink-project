@@ -131,7 +131,7 @@ services:
     volumes:
       - db-data:${PGDATA}
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     environment:
       - POSTGRES_MULTIPLE_DATABASES=loomio_production
     healthcheck:
@@ -152,7 +152,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-db2
     image: interlinkproject/postgres:latest
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     environment:
       - POSTGRES_MULTIPLE_DATABASES=coproduction,catalogue
     healthcheck:
@@ -176,7 +176,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     networks:
       - default
     logging:
@@ -189,7 +189,7 @@ services:
     image: bitnami/mongodb:latest
     container_name: ${PLATFORM_STACK_NAME}-mongodb
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     healthcheck:
       test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u $MONGODB_ROOT_USER -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
       interval: 10s
@@ -208,7 +208,7 @@ services:
     image: interlinkproject/backend-coproduction:latest
     container_name: ${PLATFORM_STACK_NAME}-coproduction
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -249,7 +249,7 @@ services:
       - db
       - redis
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -278,7 +278,7 @@ services:
       - DEFAULT_LANGUAGE
       - ALLOWED_LANGUAGES
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -309,7 +309,7 @@ services:
       - COLLECTION_NAME=users
       - CLIENT_SECRET=${LOOMIO_AAC_APP_SECRET}
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -338,7 +338,7 @@ services:
   #     - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
   #     - COLLECTION_NAME=channels_assets
   #   env_file:
-  #     - ../.${ENVIRONMENTPATH?Variable not set}
+  #     - ../${ENVIRONMENTPATH?Variable not set}
   #   labels:
   #     - traefik.enable=true
   #     - traefik.docker.network=traefik-public
@@ -363,7 +363,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=googledrive_assets
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -393,7 +393,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=surveyeditor_assets
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -423,7 +423,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=etherpad_assets
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -458,7 +458,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=etherpad_assets
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -490,7 +490,7 @@ services:
   #     - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
   #     - COLLECTION_NAME=externalresourcemanager_assets
   #   env_file:
-  #     - ../.${ENVIRONMENTPATH?Variable not set}
+  #     - ../${ENVIRONMENTPATH?Variable not set}
   #   labels:
   #     - traefik.enable=true
   #     - traefik.docker.network=traefik-public
@@ -530,7 +530,7 @@ services:
       - loomio-import:/import
       - loomio-tmp:/loomio/tmp
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     depends_on:
       - db
       - redis
@@ -576,7 +576,7 @@ services:
       - loomio-plugins:/loomio/plugins/docker
       - loomio-tmp:/loomio/tmp
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     networks:
       - traefik-public
       - default
@@ -595,7 +595,7 @@ services:
       - LETSENCRYPT_HOST=channels.loomio.${DOMAIN}
       - LETSENCRYPT_EMAIL=apps@interlink-project.eu
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     depends_on:
       - redis
     labels:
@@ -639,7 +639,7 @@ services:
       - elasticsearch-data:/usr/share/elasticsearch/data
       - elasticsearch-config:/usr/share/elasticsearch/config
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     networks:
       - default
     logging:
@@ -652,7 +652,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-augmenterservice
     restart: always
     env_file:
-      - ../.${ENVIRONMENTPATH?Variable not set}
+      - ../${ENVIRONMENTPATH?Variable not set}
     networks:
       - traefik-public
       - default
