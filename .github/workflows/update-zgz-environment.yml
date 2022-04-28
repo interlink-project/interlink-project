@@ -11,7 +11,7 @@ jobs:
 #      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy Dev SSH
+      - name: Deploy PILOT-ZGZ SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.ZGZ_HOST }}
@@ -27,15 +27,16 @@ jobs:
             export GRAFANA_USERNAME=${{ secrets.ZGZ_GRAFANA_USERNAME }}
             export GRAFANA_PASSWORD=${{ secrets.ZGZ_GRAFANA_PASSWORD }}
             export ENVIRONMENT=zgz
-            git clone https://github.com/interlink-project/interlink-project.git
+            export ENVIRONMENTPATH=pilot-zgz/.env.zgz
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only)
-            cd /datadrive/data/interlink-project/envs/development
-            docker-compose --env-file .env.zgz down --remove-orphans
-            docker-compose --env-file .env.zgz pull
+            cd /datadrive/data/interlink-project/envs
+            git checkout "${{ github.ref }}"
+            docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.yml --env-file pilot-zgz/.env.zgz down --remove-orphans
+            docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.yml --env-file pilot-zgz/.env.zgz pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose --env-file .env.zgz up -d
+            docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.yml --env-file pilot-zgz/.env.zgz up -d
             sleep 10
             docker-compose exec -T catalogue python /app/app/pre_start.py
             docker-compose exec -T catalogue ./seed.sh
