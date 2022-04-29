@@ -1,4 +1,4 @@
-name: update-varam-environment
+name: update-varam-environment-from-development
 on:
 
   workflow_dispatch:

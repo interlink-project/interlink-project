@@ -1,4 +1,4 @@
-name: update-zgz-environment
+name: update-zgz-environment-from-development
 on:
 
   workflow_dispatch:
