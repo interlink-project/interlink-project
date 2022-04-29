@@ -718,8 +718,8 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
-    networks:
-      - default
+    env_file:
+      - ./.env.${ENVIRONMENT?Variable not set}
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -731,25 +731,25 @@ services:
       interval: 30s
       timeout: 30s
       retries: 3
+    networks:
+      - traefik-public
     logging:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-
   logging:
     image: interlinkproject/backend-logging:latest
     container_name: ${PLATFORM_STACK_NAME}-logging
-    environment:
-      - RABBITMQ_HOST=${RABBITMQ_HOST}
-      - RABBITMQ_USER=${RABBITMQ_USER}
-      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
-      - EXCHANGE_NAME=${EXCHANGE_NAME}
+    env_file:
+      - ./.env.${ENVIRONMENT?Variable not set}
+    restart: on-failure
     networks:
-      - default
+      - traefik-public
     depends_on:
       rabbitmq:
         condition: service_healthy
+    command: ["./wait-for-it.sh", "rabbitmq:5672", "--", "python", "./main.py"]
     logging:
       driver: "json-file"
       options:
