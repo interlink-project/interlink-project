@@ -29,7 +29,7 @@ jobs:
             export ENVIRONMENT=zgz
             export ENVIRONMENTPATH=pilot-zgz/.env.zgz
             cd /datadrive/data/
-            git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only origin master)
+            git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only origin ${{ github.name_ref }})
             cd /datadrive/data/interlink-project/envs
             git checkout ${{ github.name_ref }}
             docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz down --remove-orphans
