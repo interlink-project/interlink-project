@@ -1,4 +1,4 @@
-name: update-mef-environment
+name: update-mef-environment-from-development
 on:
 
   workflow_dispatch:
@@ -24,20 +24,18 @@ jobs:
             export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.MEF_LOOMIO_SECRET_COOKIE_TOKEN }}
             export LOOMIO_SMTP_PASSWORD=${{ secrets.MEF_LOOMIO_SMTP_PASSWORD }}        
             export LOOMIO_DEVISE_SECRET=${{ secrets.MEF_LOOMIO_DEVISE_SECRET }}
+            export LOOMIO_DEVISE_SECRET=${{ secrets.MEF_LOOMIO_DEVISE_SECRET }}
             export GRAFANA_USERNAME=${{ secrets.MEF_GRAFANA_USERNAME }}
             export GRAFANA_PASSWORD=${{ secrets.MEF_GRAFANA_PASSWORD }}
             export ENVIRONMENT=mef
-            export ENVIRONMENTPATH=pilot-mef/.env.mef
             cd /datadrive/data/
-            git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project )
-            cd /datadrive/data/interlink-project/envs
-            git fetch origin
-            git checkout ${{ github.name_ref }} && git merge --ff-only origin ${{ github.name_ref }}
-            docker-compose -f demo/docker-compose.yml -f pilot-mef/docker-compose.mef.yml --env-file pilot-mef/.env.mef down --remove-orphans
-            docker-compose -f demo/docker-compose.yml -f pilot-mef/docker-compose.mef.yml --env-file pilot-mef/.env.mef pull
+            git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project && git pull --ff-only)
+            cd /datadrive/data/interlink-project/envs/development
+            docker-compose --env-file .env.mef down --remove-orphans
+            docker-compose --env-file .env.mef pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose -f demo/docker-compose.yml -f pilot-mef/docker-compose.mef.yml --env-file pilot-mef/.env.mef up -d
+            docker-compose --env-file .env.mef up -d
             sleep 10
-            docker-compose exec -T catalogue python /app/app/pre_start.py
-            docker-compose exec -T catalogue ./seed.sh
+            docker-compose --env-file .env.mef exec -T catalogue python /app/app/pre_start.py
+            docker-compose --env-file .env.mef exec -T catalogue ./seed.sh
