@@ -739,6 +739,7 @@ services:
   logging:
     image: interlinkproject/backend-logging:latest
     container_name: ${PLATFORM_STACK_NAME}-logging
+    restart: unless-stopped
     environment:
       - RABBITMQ_HOST=${RABBITMQ_HOST}
       - RABBITMQ_USER=${RABBITMQ_USER}
