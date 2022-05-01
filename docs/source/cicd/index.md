@@ -1,5 +1,5 @@
 
-# CI/CD policies for INTERLINK software
+# SW development, CI & CD policies for INTERLINK software
 
 ## Continuous Integration (CI)
 
@@ -79,4 +79,25 @@ This is very rare case when system architecrue, API interfaces and/or data model
 
 Such SW changes usually should not happen within the lifetime of the same project. It may happend when a new project is started as a continuation of another one.
 
+## Docker-compose profiling
 
+Docker-compose profiling is a useful mechamism to structure and group lower and upper level SW services within docker-compose YAML file.
+It is described in details here: https://docs.docker.com/compose/profiles/
+
+The idea is to try to have separate docker-compose files per each SW service and to include (or exclude) them into the deployment of particular environment.
+
+## Data persistency
+
+For the first pilot demos the configuration data is read out from JSON files stored in GitHub SW repository. The user activity data (new co-production processes, task state changes and asset instances) are kept as long as the DB docker container is not reinstralled. On DB container re-deployment these data may be lost. 
+
+### Current situation
+
+If DB is part of the SW release (e.g. web portal) and requires re-deplyment on re-installation of the web portal, then to allow bugfix SW updates during the pilot demo sessions but at the same time to keep the user activity data, corresponding data export and import should be realized by use of additional data export/import scripts.
+
+### Separation of platfrom SW services
+
+Another approach would be to have low level platform services like DB separated from web portal and other components, so re-deployment of web portal (either backend and/or frontend) should not re-deploy the DB container. In this way, the same DB continues to run keeping the accumulated data.
+
+### Data backups
+
+Backing up data is a goog practice independently on the DB container configuration and re-deployment policies. Having data backed up periodically will save from the global crashes at the level of hosting server, as well as from incidental data loss during e.g. maintenance or other activities. Backed up data should be kept on physically different server, ideally, on different hosting data center location.
