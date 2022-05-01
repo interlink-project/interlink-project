@@ -58,3 +58,25 @@ The DEMO server is intended for testing and training sessions with business user
 
 Deployment of INTERLINK SW to pilot servers should contain the common INTERLINK base SW (backend, frontend and other platform type components like DBs, auth, etc) and pilot-specific components (ZGZ SW components for ZGZ pilot, etc.).
 The deployment process should be similar to deploying on staging (demo) server.
+
+## Software Updates
+
+### Minor updates (patches)
+
+Minor SW updates are needed when there is either a bug fix or small functionality improvement which (almost) does not affect (of affects very little) other SW components, API interfaces, Data Model, etc. Usually the reason for such SW update appears during SW testing and corresponding issue is created in redmine for corresponding SW component. Fixing the SW code should start a.s.a.p. New SW release with minor version incremented (for ex. 3.2.1) should be created. Deployment should be done on first possible occasion (e.g. over night or a weekend).
+
+Such SW change may happen within the same SW release, for example, during the first pilot demo sessions.
+
+### Major SW updates (new SW release)
+
+Such code update corresponds to implementing a new significant functionality. New SW release should be built and deployed with new major version (e.g. 3.2 or 3.2.0). Usually the new SW release should keep back-compatibility, the same SW design, interfaces, system architecture and data models should be preserved, but could be extended.
+
+Such SW change should happend per different project milestones, for example, there will be initial and final pilot demonstrations with different SW releases.
+
+### SW refactoring
+
+This is very rare case when system architecrue, API interfaces and/or data model are changed significantly or recreated anew. For API this would imply new documentation and testing, for DB this would imply data migration from old DBs into the new ones, with corresponding DB data export and import scriprs, etc.
+
+Such SW changes usually should not happen within the lifetime of the same project. It may happend when a new project is started as a continuation of another one.
+
+
