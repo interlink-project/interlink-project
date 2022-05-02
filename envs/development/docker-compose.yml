@@ -243,9 +243,11 @@ services:
       - PORT=${PORT}
       - BASE_PATH=/coproduction
       - POSTGRES_DB=coproduction_production
-      - POSTGRES_SERVER=db
+      - CATALOGUE_SERVICE_NAME=catalogue
+      - CATALOGUE_PORT=80
       - DEFAULT_LANGUAGE
       - ALLOWED_LANGUAGES
+      - POSTGRES_SERVER=db
     networks:
       - default
     logging:
