@@ -923,6 +923,10 @@ volumes:
   mongodb-data:
   elasticsearch-data:
   elasticsearch-config:
+  coproduction-migrations:
+  coproduction-static:
+  catalogue-migrations:
+  catalogue-static:
 
   grafana-dashboards:
   grafana-data:
