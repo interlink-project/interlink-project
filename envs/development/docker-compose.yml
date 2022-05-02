@@ -133,28 +133,7 @@ services:
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     environment:
-      - POSTGRES_MULTIPLE_DATABASES=loomio_production
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - default
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
-  db2:
-    # we do not want persistence for this databases YET (no volumes, whereas db has volumes)
-    # TODO: delete this microservice and replace POSTGRES_SERVER=db2 by POSTGRES_SERVER=db (in this docker-compose catalogue and coproduction micros)
-    container_name: ${PLATFORM_STACK_NAME}-db2
-    image: interlinkproject/postgres:latest
-    env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
-    environment:
-      - POSTGRES_MULTIPLE_DATABASES=coproduction,catalogue
+      - POSTGRES_MULTIPLE_DATABASES=loomio_production,coproduction_production,catalogue_production
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
       interval: 10s
@@ -198,6 +177,8 @@ services:
       # start_period: 20s
     networks:
       - default
+    volumes:
+      - mongodb-data:/bitnami/mongodb
     logging:
       driver: "json-file"
       options:
@@ -209,16 +190,20 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-coproduction
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
+    volumes:
+      - coproduction-migrations:/app/alembic
+      - coproduction-static:/app/static
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
       - BASE_PATH=/coproduction
       - POSTGRES_DB=coproduction
-      - POSTGRES_SERVER=db2 # TODO: remove this
+      - POSTGRES_SERVER=db
       - CATALOGUE_SERVICE_NAME=catalogue
       - CATALOGUE_PORT=80
       - DEFAULT_LANGUAGE
       - ALLOWED_LANGUAGES
+    command: ["bash", "./start-prod.sh"]
     depends_on:
       db:
         condition: service_healthy
@@ -245,6 +230,8 @@ services:
     image: interlinkproject/backend-coproduction:latest
     container_name: ${PLATFORM_STACK_NAME}-coproductionworker
     command: [ "bash", "./worker-start.sh" ]
+    volumes:
+      - coproduction-static:/app/static
     depends_on:
       - db
       - redis
@@ -254,8 +241,8 @@ services:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
       - BASE_PATH=/coproduction
-      - POSTGRES_DB=coproduction
-      - POSTGRES_SERVER=db2 # TODO: remove this
+      - POSTGRES_DB=coproduction_production
+      - POSTGRES_SERVER=db
       - DEFAULT_LANGUAGE
       - ALLOWED_LANGUAGES
     networks:
@@ -269,12 +256,15 @@ services:
   catalogue:
     image: interlinkproject/backend-catalogue:latest
     container_name: ${PLATFORM_STACK_NAME}-catalogue
+    volumes:
+      - catalogue-migrations:/app/alembic
+      - catalogue-static:/app/static
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
       - BASE_PATH=/catalogue
-      - POSTGRES_DB=catalogue
-      - POSTGRES_SERVER=db2 # TODO: remove this
+      - POSTGRES_DB=catalogue_production
+      - POSTGRES_SERVER=db
       - DEFAULT_LANGUAGE
       - ALLOWED_LANGUAGES
     env_file:
@@ -289,6 +279,7 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-catalogue.rule=Host(`${DOMAIN}`) && PathPrefix(`/catalogue`)
       - traefik.http.routers.${PLATFORM_STACK_NAME}-catalogue.middlewares=catalogue-stripprefix
       - traefik.http.middlewares.catalogue-stripprefix.stripprefix.prefixes=/catalogue
+    command: ["bash", "./start-prod.sh"]
     networks:
       - traefik-public
       - default
@@ -929,6 +920,7 @@ volumes:
   loomio-tmp:
 
   db-data:
+  mongodb-data:
   elasticsearch-data:
   elasticsearch-config:
 
