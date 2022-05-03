@@ -197,7 +197,7 @@ services:
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     volumes:
-      - coproduction-migrations:/app/alembic
+      - coproduction-migrations:/app/alembic/versions
       - coproduction-static:/app/static
     environment:
       - SERVER_NAME=${DOMAIN}
@@ -266,7 +266,7 @@ services:
     image: interlinkproject/backend-catalogue:latest
     container_name: ${PLATFORM_STACK_NAME}-catalogue
     volumes:
-      - catalogue-migrations:/app/alembic
+      - catalogue-migrations:/app/alembic/versions
       - catalogue-static:/app/static
     environment:
       - SERVER_NAME=${DOMAIN}
