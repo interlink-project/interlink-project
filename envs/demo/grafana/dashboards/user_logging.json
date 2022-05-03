@@ -59,7 +59,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 24,
+      "id": 26,
       "options": {
         "colorMode": "none",
         "graphMode": "none",
@@ -81,12 +81,12 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[7d] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"COPRODPROCESS\"))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Interlinkers created last 7 days",
+      "title": "Coproduction Processes created on interval",
       "type": "stat"
     },
     {
@@ -119,7 +119,7 @@
         "x": 4,
         "y": 0
       },
-      "id": 22,
+      "id": 28,
       "options": {
         "colorMode": "none",
         "graphMode": "none",
@@ -141,12 +141,12 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[24h] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "count(sum by (user_id)(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"GET\" and model=\"COPRODPROCESS\")))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Interlinkers created last 24h",
+      "title": "Numer of unique users on interval",
       "type": "stat"
     },
     {
@@ -280,6 +280,186 @@
         "type": "loki",
         "uid": "P8E80F9AEF21F6940"
       },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 4
+      },
+      "id": 30,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[1m] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Interlinkers created last month",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 4
+      },
+      "id": 24,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[7d] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Interlinkers created last 7 days",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 4
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[24h] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Interlinkers created last 24h",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -335,7 +515,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 4
+        "y": 8
       },
       "id": 8,
       "options": {
@@ -526,7 +706,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 13
+        "y": 17
       },
       "id": 4,
       "options": {
@@ -684,7 +864,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 22
+        "y": 26
       },
       "id": 18,
       "options": {
@@ -856,7 +1036,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 30
+        "y": 34
       },
       "id": 14,
       "options": {
@@ -914,7 +1094,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 38
+        "y": 42
       },
       "id": 6,
       "options": {
