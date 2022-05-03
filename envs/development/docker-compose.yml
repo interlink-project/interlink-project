@@ -312,6 +312,8 @@ services:
       - CLIENT_SECRET=${LOOMIO_AAC_APP_SECRET}
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
+    volumes:
+      - auth-static:/app/static
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -934,6 +936,7 @@ volumes:
   mongodb-data:
   elasticsearch-data:
   elasticsearch-config:
+  auth-static:
   coproduction-migrations:
   coproduction-static:
   catalogue-migrations:
