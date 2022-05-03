@@ -32,12 +32,12 @@ jobs:
             git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project )
             cd /datadrive/data/interlink-project/envs
             git fetch origin
-            git checkout ${{ github.name_ref }} && git merge --ff-only origin ${{ github.name_ref }}
+            git checkout ${{ github.ref_name }} && git merge --ff-only origin ${{ github.ref_name }}
             docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz down --remove-orphans
             docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz pull
             docker network create traefik-public || true
             docker network create grafana-network || true
             docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz up -d
             sleep 10
-            docker-compose exec -T catalogue python /app/app/pre_start.py
-            docker-compose exec -T catalogue ./seed.sh
+            docker-compose --env-file pilot-zgz/.env.zgz exec -T catalogue python /app/app/pre_start.py
+            docker-compose --env-file pilot-zgz/.env.zgz exec -T catalogue ./seed.sh
