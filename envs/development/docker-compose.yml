@@ -135,7 +135,6 @@ services:
     image: interlinkproject/postgres:latest
     volumes:
       - db-data:${PGDATA}
-    user: ${POSTGRES_USER}
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     environment:
