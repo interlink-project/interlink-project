@@ -69,6 +69,8 @@ services:
       - no-new-privileges:true
     networks:
       - traefik-public
+    environment:
+      - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -98,6 +100,7 @@ services:
       - REACT_APP_PRIMARY_COLOR=${PRIMARY_COLOR}
       - REACT_APP_DEFAULT_LANGUAGE=${DEFAULT_LANGUAGE}
       - REACT_APP_ALLOWED_LANGUAGES=${ALLOWED_LANGUAGES}
+      - TZ=${TZ}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -119,6 +122,8 @@ services:
     image: redis:6-alpine
     networks:
       - default
+    environment:
+      - TZ=${TZ}
     logging:
       driver: "json-file"
       options:
@@ -130,6 +135,7 @@ services:
     image: interlinkproject/postgres:latest
     volumes:
       - db-data:${PGDATA}
+    user: ${POSTGRES_USER}
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     environment:

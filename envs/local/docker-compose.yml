@@ -43,6 +43,8 @@ services:
     # command: --admin-password "${PORTAINER_PASSWORD}"
     security_opt:
       - no-new-privileges:true
+    environment:
+      - TZ=${TZ}
     networks:
       - traefik-public
     volumes:
@@ -73,15 +75,12 @@ services:
       - .env
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
+    user: ${POSTGRES_USER}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
-    deploy:
-      placement:
-        constraints:
-          - node.labels.${STACK_NAME?Variable not set}.db-data == true
     networks:
       - traefik-public
     logging:
@@ -136,6 +135,7 @@ services:
       ME_CONFIG_BASICAUTH_PASSWORD: ${MONGOEXPRESS_PASSWORD}
       ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_ROOT_USER}
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_ROOT_PASSWORD}
+      TZ: ${TZ}
     depends_on:
       - mongodb
     networks:
@@ -154,6 +154,7 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - TZ=${TZ}
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s

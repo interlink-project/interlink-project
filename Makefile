@@ -114,7 +114,6 @@ restartcontainers: ## Run containers (restarts them if already running) except F
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
 	cd ../interlinker-ceditor && make integrated
-	cd ../interlinker-externalresourcemanager && make integrated
 
 .PHONY: restart
 restart: restartcontainers seed ## Run containers (restarts them if already running)	
