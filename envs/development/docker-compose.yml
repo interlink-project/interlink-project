@@ -4,7 +4,7 @@ services:
   # Traefik Service
   proxy:
     container_name: ${PLATFORM_STACK_NAME}-traefik
-    image: traefik:latest
+    image: traefik:v2.6.6
     ports:
       - "80:80"
       - "443:443"
@@ -62,7 +62,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   portainer:
-    image: portainer/portainer-ce:latest
+    image: portainer/portainer-ce:1.24.2
     container_name: portainer
     restart: unless-stopped
     security_opt:
@@ -154,7 +154,7 @@ services:
   # PGAdmin (do not expose)
   pgadmin:
     container_name: ${PLATFORM_STACK_NAME}-pgadmin
-    image: dpage/pgadmin4:latest
+    image: dpage/pgadmin4:6.8
     ports:
       - "5050:5050"
     depends_on:
@@ -170,7 +170,7 @@ services:
 
   # MongoDB Service
   mongodb:
-    image: bitnami/mongodb:latest
+    image: bitnami/mongodb:4.4.13
     container_name: ${PLATFORM_STACK_NAME}-mongodb
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
@@ -759,7 +759,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:8.5.1
     container_name: ${PLATFORM_STACK_NAME}-grafana
     restart: unless-stopped
     links:
@@ -795,7 +795,7 @@ services:
 
 
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.35.0
     container_name: ${PLATFORM_STACK_NAME}-prometheus
     restart: unless-stopped
     volumes:
@@ -816,7 +816,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   cadvisor:
-    image: google/cadvisor:latest
+    image: google/cadvisor:v0.33.0
     container_name: ${PLATFORM_STACK_NAME}-monitoring_cadvisor
     restart: unless-stopped
     volumes:
@@ -836,7 +836,7 @@ services:
 
 
   node-exporter:
-    image: prom/node-exporter:latest
+    image: prom/node-exporter:v1.3.1
     container_name: ${PLATFORM_STACK_NAME}-monitoring_node_exporter
     restart: unless-stopped
     expose:
@@ -859,7 +859,7 @@ services:
 
 
   loki:
-    image: grafana/loki:main
+    image: grafana/loki:main-c76565a
     container_name: ${PLATFORM_STACK_NAME}-loki
     restart: unless-stopped
     command: -config.file=/etc/loki/local-config.yaml
@@ -897,7 +897,7 @@ services:
 
 
 #  alertmanager:
-#    image: prom/alertmanager:latest
+#    image: prom/alertmanager:v0.24.0
 #    container_name: ${PLATFORM_STACK_NAME}-alertmanager
 #    restart: unless-stopped
 #    ports:
