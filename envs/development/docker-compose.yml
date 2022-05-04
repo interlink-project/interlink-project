@@ -590,7 +590,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomiochannels:
-    image: loomio/loomio_channel_server:v1.0.0
+    image: loomio/loomio_channel_server:latest
     container_name: ${PLATFORM_STACK_NAME}-loomiochannels
     environment:
       - REDIS_URL=redis://redis:6379
