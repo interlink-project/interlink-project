@@ -11,9 +11,13 @@ Project DevOps should configure automatic workflow to execute those UT on every 
 ### SW Releases
 
 Once a SW component archieves an important implementation milestone by developers, its code should be TAGged.
-For SW version which are intended for deployment, a SW release should be built per each SW repository.
-Either assigning a TAG or having built a SW release should trigger automatic building of a new docker image(s) for this SW repository.
-Docker images should contain TAG or SW version somewhere in the name of the docker image.
+For SW version which are intended for deployment, a SW release should be built per each SW repository based on some existing TAG of the code.
+There may be many TAGs on the code (e.g. Monday, Tuesday, etc) and not all of them but some sub-set are intended to become a SW release.
+SW release version is usually the same as TAG value or an extended string for example "TAG+additional_suffix".
+Having built a SW release should trigger automatic building of a new docker image(s) for this SW repository.
+Docker images should contain TAG or SW version somewhere in the name of the docker image, for ex. "image-Interlink-frontend:v3.1".
+The deployment of a docker image should be with explicit use of the image (SW release) version suffix "v3.1" instead of just ":latest".
+
 
 All INTERLINK SW packages should be grouped into a single INTERLINK SW release, with a way to configure which versions (TAGs) of particular SW packages should be included in given version (TAG) of the INTERLINK SW release. For example, INTERLINK SW release version 2.1-zgz consists of the following SW versions per SW package:
 - Frontend v1.8
