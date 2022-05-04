@@ -90,7 +90,7 @@ services:
 
   # Frontend Service
   frontend:
-    image: interlinkproject/frontend:v1.0.0
+    image: interlinkproject/frontend:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend
     volumes:
       - ${FRONTEND_CUSTOMIZATION_IMAGES_PATH}:/usr/share/nginx/html/static/customization
@@ -133,7 +133,7 @@ services:
   # Postgres Service
   db:
     container_name: ${PLATFORM_STACK_NAME}-db
-    image: interlinkproject/postgres:v1.0.0
+    image: interlinkproject/postgres:${VERSION}
     volumes:
       - db-data:${PGDATA}
     env_file:
@@ -192,7 +192,7 @@ services:
 
   # Coproduction Service
   coproduction:
-    image: interlinkproject/backend-coproduction:v1.0.0
+    image: interlinkproject/backend-coproduction:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproduction
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
@@ -233,7 +233,7 @@ services:
 
   # Coproduction Worker Service
   coproductionworker:
-    image: interlinkproject/backend-coproduction:v1.0.0
+    image: interlinkproject/backend-coproduction:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproductionworker
     command: [ "bash", "./worker-start.sh" ]
     volumes:
@@ -263,7 +263,7 @@ services:
 
   # Catalogue Service
   catalogue:
-    image: interlinkproject/backend-catalogue:v1.0.0
+    image: interlinkproject/backend-catalogue:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-catalogue
     volumes:
       - catalogue-migrations:/app/alembic/versions
@@ -301,7 +301,7 @@ services:
 
   # Auth Service
   auth:
-    image: interlinkproject/backend-auth:v1.0.0
+    image: interlinkproject/backend-auth:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-auth
     environment:
       - SERVER_NAME=${DOMAIN}
@@ -332,7 +332,7 @@ services:
 
   # # Channels Service (Websocket)
   # channels:
-  #   image: interlinkproject/backend-channels:v1.0.0
+  #   image: interlinkproject/backend-channels:${VERSION}
   #   container_name: ${PLATFORM_STACK_NAME}-channels
   #   environment:
   #     - SERVER_NAME=${DOMAIN}
@@ -358,7 +358,7 @@ services:
 
   # Googledrive Interlinker
   googledrive:
-    image: interlinkproject/interlinker-googledrive:v1.0.0
+    image: interlinkproject/interlinker-googledrive:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-googledrive
     environment:
       - SERVER_NAME=${DOMAIN}
@@ -388,7 +388,7 @@ services:
 
   # Survey Editor Interlinker
   surveyeditor:
-    image: interlinkproject/interlinker-surveyeditor:v1.0.0
+    image: interlinkproject/interlinker-surveyeditor:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-surveyeditor
     environment:
       - SERVER_NAME=${DOMAIN}
@@ -418,7 +418,7 @@ services:
 
   # Ceditor Interlinker Service
   ceditor:
-    image: interlinkproject/interlinker-ceditor:ceditor-v1.0.0
+    image: interlinkproject/interlinker-ceditor:ceditor.${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-ceditor
     environment:
       - SERVER_NAME=${DOMAIN}
@@ -448,7 +448,7 @@ services:
 
   # Ceditor Interlinker Service etherpad
   etherpad:
-    image: interlinkproject/interlinker-ceditor:etherpad-v1.0.0
+    image: interlinkproject/interlinker-ceditor:etherpad.${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-etherpad
     environment:
       - TITLE=${ETHERPAD_TITLE}
@@ -485,7 +485,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # externalresourcemanager:
-  #   image: interlinkproject/interlinker-externalresourcemanager:v1.0.0
+  #   image: interlinkproject/interlinker-externalresourcemanager:${VERSION}
   #   container_name: ${PLATFORM_STACK_NAME}-externalresourcemanager
   #   environment:
   #     - SERVER_NAME=${DOMAIN}
@@ -514,7 +514,7 @@ services:
   #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomio:
-    image: interlinkproject/interlinker-loomio:common.v1.0.0
+    image: interlinkproject/interlinker-loomio:common.${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomio
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
@@ -561,7 +561,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomioworker:
-    image: interlinkproject/interlinker-loomio:common.v1.0.0
+    image: interlinkproject/interlinker-loomio:common.${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomioworker
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
@@ -652,7 +652,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   augmenterservice:
-    image: interlinkproject/publicservice-servicepedia:augmenterservice.v1.0.0
+    image: interlinkproject/publicservice-servicepedia:augmenterservice.${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-augmenterservice
     restart: always
     env_file:
@@ -743,7 +743,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   logging:
-    image: interlinkproject/backend-logging:v1.0.0
+    image: interlinkproject/backend-logging:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-logging
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
