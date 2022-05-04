@@ -32,7 +32,7 @@ jobs:
             cd /datadrive/data/interlink-project/envs
             git fetch origin
             git checkout ${{ github.ref_name }} && git merge --ff-only origin ${{ github.ref_name }}
-            cd /datadrive/data/interlink-project/envs/pilot-zgz
+            cd /datadrive/data/interlink-project/envs/pilot-varam
             docker-compose -f docker-compose.yml --env-file .env.varam down --remove-orphans
             docker-compose -f docker-compose.yml --env-file .env.varam pull
             docker network create traefik-public || true
