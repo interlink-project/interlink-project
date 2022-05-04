@@ -89,7 +89,7 @@ services:
 
   # Frontend Service
   frontend:
-    image: "interlinkproject/frontend:latest"
+    image: interlinkproject/frontend:latest
     container_name: ${PLATFORM_STACK_NAME}-frontend
     volumes:
       - ${FRONTEND_CUSTOMIZATION_IMAGES_PATH}:/usr/share/nginx/html/static/customization
