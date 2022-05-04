@@ -74,6 +74,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer-data:/data
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -170,7 +171,7 @@ services:
 
   # MongoDB Service
   mongodb:
-    image: bitnami/mongodb:4.4.13
+    image: bitnami/mongodb:latest
     container_name: ${PLATFORM_STACK_NAME}-mongodb
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
@@ -932,6 +933,7 @@ volumes:
   loomio-tmp:
 
   db-data:
+  portainer-data:
   mongodb-data:
   elasticsearch-data:
   elasticsearch-config:
