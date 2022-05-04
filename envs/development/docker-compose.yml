@@ -171,7 +171,7 @@ services:
 
   # MongoDB Service
   mongodb:
-    image: bitnami/mongodb:v1.0.0
+    image: bitnami/mongodb:4.4.13
     container_name: ${PLATFORM_STACK_NAME}-mongodb
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
@@ -652,7 +652,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   augmenterservice:
-    image: interlinkproject/publicservice-servicepedia:augmenterservice-v1.0.0
+    image: interlinkproject/publicservice-servicepedia:augmenterservice.v1.0.0
     container_name: ${PLATFORM_STACK_NAME}-augmenterservice
     restart: always
     env_file:
