@@ -27,17 +27,17 @@ jobs:
             export GRAFANA_USERNAME=${{ secrets.VARAM_GRAFANA_USERNAME }}
             export GRAFANA_PASSWORD=${{ secrets.VARAM_GRAFANA_PASSWORD }}
             export ENVIRONMENT=varam
-            export ENVIRONMENTPATH=pilot-varam/.env.varam
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project )
             cd /datadrive/data/interlink-project/envs
             git fetch origin
             git checkout ${{ github.ref_name }} && git merge --ff-only origin ${{ github.ref_name }}
-            docker-compose -f demo/docker-compose.yml -f pilot-varam/docker-compose.varam.yml --env-file pilot-varam/.env.varam down --remove-orphans
-            docker-compose -f demo/docker-compose.yml -f pilot-varam/docker-compose.varam.yml --env-file pilot-varam/.env.varam pull
+            cd /datadrive/data/interlink-project/envs/development
+            docker-compose -f docker-compose.yml --env-file .env.varam down --remove-orphans
+            docker-compose -f docker-compose.yml --env-file .env.varam pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose -f demo/docker-compose.yml -f pilot-varam/docker-compose.varam.yml --env-file pilot-varam/.env.varam up -d
+            docker-compose -f docker-compose.yml --env-file .env.varam up -d
             sleep 10
-            docker-compose --env-file pilot-varam/.env.varam exec -T catalogue python /app/app/pre_start.py
-            docker-compose --env-file pilot-varam/.env.varam exec -T catalogue ./seed.sh
+            docker-compose --env-file .env.varam exec -T catalogue python /app/app/pre_start.py
+            docker-compose --env-file .env.varam exec -T catalogue ./seed.sh

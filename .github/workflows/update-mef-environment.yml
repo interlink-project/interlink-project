@@ -27,17 +27,17 @@ jobs:
             export GRAFANA_USERNAME=${{ secrets.MEF_GRAFANA_USERNAME }}
             export GRAFANA_PASSWORD=${{ secrets.MEF_GRAFANA_PASSWORD }}
             export ENVIRONMENT=mef
-            export ENVIRONMENTPATH=pilot-mef/.env.mef
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project )
             cd /datadrive/data/interlink-project/envs
             git fetch origin
             git checkout ${{ github.ref_name }} && git merge --ff-only origin ${{ github.ref_name }}
-            docker-compose -f demo/docker-compose.yml -f pilot-mef/docker-compose.mef.yml --env-file pilot-mef/.env.mef down --remove-orphans
-            docker-compose -f demo/docker-compose.yml -f pilot-mef/docker-compose.mef.yml --env-file pilot-mef/.env.mef pull
+            cd /datadrive/data/interlink-project/envs/development
+            docker-compose -f docker-compose.yml --env-file .env.mef down --remove-orphans
+            docker-compose -f docker-compose.yml --env-file .env.mef pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose -f demo/docker-compose.yml -f pilot-mef/docker-compose.mef.yml --env-file pilot-mef/.env.mef up -d
+            docker-compose -f docker-compose.yml --env-file .env.mef up -d
             sleep 10
-            docker-compose --env-file pilot-mef/.env.mef exec -T catalogue python /app/app/pre_start.py
-            docker-compose --env-file pilot-mef/.env.mef exec -T catalogue ./seed.sh
+            docker-compose --env-file .env.mef exec -T catalogue python /app/app/pre_start.py
+            docker-compose --env-file .env.mef exec -T catalogue ./seed.sh

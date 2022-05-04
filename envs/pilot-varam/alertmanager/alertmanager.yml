@@ -1,0 +1,14 @@
+route:
+  receiver: 'mail'
+  repeat_interval: 4h
+  group_by: [ alertname ]
+
+
+receivers:
+  - name: 'mail'
+    email_configs:
+      - smarthost: 'mail.interlink-project.eu'
+#        auth_username: ''
+#        auth_password: ""
+        from: 'alertmanager@interlink-project.eu'
+        to: 'support@interlink-project.eu'

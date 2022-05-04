@@ -4,7 +4,7 @@ services:
   # Traefik Service
   proxy:
     container_name: ${PLATFORM_STACK_NAME}-traefik
-    image: traefik:latest
+    image: traefik:v2.6.6
     ports:
       - "80:80"
       - "443:443"
@@ -62,16 +62,19 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   portainer:
-    image: portainer/portainer-ce:latest
+    image: portainer/portainer-ce:2.11.1-alpine
     container_name: portainer
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     networks:
       - traefik-public
+    environment:
+      - TZ=${TZ}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer-data:/data
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -87,7 +90,7 @@ services:
 
   # Frontend Service
   frontend:
-    image: "interlinkproject/frontend:latest"
+    image: interlinkproject/frontend:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend
     volumes:
       - ${FRONTEND_CUSTOMIZATION_IMAGES_PATH}:/usr/share/nginx/html/static/customization
@@ -98,6 +101,7 @@ services:
       - REACT_APP_PRIMARY_COLOR=${PRIMARY_COLOR}
       - REACT_APP_DEFAULT_LANGUAGE=${DEFAULT_LANGUAGE}
       - REACT_APP_ALLOWED_LANGUAGES=${ALLOWED_LANGUAGES}
+      - TZ=${TZ}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -119,6 +123,8 @@ services:
     image: redis:6-alpine
     networks:
       - default
+    environment:
+      - TZ=${TZ}
     logging:
       driver: "json-file"
       options:
@@ -127,34 +133,13 @@ services:
   # Postgres Service
   db:
     container_name: ${PLATFORM_STACK_NAME}-db
-    image: interlinkproject/postgres:latest
+    image: interlinkproject/postgres:${VERSION}
     volumes:
       - db-data:${PGDATA}
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     environment:
-      - POSTGRES_MULTIPLE_DATABASES=loomio_production
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - default
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
-  db2:
-    # we do not want persistence for this databases YET (no volumes, whereas db has volumes)
-    # TODO: delete this microservice and replace POSTGRES_SERVER=db2 by POSTGRES_SERVER=db (in this docker-compose catalogue and coproduction micros)
-    container_name: ${PLATFORM_STACK_NAME}-db2
-    image: interlinkproject/postgres:latest
-    env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
-    environment:
-      - POSTGRES_MULTIPLE_DATABASES=coproduction,catalogue
+      - POSTGRES_MULTIPLE_DATABASES=loomio_production,coproduction_production,catalogue_production
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
       interval: 10s
@@ -170,13 +155,13 @@ services:
   # PGAdmin (do not expose)
   pgadmin:
     container_name: ${PLATFORM_STACK_NAME}-pgadmin
-    image: dpage/pgadmin4:latest
+    image: dpage/pgadmin4:6.8
     ports:
       - "5050:5050"
     depends_on:
       - db
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     networks:
       - default
     logging:
@@ -189,7 +174,7 @@ services:
     image: bitnami/mongodb:latest
     container_name: ${PLATFORM_STACK_NAME}-mongodb
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     healthcheck:
       test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u $MONGODB_ROOT_USER -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
       interval: 10s
@@ -198,6 +183,8 @@ services:
       # start_period: 20s
     networks:
       - default
+    volumes:
+      - mongodb-data:/bitnami/mongodb
     logging:
       driver: "json-file"
       options:
@@ -205,20 +192,24 @@ services:
 
   # Coproduction Service
   coproduction:
-    image: interlinkproject/backend-coproduction:latest
+    image: interlinkproject/backend-coproduction:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproduction
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
+    volumes:
+      - coproduction-migrations:/app/alembic/versions
+      - coproduction-static:/app/static
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
       - BASE_PATH=/coproduction
-      - POSTGRES_DB=coproduction
-      - POSTGRES_SERVER=db2 # TODO: remove this
+      - POSTGRES_DB=coproduction_production
+      - POSTGRES_SERVER=db
       - CATALOGUE_SERVICE_NAME=catalogue
       - CATALOGUE_PORT=80
       - DEFAULT_LANGUAGE
       - ALLOWED_LANGUAGES
+    command: ["bash", "./start-prod.sh"]
     depends_on:
       db:
         condition: service_healthy
@@ -242,22 +233,27 @@ services:
 
   # Coproduction Worker Service
   coproductionworker:
-    image: interlinkproject/backend-coproduction:latest
+    image: interlinkproject/backend-coproduction:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproductionworker
     command: [ "bash", "./worker-start.sh" ]
+    volumes:
+      - coproduction-static:/app/static
     depends_on:
       - db
       - redis
+      - coproduction
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
       - BASE_PATH=/coproduction
-      - POSTGRES_DB=coproduction
-      - POSTGRES_SERVER=db2 # TODO: remove this
+      - POSTGRES_DB=coproduction_production
+      - CATALOGUE_SERVICE_NAME=catalogue
+      - CATALOGUE_PORT=80
       - DEFAULT_LANGUAGE
       - ALLOWED_LANGUAGES
+      - POSTGRES_SERVER=db
     networks:
       - default
     logging:
@@ -267,18 +263,23 @@ services:
 
   # Catalogue Service
   catalogue:
-    image: interlinkproject/backend-catalogue:latest
+    image: interlinkproject/backend-catalogue:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-catalogue
+    volumes:
+      - catalogue-migrations:/app/alembic/versions
+      - catalogue-static:/app/static
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
       - BASE_PATH=/catalogue
-      - POSTGRES_DB=catalogue
-      - POSTGRES_SERVER=db2 # TODO: remove this
+      - POSTGRES_DB=catalogue_production
+      - POSTGRES_SERVER=db
       - DEFAULT_LANGUAGE
       - ALLOWED_LANGUAGES
+    depends_on:
+      - db
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -289,6 +290,7 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-catalogue.rule=Host(`${DOMAIN}`) && PathPrefix(`/catalogue`)
       - traefik.http.routers.${PLATFORM_STACK_NAME}-catalogue.middlewares=catalogue-stripprefix
       - traefik.http.middlewares.catalogue-stripprefix.stripprefix.prefixes=/catalogue
+    command: ["bash", "./start-prod.sh"]
     networks:
       - traefik-public
       - default
@@ -299,7 +301,7 @@ services:
 
   # Auth Service
   auth:
-    image: interlinkproject/backend-auth:latest
+    image: interlinkproject/backend-auth:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-auth
     environment:
       - SERVER_NAME=${DOMAIN}
@@ -309,7 +311,9 @@ services:
       - COLLECTION_NAME=users
       - CLIENT_SECRET=${LOOMIO_AAC_APP_SECRET}
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
+    volumes:
+      - auth-static:/app/static
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -328,7 +332,7 @@ services:
 
   # # Channels Service (Websocket)
   # channels:
-  #   image: interlinkproject/backend-channels:latest
+  #   image: interlinkproject/backend-channels:${VERSION}
   #   container_name: ${PLATFORM_STACK_NAME}-channels
   #   environment:
   #     - SERVER_NAME=${DOMAIN}
@@ -338,7 +342,7 @@ services:
   #     - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
   #     - COLLECTION_NAME=channels_assets
   #   env_file:
-  #     - ../${ENVIRONMENTPATH?Variable not set}
+  #     - ./.env.${ENVIRONMENT?Variable not set}
   #   labels:
   #     - traefik.enable=true
   #     - traefik.docker.network=traefik-public
@@ -354,7 +358,7 @@ services:
 
   # Googledrive Interlinker
   googledrive:
-    image: interlinkproject/interlinker-googledrive:latest
+    image: interlinkproject/interlinker-googledrive:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-googledrive
     environment:
       - SERVER_NAME=${DOMAIN}
@@ -363,7 +367,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=googledrive_assets
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -384,7 +388,7 @@ services:
 
   # Survey Editor Interlinker
   surveyeditor:
-    image: interlinkproject/interlinker-surveyeditor:latest
+    image: interlinkproject/interlinker-surveyeditor:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-surveyeditor
     environment:
       - SERVER_NAME=${DOMAIN}
@@ -393,7 +397,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=surveyeditor_assets
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -414,7 +418,7 @@ services:
 
   # Ceditor Interlinker Service
   ceditor:
-    image: interlinkproject/interlinker-ceditor:ceditor-latest
+    image: interlinkproject/interlinker-ceditor:ceditor.${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-ceditor
     environment:
       - SERVER_NAME=${DOMAIN}
@@ -423,7 +427,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=etherpad_assets
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -444,7 +448,7 @@ services:
 
   # Ceditor Interlinker Service etherpad
   etherpad:
-    image: interlinkproject/interlinker-ceditor:etherpad-latest
+    image: interlinkproject/interlinker-ceditor:etherpad.${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-etherpad
     environment:
       - TITLE=${ETHERPAD_TITLE}
@@ -458,7 +462,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=etherpad_assets
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -481,7 +485,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # externalresourcemanager:
-  #   image: interlinkproject/interlinker-externalresourcemanager:latest
+  #   image: interlinkproject/interlinker-externalresourcemanager:${VERSION}
   #   container_name: ${PLATFORM_STACK_NAME}-externalresourcemanager
   #   environment:
   #     - SERVER_NAME=${DOMAIN}
@@ -490,7 +494,7 @@ services:
   #     - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
   #     - COLLECTION_NAME=externalresourcemanager_assets
   #   env_file:
-  #     - ../${ENVIRONMENTPATH?Variable not set}
+  #     - ./.env.${ENVIRONMENT?Variable not set}
   #   labels:
   #     - traefik.enable=true
   #     - traefik.docker.network=traefik-public
@@ -510,7 +514,7 @@ services:
   #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomio:
-    image: interlinkproject/interlinker-loomio:latest
+    image: interlinkproject/interlinker-loomio:common.${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomio
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
@@ -530,7 +534,7 @@ services:
       - loomio-import:/import
       - loomio-tmp:/loomio/tmp
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     depends_on:
       - db
       - redis
@@ -557,7 +561,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomioworker:
-    image: interlinkproject/interlinker-loomio:latest
+    image: interlinkproject/interlinker-loomio:common.${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomioworker
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
@@ -576,7 +580,7 @@ services:
       - loomio-plugins:/loomio/plugins/docker
       - loomio-tmp:/loomio/tmp
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     networks:
       - traefik-public
       - default
@@ -595,7 +599,7 @@ services:
       - LETSENCRYPT_HOST=channels.loomio.${DOMAIN}
       - LETSENCRYPT_EMAIL=apps@interlink-project.eu
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     depends_on:
       - redis
     labels:
@@ -639,7 +643,7 @@ services:
       - elasticsearch-data:/usr/share/elasticsearch/data
       - elasticsearch-config:/usr/share/elasticsearch/config
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     networks:
       - default
     logging:
@@ -648,11 +652,11 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   augmenterservice:
-    image: interlinkproject/publicservice-servicepedia:augmenterservice-latest
+    image: interlinkproject/publicservice-servicepedia:augmenterservice.${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-augmenterservice
     restart: always
     env_file:
-      - ../${ENVIRONMENTPATH?Variable not set}
+      - ./.env.${ENVIRONMENT?Variable not set}
     networks:
       - traefik-public
       - default
@@ -718,6 +722,8 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
+    env_file:
+      - ./.env.${ENVIRONMENT?Variable not set}
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -737,26 +743,24 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   logging:
-    image: interlinkproject/backend-logging:latest
+    image: interlinkproject/backend-logging:${VERSION}
     container_name: ${PLATFORM_STACK_NAME}-logging
-    restart: unless-stopped
-    environment:
-      - RABBITMQ_HOST=${RABBITMQ_HOST}
-      - RABBITMQ_USER=${RABBITMQ_USER}
-      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
-      - EXCHANGE_NAME=${EXCHANGE_NAME}
+    env_file:
+      - ./.env.${ENVIRONMENT?Variable not set}
+    restart: on-failure
     networks:
-      - default
+      - traefik-public
     depends_on:
       rabbitmq:
         condition: service_healthy
+    command: ["./wait-for-it.sh", "rabbitmq:5672", "--", "python", "./main.py"]
     logging:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:8.5.1
     container_name: ${PLATFORM_STACK_NAME}-grafana
     restart: unless-stopped
     links:
@@ -792,7 +796,7 @@ services:
 
 
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.35.0
     container_name: ${PLATFORM_STACK_NAME}-prometheus
     restart: unless-stopped
     volumes:
@@ -813,7 +817,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   cadvisor:
-    image: google/cadvisor:latest
+    image: google/cadvisor:v0.33.0
     container_name: ${PLATFORM_STACK_NAME}-monitoring_cadvisor
     restart: unless-stopped
     volumes:
@@ -833,7 +837,7 @@ services:
 
 
   node-exporter:
-    image: prom/node-exporter:latest
+    image: prom/node-exporter:v1.3.1
     container_name: ${PLATFORM_STACK_NAME}-monitoring_node_exporter
     restart: unless-stopped
     expose:
@@ -856,7 +860,7 @@ services:
 
 
   loki:
-    image: grafana/loki:main
+    image: grafana/loki:main-c76565a
     container_name: ${PLATFORM_STACK_NAME}-loki
     restart: unless-stopped
     command: -config.file=/etc/loki/local-config.yaml
@@ -894,7 +898,7 @@ services:
 
 
 #  alertmanager:
-#    image: prom/alertmanager:latest
+#    image: prom/alertmanager:v0.24.0
 #    container_name: ${PLATFORM_STACK_NAME}-alertmanager
 #    restart: unless-stopped
 #    ports:
@@ -929,8 +933,15 @@ volumes:
   loomio-tmp:
 
   db-data:
+  portainer-data:
+  mongodb-data:
   elasticsearch-data:
   elasticsearch-config:
+  auth-static:
+  coproduction-migrations:
+  coproduction-static:
+  catalogue-migrations:
+  catalogue-static:
 
   grafana-dashboards:
   grafana-data:

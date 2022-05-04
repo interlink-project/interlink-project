@@ -27,17 +27,17 @@ jobs:
             export GRAFANA_USERNAME=${{ secrets.ZGZ_GRAFANA_USERNAME }}
             export GRAFANA_PASSWORD=${{ secrets.ZGZ_GRAFANA_PASSWORD }}
             export ENVIRONMENT=zgz
-            export ENVIRONMENTPATH=pilot-zgz/.env.zgz
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project )
             cd /datadrive/data/interlink-project/envs
             git fetch origin
             git checkout ${{ github.ref_name }} && git merge --ff-only origin ${{ github.ref_name }}
-            docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz down --remove-orphans
-            docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz pull
+            cd /datadrive/data/interlink-project/envs/development
+            docker-compose -f docker-compose.yml --env-file .env.zgz down --remove-orphans
+            docker-compose -f docker-compose.yml --env-file .env.zgz pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose -f demo/docker-compose.yml -f pilot-zgz/docker-compose.zgz.yml --env-file pilot-zgz/.env.zgz up -d
+            docker-compose -f docker-compose.yml --env-file .env.zgz up -d
             sleep 10
-            docker-compose --env-file pilot-zgz/.env.zgz exec -T catalogue python /app/app/pre_start.py
-            docker-compose --env-file pilot-zgz/.env.zgz exec -T catalogue ./seed.sh
+            docker-compose --env-file .env.zgz exec -T catalogue python /app/app/pre_start.py
+            docker-compose --env-file .env.zgz exec -T catalogue ./seed.sh
