@@ -514,7 +514,7 @@ services:
   #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomio:
-    image: interlinkproject/interlinker-loomio:v2.11.6
+    image: interlinkproject/interlinker-loomio:common.v1.0.0
     container_name: ${PLATFORM_STACK_NAME}-loomio
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
