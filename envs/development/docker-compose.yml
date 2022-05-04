@@ -62,7 +62,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   portainer:
-    image: portainer/portainer-ce:1.24.2
+    image: portainer/portainer-ce:2.11.1-alpine
     container_name: portainer
     restart: unless-stopped
     security_opt:
