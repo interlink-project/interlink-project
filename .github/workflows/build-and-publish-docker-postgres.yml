@@ -1,6 +1,9 @@
 name: build-and-publish-docker-postgres
 
 on:
+
+  workflow_dispatch:
+
   push:
     branches:
       - "master"
