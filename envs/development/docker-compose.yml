@@ -171,7 +171,7 @@ services:
 
   # MongoDB Service
   mongodb:
-    image: bitnami/mongodb:4.4.13
+    image: bitnami/mongodb:latest
     container_name: ${PLATFORM_STACK_NAME}-mongodb
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
