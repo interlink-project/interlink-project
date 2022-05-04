@@ -327,7 +327,7 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[1m] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[1M] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
           "queryType": "range",
           "refId": "A"
         }
