@@ -75,13 +75,14 @@ Normally DevOps should take care of customization of deployment, having provided
 
 Minor SW updates are needed when there is either a bug fix or small functionality improvement which (almost) does not affect (of affects very little) other SW components, API interfaces, Data Model, etc. Usually the reason for such SW update appears during SW testing and corresponding issue is created in redmine for corresponding SW component. Fixing the SW code should start a.s.a.p. New SW release with minor version incremented (for ex. 3.2.1) should be created. Deployment should be done on first possible occasion (e.g. over night or a weekend).
 
-Such SW change may happen within the same SW release, for example, during the first pilot demo sessions.
+Such SW change may happen within the same SW release, for example, during the first pilot demo sessions. It is a good practice to have accumulated several patches (bugfixes and minor improvements) together to plan, build, announce and deploy a new minor release to the pilot servers.
+The workflow is as follows: users report bugs or propose improvements in redmine, developers provide TAGged code update in the GIT for them and report to PM for planning the deployment, then deployment goes as planned by PMs.
 
 ### Major SW updates (new SW release)
 
 Such code update corresponds to implementing a new significant functionality. New SW release should be built and deployed with new major version (e.g. 3.2 or 3.2.0). Usually the new SW release should keep back-compatibility, the same SW design, interfaces, system architecture and data models should be preserved, but could be extended.
 
-Such SW change should happend per different project milestones, for example, there will be initial and final pilot demonstrations with different SW releases.
+Such SW change should happend per different project milestones, for example, there will be initial and final pilot demonstrations with different SW releases. Planning such milestones is done by the entire project. Currently we assume mid-term pilot demos being v1.x.y and end of project pilot demos to be v2.x.y.
 
 ### SW refactoring
 
