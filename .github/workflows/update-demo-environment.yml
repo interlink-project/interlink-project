@@ -29,7 +29,9 @@ jobs:
             export GRAFANA_PASSWORD=${{ secrets.DEV_GRAFANA_PASSWORD }}
             export ENVIRONMENT=demo
             git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || (cd /datadrive/data/interlink-project && git pull --ff-only)
-            cd /datadrive/data/interlink-project/envs/development
+            cd /datadrive/data/interlink-project/envs/demo
+            git fetch origin
+            git checkout ${{ github.ref_name }} && git merge --ff-only origin ${{ github.ref_name }}
             docker-compose --env-file .env.demo down --remove-orphans
             docker-compose --env-file .env.demo pull
             docker network create traefik-public || true
