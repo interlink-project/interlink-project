@@ -64,8 +64,10 @@ The DEMO server is intended for testing and training sessions with business user
 
 ### Pilot Servers (ZGZ, MEF, VARAM)
 
-Deployment of INTERLINK SW to pilot servers should contain the common INTERLINK base SW (backend, frontend and other platform type components like DBs, auth, etc) and pilot-specific components (ZGZ SW components for ZGZ pilot, etc.).
-The deployment process should be similar to deploying on staging (demo) server.
+Deployment of INTERLINK SW to pilot servers should contain the same common INTERLINK base SW (web portal + common interlinkers + other platform type components like DBs, auth, logging, etc.) and optionally pilot-specific components (e.g., ZGZ room booking for ZGZ pilot, Servicepedia for VARAM, etc.).
+Functionality of the common SW components (listed above) should be the same, just some customizations (e.g., language translations) may be applied at configuration level, so no need to have separate code branches, but profiles of configuration files.
+The deployment process should be similar to deploying on staging (demo) server, and be customized via environment variables.
+Normally DevOps should take care of customization of deployment, having provided customizations of SW components from developers.
 
 ## Software Updates
 
@@ -93,6 +95,8 @@ Docker-compose profiling is a useful mechamism to structure and group lower and 
 It is described in details here: https://docs.docker.com/compose/profiles/
 
 The idea is to try to have separate docker-compose files per each SW service and to include (or exclude) them into the deployment of particular environment.
+
+This part of configuration may still be under revision and improvement by DevOps. Currently it is supposed that DevOps will adjust configurations per pilot deployment, while package developers should just provide a stable and well tested version of their SW code.
 
 ## Data persistency
 
