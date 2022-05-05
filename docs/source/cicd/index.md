@@ -5,42 +5,46 @@
 
 ### Unit Tests (UT)
 
-Every SW package should have Unit Tests (UT) provided by SW package authors.
-Project DevOps should configure automatic workflow to execute those UT on every push to master branch.
+Every SW package should have Unit Tests (UT) provided by SW package authors (developers).
+Project DevOps (admin) should configure automatic workflow to execute those UT on every push to master branch.
 
 ### SW Releases
 
 Once a SW component archieves an important implementation milestone by developers, its code should be TAGged.
-For SW version which are intended for deployment, a SW release should be built per each SW repository based on some existing TAG of the code.
-There may be many TAGs on the code (e.g. Monday, Tuesday, etc) and not all of them but some sub-set are intended to become a SW release.
-SW release version is usually the same as TAG value or an extended string for example "TAG+additional_suffix".
+For SW version which are intended for any deployment, a SW release should be built per each SW repository based on some existing TAG of the code.
+There may be many TAGs on the code (e.g. function1-Monday, function2-Tuesday, etc) and not all of them but some sub-set are intended to become a SW release.
+
+SW release version is usually based on the TAG value as a kind of extended string for example "TAG+additional_suffix" or "prefix+TAG".
+Let's establish the following convention for SW release labels: *v1.X.Y-suffix* for the mid-term pilot demos, where X and Y are minor versions/subversions and suffix may contain date of functionality or configuration label.
+
 Having built a SW release should trigger automatic building of a new docker image(s) for this SW repository.
 Docker images should contain TAG or SW version somewhere in the name of the docker image, for ex. "image-Interlink-frontend:v3.1".
 The deployment of a docker image should be with explicit use of the image (SW release) version suffix "v3.1" instead of just ":latest".
 
 
 All INTERLINK SW packages should be grouped into a single INTERLINK SW release, with a way to configure which versions (TAGs) of particular SW packages should be included in given version (TAG) of the INTERLINK SW release. For example, INTERLINK SW release version 2.1-zgz consists of the following SW versions per SW package:
-- Frontend v1.8
-- Backend v3.2
-- Zgz module v2.6
+- Frontend v1.0.8
+- Backend v1.3.2
+- Zgz room booking module v1.2.6
+- VARAM Servicepedia module v1.4.2
 - etc.
 
 ### Integration Tests (IT)
 
-Once the entire INTERLINK SW release is tagged, this should trigger execution of Integration Tests (IT) to check compatibility between cross-dependent SW packages within the SW release.
+Once the entire INTERLINK SW release is tagged, this should trigger execution of Integration Tests (IT) to check compatibility between cross-dependent SW packages within the SW release. This process is still not in place and pending clarification.
 
 ### Building of Docker SW images
 
 Once both UT and IT completed in "green", i.e. on successfull (OK, without errors) termination of UT + IT pipelines, a new pipeline building docker images should launch.
 
-Having no UT/IT available, the pipelines to build docker images should be triggered by assignment of TAGs to SW repository or by having built a SW release.
+Having no UT/IT available, the pipelines to build docker images should be triggered by having built a SW release per each repository.
 
 ## Continuous Deployment (CD) & Environments
 
 There might be the following SIX environments:
 - Local
-- DEV
-- Staging (= DEMO)
+- DEV: any push to master triggers re-deployment of latest master code for integration tests.
+- Staging (= DEMO): only docker images built for stable SW releases deployed there.
 - pilot MEF
 - pilot ZGZ
 - pilot VARAM
