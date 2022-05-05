@@ -450,6 +450,7 @@ services:
   etherpad:
     image: interlinkproject/interlinker-ceditor:etherpad.${ETHERPAD_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-etherpad
+    restart: on-failure
     environment:
       - TITLE=${ETHERPAD_TITLE}
       - PORT=${ETHERPAD_PORT}
