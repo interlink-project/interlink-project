@@ -46,11 +46,11 @@ jobs:
             export ENVIRONMENT=development
             git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || (cd /datadrive/data/interlink-project && git pull --ff-only)
             cd /datadrive/data/interlink-project/envs/development
-            docker-compose --env-file .env.development down --remove-orphans
-            docker-compose --env-file .env.development pull
+            docker-compose --env-file .env.development --profile all down --remove-orphans
+            docker-compose --env-file .env.development --profile all pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose --env-file .env.development up -d
+            docker-compose --env-file .env.development --profile all up -d
             sleep 10
             docker-compose --env-file .env.development exec -T catalogue python /app/app/pre_start.py
             docker-compose --env-file .env.development exec -T catalogue ./seed.sh
