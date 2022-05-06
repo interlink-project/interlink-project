@@ -233,7 +233,7 @@ services:
 
   # Coproduction Worker Service
   coproductionworker:
-    image: interlinkproject/backend-coproduction:${COPRODUCTIONWORKER_VERSION}
+    image: interlinkproject/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproductionworker
     command: [ "bash", "./worker-start.sh" ]
     volumes:
