@@ -197,7 +197,6 @@ services:
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     volumes:
-      - coproduction-migrations:/app/alembic/versions
       - coproduction-static:/app/static
     environment:
       - SERVER_NAME=${DOMAIN}
@@ -266,7 +265,6 @@ services:
     image: interlinkproject/backend-catalogue:${CATALOGUE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-catalogue
     volumes:
-      - catalogue-migrations:/app/alembic/versions
       - catalogue-static:/app/static
     environment:
       - SERVER_NAME=${DOMAIN}
@@ -939,9 +937,7 @@ volumes:
   elasticsearch-data:
   elasticsearch-config:
   auth-static:
-  coproduction-migrations:
   coproduction-static:
-  catalogue-migrations:
   catalogue-static:
 
   grafana-dashboards:

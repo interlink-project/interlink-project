@@ -50,7 +50,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      # - ./portainer-data:/data
+      - portainer-data:/data
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -73,6 +73,8 @@ services:
     #  - app-db-data:/var/lib/postgresql/data/pgdata
     env_file:
       - .env
+    volumes:
+      - db-data:${PGDATA}
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
     healthcheck:
@@ -116,6 +118,8 @@ services:
       start_period: 20s
     networks:
       - traefik-public
+    volumes:
+      - mongodb-data:/bitnami/mongodb
     logging:
       driver: "json-file"
       options:
@@ -169,3 +173,8 @@ services:
 networks:
   traefik-public:
     external: true
+
+volumes:
+  db-data:
+  portainer-data:
+  mongodb-data:

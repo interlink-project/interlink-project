@@ -43,7 +43,7 @@ down: ## Stops all containers and removes volumes
 
 	cd ../frontend && make down
 	
-	cd ./envs/local && docker-compose down --volumes --remove-orphans
+	cd ./envs/local && docker-compose down --remove-orphans
 	docker network rm traefik-public || true
 
 .PHONY: start
@@ -83,27 +83,24 @@ build: ## Build containers
 .PHONY: upb
 upb: down net build up ## Build and run containers
 
-.PHONY: restartcontainers
-restartcontainers: ## Run containers (restarts them if already running) except FRONTEND
-	cd ./envs/local && docker-compose down --volumes --remove-orphans
-	cd ./envs/local && docker-compose up -d
-
-	cd ../backend-auth && make integrated
-	cd ../backend-catalogue && make integrated
-	cd ../backend-coproduction && make integrated
-	cd ../backend-logging && make integrated
-
-	cd ../interlinker-googledrive && make integrated
-	cd ../interlinker-survey && make integrated
-	cd ../interlinker-ceditor && make integrated
-
 .PHONY: seed
 seed: ## Set initial data
 	cd ../backend-catalogue && make localseed
 	
+.PHONY: migrations
+migrations: ## Set initial data
+	@[ "${message}" ] || ( echo ">> message not specified (make migrations message='your message'"; exit 1 )
+	cd ../backend-catalogue && make migrations message=$(message)
+	cd ../backend-coproduction && make migrations message=$(message)
+
+.PHONY: applymigrations
+applymigrations: ## Set initial data
+	cd ../backend-catalogue && make applymigrations
+	cd ../backend-coproduction && make applymigrations
+	
 .PHONY: restartcontainers
 restartcontainers: ## Run containers (restarts them if already running) except FRONTEND
-	cd ./envs/local && docker-compose down --volumes --remove-orphans
+	cd ./envs/local && docker-compose down --remove-orphans
 	cd ./envs/local && docker-compose up -d
 
 	cd ../backend-auth && make integrated
@@ -116,14 +113,14 @@ restartcontainers: ## Run containers (restarts them if already running) except F
 	cd ../interlinker-ceditor && make integrated
 
 .PHONY: restart
-restart: restartcontainers seed ## Run containers (restarts them if already running)	
+restart: restartcontainers applymigrations seed ## Run containers (restarts them if already running)	
 
 .PHONY: up
-up: start seed ## Run containers and seeds them with data
+up: start applymigrations seed ## Run containers and seeds them with data
 	
 .PHONY: diagrams
 diagrams: ## Test containers
 	rm -rf images/docker-composes
 	mkdir -p images/docker-composes
 	sh diagrams.sh 
-	find .. -maxdepth 1 -name "*.docker-compose.png" -exec mv -f {} ./docs/images/docker-composes \;
+	find .. -maxdepth 1 -name "*.docker-compose.png" -exec mv -f {} ./docs/source/components/docker-composes \;
