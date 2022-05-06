@@ -38,9 +38,12 @@ jobs:
             docker network create grafana-network || true
             docker-compose --env-file .env.demo up -d
             sleep 10
+            docker-compose --env-file .env.development exec -T catalogue python /app/app/pre_start.py
+            docker-compose --env-file .env.development exec -T coproduction python /app/app/pre_start.py
+
             # Apply last migrations (if they exist)
             docker-compose --env-file .env.demo exec -T catalogue alembic upgrade head
             docker-compose --env-file .env.demo exec -T coproduction alembic upgrade head
+
             # Seed the database (if objects already exist, initial_data.py script updates them)
-            docker-compose --env-file .env.demo exec -T catalogue python /app/app/pre_start.py
             docker-compose --env-file .env.demo exec -T catalogue ./seed.sh
