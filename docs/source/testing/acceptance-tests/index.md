@@ -1,17 +1,23 @@
-# Acceptance testing #
-Acceptance Testing
-: This is a type of testing done by users, customers, or other authorised entities to determine application/software needs and business processes. Description: Acceptance testing is the most important phase of testing as this decides whether the client approves the application/software or not.
+# Acceptance testing
+
+<dl>
+  <dt>Acceptance Testing</dt>
+  <dd>This is a type of testing done by users, customers, or other authorised entities to determine application/software needs and business processes. Description: Acceptance testing is the most important phase of testing as this decides whether the client approves the application/software or not.</dd>
+</dl>
 
 This document ilustrates the different tests needed to ensure that the expected functionality of the INTERLINK Collaborative Environment is met. 
 
-##Smoke Testing##
-The first section carried out a so-called *Smoke Testing*
+## Smoke Testing
 
-Smoke Testing
-: In computer programming and software testing, smoke testing is preliminary testing to reveal simple failures severe enough to, for example, reject a prospective software release.
+The first section carries out a so-called *Smoke Testing*
 
-Staging server
-: A server used to temporarily show certain users new and revised Internet and/or intranet pages before they are put into production.ç
+<dl>
+  <dt>Smoke Testing</dt>
+  <dd>In computer programming and software testing, smoke testing is preliminary testing to reveal simple failures severe enough to, for example, reject a prospective software release.</dd>
+
+  <dt>Staging server</dt>
+  <dd>A server used to temporarily show certain users new and revised Internet and/or intranet pages before they are put into production.</dd>
+</dl>
 
 The following Smoke Testing should be applied over [INTERLINK's staging server](https://demo.interlink-project.eu/):
 
@@ -28,7 +34,7 @@ The following Smoke Testing should be applied over [INTERLINK's staging server](
 6. Review progress of project in OVERVIEW
 7. Check functionality of the INTERLINK catalogue by clicking on INTERLINKERs, browsing, filtering and selecting INTERLINKERs.
 
-##Acceptance testing##
+## Acceptance testing 
 
 Next, we will illustrate how to perform a more exhaustive suite of manual tests that expore all currently available functionalities within the Collaborative Environment.
 
