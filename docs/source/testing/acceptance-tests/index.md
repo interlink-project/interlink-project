@@ -1,4 +1,4 @@
-# Acceptance testing
+# Acceptance testing #
 Acceptance Testing
 : This is a type of testing done by users, customers, or other authorised entities to determine application/software needs and business processes. Description: Acceptance testing is the most important phase of testing as this decides whether the client approves the application/software or not.
 
