@@ -26,7 +26,7 @@ The following Smoke Testing should be applied over [INTERLINK's staging server](
 2. Create a co-production project where the activity to co-create is assessed ![Creating a new co-production project](images/image6.png)
 3. Link the created team to the created co-production process. ![Select Team menu option and "Add new Team" button](images/image8.png) ![Click on pop-up window's Add team button](images/image9.png)
 3. Choose a co-production process guide (flexibility to choose the best fitting schema)
-   - Notice that there are several co-production trees available. We will take the one named "Default schema" ![Select default schema](images/image7.PNG)
+   - Notice that there are several co-production trees available. We will take the one named "Default schema" ![Select default schema](images/image7.png)
    - You may customize such tree to the specific needs of your co-production process. Currently only DELETE task allowed, soon we will be able to add new objectives & tasks
    - Observe that specific co-production trees can be defined (e.g. VARAM case)
 4. Create new roles and new teams with different rights than the core co-producers’ team. Currently a role applies to all phases, objectives and tasks of a co-production process. 
