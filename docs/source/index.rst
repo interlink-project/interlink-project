@@ -14,6 +14,7 @@ Welcome to Interlink's documentation!
    datamodel/index.md
    authentication/authentication.rst
    interlinkers/index.md
+   testing/acceptance-tests/index.md
    cicd/index.md
 
 
