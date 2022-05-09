@@ -23,7 +23,7 @@ The following Smoke Testing should be applied over [INTERLINK's staging server](
 
 0. Before using the Collaborative environment, you must first login with your google credentials or create your own credentials at [https://demo.interlink-project.eu/](https://demo.interlink-project.eu/), i.e. the staging server of INTERLINK. **IMPORTANT**: All members of an envisaged team must logged into the platform before they can be added to a team. ![Login required screen](images/image0.PNG) ![AAC screen](images/image1.PNG)
 1. Create a team which wants to take part in a co-production process. ![Two user sessions](images/image2.PNG) ![Creating a team](images/image3.png) ![Adding a user](images/image4.png) ![Team editing window](images/image5.png)
-2. Create a co-production project where the activity to co-create is assessed ![Creating a new co-production project](images/image6.PNG)
+2. Create a co-production project where the activity to co-create is assessed ![Creating a new co-production project](images/image6.png)
 3. Link the created team to the created co-production process. ![Select Team menu option and "Add new Team" button](images/image8.png) ![Click on pop-up window's Add team button](images/image9.png)
 3. Choose a co-production process guide (flexibility to choose the best fitting schema)
    - Notice that there are several co-production trees available. We will take the one named "Default schema" ![Select default schema](images/image7.PNG)
