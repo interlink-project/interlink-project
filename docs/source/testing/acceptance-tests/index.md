@@ -27,15 +27,47 @@ The following Smoke Testing should be applied over [INTERLINK's staging server](
 3. Link the created team to the created co-production process. ![Select Team menu option and "Add new Team" button](images/image8.png) ![Click on pop-up window's Add team button](images/image9.png)
 3. Choose a co-production process guide (flexibility to choose the best fitting schema)
    - Notice that there are several co-production trees available. We will take the one named "Default schema" ![Select default schema](images/image7.png)
-   - You may customize such tree to the specific needs of your co-production process. Currently only DELETE task allowed, soon we will be able to add new objectives & tasks
-   - Observe that specific co-production trees can be defined (e.g. VARAM case)
+   - Beware of emergence of Guide view menu item on left hand side ![Beware of emergence of Guide view menu item on left hand side](images/image10.png)
+   - You may customize such tree to the specific needs of your co-production process. Currently only DELETE task allowed, soon we will be able to add new objectives & tasks. Check below how a task is removed after having clicked on the PENCIL icon which appears on the right hand side of the task visualization panel.
+   ![About to remove a task](images/image11.png)
+   ![View after removal of task](images/image12.png)
+   - Observe that specific co-production trees can be defined and, hence, selected (e.g. VARAM case)
+   - You may also assign durations to tasks
+   ![Assigning duration to task](images/image13.png)
+   - Then we can see in WORKPLAN view the time span defined, by clicking on the "Time planification" link in the GUIDE view or clicking on the left hand side menu option named "Workplan". You may return to the Workplan view, to see the task details by clicking on the name of the task in the WORKPLAN view. 
+   ![Workplan view](images/image14.png)
 4. Create new roles and new teams with different rights than the core co-producers’ team. Currently a role applies to all phases, objectives and tasks of a co-production process. 
-5. Use the guide to co-produce SOMETHING, e.g. project to co-assess the implementation of the co-production methodology of INTERLINK through the collaborative environment
-   - For each of the tasks in the co-production phases you may select any of the recommended INTERLINKERs or instantiate a new one based on the generic software INTERLINKERs available at the bottom of the screen shown when selecting a co-production task. Check for the blue button at the bottom entitled "Initiate Procedure"
+	- Create a new team 
+	![Creating a new team](images/image15.png)
+	- Create a new role, assigning it the right to "View resources" only
+	![Creation of co-observers role](images/image16.png)
+	- Assign the role of co-observers to the co-observers team
+	![Assignment of co-observers role to co-observers team](images/image17.png)
+5. Use the guide to co-produce SOMETHING, e.g. new document to collect feedback of collaboration process. For each of the tasks in the co-production phases you may select any of the recommended INTERLINKERs or instantiate a new one based on the generic software INTERLINKERs available at the bottom of the screen shown when selecting a co-production task. 
+	- Select another task in the GUIDE view, e.g. ENGAGE > Engage Stakeholders > Create awareness and Communication
+	- Notice the INTERLINKERs recommended
+	![Notice INTERLINKERs recommended](images/image22.png)
+	- Select a task in the GUIDE view, e.g. ENGAGE > Define legal and ethical framework > Define a non-disclosure agreement (NDA)
+	- Click on the blue button at the bottom entitled "Initiate Procedure" to give place to a new Google Docs document
+	![Creating a new Google Docs](images/image18.png)
+	- Select the type of document to create with the support of Google Drive INTERLINKER
+	![Select and name the Google Docs](images/image19.png)
+	- Realize about the new resource that appears at the bottom of the task description panel
+	![New resource created](images/image20.png)
+	- Open it in Google Drive by clicking on the newly created resource name
+	![New resource created](images/image21.png)
 6. Review progress of project in OVERVIEW
+	![Resources created so far](images/image22.png)
 7. Check functionality of the INTERLINK catalogue by clicking on INTERLINKERs, browsing, filtering and selecting INTERLINKERs.
-
-
+	- Enter in the catalogue of INTERLINNKERs by clicking on INTERLINKERs top menu
+	![INTERLINKERs catalogue view](images/image23.png)
+	- Filter by selecting options on Nature filter
+	![Filtered INTERLINKERs](images/image24.png)
+	- Review contents of an INTERLINKER by clicking on its title
+	![Filtered INTERLINKERs](images/image26.png)
+	- You main review what it offers by visiting Preview tab
+	![Filtered INTERLINKERs](images/image27.png)
+	
 ## Acceptance testing 
 
 Next, we will illustrate how to perform a more exhaustive suite of manual tests that expore all currently available functionalities within the Collaborative Environment.
