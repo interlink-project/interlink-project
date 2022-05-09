@@ -74,40 +74,40 @@ Next, we will illustrate how to perform a more exhaustive suite of manual tests 
 
 The steps to validate that the miminum functionalities to allow a collaborative process to be materialized are listed below:
 
-0. Ensure that team members have logged in at least once at [INTERLINK's staging server](https://demo.interlink-project.eu/)
-   - Ensure that two sessions at least are opened, e.g. one for user dipina@deusto.es and another one for user dipina@gmail.com, to be able to test the environment's collaborative features sensibly. 
-1. Create a team “INTERLINK co-production team for co-evaluation of collaborative environment” which will jointly generate an assessment of the environment and its capabilities to carry out collaborative processes. Add at least 2 members to the team, e.g. dipina@deusto.es and dipina@gmail.com
-2. Create a co-production project, namely “Co-evaluation of the co-production process”
-3. Go to settings and ensure that the project has a good logo. Click on the pencil icon and then SAVE.
-4. Click on “Team” left hand side menu and add the created Team to the project. 
+0. **Ensure that team members have logged in at least once** at [INTERLINK's staging server](https://demo.interlink-project.eu/)
+   - Ensure that two sessions at least are opened, e.g. one for user user1@deusto.es and another one for user user2@gmail.com, to be able to test the environment's collaborative features sensibly. 
+1. **Create a team** *“INTERLINK co-production team for co-evaluation of collaborative environment”* which will jointly generate an assessment of the environment and its capabilities to carry out collaborative processes. Add at least 2 members to the team, e.g. user1@deusto.es and user2@gmail.com
+2. **Create a co-production project**, namely *“Co-evaluation of the co-production process”*
+3. **Go to Settings** and ensure that the project has a good logo. Click on the pencil icon and then SAVE.
+4. Click on **“Team” left hand side** menu and **add the created Team to the project**. 
    - You can modify the team composition at any time by clicking on the hyperlink of the Team name. 
-5. Click on “Overview” and select the co-production schema (tree) to use. Choose **“Default schema”**
-6. Hit on “Guide” and let’s start as a team co-evaluating the collaborative environment 
-7. Browse through the different phases of the co-production guide
+5. Click on **“Overview”** and **select the co-production schema** (tree) to use. Choose *“Default schema”*
+6. Hit on **“Guide” left hand side menu option** and let’s start as a team co-evaluating the collaborative environment 
+7. **Browse through the different phases** of the co-production guide
    - Select different phases
-   - Select objectives within a phase 
-   - Select tasks within an objective
-   - Observe that different INTERLINKERs are recommeded for different tasks
-8. Instantiate a generic INTERLINKER, where feedback with your observations can be gathered in a shared Google Docs with the rest of the co-evaluators
-   - In GUIDE view, select BUILD > Technical Implementation > Technical implementation
-   - Hit on “Initiate Procedure” > “Create a Google Drive document” > create asset “Feedback about usage of Collaborative Environment”
+   - **Select objectives** within a phase 
+   - **Select tasks** within an objective
+   - **Observe that different INTERLINKERs are recommeded** for different tasks
+8. **Instantiate a generic INTERLINKER**, where feedback with your observations can be gathered in a shared Google Docs with the rest of the co-evaluators
+   - In **GUIDE view**, select *BUILD > Technical Implementation > Technical implementation*
+   - Hit on **“Initiate Procedure” > “Create a Google Drive document”**, and create a new asset entitled *“Feedback about usage of Collaborative Environment”*
    - Ensure that all team members edit and insert their comments in such shared document
-   - Notice that they all could access to feedback document when clicking on Overview menu option on the left hand side. 
-9. Explore how to navigate across the different views of the Collaborative Environment.
-   - Explore navigation between “Guide” view and “Workplan” view by hitting on “Time planification”, once within a chosen task
-   - Test changing the Time planification of a task, by hitting on the pencil and selecting start and end period, under the task screen within GUIDE view
-   - Explore navigation between “Overview” view and “Guide” view by hitting on “See Task”
-10. Use one of the recommended INTERLINKERs
-   - For instance, select "Stakeholders Mapping Canvas" INTERLINKER under task shown when navigating to Engage > Identify Stakeholders  
+   - Notice that they all could **access to feedback document when clicking on Overview** menu option on the left hand side. 
+9. Explore how to **navigate across the different views** of the Collaborative Environment.
+   - Explore navigation between “Guide” view and “Workplan” view by hitting on **“Time planification”**, once **within a chosen task**
+   - Test changing the **Time planification** of a task, by hitting on the **pencil** and selecting start and end period, under the task screen within GUIDE view
+   - Explore navigation between “Overview” view and “Guide” view by hitting on **“See Task”**
+10. Use one of the **recommended INTERLINKERs**
+   - For instance, select *"Stakeholders Mapping Canvas"* INTERLINKER under task shown when navigating to *Engage > Identify Stakeholders*  
    - Click on button “Instantiate as resource to use in the project”
-   - Check the newly created resource appears at the bottom of the page under “Current resources”
+   - Check the newly created resource appears at the bottom of the page under **“Current resources”**
    - Open the generated resource in the form of a presentation and add some modifications
-11. Check that different recommended INTERLINKERs or those generic ones instantiated through "Initiate Procedure" can be started
+11. Check that different recommended INTERLINKERs or those generic ones instantiated through **"Initiate Procedure" button** can be started
    - Continue inspecting the different tasks and INTERLINKERs that are recommended for 5’
-   - During the whole process PLEASE GATHER YOUR IMPRESSIONS / FEEDBACK on the shared document entitled “Feedback about usage of Collaborative Environment”
-   - Remember that from OVERVIEW, you can simply click on the resource title to be able to open it. 
-12. In order to provide direct feedback on any mistakes, bugs requested please use the following two channels:
-   - Fill in the [ALPHA QUESTIONNAIRE](https://docs.google.com/forms/d/e/1FAIpQLSei2Iful343wNa3WMwS4di4Z_cqzv0ibuFf_I41hIrUm1pUVA/viewform) of INTERLINK. 
-   - Access to the [Redmine support channel](http://redmine.interlink-project.eu/), log in and create a new issue under [proj_wp4_PLATFORM](http://redmine.interlink-project.eu/projects/proj_wp4_platform)
+   - During the whole process **PLEASE GATHER YOUR IMPRESSIONS / FEEDBACK on the shared document entitled “Feedback about usage of Collaborative Environment”**
+   - Remember that from **OVERVIEW**, you can simply click on the resource title to be able to open it. 
+12. In order to **provide direct feedback** on any mistakes, bugs requested please use the following two channels:
+   - Fill in the **[ALPHA QUESTIONNAIRE](https://docs.google.com/forms/d/e/1FAIpQLSei2Iful343wNa3WMwS4di4Z_cqzv0ibuFf_I41hIrUm1pUVA/viewform) of INTERLINK**. 
+   - Access to the **[Redmine support channel](http://redmine.interlink-project.eu/)**, log in and create a new issue under [proj_wp4_PLATFORM](http://redmine.interlink-project.eu/projects/proj_wp4_platform)
 
 
