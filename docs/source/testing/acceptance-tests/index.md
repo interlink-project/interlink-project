@@ -21,7 +21,7 @@ The first section carries out a so-called *Smoke Testing*
 
 The following Smoke Testing should be applied over [INTERLINK's staging server](https://demo.interlink-project.eu/):
 
-0. Before using the Collaborative environment, you must first login with your google credentials or create your own credentials at [https://demo.interlink-project.eu/](https://demo.interlink-project.eu/), i.e. the staging server of INTERLINK. **IMPORTANT**: All members of an envisaged team must logged into the platform before they can be added to a team. 
+0. Before using the Collaborative environment, you must first login with your google credentials or create your own credentials at [https://demo.interlink-project.eu/](https://demo.interlink-project.eu/), i.e. the staging server of INTERLINK. **IMPORTANT**: All members of an envisaged team must logged into the platform before they can be added to a team. ![alt text][login]![alt text][aac]
 1. Create a team which wants to take part in a co-production process
 2. Create a co-production project where the activity to co-create is assessed
 3. Choose a co-production process guide (flexibility to choose the best fitting schema)
@@ -33,6 +33,10 @@ The following Smoke Testing should be applied over [INTERLINK's staging server](
    - For each of the tasks in the co-production phases you may select any of the recommended INTERLINKERs or instantiate a new one based on the generic software INTERLINKERs available at the bottom of the screen shown when selecting a co-production task. Check for the blue button at the bottom entitled "Initiate Procedure"
 6. Review progress of project in OVERVIEW
 7. Check functionality of the INTERLINK catalogue by clicking on INTERLINKERs, browsing, filtering and selecting INTERLINKERs.
+
+
+[login]: images/image0.png "Login required screen"
+[aac]: images/image1.png "Reuse Google credentials or create your own"
 
 ## Acceptance testing 
 
