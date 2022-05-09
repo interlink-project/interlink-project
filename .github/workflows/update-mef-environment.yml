@@ -26,6 +26,11 @@ jobs:
             export LOOMIO_DEVISE_SECRET=${{ secrets.MEF_LOOMIO_DEVISE_SECRET }}
             export GRAFANA_USERNAME=${{ secrets.MEF_GRAFANA_USERNAME }}
             export GRAFANA_PASSWORD=${{ secrets.MEF_GRAFANA_PASSWORD }}
+            export GOOGLE_PROJECT_ID=${{ secrets.GOOGLE_PROJECT_ID }}
+            export GOOGLE_PRIVATE_KEY_ID=${{ secrets.GOOGLE_PRIVATE_KEY_ID }}
+            export GOOGLE_PRIVATE_KEY=${{ secrets.GOOGLE_PRIVATE_KEY }}
+            export GOOGLE_CLIENT_EMAIL=${{ secrets.GOOGLE_CLIENT_EMAIL }}
+            export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
             export ENVIRONMENT=mef
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project )

@@ -366,6 +366,11 @@ services:
       - BASE_PATH=/googledrive
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=googledrive_assets
+      - GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
+      - GOOGLE_PRIVATE_KEY_ID=${GOOGLE_PRIVATE_KEY_ID}
+      - GOOGLE_PRIVATE_KEY=${GOOGLE_PRIVATE_KEY}
+      - GOOGLE_CLIENT_EMAIL=${GOOGLE_CLIENT_EMAIL}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     labels:
