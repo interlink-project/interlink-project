@@ -1,8 +1,13 @@
-# Acceptance testing
+# User Acceptance testing
 
 <dl>
   <dt>Acceptance Testing</dt>
-  <dd>This is a type of testing done by users, customers, or other authorised entities to determine application/software needs and business processes. Description: Acceptance testing is the most important phase of testing as this decides whether the client approves the application/software or not.</dd>
+  <dd>This is a type of testing done by users, customers, or other authorised entities to determine application/software needs and business processes. Acceptance testing is the most important phase of testing as this decides whether the client approves the application/software or not.</dd>
+</dl>
+
+<dl>
+  <dt>User Acceptance Testing (UAT)</dt>
+  <dd>UAT is a type of testing performed by the end user or the client to verify/accept the software system before moving the software application to the production environment. UAT is done in the final phase of testing after functional, integration and system testing is done.</dd>
 </dl>
 
 This document ilustrates the different tests needed to ensure that the expected functionality of the INTERLINK Collaborative Environment is met. 
