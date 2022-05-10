@@ -38,11 +38,10 @@ jobs:
             git fetch origin
             git checkout ${{ github.ref_name }} && git merge --ff-only origin ${{ github.ref_name }}
             cd /datadrive/data/interlink-project/envs/pilot-mef
-            docker-compose -f docker-compose.yml --env-file .env.mef down --remove-orphans
             docker-compose -f docker-compose.yml --env-file .env.mef pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose -f docker-compose.yml --env-file .env.mef up -d
+            docker-compose -f docker-compose.yml --env-file .env.mef  -p pilot-mef up -d
             sleep 10
             docker-compose --env-file .env.mef exec -T catalogue python /app/app/pre_start.py
             docker-compose --env-file .env.mef exec -T catalogue ./seed.sh
