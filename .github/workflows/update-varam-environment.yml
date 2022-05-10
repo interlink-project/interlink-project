@@ -38,11 +38,10 @@ jobs:
             git fetch origin
             git checkout ${{ github.ref_name }} && git merge --ff-only origin ${{ github.ref_name }}
             cd /datadrive/data/interlink-project/envs/pilot-varam
-            docker-compose -f docker-compose.yml --env-file .env.varam down --remove-orphans
             docker-compose -f docker-compose.yml --env-file .env.varam pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose -f docker-compose.yml --env-file .env.varam up -d
+            docker-compose -f docker-compose.yml --env-file .env.varam -p pilot-varam up -d
             sleep 10
             docker-compose --env-file .env.varam exec -T catalogue python /app/app/pre_start.py
             docker-compose --env-file .env.varam exec -T catalogue ./seed.sh
