@@ -10,7 +10,7 @@
   <dd>UAT is a type of testing performed by the end user or the client to verify/accept the software system before moving the software application to the production environment. UAT is done in the final phase of testing after functional, integration and system testing is done.</dd>
 </dl>
 
-This document ilustrates the different tests needed to ensure that the expected functionality of the INTERLINK Collaborative Environment is met. 
+This document ilustrates the different tests needed to ensure that the expected functionality, from the end-user's point of view, of the INTERLINK Collaborative Environment is met. The main Purpose of UAT is to validate end to end business flow. It does not focus on cosmetic errors, spelling mistakes or system testing. User Acceptance Testing is carried out in a separate testing environment with production-like data setup. It is kind of black box testing where two or more end-users will be involved. User acceptance testing is needed for **testing whether the final product is accepted by client/end-user**.
 
 ## Smoke Testing
 
