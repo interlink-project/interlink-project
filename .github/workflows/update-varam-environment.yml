@@ -35,7 +35,7 @@ jobs:
             cd /datadrive/data/
             git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project )
             cd /datadrive/data/interlink-project/envs
-            git fetch origin
+            git fetch -f --all --tags
             git checkout ${{ github.ref_name }}
             cd /datadrive/data/interlink-project/envs/pilot-varam
             docker-compose -f docker-compose.yml --env-file .env.varam pull

@@ -35,7 +35,7 @@ jobs:
             export ENVIRONMENT=demo
             git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || (cd /datadrive/data/interlink-project && git pull --ff-only)
             cd /datadrive/data/interlink-project/envs/demo
-            git fetch origin
+            git fetch -f --all --tags
             git checkout ${{ github.ref_name }}
             docker-compose --env-file .env.demo pull
             docker network create traefik-public || true
