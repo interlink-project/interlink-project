@@ -1,10 +1,10 @@
 {
-    "logos": {
-        "light": "logo-light.svg",
-        "dark": "logo-dark.svg",
-        "home": "logo-home.svg"
-    },
-    "palette": {
+	"logos": {
+		"light": "logo-vertical.svg",
+        "dark": "logo-vertical-white.png",
+        "home": "logo-vertical.svg"
+	},
+	"palette": {
 		"light": {
 			"action": {
 				"active": "#6b778c"
@@ -19,16 +19,16 @@
 			},
 			"primary": {
 				"contrastText": "#ffffff",
-				"main": "#0f97c7"
+				"workspaceText": "#000000",
+				"main": "#d94438"
 			},
 			"secondary": {
 				"contrastText": "#000000",
-				"main": "#aa00de"
+				"main": "#6b778c"
 			},
 			"success": {
 				"contrastText": "#ffffff",
-				"main": "#44c949",
-				"secondary": "#0ca811"
+				"main": "#44c949"
 			},
 			"text": {
 				"primary": "#172b4d",
@@ -38,7 +38,7 @@
 				"contrastText": "#ffffff",
 				"main": "#ff9800"
 			},
-			"progressBarColor": "#d822a3"
+			"progressBarColor": "#FFFFFF"
 		},
 		"dark": {
 			"background": {
@@ -52,11 +52,12 @@
 			},
 			"primary": {
 				"contrastText": "#ffffff",
-				"main": "#0f97c7"
+				"workspaceText": "#0ca811",
+				"main": "#262625"
 			},
 			"secondary": {
 				"contrastText": "#000000",
-				"main": "#aa00de"
+				"main": "#6b778c"
 			},
 			"success": {
 				"contrastText": "#ffffff",
