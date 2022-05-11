@@ -1,6 +1,6 @@
 {
 	"logos": {
-		"light": "logo-vertical.svg",
+		"light": "logo-vertical-white.svg",
         "dark": "logo-vertical-white.png",
         "home": "logo-vertical.svg"
 	},
@@ -20,7 +20,7 @@
 			"primary": {
 				"contrastText": "#ffffff",
 				"workspaceText": "#000000",
-				"main": "#d94438"
+				"main": "#478a34"
 			},
 			"secondary": {
 				"contrastText": "#000000",
