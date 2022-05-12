@@ -10,6 +10,7 @@ Welcome to Interlink's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   usermanual/usermanual.rst
    environments/index.md
    datamodel/index.md
    authentication/authentication.rst
