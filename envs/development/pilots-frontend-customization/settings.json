@@ -1,10 +1,13 @@
 {
-	"logos": {
-		"light": "all-white.png",
-        "dark": "zaragoza-white.png",
-        "home": "zaragoza.png"
-	},
-	"palette": {
+    "logos": {
+        "dashboard_navbar_light": "logo-light.svg",
+        "dashboard_navbar_dark": "logo-light.svg",
+        "home_light": "logo-dark.svg",
+        "home_dark": "logo-light.svg",
+        "landing_light": "logo-dark.svg",
+        "landing_dark": "logo-light.svg"
+    },
+    "palette": {
 		"light": {
 			"action": {
 				"active": "#6b778c"
@@ -19,16 +22,16 @@
 			},
 			"primary": {
 				"contrastText": "#ffffff",
-				"workspaceText": "#000000",
-				"main": "#d94438"
+				"main": "#0f97c7"
 			},
 			"secondary": {
 				"contrastText": "#000000",
-				"main": "#6b778c"
+				"main": "#aa00de"
 			},
 			"success": {
 				"contrastText": "#ffffff",
-				"main": "#44c949"
+				"main": "#44c949",
+				"secondary": "#0ca811"
 			},
 			"text": {
 				"primary": "#172b4d",
@@ -38,7 +41,7 @@
 				"contrastText": "#ffffff",
 				"main": "#ff9800"
 			},
-			"progressBarColor": "#FFFFFF"
+			"progressBarColor": "#d822a3"
 		},
 		"dark": {
 			"background": {
@@ -52,12 +55,11 @@
 			},
 			"primary": {
 				"contrastText": "#ffffff",
-				"workspaceText": "#0ca811",
-				"main": "#262625"
+				"main": "#0f97c7"
 			},
 			"secondary": {
 				"contrastText": "#000000",
-				"main": "#6b778c"
+				"main": "#aa00de"
 			},
 			"success": {
 				"contrastText": "#ffffff",
