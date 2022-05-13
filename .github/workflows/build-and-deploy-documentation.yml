@@ -27,3 +27,34 @@ jobs:
         with:
           branch: gh-pages
           folder: docs/build
+
+      - name: Install and Build translations
+        run: |
+          cd docs
+          make gettext (OR) sphinx-build -b gettext . build/gettext
+          sphinx-intl update -p build/gettext -l it -l es -l lv
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Auto changes
+          
+      - name: Deploy Dev SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || (cd /datadrive/data/interlink-project && git pull --ff-only)
+            cd /datadrive/data/interlink-project/docs/source
+            export BASE_URL=/en
+            sphinx-build -b html -D language=es . ../build/html/es
+            export BASE_URL=/es
+            sphinx-build -b html -D language=en . ../build/html/en
+            export BASE_URL=/it
+            sphinx-build -b html -D language=it . ../build/html/it
+            export BASE_URL=/lv
+            sphinx-build -b html -D language=lv . ../build/html/lv
+            
+            cd /datadrive/data/interlink-project/docs
+            docker-compose up -d

@@ -21,3 +21,7 @@ help:
 
 generate:
 	sphinx-build -b html source build
+
+local:
+	cd source && ./script.sh
+	docker-compose -f docker-compose.dev.yml --env-file .env.local up -d
