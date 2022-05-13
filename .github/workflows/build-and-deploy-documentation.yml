@@ -6,6 +6,7 @@ on:
     ## run if changes in docs directory
     paths:
       - docs/**
+      - github/workflows/build-and-deploy-documentation.yml
   
 jobs:
   build-and-deploy:
