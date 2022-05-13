@@ -31,7 +31,7 @@ jobs:
       - name: Install and Build translations
         run: |
           cd docs
-          make gettext (OR) sphinx-build -b gettext . build/gettext
+          sphinx-build -b gettext . build/gettext
           sphinx-intl update -p build/gettext -l it -l es -l lv
 
       - uses: stefanzweifel/git-auto-commit-action@v4
