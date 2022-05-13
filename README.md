@@ -27,4 +27,11 @@ This project is intended to be the orquestrator of the different environments.
 
 ## Documentation
 
-https://interlink-project.github.io/interlink-project/
+Docs moved to:
+https://github.com/interlink-project/docs
+
+Visible at:
+https://dev.interlink-project.eu/docs/en/
+https://dev.interlink-project.eu/docs/es/
+https://dev.interlink-project.eu/docs/it/
+https://dev.interlink-project.eu/docs/lv/
