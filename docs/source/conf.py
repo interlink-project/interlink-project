@@ -1,3 +1,4 @@
+import os
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -58,3 +59,8 @@ source_suffix = {
     '.rst': 'restructuredtext',
     '.md': 'markdown',
 }
+
+locale_dirs = ['locale/']   # path is example but recommended.
+gettext_compact = "docs"
+
+html_baseurl = os.getenv("BASE_URL", None)

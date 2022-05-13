@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+  es-docs:
+    image: nginx
+    volumes:
+      - ./build/html/es:/usr/share/nginx/html
+    networks:
+      - traefik-public
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME}-documentation-es.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-documentation-es.rule=Host(`${DOMAIN}`) && PathPrefix(`/es`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-documentation-es.middlewares=documentation-es-stripprefix
+      - traefik.http.middlewares.documentation-es-stripprefix.stripprefix.prefixes=/es
+  en-docs:
+    image: nginx
+    volumes:
+      - ./build/html/en:/usr/share/nginx/html
+    networks:
+      - traefik-public
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME}-documentation-en.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-documentation-en.rule=Host(`${DOMAIN}`) && PathPrefix(`/en`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-documentation-en.middlewares=documentation-en-stripprefix
+      - traefik.http.middlewares.documentation-en-stripprefix.stripprefix.prefixes=/en
+  it-docs:
+    image: nginx
+    volumes:
+      - ./build/html/it:/usr/share/nginx/html
+    networks:
+      - traefik-public
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME}-documentation-it.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-documentation-it.rule=Host(`${DOMAIN}`) && PathPrefix(`/it`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-documentation-it.middlewares=documentation-it-stripprefix
+      - traefik.http.middlewares.documentation-it-stripprefix.stripprefix.prefixes=/it
+  lv-docs:
+    image: nginx
+    volumes:
+      - ./build/html/lv:/usr/share/nginx/html
+    networks:
+      - traefik-public
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME}-documentation-lv.loadbalancer.server.port=${PORT}
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-documentation-lv.rule=Host(`${DOMAIN}`) && PathPrefix(`/lv`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-documentation-lv.middlewares=documentation-lv-stripprefix
+      - traefik.http.middlewares.documentation-lv-stripprefix.stripprefix.prefixes=/lv
+
+networks:
+  traefik-public:
+    external: true

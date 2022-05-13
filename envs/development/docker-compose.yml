@@ -771,15 +771,22 @@ services:
     image: interlinkproject/backend-logging:${LOGGING_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-logging
     profiles: ["all", "logging", "loggingworker"]
-    env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+    environment:
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+      - EXCHANGE_NAME=${EXCHANGE_NAME}
+      - DOMAIN=${DOMAIN}
+      - PORT=${PORT}
+      - BASE_PATH=/logging
+      - TZ=${TZ}
     restart: on-failure
     networks:
       - traefik-public
     depends_on:
       rabbitmq:
         condition: service_healthy
-    command: ["./wait-for-it.sh", "rabbitmq:5672", "--", "python", "./main.py"]
+    command: ["./wait-for-it.sh", "rabbitmq:5672", "--", "uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "${PORT}"]
     logging:
       driver: "json-file"
       options:
