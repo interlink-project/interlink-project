@@ -31,7 +31,7 @@ jobs:
 
       - name: Install and Build translations
         run: |
-          cd docs
+          cd docs/source
           sphinx-build -b gettext . build/gettext
           sphinx-intl update -p build/gettext -l it -l es -l lv
 
