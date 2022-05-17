@@ -780,6 +780,7 @@ services:
       - PORT=${PORT}
       - BASE_PATH=/logging
       - TZ=${TZ}
+      - WAITFORIT_TIMEOUT=120
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public

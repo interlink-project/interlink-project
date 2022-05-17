@@ -49,7 +49,7 @@ jobs:
             export GOOGLE_CLIENT_EMAIL=${{ secrets.GOOGLE_CLIENT_EMAIL }}
             export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
             export ENVIRONMENT=development
-            git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || (cd /datadrive/data/interlink-project && git pull --ff-only)
+            git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || true
             cd /datadrive/data/interlink-project/envs/development
             git fetch -f --all --tags
             git reset --hard origin/master

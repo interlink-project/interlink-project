@@ -32,17 +32,23 @@ jobs:
             export GOOGLE_CLIENT_EMAIL=${{ secrets.GOOGLE_CLIENT_EMAIL }}
             export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
             export ENVIRONMENT=zgz
-            cd /datadrive/data/
-            git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project )
-            cd /datadrive/data/interlink-project/envs
+            git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || true
+            cd /datadrive/data/interlink-project/envs/pilot-zgz
             git fetch -f --all --tags
             git reset --hard origin/master
             git checkout ${{ github.ref_name }}
-            cd /datadrive/data/interlink-project/envs/pilot-zgz
-            docker-compose -f docker-compose.yml --env-file .env.zgz pull
+            docker-compose --env-file .env.zgz --profile all pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose -f docker-compose.yml --env-file .env.zgz  -p pilot-zgz up -d
+            docker-compose --env-file .env.zgz --profile all -p pilot-zgz up -d
             sleep 10
+
             docker-compose --env-file .env.zgz exec -T catalogue python /app/app/pre_start.py
+            docker-compose --env-file .env.zgz exec -T coproduction python /app/app/pre_start.py
+
+            # Apply last migrations (if they exist)
+            docker-compose --env-file .env.zgz exec -T catalogue alembic upgrade head
+            docker-compose --env-file .env.zgz exec -T coproduction alembic upgrade head
+            
+            # Seed the database (if objects already exist, initial_data.py script updates them)
             docker-compose --env-file .env.zgz exec -T catalogue ./seed.sh

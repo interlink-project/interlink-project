@@ -32,17 +32,23 @@ jobs:
             export GOOGLE_CLIENT_EMAIL=${{ secrets.GOOGLE_CLIENT_EMAIL }}
             export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
             export ENVIRONMENT=varam
-            cd /datadrive/data/
-            git clone https://github.com/interlink-project/interlink-project.git || (cd /datadrive/data/interlink-project )
-            cd /datadrive/data/interlink-project/envs
+            git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || true
+            cd /datadrive/data/interlink-project/envs/pilot-varam
             git fetch -f --all --tags
             git reset --hard origin/master
             git checkout ${{ github.ref_name }}
-            cd /datadrive/data/interlink-project/envs/pilot-varam
-            docker-compose -f docker-compose.yml --env-file .env.varam pull
+            docker-compose --env-file .env.varam --profile all pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose -f docker-compose.yml --env-file .env.varam -p pilot-varam up -d
+            docker-compose --env-file .env.varam --profile all -p pilot-varam up -d
             sleep 10
+
             docker-compose --env-file .env.varam exec -T catalogue python /app/app/pre_start.py
+            docker-compose --env-file .env.varam exec -T coproduction python /app/app/pre_start.py
+
+            # Apply last migrations (if they exist)
+            docker-compose --env-file .env.varam exec -T catalogue alembic upgrade head
+            docker-compose --env-file .env.varam exec -T coproduction alembic upgrade head
+            
+            # Seed the database (if objects already exist, initial_data.py script updates them)
             docker-compose --env-file .env.varam exec -T catalogue ./seed.sh
