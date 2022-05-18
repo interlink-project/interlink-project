@@ -24,6 +24,19 @@ schema_config:
         prefix: index_
         period: 24h
 
+query_range:
+  split_queries_by_interval: 24h
+
+querier:
+  max_concurrent: 2048
+
+frontend:
+  max_outstanding_per_tenant: 4096
+  compress_responses: true
+
+limits_config:
+  ingestion_rate_mb: 30
+
 limits_config:
   ingestion_rate_mb: 30
 #  max_streams_per_user: 100000
