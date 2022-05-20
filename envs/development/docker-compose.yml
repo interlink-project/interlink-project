@@ -755,6 +755,10 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    # persistence of messages if crash
+    volumes:
+      - 'rabbitmq-data:/var/lib/rabbitmq/mnesia/'
+    restart: on-failure
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 30s
@@ -984,6 +988,7 @@ volumes:
   loomio-tmp:
 
   db-data:
+  rabbitmq-data:
   portainer-data:
   mongodb-data:
   elasticsearch-data:

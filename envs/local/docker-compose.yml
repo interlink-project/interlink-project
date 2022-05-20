@@ -154,6 +154,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    volumes:
+      - 'rabbitmq-data:/var/lib/rabbitmq/mnesia/'
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
@@ -176,5 +178,6 @@ networks:
 
 volumes:
   db-data:
+  rabbitmq-data:
   portainer-data:
   mongodb-data:
