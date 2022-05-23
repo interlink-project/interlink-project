@@ -503,35 +503,6 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-  # externalresourcemanager:
-  #   image: interlinkproject/interlinker-externalresourcemanager:${EXTERNALRESOURCEMANAGER_VERSION}
-  #   container_name: ${PLATFORM_STACK_NAME}-externalresourcemanager
-  #   environment:
-  #     - SERVER_NAME=${DOMAIN}
-  #     - PORT=${PORT}
-  #     - BASE_PATH=/externalresourcemanager
-  #     - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
-  #     - COLLECTION_NAME=externalresourcemanager_assets
-  #   env_file:
-  #     - ./.env.${ENVIRONMENT?Variable not set}
-  #   labels:
-  #     - traefik.enable=true
-  #     - traefik.docker.network=traefik-public
-  #     - traefik.http.services.${PLATFORM_STACK_NAME}-externalresourcemanager.loadbalancer.server.port=${PORT}
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-externalresourcemanager.entrypoints=websecure
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-externalresourcemanager.tls.certresolver=letsencrypt
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-externalresourcemanager.tls=true
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-externalresourcemanager.rule=Host(`${DOMAIN}`) && PathPrefix(`/externalresourcemanager`)
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-externalresourcemanager.middlewares=externalresourcemanager-stripprefix
-  #     - traefik.http.middlewares.externalresourcemanager-stripprefix.stripprefix.prefixes=/externalresourcemanager
-  #   networks:
-  #     - traefik-public
-  #     - default
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
   loomio:
     image: interlinkproject/interlinker-loomio:${LOOMIO_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomio
