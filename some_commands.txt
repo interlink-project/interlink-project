@@ -4,6 +4,9 @@ https://github.com/interlink-project/interlink-project/actions
 ssh -i id_rsa interlink@dev.interlink-project.eu
 cd /datadrive/data/interlink-project/envs/development
 
+scp -r -i id_rsa interlink@varam.interlink-project.eu:/datadrive/data/db_backups .
+
+
 docker-compose down (-v)
 docker-compose stop service
 docker-compose pull

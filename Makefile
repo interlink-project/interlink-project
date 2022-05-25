@@ -87,14 +87,9 @@ upb: down net build up ## Build and run containers
 seed: ## Set initial data
 	cd ../backend-catalogue && make localseed
 	
-.PHONY: migrations
-migrations: ## Set initial data
-	@[ "${message}" ] || ( echo ">> message not specified (make migrations message='your message'"; exit 1 )
-	cd ../backend-catalogue && make migrations message=$(message)
-	cd ../backend-coproduction && make migrations message=$(message)
-
 .PHONY: applymigrations
 applymigrations: ## Set initial data
+	# cd ../backend-coproduction && make migrations message="treeitems"
 	cd ../backend-catalogue && make applymigrations
 	cd ../backend-coproduction && make applymigrations
 	
@@ -114,6 +109,10 @@ restartcontainers: ## Run containers (restarts them if already running) except F
 
 .PHONY: restart
 restart: restartcontainers applymigrations seed ## Run containers (restarts them if already running)	
+
+.PHONY: fullrestart
+fullrestart:
+	make down && docker volume remove local_db-data && make up
 
 .PHONY: up
 up: start applymigrations seed ## Run containers and seeds them with data
