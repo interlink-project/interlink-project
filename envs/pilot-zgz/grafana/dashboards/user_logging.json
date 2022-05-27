@@ -24,8 +24,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
-  "iteration": 1651588744460,
+  "id": 4,
+  "iteration": 1653902048182,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -305,7 +305,7 @@
         "x": 0,
         "y": 4
       },
-      "id": 30,
+      "id": 24,
       "options": {
         "colorMode": "none",
         "graphMode": "none",
@@ -327,12 +327,12 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[30d] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[7d] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Interlinkers created last 30 days",
+      "title": "Interlinkers created last 7 days",
       "type": "stat"
     },
     {
@@ -365,7 +365,7 @@
         "x": 4,
         "y": 4
       },
-      "id": 24,
+      "id": 30,
       "options": {
         "colorMode": "none",
         "graphMode": "none",
@@ -387,12 +387,12 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[7d] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[3d] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Interlinkers created last 7 days",
+      "title": "Interlinkers created last 3 days",
       "type": "stat"
     },
     {
@@ -848,8 +848,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -934,8 +933,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1020,8 +1018,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1139,8 +1136,8 @@
         "auto_min": "10s",
         "current": {
           "selected": false,
-          "text": "7d",
-          "value": "7d"
+          "text": "14d",
+          "value": "14d"
         },
         "description": "",
         "hide": 0,
@@ -1208,12 +1205,12 @@
             "value": "1d"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "7d",
             "value": "7d"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "14d",
             "value": "14d"
           },
@@ -1239,6 +1236,6 @@
   "timezone": "",
   "title": "User Monitoring",
   "uid": "v2K2y7Q7z",
-  "version": 4,
+  "version": 1,
   "weekStart": "monday"
 }

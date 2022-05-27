@@ -884,7 +884,7 @@ services:
 
 
   loki:
-    image: grafana/loki:main-c76565a
+    image: grafana/loki:main-58718a5
     container_name: ${PLATFORM_STACK_NAME}-loki
     profiles: ["all", "grafanastack", "userlogging"]
     restart: unless-stopped
@@ -903,7 +903,7 @@ services:
 
 
   promtail:
-    image: grafana/promtail:2.4.1
+    image: grafana/promtail:main-58718a5
     container_name: ${PLATFORM_STACK_NAME}-promtail
     profiles: ["all", "grafanastack", "userlogging", "promtail"]
     restart: unless-stopped

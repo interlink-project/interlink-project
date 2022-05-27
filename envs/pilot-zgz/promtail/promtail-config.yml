@@ -8,6 +8,12 @@ positions:
 clients:
   - url: http://loki:3100/loki/api/v1/push
 
+limits_config:
+  readline_rate_enabled: true
+  readline_rate: 10
+  readline_burst: 10
+  readline_rate_drop: false
+
 scrape_configs:
   - job_name: system
     static_configs:
@@ -34,7 +40,8 @@ scrape_configs:
             tag: attrs.tag
             log: log
 
-#       --log-opt tag="{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+      #       --log-opt tag="{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
       - regex:
           expression: (?P<image_name>((.*\/)?(?P<name>[^|]*[^|]))).(?P<container_name>(?:[^|]*[^|])).(?P<image_id>(?:[^|]*[^|])).(?P<container_id>(?:[^|]*[^|]))
           source: "tag"
