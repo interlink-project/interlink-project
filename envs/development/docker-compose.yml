@@ -769,6 +769,7 @@ services:
     restart: on-failure
     networks:
       - traefik-public
+      - default
     depends_on:
       rabbitmq:
         condition: service_healthy
