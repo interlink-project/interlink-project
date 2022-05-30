@@ -24,8 +24,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
-  "iteration": 1653902048182,
+  "id": 3,
+  "iteration": 1653922135312,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -201,7 +201,7 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\"))",
           "queryType": "range",
           "refId": "A"
         }
@@ -266,7 +266,7 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum by (knowledgeinterlinker_name)(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\" and knowledgeinterlinker_name!=\"\"))",
+          "expr": "sum by (knowledgeinterlinker_name)(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and knowledgeinterlinker_name!=\"\"))",
           "legendFormat": "{{knowledgeinterlinker_name}}",
           "queryType": "range",
           "refId": "A"
@@ -327,7 +327,7 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[7d] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[7d] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\"))",
           "queryType": "range",
           "refId": "A"
         }
@@ -387,7 +387,7 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[3d] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[3d] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\"))",
           "queryType": "range",
           "refId": "A"
         }
@@ -447,7 +447,7 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[24h] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[24h] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\"))",
           "queryType": "range",
           "refId": "A"
         }
@@ -535,7 +535,7 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "sum(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\"))",
           "legendFormat": "Total Interlinkers",
           "refId": "A"
         }
@@ -632,7 +632,7 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum by (knowledgeinterlinker_name)(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\" and knowledgeinterlinker_name!=\"\"))",
+          "expr": "sum by (knowledgeinterlinker_name)(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and knowledgeinterlinker_name!=\"\"))",
           "legendFormat": "{{knowledgeinterlinker_name}}",
           "queryType": "range",
           "refId": "A"
@@ -730,7 +730,7 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum by (softwareinterlinker_name)(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "sum by (softwareinterlinker_name)(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\"))",
           "legendFormat": "{{softwareinterlinker_name}}",
           "queryType": "range",
           "refId": "A"
@@ -796,7 +796,7 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum by (softwareinterlinker_name)(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "sum by (softwareinterlinker_name)(count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\"))",
           "legendFormat": "{{softwareinterlinker_name}}",
           "refId": "A"
         }
@@ -848,7 +848,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -933,7 +934,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1018,7 +1020,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1080,7 +1083,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           }
@@ -1115,7 +1119,7 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "expr": "sum (count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\" and external_interlinker=\"false\"))",
+          "expr": "sum (count_over_time({container_name=~\".*-interlink-project-eu-logging\",job=\"user_loging\"}[$interval] | json | (crud=\"false\" or frontend=\"true\") and action=\"CREATE\" and model=\"ASSET\"))",
           "legendFormat": "{{user_id}}",
           "refId": "A"
         }
@@ -1236,6 +1240,6 @@
   "timezone": "",
   "title": "User Monitoring",
   "uid": "v2K2y7Q7z",
-  "version": 1,
+  "version": 2,
   "weekStart": "monday"
 }
