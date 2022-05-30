@@ -724,8 +724,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
     # persistence of messages if crash
     volumes:
       - 'rabbitmq-data:/var/lib/rabbitmq/mnesia/'
@@ -736,7 +736,7 @@ services:
       timeout: 30s
       retries: 3
     networks:
-      - traefik-public
+      - default
     logging:
       driver: "json-file"
       options:
@@ -769,6 +769,7 @@ services:
     restart: on-failure
     networks:
       - traefik-public
+      - default
     depends_on:
       rabbitmq:
         condition: service_healthy

@@ -157,8 +157,8 @@ services:
     volumes:
       - 'rabbitmq-data:/var/lib/rabbitmq/mnesia/'
     environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
       - TZ=${TZ}
     healthcheck:
       test: rabbitmq-diagnostics -q ping
