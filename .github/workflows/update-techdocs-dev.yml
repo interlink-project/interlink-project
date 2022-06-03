@@ -31,5 +31,6 @@ jobs:
             git checkout ${{ github.ref_name }}
             
             # build new docs
+            pip3 install -r requirements.txt
             ./script.sh
             docker-compose up -d
