@@ -134,6 +134,8 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-frontend-docs.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-frontend-docs.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME}-frontend-docs.rule=Host(`${DOMAIN}`) && PathPrefix(`/docs`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-frontend-docs.middlewares=frontend-docs-stripprefix
+      - traefik.http.middlewares.frontend-docs-stripprefix.stripprefix.prefixes=/docs
     logging:
       driver: "json-file"
       options:
