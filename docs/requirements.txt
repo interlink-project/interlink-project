@@ -1,6 +1,6 @@
-furo==2022.3.4
-sphinx==4.4.0
-sphinx-togglebutton==0.3.0
-myst-parser==0.17.0
-sphinx-intl==2.0.1
-sphinx-rtd-theme==1.0.0
+furo
+sphinx
+sphinx-togglebutton
+myst-parser
+sphinx-intl
+sphinx-rtd-theme
