@@ -4,8 +4,6 @@ services:
   docs:
     image: techdocs
     build: .
-    volumes:
-      - ./build/html:/usr/share/nginx/html
     networks:
       - traefik-public
     labels:
