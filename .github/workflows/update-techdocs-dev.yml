@@ -1,0 +1,35 @@
+name: update-techdocs-dev
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - "master"      
+    paths:
+      - "docs/**"
+
+jobs:
+  deploy:
+    # Ensures that only one deploy task per branch/environment will run at a time.
+    concurrency:
+      group: environment-${{ github.ref }}
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Dev SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            # fetch new changes
+            git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || true
+            cd /datadrive/data/interlink-project/docs
+            git fetch -f --all --tags
+            git reset --hard origin/master
+            git checkout ${{ github.ref_name }}
+            
+            # build new docs
+            ./script.sh
+            docker-compose up -d
