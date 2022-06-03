@@ -804,8 +804,8 @@ services:
 
   newelasticsearch:
     image: elasticsearch:8.2.2
-    container_name: elasticsearch
     environment:
+      - xpack.security.enabled=false
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
     ulimits:
