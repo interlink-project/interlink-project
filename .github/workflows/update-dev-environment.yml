@@ -13,6 +13,7 @@ on:
     paths:
       - ".github/workflows/update-dev-environment.yml"
       - "envs/development/**"
+      - "docs/**"
       # do not update when envs for other environments change
       - "!envs/development/.env.demo"
       - "!envs/development/.env.mef"
@@ -69,3 +70,8 @@ jobs:
             
             # Seed the database (if objects already exist, initial_data.py script updates them)
             docker-compose --env-file .env.development exec -T catalogue ./seed.sh
+
+            # update the technical docs
+            cd /datadrive/data/interlink-project/docs
+            ./script.sh
+            docker-compose up -d
