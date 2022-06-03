@@ -11,10 +11,6 @@ on:
 
 jobs:
   deploy:
-    # Ensures that only one deploy task per branch/environment will run at a time.
-    concurrency:
-      group: environment-${{ github.ref }}
-      cancel-in-progress: true
     runs-on: ubuntu-latest
     steps:
       - name: Deploy Dev SSH
@@ -32,5 +28,6 @@ jobs:
             git checkout ${{ github.ref_name }}
             
             # build new docs
+            docker-compose down --remove-orphans
             docker-compose build
             docker-compose up -d
