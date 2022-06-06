@@ -162,7 +162,7 @@ services:
     volumes:
       - matomo-data:/var/www/html
     env_file:
-      - ./.env
+      - ./.env.${ENVIRONMENT?Variable not set}
     ports:
       - 8080:80
     networks:
