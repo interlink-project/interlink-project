@@ -3,16 +3,16 @@
 ## Current data models of the main components of the collaborative environment backend
 
 ### Catalogue service
-![Catalogue](https://github.com/interlink-project/backend-catalogue/blob/master/catalogue/dbschema.png)
+![Catalogue](https://raw.githubusercontent.com/interlink-project/backend-catalogue/master/catalogue/dbschema.png)
 
 ### Coproduction service
-![Coproduction](https://github.com/interlink-project/backend-coproduction/blob/master/coproduction/dbschema.png)
+![Coproduction](https://raw.githubusercontent.com/interlink-project/backend-coproduction/master/coproduction/dbschema.png)
 
 ## Migrations on the data models
 
 ### Current migration files for each component
 * CATALOGUE: https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/alembic/versions
-* COPRODUCTION: https://github.com/interlink-project/backend-catalogue/tree/master/coproduction/alembic/versions
+* COPRODUCTION: https://github.com/interlink-project/backend-coproduction/tree/master/coproduction/alembic/versions
 
 
 ### How to create new migration files

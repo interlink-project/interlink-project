@@ -6,5 +6,5 @@ Collaborative environment
   :caption: Contents:
 
   authentication/authentication.rst
-  datamodel/index.md
-  testing/index.md
+  datamodel.md
+  testing.md
