@@ -105,6 +105,7 @@ services:
       - REACT_APP_DEFAULT_LANGUAGE=${DEFAULT_LANGUAGE}
       - REACT_APP_ALLOWED_LANGUAGES=${ALLOWED_LANGUAGES}
       - TZ=${TZ}
+      - REACT_APP_MATOMO_ID=1
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
