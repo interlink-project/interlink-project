@@ -96,12 +96,12 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-frontend
     profiles: ["all", "webportal",  "frontend"]
     volumes:
-      - ${FRONTEND_CUSTOMIZATION_IMAGES_PATH}:/usr/share/nginx/html/static/customization
+      - ${FRONTEND_CUSTOMIZATION_PATH}:/usr/share/nginx/html/static/customization
     environment:
-      - REACT_APP_COMPLETE_DOMAIN=https://${DOMAIN}
       - DOMAIN
       - NODE_ENV=production
-      - REACT_APP_PRIMARY_COLOR=${PRIMARY_COLOR}
+      - REACT_APP_DOMAIN=${DOMAIN}
+      - REACT_APP_PROTOCOL=https://
       - REACT_APP_DEFAULT_LANGUAGE=${DEFAULT_LANGUAGE}
       - REACT_APP_ALLOWED_LANGUAGES=${ALLOWED_LANGUAGES}
       - TZ=${TZ}
@@ -136,6 +136,45 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-frontend-docs.rule=Host(`${DOMAIN}`) && PathPrefix(`/docs`)
       - traefik.http.routers.${PLATFORM_STACK_NAME}-frontend-docs.middlewares=frontend-docs-stripprefix
       - traefik.http.middlewares.frontend-docs-stripprefix.stripprefix.prefixes=/docs
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  mariadb:
+    image: mariadb
+    command: --max-allowed-packet=64MB
+    restart: always
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    env_file:
+      - ./.env
+    networks:
+      - default
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  matomo:
+    image: matomo
+    restart: always
+    volumes:
+      - matomo-data:/var/www/html
+    env_file:
+      - ./.env
+    ports:
+      - 8080:80
+    networks:
+      - default
+      - traefik-public
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-matomo-http.rule=PathPrefix(`/matomo/`)
+      - traefik.http.services.${PLATFORM_STACK_NAME}-matomo.loadbalancer.server.port=80
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-matomo-http.middlewares=matomo-stripprefix
+      - traefik.http.middlewares.${PLATFORM_STACK_NAME}-stripprefix.stripprefix.prefixes=/matomo/
     logging:
       driver: "json-file"
       options:
@@ -1016,7 +1055,9 @@ volumes:
   auth-static:
   coproduction-static:
   catalogue-static:
-
+  matomo-data:
+  mariadb-data:
+  
   grafana-dashboards:
   grafana-data:
   prometheus-data:
