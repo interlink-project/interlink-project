@@ -3,10 +3,10 @@
 ## Current data models of the main components of the collaborative environment backend
 
 ### Catalogue service
-![Catalogue](catalogue.png)
+![Catalogue](https://github.com/interlink-project/backend-catalogue/blob/master/catalogue/dbschema.png)
 
 ### Coproduction service
-![Coproduction](coproduction.png)
+![Coproduction](https://github.com/interlink-project/backend-coproduction/blob/master/coproduction/dbschema.png)
 
 ## Migrations on the data models
 
