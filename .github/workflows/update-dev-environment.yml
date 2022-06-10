@@ -54,10 +54,10 @@ jobs:
             git fetch -f --all --tags
             git reset --hard origin/master
             git checkout ${{ github.ref_name }}
-            docker-compose --env-file .env.development --profile all pull
+            docker-compose --env-file .env.development pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose --env-file .env.development --profile all -p development up -d
+            docker-compose --env-file .env.development -p development up -d
             sleep 10
 
             docker-compose --env-file .env.development exec -T catalogue python /app/app/pre_start.py

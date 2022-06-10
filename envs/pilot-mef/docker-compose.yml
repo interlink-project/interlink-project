@@ -5,7 +5,7 @@ services:
   proxy:
     image: traefik:v2.6.6
     container_name: ${PLATFORM_STACK_NAME}-traefik
-    profiles: ["all", "proxy"]
+    
     ports:
       - "80:80"
       - "443:443"
@@ -65,7 +65,7 @@ services:
   portainer:
     image: portainer/portainer-ce:2.11.1-alpine
     container_name: portainer
-    profiles: ["all", "portainer"]
+    
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -94,7 +94,7 @@ services:
   frontend:
     image: interlinkproject/frontend:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend
-    profiles: ["all", "webportal",  "frontend"]
+    
     volumes:
       - ${FRONTEND_CUSTOMIZATION_IMAGES_PATH}:/usr/share/nginx/html/static/customization
     environment:
@@ -123,7 +123,7 @@ services:
   frontend-docs:
     image: interlinkproject/frontend-docs:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend-docs
-    profiles: ["all", "webportal",  "frontend"]
+    
     networks:
       - traefik-public
     labels:
@@ -145,7 +145,7 @@ services:
   redis:
     image: redis:6-alpine
     container_name: ${PLATFORM_STACK_NAME}-redis
-    profiles: ["all", "db", "redis"]
+    
     networks:
       - default
     environment:
@@ -159,7 +159,7 @@ services:
   db:
     image: interlinkproject/postgres:${DB_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-db
-    profiles: ["all", "db", "postgres"]
+    
     volumes:
       - db-data:${PGDATA}
     env_file:
@@ -182,7 +182,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4:6.8
     container_name: ${PLATFORM_STACK_NAME}-pgadmin
-    profiles: ["all", "db", "postgres"]
+    
     ports:
       - "5050:5050"
     depends_on:
@@ -200,7 +200,7 @@ services:
   mongodb:
     image: bitnami/mongodb:latest
     container_name: ${PLATFORM_STACK_NAME}-mongodb
-    profiles: ["all", "db", "mongodb"]
+    
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     healthcheck:
@@ -222,7 +222,7 @@ services:
   coproduction:
     image: interlinkproject/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproduction
-    profiles: ["all", "webportal", "coproduction"]
+    
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     volumes:
@@ -263,7 +263,7 @@ services:
   coproductionworker:
     image: interlinkproject/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproductionworker
-    profiles: ["all", "webportal", "coproduction"]
+    
     command: [ "bash", "./worker-start.sh" ]
     volumes:
       - coproduction-static:/app/static
@@ -294,7 +294,7 @@ services:
   catalogue:
     image: interlinkproject/backend-catalogue:${CATALOGUE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-catalogue
-    profiles: ["all", "webportal", "catalogue"]
+    
     volumes:
       - catalogue-static:/app/static
     environment:
@@ -332,7 +332,7 @@ services:
   auth:
     image: interlinkproject/backend-auth:${AUTH_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-auth
-    profiles: ["all", "auth"]
+    
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -390,7 +390,7 @@ services:
   googledrive:
     image: interlinkproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-googledrive
-    profiles: ["all", "googledrive"]
+    
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -426,7 +426,7 @@ services:
   surveyeditor:
     image: interlinkproject/interlinker-surveyeditor:${SURVEYEDITOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-surveyeditor
-    profiles: ["all", "surveyeditor"]
+    
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -457,7 +457,7 @@ services:
   ceditor:
     image: interlinkproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-ceditor
-    profiles: ["all", "ceditor"]
+    
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -488,7 +488,7 @@ services:
   etherpad:
     image: interlinkproject/interlinker-ceditor:etherpad.${ETHERPAD_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-etherpad
-    profiles: ["all", "etherpad"]
+    
     restart: on-failure
     environment:
       - TITLE=${ETHERPAD_TITLE}
@@ -527,7 +527,7 @@ services:
   loomio:
     image: interlinkproject/interlinker-loomio:${LOOMIO_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomio
-    profiles: ["all", "loomio", "interlinkerloomio"]
+    
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
       - REDIS_URL=redis://redis:6379
@@ -575,7 +575,7 @@ services:
   loomioworker:
     image: interlinkproject/interlinker-loomio:${LOOMIOWORKER_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomioworker
-    profiles: ["all", "loomio", "interlinkerloomio"]
+    
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
       - REDIS_URL=redis://redis:6379
@@ -605,7 +605,7 @@ services:
   loomiochannels:
     image: loomio/loomio_channel_server:latest
     container_name: ${PLATFORM_STACK_NAME}-loomiochannels
-    profiles: ["all", "loomio", "loomiochannels"]
+    
     environment:
       - REDIS_URL=redis://redis:6379
       - VIRTUAL_HOST=channels.loomio.${DOMAIN}
@@ -637,7 +637,7 @@ services:
   elasticsearch:
     image: elasticsearch:1.7.6-alpine
     container_name: ${PLATFORM_STACK_NAME}-elasticsearch
-    profiles: ["all", "db", "elasticsearch"]
+    
     environment:
       - node.name=elasticsearch
       - xpack.security.enabled=false
@@ -669,7 +669,7 @@ services:
   augmenterservice:
     image: interlinkproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-augmenterservice
-    profiles: ["all", "augmentservice"]
+    
     restart: always
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
@@ -738,7 +738,7 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
-    profiles: ["all", "logging", "rabbitmq"]
+    
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     ports:
@@ -766,7 +766,7 @@ services:
   logging:
     image: interlinkproject/backend-logging:${LOGGING_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-logging
-    profiles: ["all", "logging", "loggingworker"]
+    
     environment:
       - RABBITMQ_HOST=${RABBITMQ_HOST}
       - RABBITMQ_USER=${RABBITMQ_USER}
@@ -828,7 +828,7 @@ services:
   grafana:
     image: grafana/grafana:8.5.1
     container_name: ${PLATFORM_STACK_NAME}-grafana
-    profiles: ["all", "grafanastack", "grafana"]
+    
     restart: unless-stopped
     links:
       - prometheus:prometheus
@@ -865,7 +865,7 @@ services:
   prometheus:
     image: prom/prometheus:v2.35.0
     container_name: ${PLATFORM_STACK_NAME}-prometheus
-    profiles: ["all", "grafanastack", "infrastructurelogging", "prometheus"]
+    
     restart: unless-stopped
     volumes:
       - ./prometheus/:/etc/prometheus/
@@ -887,7 +887,7 @@ services:
   cadvisor:
     image: google/cadvisor:v0.33.0
     container_name: ${PLATFORM_STACK_NAME}-monitoring_cadvisor
-    profiles: ["all", "grafanastack", "infrastructurelogging", "cadvisor"]
+    
     restart: unless-stopped
     volumes:
       - /:/rootfs:ro
@@ -908,7 +908,7 @@ services:
   node-exporter:
     image: prom/node-exporter:v1.3.1
     container_name: ${PLATFORM_STACK_NAME}-monitoring_node_exporter
-    profiles: ["all", "grafanastack", "infrastructurelogging", "node-exporter"]
+    
     restart: unless-stopped
     expose:
       - 9100
@@ -932,7 +932,7 @@ services:
   loki:
     image: grafana/loki:main-58718a5
     container_name: ${PLATFORM_STACK_NAME}-loki
-    profiles: ["all", "grafanastack", "userlogging"]
+    
     restart: unless-stopped
     command: -config.file=/etc/loki/local-config.yaml
     ports:
@@ -951,7 +951,7 @@ services:
   promtail:
     image: grafana/promtail:main-58718a5
     container_name: ${PLATFORM_STACK_NAME}-promtail
-    profiles: ["all", "grafanastack", "userlogging", "promtail"]
+    
     restart: unless-stopped
     command: -config.file=/etc/promtail/config.yml
     volumes:
@@ -971,7 +971,7 @@ services:
 
 #  alertmanager:
 #    image: prom/alertmanager:v0.24.0
-#    profiles: ["all", "grafanastack", "alertmanager"]
+#    
 #    container_name: ${PLATFORM_STACK_NAME}-alertmanager
 #    restart: unless-stopped
 #    ports:

@@ -37,10 +37,10 @@ jobs:
             git fetch -f --all --tags
             git reset --hard origin/master
             git checkout ${{ github.ref_name }}
-            docker-compose --env-file .env.varam --profile all pull
+            docker-compose --env-file .env.varam pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose --env-file .env.varam --profile all -p pilot-varam up -d
+            docker-compose --env-file .env.varam -p pilot-varam up -d
             sleep 10
 
             docker-compose --env-file .env.varam exec -T catalogue python /app/app/pre_start.py
