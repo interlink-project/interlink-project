@@ -997,6 +997,25 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
 
+  logstash:
+    image: logstash:8.2.2
+    container_name: ${PLATFORM_STACK_NAME}-logstash
+    restart: unless-stopped
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
+      - ./logstash:/usr/share/logstash/pipeline:ro,Z
+    environment:
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+    networks:
+      - traefik-public
+      - grafana-network
+    links:
+      - newelasticsearch:newelasticsearch
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
 #  alertmanager:
 #    image: prom/alertmanager:v0.24.0
 #
