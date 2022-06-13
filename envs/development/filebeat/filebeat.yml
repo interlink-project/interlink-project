@@ -1,7 +1,7 @@
 filebeat.inputs:
 - type: container
   paths: 
-    - '/datadrive/docker/containers/*/*.log'
+    - '/var/lib/docker/containers/*/*.log'
 
 processors:
 - add_docker_metadata:
@@ -13,9 +13,9 @@ processors:
     overwrite_keys: true
 
 output.elasticsearch:
-  hosts: ["newelasticsearch:9200"]
+  hosts: ["elasticsearch:9200"]
   indices:
-    - index: "filebeat-%{[agent.version]}-%{+yyyy.MM.dd}"
+    - index: "filebeat"
 
 logging.json: true
 logging.metrics.enabled: false
