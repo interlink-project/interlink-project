@@ -57,7 +57,7 @@ start: down net ## Run containers (restarts them if already running)
 	cd ../backend-logging && make integrated
 
 	# interlinkers
-	cd ../interlinker-ceditor && make integrated
+	# cd ../interlinker-ceditor && make integrated
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
 
@@ -105,14 +105,14 @@ restartcontainers: ## Run containers (restarts them if already running) except F
 
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
-	cd ../interlinker-ceditor && make integrated
+	# cd ../interlinker-ceditor && make integrated
 
 .PHONY: restart
 restart: restartcontainers applymigrations seed ## Run containers (restarts them if already running)	
 
 .PHONY: fullrestart
 fullrestart:
-	make down && docker volume remove local_db-data && make up
+	make down && docker volume prune -f && make up
 
 .PHONY: up
 up: start applymigrations seed ## Run containers and seeds them with data
