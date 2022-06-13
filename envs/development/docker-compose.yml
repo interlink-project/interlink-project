@@ -996,25 +996,50 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-
-  logstash:
-    image: logstash:8.2.2
-    container_name: ${PLATFORM_STACK_NAME}-logstash
-    restart: unless-stopped
-    volumes:
-      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
-      - ./logstash:/usr/share/logstash/pipeline:ro,Z
-    environment:
-      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.2.2
+    container_name: ${PLATFORM_STACK_NAME}-filebeat
+    # https://github.com/docker/swarmkit/issues/1951
+    hostname: "{{.Node.Hostname}}-filebeat"
+    # Need to override user so we can access the log files, and docker.sock
+    user: root
     networks:
-      - traefik-public
       - grafana-network
-    links:
-      - newelasticsearch:newelasticsearch
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+      - traefik-public
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - filebeat:/usr/share/filebeat/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /datadrive/docker/containers/:/var/lib/docker/containers/:ro
+      - /var/log/:/var/log/:ro
+      # This is needed for filebeat to load logs for auditd module. you might have to install audit system
+      # on ubuntu first (sudo apt-get install -y auditd audispd-plugins)
+      # - /var/log/audit/:/var/log/audit/:ro
+    environment:
+      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-elasticsearch}
+    #  - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME:-elastic}
+    #  - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD:-changeme}
+    # disable strict permission checks
+    command: ["--strict.perms=false"]
+
+#  logstash:
+#    image: logstash:8.2.2
+#    container_name: ${PLATFORM_STACK_NAME}-logstash
+#    restart: unless-stopped
+#    volumes:
+#      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
+#      - ./logstash:/usr/share/logstash/pipeline:ro,Z
+#    environment:
+#      - LOGSTASH_INTERNAL_PASSWORD=${LOGSTASH_INTERNAL_PASSWORD:-}
+#    networks:
+#      - traefik-public
+#      - grafana-network
+#    links:
+#      - newelasticsearch:newelasticsearch
+#    logging:
+#      driver: "json-file"
+#      options:
+#        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
 #  alertmanager:
 #    image: prom/alertmanager:v0.24.0
@@ -1034,8 +1059,8 @@ services:
 #      driver: "json-file"
 #      options:
 #        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-        
-  
+
+
 networks:
   traefik-public:
     external: true
@@ -1070,4 +1095,5 @@ volumes:
   grafana-data:
   prometheus-data:
   loki-data:
+  filebeat:
 #  alertmanager-data:

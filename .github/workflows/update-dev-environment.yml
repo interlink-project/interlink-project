@@ -52,8 +52,8 @@ jobs:
             git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || true
             cd /datadrive/data/interlink-project/envs/development
             git fetch -f --all --tags
-            git reset --hard origin/master
-            git checkout ${{ github.ref_name }}
+            git checkout origin/${{ github.ref_name }} -b ${{ github.ref_name }} || git switch ${{ github.ref_name }}
+            git reset --hard origin/${{ github.ref_name }} || git reset --hard ${{ github.ref_name }}
             docker-compose --env-file .env.development pull
             docker network create traefik-public || true
             docker network create grafana-network || true
