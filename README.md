@@ -27,11 +27,22 @@ This project is intended to be the orquestrator of the different environments.
 
 ## Documentation
 
-Docs moved to:
-https://github.com/interlink-project/docs
+### Docs of the frontend
 
-Visible at:
-https://dev.interlink-project.eu/docs/en/
-https://dev.interlink-project.eu/docs/es/
-https://dev.interlink-project.eu/docs/it/
-https://dev.interlink-project.eu/docs/lv/
+https://github.com/interlink-project/frontend/tree/master/docs
+
+Deployed in:
+* https://dev.interlink-project.eu/docs/en/
+* https://dev.interlink-project.eu/docs/es/
+* https://dev.interlink-project.eu/docs/it/
+* https://dev.interlink-project.eu/docs/lv/
+
+
+#### Technical docs of interlink:
+https://github.com/interlink-project/interlink-project/tree/master/docs
+
+Deployed in:
+* https://dev.interlink-project.eu/techdocs/en/
+* https://dev.interlink-project.eu/techdocs/es/
+* https://dev.interlink-project.eu/techdocs/it/
+* https://dev.interlink-project.eu/techdocs/lv/
