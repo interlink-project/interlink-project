@@ -1018,7 +1018,7 @@ services:
       # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
       - --strict.perms=false
     links:
-      - elasticsearch:elasticsearch
+      - newelasticsearch:newelasticsearch
     networks:
       - grafana-network
       - traefik-public

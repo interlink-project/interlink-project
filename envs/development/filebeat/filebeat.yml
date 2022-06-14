@@ -13,7 +13,7 @@ processors:
     overwrite_keys: true
 
 output.elasticsearch:
-  hosts: ["elasticsearch:9200"]
+  hosts: ["newelasticsearch:9200"]
   indices:
     - index: "filebeat"
 
