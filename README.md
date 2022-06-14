@@ -38,7 +38,7 @@ Deployed in:
 * https://dev.interlink-project.eu/docs/lv/
 
 
-#### Technical docs of interlink:
+### Technical docs of interlink:
 https://github.com/interlink-project/interlink-project/tree/master/docs
 
 Deployed in:
