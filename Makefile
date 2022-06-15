@@ -41,7 +41,7 @@ down: ## Stops all containers and removes volumes
 	cd ../interlinker-googledrive && make down
 	cd ../interlinker-survey && make down
 
-	cd ../frontend && make down
+	# cd ../frontend && make down
 	
 	cd ./envs/local && docker-compose down --remove-orphans
 	docker network rm traefik-public || true
@@ -62,7 +62,7 @@ start: down net ## Run containers (restarts them if already running)
 	cd ../interlinker-survey && make integrated
 
 	# frontend
-	cd ../frontend && make integrated
+	# cd ../frontend && make integrated
 
 .PHONY: build
 build: ## Build containers
@@ -94,7 +94,7 @@ applymigrations: ## Set initial data
 	cd ../backend-coproduction && make applymigrations
 	
 .PHONY: restartcontainers
-restartcontainers: ## Run containers (restarts them if already running) except FRONTEND
+restartcontainers: ## Run containers (restarts them if already running)
 	cd ./envs/local && docker-compose down --remove-orphans
 	cd ./envs/local && docker-compose up -d
 
@@ -107,12 +107,20 @@ restartcontainers: ## Run containers (restarts them if already running) except F
 	cd ../interlinker-survey && make integrated
 	# cd ../interlinker-ceditor && make integrated
 
+	# cd ../frontend && make integrated
+
 .PHONY: restart
 restart: restartcontainers applymigrations seed ## Run containers (restarts them if already running)	
 
 .PHONY: fullrestart
 fullrestart:
-	make down && docker volume prune -f && make up
+	make down
+	docker volume prune -f
+	make start
+	cd ../backend-catalogue && make migrations message="treeitems"
+	cd ../backend-coproduction && make migrations message="treeitems"
+	make applymigrations
+	make seed
 
 .PHONY: up
 up: start applymigrations seed ## Run containers and seeds them with data
