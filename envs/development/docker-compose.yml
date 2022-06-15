@@ -148,6 +148,7 @@ services:
       - ./.env.${ENVIRONMENT?Variable not set}
     networks:
       - default
+      - grafana-network
     logging:
       driver: "json-file"
       options:
@@ -186,12 +187,13 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-redis
     networks:
       - default
+      - grafana-network
     environment:
       - TZ=${TZ}
     logging:
       driver: "json-file"
       options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullIDadde}}"
 
   # Postgres Service
   db:
@@ -210,6 +212,7 @@ services:
       retries: 5
     networks:
       - default
+      - grafana-network
     logging:
       driver: "json-file"
       options:
@@ -246,6 +249,7 @@ services:
       # start_period: 20s
     networks:
       - default
+      - grafana-network
     volumes:
       - mongodb-data:/bitnami/mongodb
     logging:
