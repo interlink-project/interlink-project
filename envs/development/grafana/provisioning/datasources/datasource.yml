@@ -14,7 +14,7 @@ datasources:
   access: proxy
   editable: true
 
-- name: Elastic-logging
+- name: Elasticsearch-logging
   type: elasticsearch
   access: proxy
   database: '[metrics-]YYYY.MM.DD'
@@ -23,7 +23,7 @@ datasources:
     interval: Daily
     timeField: 'timestamp'
 
-- name: Elastic-filebeats
+- name: Elasticsearch-filebeats
   type: elasticsearch
   access: proxy
   database: '[metrics-]YYYY.MM.DD'
