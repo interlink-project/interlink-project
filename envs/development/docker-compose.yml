@@ -205,8 +205,9 @@ services:
       - ./.env.${ENVIRONMENT?Variable not set}
     environment:
       - POSTGRES_MULTIPLE_DATABASES=loomio_production,coproduction_production,catalogue_production
+      - PGUSER=${POSTGRES_USER} # https://stackoverflow.com/questions/60193781/postgres-with-docker-compose-gives-fatal-role-root-does-not-exist-error
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready", "-U", "${POSTGRES_USER}"]
       interval: 10s
       timeout: 5s
       retries: 5
