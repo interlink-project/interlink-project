@@ -34,12 +34,12 @@ datasources:
 
 
 - name: Coproduction
-  type: postgres
+  type: viewer
   url: db:5432
   database: coproduction_production
   user: postgres
   secureJsonData:
-    password: "${POSTGRES_PASSWORD}"
+    password: "viewer"
   jsonData:
     sslmode: 'disable' # disable/require/verify-ca/verify-full
     maxOpenConns: 0
@@ -49,12 +49,12 @@ datasources:
     timescaledb: false
 
 - name: Catalogue
-  type: postgres
+  type: viewer
   url: db:5432
   database: catalogue_production
   user: postgres
   secureJsonData:
-    password: "${POSTGRES_PASSWORD}"
+    password: "viewer"
   jsonData:
     sslmode: 'disable' # disable/require/verify-ca/verify-full
     maxOpenConns: 0
