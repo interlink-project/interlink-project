@@ -34,10 +34,10 @@ datasources:
 
 
 - name: Coproduction
-  type: viewer
+  type: postgres
   url: db:5432
   database: coproduction_production
-  user: postgres
+  user: viewer
   secureJsonData:
     password: "viewer"
   jsonData:
@@ -49,10 +49,10 @@ datasources:
     timescaledb: false
 
 - name: Catalogue
-  type: viewer
+  type: postgres
   url: db:5432
   database: catalogue_production
-  user: postgres
+  user: viewer
   secureJsonData:
     password: "viewer"
   jsonData:
