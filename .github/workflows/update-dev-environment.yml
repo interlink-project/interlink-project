@@ -69,3 +69,4 @@ jobs:
             
             # Seed the database (if objects already exist, initial_data.py script updates them)
             docker-compose --env-file .env.development exec -T catalogue ./seed.sh
+            docker-compose --env-file .env.development exec -T coproduction ./seed.sh
