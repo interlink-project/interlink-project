@@ -13,6 +13,7 @@ function create_user_and_database() {
 		    CREATE DATABASE $database;
 		    GRANT ALL PRIVILEGES ON DATABASE $database TO $database;
 		    CREATE ROLE viewer;
+		    ALTER USER viewer PASSWORD 'viewer';
         GRANT CONNECT ON DATABASE $database TO viewer;
         GRANT USAGE ON SCHEMA public TO viewer;
         GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;
