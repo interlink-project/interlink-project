@@ -12,8 +12,10 @@ function create_user_and_database() {
 		    CREATE USER $database;
 		    CREATE DATABASE $database;
 		    GRANT ALL PRIVILEGES ON DATABASE $database TO $database;
-		    CREATE USER viewer WITH ENCRYPTED PASSWORD 'viewer';
-        GRANT SELECT ON DATABASE $database TO viewer;
+		    CREATE ROLE viewer;
+        GRANT CONNECT ON DATABASE $database TO viewer;
+        GRANT USAGE ON SCHEMA public TO viewer;
+        GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;
 	EOSQL
 	psql -d $database -c 'create extension hstore;'
 }
