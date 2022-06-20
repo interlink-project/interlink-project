@@ -168,7 +168,6 @@ networks:
 
 volumes:
   db-data:
-  rabbitmq-data:
   newelasticsearch-data:
   newelasticsearch-config:
   portainer-data:
