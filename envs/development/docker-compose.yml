@@ -195,31 +195,31 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-  dremio:
-    container_name: dremio
-    restart: always
-    image: dremio/dremio-oss:21.2
-    volumes:
-      - dremio-data:/opt/dremio/data
-    networks:
-      - traefik-public
-    ports:
-      - "9047:9047"   # UI (HTTP)
-      # - "31010:31010" # ODBC/JDBC clients
-      # - "2181:2181"   # ZooKeeper
-      # - "45678:45678" # Inter-node communication
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      - traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9047
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.entrypoints=websecure
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls.certresolver=letsencrypt
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.rule=Host(`${DOMAIN}`) && PathPrefix(`/dremio`)
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  # dremio:
+  #   container_name: dremio
+  #   restart: always
+  #   image: dremio/dremio-oss:21.2
+  #   volumes:
+  #     - dremio-data:/opt/dremio/data
+  #   networks:
+  #     - traefik-public
+  #   ports:
+  #     - "9047:9047"   # UI (HTTP)
+  #     # - "31010:31010" # ODBC/JDBC clients
+  #     # - "2181:2181"   # ZooKeeper
+  #     # - "45678:45678" # Inter-node communication
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.docker.network=traefik-public
+  #     - traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9047
+  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.entrypoints=websecure
+  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls.certresolver=letsencrypt
+  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls=true
+  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.rule=Host(`${DOMAIN}`) && PathPrefix(`/dremio`)
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
         
   # Postgres Service
   db:
