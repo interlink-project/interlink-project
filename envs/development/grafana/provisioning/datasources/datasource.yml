@@ -20,7 +20,7 @@ datasources:
   database: 'logs'
   url: http://newelasticsearch:9200
   jsonData:
-    interval: none
+    interval: None
     timeField: 'timestamp'
     esVersion: '8.0.0'
 
@@ -30,7 +30,7 @@ datasources:
   database: 'filebeat'
   url: http://newelasticsearch:9200
   jsonData:
-    interval: none
+    interval: None
     timeField: '@timestamp'
     esVersion: '8.0.0'
 
