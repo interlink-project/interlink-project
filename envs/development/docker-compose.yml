@@ -195,6 +195,32 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  dremio:
+    container_name: dremio
+    restart: always
+    image: dremio/dremio-oss:21.2
+    volumes:
+      - dremio-data:/opt/dremio/data
+    networks:
+      - traefik-public
+    ports:
+      - "9047:9047"   # UI (HTTP)
+      # - "31010:31010" # ODBC/JDBC clients
+      # - "2181:2181"   # ZooKeeper
+      # - "45678:45678" # Inter-node communication
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9047
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.entrypoints=websecure
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.rule=Host(`${DOMAIN}`) && PathPrefix(`/dremio`)
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        
   # Postgres Service
   db:
     image: interlinkproject/postgres:${DB_VERSION}
@@ -207,7 +233,7 @@ services:
       - POSTGRES_MULTIPLE_DATABASES=loomio_production,coproduction_production,catalogue_production
       - PGUSER=${POSTGRES_USER} # https://stackoverflow.com/questions/60193781/postgres-with-docker-compose-gives-fatal-role-root-does-not-exist-error
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready", "-U", "${POSTGRES_USER}"]
+      test: [ "CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -805,8 +831,10 @@ services:
       - RABBITMQ_USER=${RABBITMQ_USER}
       - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
       - EXCHANGE_NAME=${EXCHANGE_NAME}
-      - ELASTICSEARCH_HOST
-      - ELASTICSEARCH_PORT
+      - ELASTIC_HOST
+      - ELASTIC_PORT
+      - ELASTIC_USERNAME
+      - ELASTIC_PASSWORD
       - DOMAIN=${DOMAIN}
       - PORT=${PORT}
       - BASE_PATH=/logging
@@ -829,7 +857,7 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-    command: "wait-for-it --service ${RABBITMQ_HOST}:${RABBITMQ_PORT} --service ${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT} -- uvicorn main:app --reload --host 0.0.0.0 --port ${PORT}"
+    command: "wait-for-it --service ${RABBITMQ_HOST}:${RABBITMQ_PORT} --service ${ELASTIC_HOST}:${ELASTIC_PORT} -- uvicorn main:app --reload --host 0.0.0.0 --port ${PORT}"
     logging:
       driver: "json-file"
       options:
@@ -838,9 +866,11 @@ services:
   newelasticsearch:
     image: elasticsearch:8.2.2
     environment:
-      - xpack.security.enabled=false
+      - xpack.security.enabled=true
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_USERNAME
+      - ELASTIC_PASSWORD
     ulimits:
       memlock:
         soft: -1
@@ -1066,6 +1096,7 @@ volumes:
 
   db-data:
   rabbitmq-data:
+  dremio-data:
   portainer-data:
   mongodb-data:
   elasticsearch-data:

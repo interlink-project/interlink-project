@@ -76,6 +76,7 @@ services:
       - db-data:${PGDATA}
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
+      - PGUSER=${POSTGRES_USER} # https://stackoverflow.com/questions/60193781/postgres-with-docker-compose-gives-fatal-role-root-does-not-exist-error
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
@@ -174,10 +175,13 @@ services:
 
   newelasticsearch:
     image: elasticsearch:8.2.2
+    container_name: newelasticsearch
     environment:
-      - xpack.security.enabled=false
+      - xpack.security.enabled=true
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     ulimits:
       memlock:
         soft: -1
@@ -195,7 +199,29 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-
+  dremio:
+    container_name: dremio
+    restart: always
+    image: dremio/dremio-oss:21.2
+    # volumes:
+    #   - dremio-data:/opt/dremio/data
+    networks:
+      - traefik-public
+    ports:
+      - "9047:9047"   # UI (HTTP)
+      # - "31010:31010" # ODBC/JDBC clients
+      # - "2181:2181"   # ZooKeeper
+      # - "45678:45678" # Inter-node communication
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${STACK_NAME?Variable not set}-dremio-http.rule=PathPrefix(`/dremio`)
+      - traefik.http.services.${STACK_NAME?Variable not set}-dremio.loadbalancer.server.port=9047
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        
 networks:
   traefik-public:
     external: true
@@ -207,3 +233,4 @@ volumes:
   newelasticsearch-config:
   portainer-data:
   mongodb-data:
+  dremio-data:
