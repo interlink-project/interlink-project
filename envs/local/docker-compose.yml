@@ -174,28 +174,28 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-  dremio:
-    container_name: dremio
-    restart: always
-    image: dremio/dremio-oss:21.2
-    # volumes:
-    #   - dremio-data:/opt/dremio/data
-    networks:
-      - traefik-public
-    ports:
-      - "9047:9047"   # UI (HTTP)
-      # - "31010:31010" # ODBC/JDBC clients
-      # - "2181:2181"   # ZooKeeper
-      # - "45678:45678" # Inter-node communication
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      - traefik.http.routers.${STACK_NAME?Variable not set}-dremio-http.rule=PathPrefix(`/dremio`)
-      - traefik.http.services.${STACK_NAME?Variable not set}-dremio.loadbalancer.server.port=9047
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  # dremio:
+  #   container_name: dremio
+  #   restart: always
+  #   image: dremio/dremio-oss:21.2
+  #   # volumes:
+  #   #   - dremio-data:/opt/dremio/data
+  #   networks:
+  #     - traefik-public
+  #   ports:
+  #     - "9047:9047"   # UI (HTTP)
+  #     # - "31010:31010" # ODBC/JDBC clients
+  #     # - "2181:2181"   # ZooKeeper
+  #     # - "45678:45678" # Inter-node communication
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.docker.network=traefik-public
+  #     - traefik.http.routers.${STACK_NAME?Variable not set}-dremio-http.rule=PathPrefix(`/dremio`)
+  #     - traefik.http.services.${STACK_NAME?Variable not set}-dremio.loadbalancer.server.port=9047
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
         
 networks:
   traefik-public:

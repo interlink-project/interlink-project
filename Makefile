@@ -86,6 +86,7 @@ upb: down net build up ## Build and run containers
 .PHONY: seed
 seed: ## Set initial data
 	cd ../backend-catalogue && make localseed
+	cd ../backend-coproduction && make seed
 	
 .PHONY: applymigrations
 applymigrations: ## Set initial data
@@ -117,8 +118,8 @@ fullrestart:
 	make down
 	docker volume prune -f
 	make start
-	cd ../backend-catalogue && make migrations message="treeitems"
-	cd ../backend-coproduction && make migrations message="treeitems"
+	# cd ../backend-catalogue && make migrations message="treeitems"
+	# cd ../backend-coproduction && make migrations message="treeitems"
 	make applymigrations
 	make seed
 
