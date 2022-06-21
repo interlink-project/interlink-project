@@ -18,9 +18,9 @@ datasources:
   type: elasticsearch
   access: proxy
   database: 'logs'
-  user: elastic
+  basicAuth: elastic
   secureJsonData:
-    password: "elastic"
+    basicAuthPassword: "elastic"
   url: http://newelasticsearch:9200
   jsonData:
     timeField: 'timestamp'
@@ -30,9 +30,9 @@ datasources:
   type: elasticsearch
   access: proxy
   database: 'filebeat'
-  user: elastic
+  basicAuth: elastic
   secureJsonData:
-    password: "elastic"
+    basicAuthPassword: "elastic"
   url: http://newelasticsearch:9200
   jsonData:
     timeField: '@timestamp'
