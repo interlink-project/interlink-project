@@ -634,37 +634,7 @@ services:
 
   # service augmenter
 
-  elasticsearch:
-    image: elasticsearch:1.7.6-alpine
-    container_name: ${PLATFORM_STACK_NAME}-elasticsearch
-    
-    environment:
-      - node.name=elasticsearch
-      - xpack.security.enabled=false
-      - discovery.type=single-node
-      - http.cors.enabled=true
-      - http.cors.allow-origin=*
-      - discovery.zen.ping.unicast.hosts=127.0.0.1
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    cap_add:
-      - IPC_LOCK
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
-      - elasticsearch-config:/usr/share/elasticsearch/config
-    env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
-    networks:
-      - default
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
 
   augmenterservice:
     image: interlinkproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
@@ -679,7 +649,7 @@ services:
     environment:
       # TODO: verify secrets
       - VIRTUAL_HOST=servicepedia.${DOMAIN}
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://newelasticsearch:9200
       - SURVEYINTERLINK_URL=https://${DOMAIN}/surveyeditor
       - AUTHINTERLINK_URL=https://${DOMAIN}/auth
       - SURVEYAPI_VERSION=v1
@@ -719,7 +689,7 @@ services:
       - CONSUMER_TTL=86400
       - CRYPT_KEY="qF_uizNn_HP4HaT_jsYemyK-qDHBuJUGA1C5MZl8xAg="
     depends_on:
-      - elasticsearch
+      - newelasticsearch
       - auth
     labels:
       - traefik.enable=true
