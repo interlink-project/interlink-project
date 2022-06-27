@@ -854,7 +854,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   grafana:
-    image: grafana/grafana:8.5.1
+    image: interlinkproject/backend-monitoring:grafana.${GRAFANA_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-grafana
 
     restart: unless-stopped
@@ -862,9 +862,6 @@ services:
       - prometheus:prometheus
       - loki:loki
     volumes:
-      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ./grafana/provisioning:/etc/grafana/provisioning
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
       - grafana-dashboards:/var/lib/grafana
       - grafana-data:/etc/grafana/
     environment:
