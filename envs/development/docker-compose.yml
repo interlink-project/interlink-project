@@ -856,7 +856,6 @@ services:
   grafana:
     image: interlinkproject/backend-monitoring:grafana.${GRAFANA_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-grafana
-
     restart: unless-stopped
     links:
       - prometheus:prometheus
@@ -888,12 +887,10 @@ services:
 
 
   prometheus:
-    image: prom/prometheus:v2.35.0
+    image: interlinkproject/backend-monitoring:grafana.${PROMETHEUS_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-prometheus
-
     restart: unless-stopped
     volumes:
-      - ./prometheus/:/etc/prometheus/
       - prometheus-data:/prometheus
     expose:
       - 9090
@@ -912,7 +909,6 @@ services:
   cadvisor:
     image: google/cadvisor:v0.33.0
     container_name: ${PLATFORM_STACK_NAME}-monitoring_cadvisor
-
     restart: unless-stopped
     volumes:
       - /:/rootfs:ro
@@ -933,7 +929,6 @@ services:
   node-exporter:
     image: prom/node-exporter:v1.3.1
     container_name: ${PLATFORM_STACK_NAME}-monitoring_node_exporter
-
     restart: unless-stopped
     expose:
       - 9100
@@ -955,7 +950,7 @@ services:
 
 
   loki:
-    image: grafana/loki:main-58718a5
+    image: interlinkproject/backend-monitoring:loki.${LOKI_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loki
 
     restart: unless-stopped
@@ -963,7 +958,6 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./loki/loki-local-config.yml:/etc/loki/local-config.yaml
       - loki-data:/loki
     networks:
       - grafana-network
@@ -974,13 +968,12 @@ services:
 
 
   promtail:
-    image: grafana/promtail:main-58718a5
+    image: interlinkproject/backend-monitoring:promtail.${PROMTAIL_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-promtail
 
     restart: unless-stopped
     command: -config.file=/etc/promtail/config.yml
     volumes:
-      - ./promtail/promtail-config.yml:/etc/promtail/config.yml
       - /var/log:/var/log
       - /var/lib/docker/containers/:/var/lib/docker/containers/:ro
       - /datadrive/docker/containers/:/datadrive/docker/containers/:ro
@@ -994,11 +987,10 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   filebeat:
-    image: "docker.elastic.co/beats/filebeat:8.2.2"
+    image: interlinkproject/backend-monitoring:filebeat.${FILEBEAT_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-filebeat
     user: root
     volumes:
-      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - type: bind
         source: /datadrive/docker/containers
         target: /var/lib/docker/containers
@@ -1021,14 +1013,11 @@ services:
       - traefik-public
 
 #  alertmanager:
-#    image: prom/alertmanager:v0.24.0
-#
+#    image: interlinkproject/backend-monitoring:alertmanager.${ALERTMANAGER_VERSION}
 #    container_name: ${PLATFORM_STACK_NAME}-alertmanager
 #    restart: unless-stopped
 #    ports:
 #      - "9093:9093"
-#    volumes:
-#      - ./alertmanager/:/etc/alertmanager/
 #    command:
 #      - '-config.file=/etc/alertmanager/config.yml'
 #      - '-storage.path=/alertmanager'
