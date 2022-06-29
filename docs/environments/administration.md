@@ -11,32 +11,82 @@ cd /datadrive/data/interlink-project
 where {ENVIRONMENT} = dev / demo / mef / zgz / varam
 
 
-## Clear databases
+## Docker configuration
 
-1. Remove all containers that creates a connection to db
+Default docker configuration stores data at /var/lib/docker/. There is no sufficient storage in the main storage system, so we need to change it to the external drive provided by FBK ( **/datadrive/docker** )
 
-2. Get db container id and execute a shell session
+1. Stop docker daemon
 
 ```sh
-cd /datadrive/data/interlink-project/envs/{ENVIRONMENT_NAME}
-docker container list | grep db
-docker exec -it {CONTAINER_ID} bash
+sudo service docker stop
 ```
+
+2. Add a configuration file to tell the docker daemon what is the location of the data
+
+```sh
+/etc/docker/daemon.json
+{
+  "data-root": "/path/to/your/docker"
+}
+```
+
+3. Copy the current data directory to the new one (if there is data you want to preserve)
+
+```sh
+sudo rsync -aP /var/lib/docker/ /path/to/your/docker
+```
+
+4. Rename the old docker directory
+```sh
+sudo mv /var/lib/docker /var/lib/docker.old
+```
+
+This is just a sanity check to see that everything is ok and docker daemon will effectively use the new location for its data.
+
+5. Restart docker daemon
+```sh
+sudo service docker start
+```
+
+## Clear databases
+
+1. Remove all containers that creates a connection to the databases you want to clear (coproduction, coproductionworker, catalogue)
+
+2. Execute a shell session on the "db" (postgres) container. Two options:
+
+    * Create a shell for the container
+
+    ```sh
+    # CONNECT VIA SSH TO THE SERVER
+    cd /datadrive/data/interlink-project/envs/{ENVIRONMENT_NAME}
+    docker container list | grep db
+    docker exec -it {CONTAINER_ID} bash
+    ```
+
+    * Use portainer:
+      * https://portainer.dev.interlink-project.eu
+      * https://portainer.demo.interlink-project.eu
+      * https://portainer.mef.interlink-project.eu
+      * https://portainer.varam.interlink-project.eu
+      * https://portainer.zgz.interlink-project.eu
+  
 
 3. Clear the databases:
 
 ```sh
 psql postgresql://postgres:changethis@localhost:5432
+# once the session is created
 DROP DATABASE catalogue_production;
 DROP DATABASE coproduction_production;
 CREATE DATABASE catalogue_production;
 CREATE DATABASE coproduction_production;
 exit
+# once the session quitted
 psql postgresql://postgres:changethis@localhost:5432/coproduction_production -c 'create extension hstore;'
 psql postgresql://postgres:changethis@localhost:5432/catalogue_production -c 'create extension hstore;'
 ```
 
-4. Run the workflow from GitHub actions
+4. Run the workflow from GitHub actions to start the containers and seed the initial data
 
 ## Restore db backup
 
@@ -84,38 +134,4 @@ docker-compose exec -T catalogue ./seed.sh
 In case of being the first launch
 ```sh
 docker-compose exec -T loomio rake db:setup 
-```
-## Docker configuration
-
-1. Stop docker daemon
-
-```sh
-sudo service docker stop
-```
-
-2. Add a configuration file to tell the docker daemon what is the location of the data
-
-```sh
-/etc/docker/daemon.json
-{
-  "data-root": "/path/to/your/docker"
-}
-```
-
-3. Copy the current data directory to the new one
-
-```sh
-sudo rsync -aP /var/lib/docker/ /path/to/your/docker
-```
-
-4. Rename the old docker directory
-```sh
-sudo mv /var/lib/docker /var/lib/docker.old
-```
-
-This is just a sanity check to see that everything is ok and docker daemon will effectively use the new location for its data.
-
-5. Restart docker daemon
-```sh
-sudo service docker start
 ```
