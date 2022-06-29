@@ -855,7 +855,7 @@ services:
 
 
   prometheus:
-    image: interlinkproject/backend-monitoring:grafana.${PROMETHEUS_VERSION}
+    image: interlinkproject/backend-monitoring:prometheus.${PROMETHEUS_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-prometheus
     restart: unless-stopped
     volumes:
