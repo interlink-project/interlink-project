@@ -70,3 +70,13 @@ jobs:
             # Seed the database (if objects already exist, initial_data.py script updates them)
             docker-compose --env-file .env.development exec -T catalogue ./seed.sh
             docker-compose --env-file .env.development exec -T coproduction ./seed.sh
+            
+            # Give permissions to postgres user to access the database
+            docker-compose --env-file .env.development exec -T db psql -U postgres -c "CREATE ROLE viewer;" || true
+            docker-compose --env-file .env.development exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE coproduction_production TO viewer;" 
+            docker-compose --env-file .env.development exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE catalogue_production TO viewer;" 
+            docker-compose --env-file .env.development exec -T db psql -U postgres -c "GRANT USAGE ON SCHEMA public TO viewer;" 
+            docker-compose --env-file .env.development exec -T db psql -U postgres -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
+            docker-compose --env-file .env.development exec -T db psql -U postgres -c "ALTER ROLE viewer WITH LOGIN;"
+            
+            
