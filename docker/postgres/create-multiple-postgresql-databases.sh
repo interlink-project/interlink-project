@@ -15,15 +15,15 @@ function create_user_and_database() {
 
 	EOSQL
 
-	psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
-
-			  CREATE ROLE viewer;
-		    ALTER USER viewer PASSWORD 'viewer';
-        GRANT CONNECT ON DATABASE $database TO viewer;
-        GRANT USAGE ON SCHEMA public TO viewer;
-        GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;
-
-	EOSQL
+	# psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
+	# 
+	# 		  CREATE ROLE viewer;
+	# 	    ALTER USER viewer PASSWORD 'viewer';
+    #     GRANT CONNECT ON DATABASE $database TO viewer;
+    #     GRANT USAGE ON SCHEMA public TO viewer;
+    #     GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;
+	# 
+	# EOSQL
 
 	psql -d $database -c 'create extension hstore;'
 }
