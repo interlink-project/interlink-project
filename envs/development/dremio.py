@@ -2,14 +2,18 @@ import json
 import requests
 import time
 import curlify
+import os
+from dotenv import load_dotenv
 
-userName = 'admin'
-firstName = 'admin'
-lastName = 'admin'
-password = 'Administr@tor123'
-email = "interlink@admin.com"
+load_dotenv()
+
+userName = os.environ.get("DREMIO_USERNAME", "admin")
+firstName = os.environ.get("DREMIO_USERNAME", "admin")
+lastName =  os.environ.get("DREMIO_USERNAME", "admin")
+password =  os.environ.get("DREMIO_PASSWORD", "Administr@tor123")
+email =  os.environ.get("DREMIO_EMAIL", "interlink@admin.com")
 headers = {'content-type': 'application/json', 'Authorization': '_dremionull'}
-dremioServer = 'http://localhost:9047'
+dremioServer =  os.environ.get("DREMIO_SERVER", 'http://localhost:9047')
 
 
 def apiGet(endpoint):
@@ -77,9 +81,9 @@ apiPost('catalog', body={
     "description": "catalogue data",
     "type": "POSTGRES",
     "config": {
-        "username": "postgres",
-        "password": "changethis",
-        "hostname": "db",
+        "username": os.environ.get("POSTGRES_USER"),
+        "password": os.environ.get("POSTGRES_PASSWORD"),
+        "hostname": os.environ.get("POSTGRES_SERVER"),
         "port": "5432",
         "authenticationType": "MASTER",
         "fetchSize": "0",
@@ -93,9 +97,9 @@ apiPost('catalog', body={
     "description": "coproduction data",
     "type": "POSTGRES",
     "config": {
-        "username": "postgres",
-        "password": "changethis",
-        "hostname": "db",
+        "username": os.environ.get("POSTGRES_USER"),
+        "password": os.environ.get("POSTGRES_PASSWORD"),
+        "hostname": os.environ.get("POSTGRES_SERVER"),
         "port": "5432",
         "authenticationType": "MASTER",
         "fetchSize": "0",
@@ -110,9 +114,9 @@ apiPost('catalog', body={
     "description": "elasticsearch for logs",
     "type": "ELASTIC",
     "config": {
-        "username": "elastic",
-        "password": "elastic",
-        "hostList": [{"hostname": "newelasticsearch", "port": "27017"}],
+        "username": os.environ.get("ELASTIC_USERNAME"),
+        "password": os.environ.get("ELASTIC_PASSWORD"),
+        "hostList": [{"hostname": os.environ.get("ELASTIC_HOST"), "port": os.environ.get("ELASTIC_PORT")}],
         "authenticationType": "MASTER",
     },
 })
