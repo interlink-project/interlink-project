@@ -5,7 +5,6 @@ services:
   proxy:
     image: traefik:v2.6.6
     container_name: ${PLATFORM_STACK_NAME}-traefik
-    
     ports:
       - "80:80"
       - "443:443"
@@ -65,7 +64,6 @@ services:
   portainer:
     image: portainer/portainer-ce:2.11.1-alpine
     container_name: portainer
-    
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -94,17 +92,17 @@ services:
   frontend:
     image: interlinkproject/frontend:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend
-    
     volumes:
-      - ${FRONTEND_CUSTOMIZATION_IMAGES_PATH}:/usr/share/nginx/html/static/customization
+      - ${FRONTEND_CUSTOMIZATION_PATH}:/usr/share/nginx/html/static/customization
     environment:
-      - REACT_APP_COMPLETE_DOMAIN=https://${DOMAIN}
       - DOMAIN
       - NODE_ENV=production
-      - REACT_APP_PRIMARY_COLOR=${PRIMARY_COLOR}
+      - REACT_APP_DOMAIN=${DOMAIN}
+      - REACT_APP_PROTOCOL=https://
       - REACT_APP_DEFAULT_LANGUAGE=${DEFAULT_LANGUAGE}
       - REACT_APP_ALLOWED_LANGUAGES=${ALLOWED_LANGUAGES}
       - TZ=${TZ}
+      - REACT_APP_MATOMO_ID=1
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -123,7 +121,6 @@ services:
   frontend-docs:
     image: interlinkproject/frontend-docs:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend-docs
-    
     networks:
       - traefik-public
     labels:
@@ -141,13 +138,56 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  mariadb:
+    image: mariadb
+    command: --max-allowed-packet=64MB
+    restart: always
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    env_file:
+      - ./.env.${ENVIRONMENT?Variable not set}
+    networks:
+      - default
+      - grafana-network
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  matomo:
+    image: bitnami/matomo:4.10.1
+    restart: always
+    volumes:
+      - matomo-data:/bitnami/matomo
+    env_file:
+      - ./.env.${ENVIRONMENT?Variable not set}
+    networks:
+      - default
+      - traefik-public
+    depends_on:
+      - mariadb
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.${PLATFORM_STACK_NAME}-matomo.loadbalancer.server.port=8080
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-matomo.entrypoints=websecure
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-matomo.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-matomo.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-matomo.rule=Host(`${DOMAIN}`) && PathPrefix(`/matomo/`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-matomo.middlewares=matomo-stripprefix
+      - traefik.http.middlewares.matomo-stripprefix.stripprefix.prefixes=/matomo/
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
   # Redis Service
   redis:
     image: redis:6-alpine
     container_name: ${PLATFORM_STACK_NAME}-redis
-    
     networks:
       - default
+      - grafana-network
     environment:
       - TZ=${TZ}
     logging:
@@ -155,24 +195,51 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  # dremio:
+  #   container_name: dremio
+  #   restart: always
+  #   image: dremio/dremio-oss:21.2
+  #   volumes:
+  #     - dremio-data:/opt/dremio/data
+  #   networks:
+  #     - traefik-public
+  #   ports:
+  #     - "9047:9047"   # UI (HTTP)
+  #     # - "31010:31010" # ODBC/JDBC clients
+  #     # - "2181:2181"   # ZooKeeper
+  #     # - "45678:45678" # Inter-node communication
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.docker.network=traefik-public
+  #     - traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9047
+  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.entrypoints=websecure
+  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls.certresolver=letsencrypt
+  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls=true
+  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.rule=Host(`${DOMAIN}`) && PathPrefix(`/dremio`)
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        
   # Postgres Service
   db:
     image: interlinkproject/postgres:${DB_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-db
-    
     volumes:
       - db-data:${PGDATA}
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     environment:
       - POSTGRES_MULTIPLE_DATABASES=loomio_production,coproduction_production,catalogue_production
+      - PGUSER=${POSTGRES_USER} # https://stackoverflow.com/questions/60193781/postgres-with-docker-compose-gives-fatal-role-root-does-not-exist-error
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: [ "CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
       - default
+      - grafana-network
     logging:
       driver: "json-file"
       options:
@@ -182,7 +249,6 @@ services:
   pgadmin:
     image: dpage/pgadmin4:6.8
     container_name: ${PLATFORM_STACK_NAME}-pgadmin
-    
     ports:
       - "5050:5050"
     depends_on:
@@ -200,7 +266,6 @@ services:
   mongodb:
     image: bitnami/mongodb:latest
     container_name: ${PLATFORM_STACK_NAME}-mongodb
-    
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     healthcheck:
@@ -211,6 +276,7 @@ services:
       # start_period: 20s
     networks:
       - default
+      - grafana-network
     volumes:
       - mongodb-data:/bitnami/mongodb
     logging:
@@ -222,7 +288,6 @@ services:
   coproduction:
     image: interlinkproject/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproduction
-    
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
     volumes:
@@ -263,7 +328,6 @@ services:
   coproductionworker:
     image: interlinkproject/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproductionworker
-    
     command: [ "bash", "./worker-start.sh" ]
     volumes:
       - coproduction-static:/app/static
@@ -294,7 +358,6 @@ services:
   catalogue:
     image: interlinkproject/backend-catalogue:${CATALOGUE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-catalogue
-    
     volumes:
       - catalogue-static:/app/static
     environment:
@@ -332,7 +395,6 @@ services:
   auth:
     image: interlinkproject/backend-auth:${AUTH_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-auth
-    
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -390,7 +452,6 @@ services:
   googledrive:
     image: interlinkproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-googledrive
-    
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -426,7 +487,6 @@ services:
   surveyeditor:
     image: interlinkproject/interlinker-surveyeditor:${SURVEYEDITOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-surveyeditor
-    
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -457,7 +517,6 @@ services:
   ceditor:
     image: interlinkproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-ceditor
-    
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -488,7 +547,7 @@ services:
   etherpad:
     image: interlinkproject/interlinker-ceditor:etherpad.${ETHERPAD_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-etherpad
-    
+
     restart: on-failure
     environment:
       - TITLE=${ETHERPAD_TITLE}
@@ -527,7 +586,7 @@ services:
   loomio:
     image: interlinkproject/interlinker-loomio:${LOOMIO_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomio
-    
+
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
       - REDIS_URL=redis://redis:6379
@@ -575,7 +634,7 @@ services:
   loomioworker:
     image: interlinkproject/interlinker-loomio:${LOOMIOWORKER_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomioworker
-    
+
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
       - REDIS_URL=redis://redis:6379
@@ -605,7 +664,7 @@ services:
   loomiochannels:
     image: loomio/loomio_channel_server:latest
     container_name: ${PLATFORM_STACK_NAME}-loomiochannels
-    
+
     environment:
       - REDIS_URL=redis://redis:6379
       - VIRTUAL_HOST=channels.loomio.${DOMAIN}
@@ -637,7 +696,7 @@ services:
   augmenterservice:
     image: interlinkproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-augmenterservice
-    
+
     restart: always
     env_file:
       - ./.env.${ENVIRONMENT?Variable not set}
@@ -703,45 +762,15 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    
-    env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
-    # persistence of messages if crash
-    volumes:
-      - 'rabbitmq-data:/var/lib/rabbitmq/mnesia/'
-    restart: on-failure
-    healthcheck:
-      test: rabbitmq-diagnostics -q ping
-      interval: 30s
-      timeout: 30s
-      retries: 3
-    networks:
-      - default
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
   logging:
     image: interlinkproject/backend-logging:${LOGGING_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-logging
-    
+
     environment:
-      - RABBITMQ_HOST=${RABBITMQ_HOST}
-      - RABBITMQ_USER=${RABBITMQ_USER}
-      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
-      - EXCHANGE_NAME=${EXCHANGE_NAME}
-      - ELASTICSEARCH_HOST
-      - ELASTICSEARCH_PORT
+      - ELASTIC_HOST
+      - ELASTIC_PORT
+      - ELASTIC_USERNAME
+      - ELASTIC_PASSWORD
       - DOMAIN=${DOMAIN}
       - PORT=${PORT}
       - BASE_PATH=/logging
@@ -761,10 +790,7 @@ services:
     networks:
       - traefik-public
       - default
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    command: "wait-for-it --service ${RABBITMQ_HOST}:${RABBITMQ_PORT} --service ${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT} -- uvicorn main:app --reload --host 0.0.0.0 --port ${PORT}"
+    command: "wait-for-it --service ${ELASTIC_HOST}:${ELASTIC_PORT} -- uvicorn main:app --reload --host 0.0.0.0 --port ${PORT}"
     logging:
       driver: "json-file"
       options:
@@ -773,9 +799,11 @@ services:
   newelasticsearch:
     image: elasticsearch:8.2.2
     environment:
-      - xpack.security.enabled=false
+      - xpack.security.enabled=true
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_USERNAME
+      - ELASTIC_PASSWORD
     ulimits:
       memlock:
         soft: -1
@@ -794,17 +822,13 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   grafana:
-    image: grafana/grafana:8.5.1
+    image: interlinkproject/backend-monitoring:grafana.${GRAFANA_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-grafana
-    
     restart: unless-stopped
     links:
       - prometheus:prometheus
       - loki:loki
     volumes:
-      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ./grafana/provisioning:/etc/grafana/provisioning
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
       - grafana-dashboards:/var/lib/grafana
       - grafana-data:/etc/grafana/
     environment:
@@ -831,12 +855,10 @@ services:
 
 
   prometheus:
-    image: prom/prometheus:v2.35.0
+    image: interlinkproject/backend-monitoring:prometheus.${PROMETHEUS_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-prometheus
-    
     restart: unless-stopped
     volumes:
-      - ./prometheus/:/etc/prometheus/
       - prometheus-data:/prometheus
     expose:
       - 9090
@@ -855,7 +877,6 @@ services:
   cadvisor:
     image: google/cadvisor:v0.33.0
     container_name: ${PLATFORM_STACK_NAME}-monitoring_cadvisor
-    
     restart: unless-stopped
     volumes:
       - /:/rootfs:ro
@@ -876,7 +897,6 @@ services:
   node-exporter:
     image: prom/node-exporter:v1.3.1
     container_name: ${PLATFORM_STACK_NAME}-monitoring_node_exporter
-    
     restart: unless-stopped
     expose:
       - 9100
@@ -898,15 +918,14 @@ services:
 
 
   loki:
-    image: grafana/loki:main-58718a5
+    image: interlinkproject/backend-monitoring:loki.${LOKI_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loki
-    
+
     restart: unless-stopped
     command: -config.file=/etc/loki/local-config.yaml
     ports:
       - "3100:3100"
     volumes:
-      - ./loki/loki-local-config.yml:/etc/loki/local-config.yaml
       - loki-data:/loki
     networks:
       - grafana-network
@@ -917,13 +936,12 @@ services:
 
 
   promtail:
-    image: grafana/promtail:main-58718a5
+    image: interlinkproject/backend-monitoring:promtail.${PROMTAIL_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-promtail
-    
+
     restart: unless-stopped
     command: -config.file=/etc/promtail/config.yml
     volumes:
-      - ./promtail/promtail-config.yml:/etc/promtail/config.yml
       - /var/log:/var/log
       - /var/lib/docker/containers/:/var/lib/docker/containers/:ro
       - /datadrive/docker/containers/:/datadrive/docker/containers/:ro
@@ -936,16 +954,38 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  filebeat:
+    image: interlinkproject/backend-monitoring:filebeat.${FILEBEAT_VERSION}
+    container_name: ${PLATFORM_STACK_NAME}-filebeat
+    user: root
+    volumes:
+      - type: bind
+        source: /datadrive/docker/containers
+        target: /var/lib/docker/containers
+        read_only: true
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+    command:
+      # Log to stderr.
+      - -e
+      # Disable config file permissions checks. Allows mounting
+      # 'config/filebeat.yml' even if it's not owned by root.
+      # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
+      - --strict.perms=false
+    links:
+      - newelasticsearch:newelasticsearch
+    networks:
+      - grafana-network
+      - traefik-public
 
 #  alertmanager:
-#    image: prom/alertmanager:v0.24.0
-#    
+#    image: interlinkproject/backend-monitoring:alertmanager.${ALERTMANAGER_VERSION}
 #    container_name: ${PLATFORM_STACK_NAME}-alertmanager
 #    restart: unless-stopped
 #    ports:
 #      - "9093:9093"
-#    volumes:
-#      - ./alertmanager/:/etc/alertmanager/
 #    command:
 #      - '-config.file=/etc/alertmanager/config.yml'
 #      - '-storage.path=/alertmanager'
@@ -955,8 +995,8 @@ services:
 #      driver: "json-file"
 #      options:
 #        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-        
-  
+
+
 networks:
   traefik-public:
     external: true
@@ -974,19 +1014,21 @@ volumes:
   loomio-tmp:
 
   db-data:
-  rabbitmq-data:
+  dremio-data:
   portainer-data:
   mongodb-data:
-  elasticsearch-data:
   elasticsearch-config:
   newelasticsearch-data:
   newelasticsearch-config:
   auth-static:
   coproduction-static:
   catalogue-static:
-
+  matomo-data:
+  mariadb-data:
+  
   grafana-dashboards:
   grafana-data:
   prometheus-data:
   loki-data:
+  filebeat:
 #  alertmanager-data:
