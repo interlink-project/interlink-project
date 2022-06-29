@@ -35,8 +35,8 @@ jobs:
             git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || true
             cd /datadrive/data/interlink-project/envs/pilot-mef
             git fetch -f --all --tags
-            git reset --hard origin/master
-            git checkout ${{ github.ref_name }}
+            git checkout origin/${{ github.ref_name }} -b ${{ github.ref_name }} || git switch ${{ github.ref_name }}
+            git reset --hard origin/${{ github.ref_name }} || git reset --hard ${{ github.ref_name }}
             docker-compose --env-file .env.mef pull
             docker network create traefik-public || true
             docker network create grafana-network || true
@@ -52,3 +52,14 @@ jobs:
             
             # Seed the database (if objects already exist, initial_data.py script updates them)
             docker-compose --env-file .env.mef exec -T catalogue ./seed.sh
+            docker-compose --env-file .env.mef exec -T coproduction ./seed.sh
+            
+            # Give permissions to postgres user to access the database
+            docker-compose --env-file .env.mef exec -T db psql -U postgres -c "CREATE ROLE viewer;" || true
+            docker-compose --env-file .env.mef exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE coproduction_production TO viewer;" 
+            docker-compose --env-file .env.mef exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE catalogue_production TO viewer;" 
+            docker-compose --env-file .env.mef exec -T db psql -U postgres -c "GRANT USAGE ON SCHEMA public TO viewer;" 
+            docker-compose --env-file .env.mef exec -T db psql -U postgres -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
+            docker-compose --env-file .env.mef exec -T db psql -U postgres -c "ALTER ROLE viewer WITH LOGIN;"
+            
+            
