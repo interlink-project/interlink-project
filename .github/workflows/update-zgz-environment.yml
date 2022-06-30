@@ -59,7 +59,8 @@ jobs:
             docker-compose --env-file .env.zgz exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE coproduction_production TO viewer;" 
             docker-compose --env-file .env.zgz exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE catalogue_production TO viewer;" 
             docker-compose --env-file .env.zgz exec -T db psql -U postgres -c "GRANT USAGE ON SCHEMA public TO viewer;" 
-            docker-compose --env-file .env.zgz exec -T db psql -U postgres -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
+            docker-compose --env-file .env.zgz exec -T db psql -U postgres -d coproduction_production -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
+            docker-compose --env-file .env.zgz exec -T db psql -U postgres -d catalogue_production -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
             docker-compose --env-file .env.zgz exec -T db psql -U postgres -c "ALTER ROLE viewer WITH LOGIN;"
             
             

@@ -76,7 +76,8 @@ jobs:
             docker-compose --env-file .env.development exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE coproduction_production TO viewer;" 
             docker-compose --env-file .env.development exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE catalogue_production TO viewer;" 
             docker-compose --env-file .env.development exec -T db psql -U postgres -c "GRANT USAGE ON SCHEMA public TO viewer;" 
-            docker-compose --env-file .env.development exec -T db psql -U postgres -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
+            docker-compose --env-file .env.development exec -T db psql -d coproduction_production -U postgres -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
+            docker-compose --env-file .env.development exec -T db psql -d catalogue_production -U postgres -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
             docker-compose --env-file .env.development exec -T db psql -U postgres -c "ALTER ROLE viewer WITH LOGIN;"
             
             
