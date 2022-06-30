@@ -55,7 +55,7 @@ jobs:
             docker-compose --env-file .env.varam exec -T coproduction ./seed.sh
             
             # Give permissions to postgres user to access the database
-            docker-compose --env-file .env.varam exec -T db psql -U postgres -c "CREATE ROLE viewer;" || true
+            docker-compose --env-file .env.varam exec -T db psql -U postgres -c "CREATE ROLE viewer with LOGIN ENCRYPTED PASSWORD 'viewer';" || true
             docker-compose --env-file .env.varam exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE coproduction_production TO viewer;" 
             docker-compose --env-file .env.varam exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE catalogue_production TO viewer;" 
             docker-compose --env-file .env.varam exec -T db psql -U postgres -c "GRANT USAGE ON SCHEMA public TO viewer;" 
