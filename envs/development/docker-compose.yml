@@ -814,6 +814,7 @@ services:
         hard: 65536
     networks:
       - traefik-public
+      - default
     volumes:
       - newelasticsearch-data:/usr/share/elasticsearch/data
       - newelasticsearch-config:/usr/share/elasticsearch/config
