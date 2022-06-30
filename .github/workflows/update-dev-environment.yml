@@ -54,30 +54,30 @@ jobs:
             git fetch -f --all --tags
             git checkout origin/${{ github.ref_name }} -b ${{ github.ref_name }} || git switch ${{ github.ref_name }}
             git reset --hard origin/${{ github.ref_name }} || git reset --hard ${{ github.ref_name }}
-            docker-compose --env-file .env.development pull
+            docker-compose pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose --env-file .env.development -p development up -d
+            docker-compose -p development up -d
             sleep 10
 
-            docker-compose --env-file .env.development exec -T catalogue python /app/app/pre_start.py
-            docker-compose --env-file .env.development exec -T coproduction python /app/app/pre_start.py
+            docker-compose exec -T catalogue python /app/app/pre_start.py
+            docker-compose exec -T coproduction python /app/app/pre_start.py
 
             # Apply last migrations (if they exist)
-            docker-compose --env-file .env.development exec -T catalogue alembic upgrade head
-            docker-compose --env-file .env.development exec -T coproduction alembic upgrade head
+            docker-compose exec -T catalogue alembic upgrade head
+            docker-compose exec -T coproduction alembic upgrade head
             
             # Seed the database (if objects already exist, initial_data.py script updates them)
-            docker-compose --env-file .env.development exec -T catalogue ./seed.sh
-            docker-compose --env-file .env.development exec -T coproduction ./seed.sh
+            docker-compose exec -T catalogue ./seed.sh
+            docker-compose exec -T coproduction ./seed.sh
             
             # Give permissions to postgres user to access the database
-            docker-compose --env-file .env.development exec -T db psql -U postgres -c "CREATE ROLE viewer  with LOGIN ENCRYPTED PASSWORD 'viewer';" || true
-            docker-compose --env-file .env.development exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE coproduction_production TO viewer;" 
-            docker-compose --env-file .env.development exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE catalogue_production TO viewer;" 
-            docker-compose --env-file .env.development exec -T db psql -U postgres -c "GRANT USAGE ON SCHEMA public TO viewer;" 
-            docker-compose --env-file .env.development exec -T db psql -U postgres -d coproduction_production -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
-            docker-compose --env-file .env.development exec -T db psql -U postgres -d catalogue_production -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
-            docker-compose --env-file .env.development exec -T db psql -U postgres -c "ALTER ROLE viewer WITH LOGIN;"
+            docker-compose exec -T db psql -U postgres -c "CREATE ROLE viewer  with LOGIN ENCRYPTED PASSWORD 'viewer';" || true
+            docker-compose exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE coproduction_production TO viewer;" 
+            docker-compose exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE catalogue_production TO viewer;" 
+            docker-compose exec -T db psql -U postgres -c "GRANT USAGE ON SCHEMA public TO viewer;" 
+            docker-compose exec -T db psql -U postgres -d coproduction_production -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
+            docker-compose exec -T db psql -U postgres -d catalogue_production -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
+            docker-compose exec -T db psql -U postgres -c "ALTER ROLE viewer WITH LOGIN;"
             
             
