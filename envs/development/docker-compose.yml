@@ -215,7 +215,7 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.rule=Host(`dremio.${DOMAIN}`)
-      - traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9000
+      - traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9047
     logging:
       driver: "json-file"
       options:
