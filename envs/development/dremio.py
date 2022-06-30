@@ -75,7 +75,7 @@ headers = login(userName, password)
 # https://docs.dremio.com/software/rest-api/sources/sources/
 
 # POSTGRES SOURCES
-apiPost('catalog', body={
+body = {
     "entityType": "source",
     "name": "catalogue",
     "description": "catalogue data",
@@ -89,9 +89,11 @@ apiPost('catalog', body={
         "fetchSize": "0",
         "databaseName": "catalogue_production"
     },
-})
+}
+print(body)
+apiPost('catalog', body=body)
 
-apiPost('catalog', body={
+body = {
     "entityType": "source",
     "name": "coproduction",
     "description": "coproduction data",
@@ -105,10 +107,12 @@ apiPost('catalog', body={
         "fetchSize": "0",
         "databaseName": "coproduction_production"
     },
-})
+}
+print(body)
+apiPost('catalog', body=body)
 
 # ELASTICSEARCH SOURCE
-apiPost('catalog', body={
+body = {
     "entityType": "source",
     "name": "elastic",
     "description": "elasticsearch for logs",
@@ -119,4 +123,6 @@ apiPost('catalog', body={
         "hostList": [{"hostname": os.environ.get("ELASTIC_HOST"), "port": os.environ.get("ELASTIC_PORT")}],
         "authenticationType": "MASTER",
     },
-})
+}
+print(body)
+apiPost('catalog', body=body)

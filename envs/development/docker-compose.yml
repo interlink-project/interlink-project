@@ -203,6 +203,7 @@ services:
       - dremio-data:/opt/dremio/data
     networks:
       - traefik-public
+      - default
     ports:
       - "9047:9047"   # UI (HTTP)
       # - "31010:31010" # ODBC/JDBC clients
