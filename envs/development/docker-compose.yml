@@ -818,8 +818,32 @@ services:
     volumes:
       - newelasticsearch-data:/usr/share/elasticsearch/data
       - newelasticsearch-config:/usr/share/elasticsearch/config
-    ports:
-      - 9200:9200
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  
+  elasticsearch:
+    image: elasticsearch:7.17.5
+    environment:
+      - xpack.security.enabled=true
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_USERNAME
+      - ELASTIC_PASSWORD
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - traefik-public
+      - default
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+      - elasticsearch-config:/usr/share/elasticsearch/config
     logging:
       driver: "json-file"
       options:
@@ -1021,6 +1045,7 @@ volumes:
   dremio-data:
   portainer-data:
   mongodb-data:
+  elasticsearch-data:
   elasticsearch-config:
   newelasticsearch-data:
   newelasticsearch-config:
