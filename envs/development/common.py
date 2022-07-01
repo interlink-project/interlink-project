@@ -33,7 +33,7 @@ def apiPost(endpoint, body=None):
     response = requests.post('{server}/api/v3/{endpoint}'.format(server=config.dremioServer,
                                                                  endpoint=endpoint), headers=config.get_headers(), data=json.dumps(body))
 
-    print(response.__dict__)
+    # print(response.__dict__)
     text = response.text
     assert response.status_code in [200, 409]
 
@@ -70,11 +70,11 @@ def querySQL(query):
 
 
 def queryJobStatus(id):
-    return apiGet(f'job/{id}')
+    return apiGet(f'job/{id}').get("jobState")
 
 
 def getQueryResult(query):
     jobId = querySQL(query)
-    while queryJobStatus(jobId).get("jobState") != "COMPLETED":
+    while queryJobStatus(jobId) != "COMPLETED":
         time.sleep(1)
     return apiGet('job/{id}/results?offset={offset}&limit={limit}'.format(id=jobId, offset=0, limit=100))
