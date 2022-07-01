@@ -3,7 +3,7 @@ import requests
 import time
 import os
 from dotenv import load_dotenv
-from dremio import common
+import common
 
 load_dotenv()
 
