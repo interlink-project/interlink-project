@@ -3,21 +3,21 @@ import requests
 import time
 import os
 from dotenv import load_dotenv
-import common
+from common import *
 
-load_dotenv()
+load_dotenv(dotenv_path="../.env")
 
 
-response = requests.put('{server}/apiv2/bootstrap/firstuser'.format(server=common.dremioServer), headers=common.headers, data=json.dumps({
-    "userName": common.userName,
-    "firstName": common.firstName,
-    "lastName": common.lastName,
+response = requests.put('{server}/apiv2/bootstrap/firstuser'.format(server=config.dremioServer), headers=config.get_headers(), data=json.dumps({
+    "userName": config.userName,
+    "firstName": config.firstName,
+    "lastName": config.lastName,
     "createdAt": int(time.time()),
-    "email": common.email,
-    "password": common.password,
+    "email": config.email,
+    "password": config.password,
 }))
 
-common.login()
+login()
 
 # https://docs.dremio.com/software/rest-api/sources/sources/
 
@@ -38,7 +38,7 @@ body = {
     },
 }
 print(body)
-common.apiPost('catalog', body=body)
+apiPost('catalog', body=body)
 
 body = {
     "entityType": "source",
@@ -56,7 +56,7 @@ body = {
     },
 }
 print(body)
-common.apiPost('catalog', body=body)
+apiPost('catalog', body=body)
 
 # ELASTICSEARCH SOURCE
 body = {
@@ -85,4 +85,4 @@ body = {
     },
 }
 print(body)
-common.apiPost('catalog', body=body)
+apiPost('catalog', body=body)
