@@ -5,9 +5,6 @@ load_dotenv()
 
 login()
 
-results = {}
-jobs = {}
-
 # Get attribute can be "rows", "rowCount" or "extract_count"
 
 queries = [
@@ -156,8 +153,11 @@ queries = [
     },        
 ]
 
+results = {}
+jobs = []
+
 for query_data in queries:
-    name = query_data.get("sql")
+    name = query_data.get("name")
     sql = query_data.get("sql")
     get = query_data.get("get")
 
