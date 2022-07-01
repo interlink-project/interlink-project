@@ -3,7 +3,7 @@ import requests
 import time
 import os
 from dotenv import load_dotenv
-from .functions import userName, firstName, lastName, email, password, dremioServer, headers, login, apiPost
+from dremio.functions import userName, firstName, lastName, email, password, dremioServer, headers, login, apiPost
 
 load_dotenv()
 

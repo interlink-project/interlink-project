@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from .functions import login, getQueryResult
+from dremio.functions import login, getQueryResult
 
 load_dotenv()
 
