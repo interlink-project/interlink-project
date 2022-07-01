@@ -818,6 +818,8 @@ services:
     volumes:
       - newelasticsearch-data:/usr/share/elasticsearch/data
       - newelasticsearch-config:/usr/share/elasticsearch/config
+    ports:
+      - 9200:9200
     logging:
       driver: "json-file"
       options:
