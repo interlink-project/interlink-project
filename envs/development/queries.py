@@ -20,10 +20,13 @@ res = getQueryResult("SELECT COUNT(*) FROM catalogue.public.externalinterlinker"
 results["Number of external interlinkers"] = parse_result_of_count_kpi(res)
 
 res = getQueryResult("SELECT * FROM catalogue.public.interlinker WHERE catalogue.public.interlinker.id IN(SELECT DISTINCT(coproduction.public.internalasset.softwareinterlinker_id) FROM coproduction.public.internalasset)")
-results["Used software interlinkers"] = parse_result_of_count_kpi(res)
+results["Used software interlinkers"] = res.get("rows")
+results["Number of used software interlinkers"] = res.get("rowCount")
 res = getQueryResult("SELECT * FROM catalogue.public.interlinker WHERE catalogue.public.interlinker.id IN(SELECT DISTINCT(coproduction.public.internalasset.knowledgeinterlinker_id) FROM coproduction.public.internalasset)")
-results["Used knowledge interlinkers"] = parse_result_of_count_kpi(res)
+results["Used knowledge interlinkers"] = res.get("rows")
+results["Number of used knowledge interlinkers"] = res.get("rowCount")
 res = getQueryResult("SELECT * FROM catalogue.public.interlinker WHERE catalogue.public.interlinker.id IN(SELECT DISTINCT(coproduction.public.internalasset.externalinterlinker_id) FROM coproduction.public.externalasset)")
-results["Used external interlinkers"] = parse_result_of_count_kpi(res)
+results["Used external interlinkers"] = res.get("rows")
+results["Number of used external interlinkers"] = res.get("rowCount")
 
 print(results)
