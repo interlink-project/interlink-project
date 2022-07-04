@@ -820,6 +820,37 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        
+        
+  newelasticsearch2:
+    image: elasticsearch:8.2.2
+    environment:
+      - xpack.security.enabled=true
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_USERNAME
+      - ELASTIC_PASSWORD
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - traefik-public
+    volumes:
+      - newelasticsearch2-data:/usr/share/elasticsearch/data
+      - newelasticsearch2-config:/usr/share/elasticsearch/config
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+
 
   grafana:
     image: interlinkproject/backend-monitoring:grafana.${GRAFANA_VERSION}
