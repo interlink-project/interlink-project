@@ -1051,8 +1051,8 @@ volumes:
   elasticsearch-config:
   newelasticsearch-data:
   newelasticsearch-config:
-  newelasticsearch-data2:
-  newelasticsearch-config2:
+  newelasticsearch2-data:
+  newelasticsearch2-config:
   auth-static:
   coproduction-static:
   catalogue-static:
