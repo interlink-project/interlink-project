@@ -706,7 +706,7 @@ services:
     environment:
       # TODO: verify secrets
       - VIRTUAL_HOST=servicepedia.${DOMAIN}
-      - ELASTICSEARCH_URL=http://newelasticsearch2:9200
+      - ELASTICSEARCH_URL=http://newelasticsearch:9200
       - SURVEYINTERLINK_URL=https://${DOMAIN}/surveyeditor
       - AUTHINTERLINK_URL=https://${DOMAIN}/auth
       - SURVEYAPI_VERSION=v1
@@ -746,7 +746,7 @@ services:
       - CONSUMER_TTL=86400
       - CRYPT_KEY="qF_uizNn_HP4HaT_jsYemyK-qDHBuJUGA1C5MZl8xAg="
     depends_on:
-      - newelasticsearch2
+      - newelasticsearch
       - auth
     labels:
       - traefik.enable=true
@@ -822,35 +822,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
         
         
-  newelasticsearch2:
-    image: elasticsearch:8.2.2
-    environment:
-      - xpack.security.enabled=true
-      - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms750m -Xmx750m
-      - ELASTIC_USERNAME
-      - ELASTIC_PASSWORD
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    networks:
-      - traefik-public
-    volumes:
-      - newelasticsearch2-data:/usr/share/elasticsearch/data
-      - newelasticsearch2-config:/usr/share/elasticsearch/config
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
-
+ 
 
   grafana:
     image: interlinkproject/backend-monitoring:grafana.${GRAFANA_VERSION}
@@ -1051,8 +1023,7 @@ volumes:
   elasticsearch-config:
   newelasticsearch-data:
   newelasticsearch-config:
-  newelasticsearch2-data:
-  newelasticsearch2-config:
+
   auth-static:
   coproduction-static:
   catalogue-static:
