@@ -799,6 +799,7 @@ services:
 
   newelasticsearch:
     image: elasticsearch:8.2.2
+    container_name: ${PLATFORM_STACK_NAME}-elasticsearch
     environment:
       - xpack.security.enabled=true
       - discovery.type=single-node
