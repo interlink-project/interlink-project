@@ -882,6 +882,27 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  mysql:
+    image: interlinkproject/backend-monitoring:mysql.${PROMETHEUS_VERSION}
+    container_name: ${PLATFORM_STACK_NAME}-mysql
+    restart: unless-stopped
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_MONITORING}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_MONITORING}
+      MYSQL_USER: ${MYSQL_USER_MONITORING}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD_MONITORING}
+    links:
+      - loki:loki
+    networks:
+      - grafana-network
+      - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
 
   prometheus:
     image: interlinkproject/backend-monitoring:prometheus.${PROMETHEUS_VERSION}
@@ -1058,6 +1079,7 @@ volumes:
   
   grafana-dashboards:
   grafana-data:
+  mysql-data:
   prometheus-data:
   loki-data:
   filebeat:
