@@ -1,7 +1,4 @@
-from dotenv import load_dotenv
 from common import *
-
-load_dotenv()
 
 login()
 

@@ -2,11 +2,7 @@ import json
 import requests
 import time
 import os
-from dotenv import load_dotenv
 from common import *
-
-load_dotenv(dotenv_path="../.env")
-
 
 response = requests.put('{server}/apiv2/bootstrap/firstuser'.format(server=config.dremioServer), headers=config.get_headers(), data=json.dumps({
     "userName": config.userName,

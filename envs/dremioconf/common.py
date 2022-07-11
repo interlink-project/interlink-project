@@ -1,11 +1,16 @@
 import json
 import requests
 import os
-from dotenv import load_dotenv
 import time
+from dotenv import load_dotenv
+import sys
 
-load_dotenv()
-
+if len(sys.argv) > 1:
+    print("Loading environment from", sys.argv)
+    load_dotenv(dotenv_path=sys.argv[1])
+else:
+    print("Loading environment from .env")
+    load_dotenv()
 
 class Config():
     userName = os.environ.get("DREMIO_USERNAME", "admin")
