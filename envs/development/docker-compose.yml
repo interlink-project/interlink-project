@@ -768,7 +768,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-logging
 
     environment:
-      - ELASTIC_HOST
+      - ELASTIC_HOST=elasticsearch
       - ELASTIC_PORT
       - ELASTIC_USERNAME
       - ELASTIC_PASSWORD
