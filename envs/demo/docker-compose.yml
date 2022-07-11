@@ -145,7 +145,7 @@ services:
     volumes:
       - mariadb-data:/var/lib/mysql
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     networks:
       - default
       - grafana-network
@@ -160,7 +160,7 @@ services:
     volumes:
       - matomo-data:/bitnami/matomo
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     networks:
       - default
       - traefik-public
@@ -195,31 +195,32 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-  # dremio:
-  #   container_name: dremio
-  #   restart: always
-  #   image: dremio/dremio-oss:21.2
-  #   volumes:
-  #     - dremio-data:/opt/dremio/data
-  #   networks:
-  #     - traefik-public
-  #   ports:
-  #     - "9047:9047"   # UI (HTTP)
-  #     # - "31010:31010" # ODBC/JDBC clients
-  #     # - "2181:2181"   # ZooKeeper
-  #     # - "45678:45678" # Inter-node communication
-  #   labels:
-  #     - traefik.enable=true
-  #     - traefik.docker.network=traefik-public
-  #     - traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9047
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.entrypoints=websecure
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls.certresolver=letsencrypt
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls=true
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.rule=Host(`${DOMAIN}`) && PathPrefix(`/dremio`)
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  dremio:
+    container_name: dremio
+    restart: always
+    image: dremio/dremio-oss:21.2
+    volumes:
+      - dremio-data:/opt/dremio/data
+    networks:
+      - traefik-public
+      - default
+    ports:
+      - "9047:9047"   # UI (HTTP)
+      # - "31010:31010" # ODBC/JDBC clients
+      # - "2181:2181"   # ZooKeeper
+      # - "45678:45678" # Inter-node communication
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.entrypoints=websecure
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.rule=Host(`dremio.${DOMAIN}`)
+      - traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9047
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
         
   # Postgres Service
   db:
@@ -228,7 +229,7 @@ services:
     volumes:
       - db-data:${PGDATA}
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     environment:
       - POSTGRES_MULTIPLE_DATABASES=loomio_production,coproduction_production,catalogue_production
       - PGUSER=${POSTGRES_USER} # https://stackoverflow.com/questions/60193781/postgres-with-docker-compose-gives-fatal-role-root-does-not-exist-error
@@ -254,7 +255,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     networks:
       - default
     logging:
@@ -267,7 +268,7 @@ services:
     image: bitnami/mongodb:latest
     container_name: ${PLATFORM_STACK_NAME}-mongodb
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     healthcheck:
       test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u $MONGODB_ROOT_USER -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
       interval: 10s
@@ -289,7 +290,7 @@ services:
     image: interlinkproject/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproduction
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     volumes:
       - coproduction-static:/app/static
     environment:
@@ -336,7 +337,7 @@ services:
       - redis
       - coproduction
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -371,7 +372,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -403,7 +404,7 @@ services:
       - COLLECTION_NAME=users
       - CLIENT_SECRET=${LOOMIO_AAC_APP_SECRET}
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     volumes:
       - auth-static:/app/static
     labels:
@@ -434,7 +435,7 @@ services:
   #     - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
   #     - COLLECTION_NAME=channels_assets
   #   env_file:
-  #     - ./.env.${ENVIRONMENT?Variable not set}
+  #     - .env
   #   labels:
   #     - traefik.enable=true
   #     - traefik.docker.network=traefik-public
@@ -464,7 +465,7 @@ services:
       - GOOGLE_CLIENT_EMAIL=${GOOGLE_CLIENT_EMAIL}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -494,7 +495,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=surveyeditor_assets
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -524,7 +525,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=etherpad_assets
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -561,7 +562,7 @@ services:
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=etherpad_assets
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -605,7 +606,7 @@ services:
       - loomio-import:/import
       - loomio-tmp:/loomio/tmp
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     depends_on:
       - db
       - redis
@@ -652,7 +653,7 @@ services:
       - loomio-plugins:/loomio/plugins/docker
       - loomio-tmp:/loomio/tmp
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     networks:
       - traefik-public
       - default
@@ -672,7 +673,7 @@ services:
       - LETSENCRYPT_HOST=channels.loomio.${DOMAIN}
       - LETSENCRYPT_EMAIL=apps@interlink-project.eu
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     depends_on:
       - redis
     labels:
@@ -699,7 +700,7 @@ services:
 
     restart: always
     env_file:
-      - ./.env.${ENVIRONMENT?Variable not set}
+      - .env
     networks:
       - traefik-public
       - default
@@ -767,7 +768,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-logging
 
     environment:
-      - ELASTIC_HOST
+      - ELASTIC_HOST=elasticsearch
       - ELASTIC_PORT
       - ELASTIC_USERNAME
       - ELASTIC_PASSWORD
@@ -798,6 +799,7 @@ services:
 
   newelasticsearch:
     image: elasticsearch:8.2.2
+    container_name: ${PLATFORM_STACK_NAME}-elasticsearch
     environment:
       - xpack.security.enabled=true
       - discovery.type=single-node
@@ -813,9 +815,36 @@ services:
         hard: 65536
     networks:
       - traefik-public
+      - default
     volumes:
       - newelasticsearch-data:/usr/share/elasticsearch/data
       - newelasticsearch-config:/usr/share/elasticsearch/config
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  
+  elasticsearch:
+    image: elasticsearch:6.8.23
+    environment:
+      - xpack.security.enabled=true
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_USERNAME
+      - ELASTIC_PASSWORD
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - traefik-public
+      - default
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+      - elasticsearch-config:/usr/share/elasticsearch/config
     logging:
       driver: "json-file"
       options:
@@ -848,6 +877,27 @@ services:
     networks:
       - traefik-public
       - grafana-network
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  mysql:
+    image: interlinkproject/backend-monitoring:mysql.${PROMETHEUS_VERSION}
+    container_name: ${PLATFORM_STACK_NAME}-mysql
+    restart: unless-stopped
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_MONITORING}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_MONITORING}
+      MYSQL_USER: ${MYSQL_USER_MONITORING}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD_MONITORING}
+    links:
+      - loki:loki
+    networks:
+      - grafana-network
+      - traefik-public
     logging:
       driver: "json-file"
       options:
@@ -1017,6 +1067,7 @@ volumes:
   dremio-data:
   portainer-data:
   mongodb-data:
+  elasticsearch-data:
   elasticsearch-config:
   newelasticsearch-data:
   newelasticsearch-config:
@@ -1028,6 +1079,7 @@ volumes:
   
   grafana-dashboards:
   grafana-data:
+  mysql-data:
   prometheus-data:
   loki-data:
   filebeat:
