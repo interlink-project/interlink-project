@@ -825,7 +825,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
   
   elasticsearch:
-    image: elasticsearch:7.17.5
+    image: elasticsearch:6.8.23
     environment:
       - xpack.security.enabled=true
       - discovery.type=single-node

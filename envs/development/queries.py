@@ -169,7 +169,7 @@ jobs = []
 for query_data in queries:
     name = query_data.get("name")
     sql = query_data.get("sql")
-    extract_count = query_data.get("extract_count")
+    extract_count = query_data.get("extract_count", False)
 
     jobs.append({
         "jobid": querySQL(sql),
