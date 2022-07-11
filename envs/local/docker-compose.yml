@@ -148,6 +148,32 @@ services:
   #     options:
   #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  elasticsearch:
+    image: elasticsearch:6.8.23
+    container_name: elasticsearch
+    environment:
+      - xpack.security.enabled=true
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - traefik-public
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+      - elasticsearch-config:/usr/share/elasticsearch/config
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
   newelasticsearch:
     image: elasticsearch:8.2.2
     container_name: newelasticsearch
@@ -206,6 +232,8 @@ volumes:
   rabbitmq-data:
   newelasticsearch-data:
   newelasticsearch-config:
+  elasticsearch-data:
+  elasticsearch-config:
   portainer-data:
   mongodb-data:
   dremio-data:
