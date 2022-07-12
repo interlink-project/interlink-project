@@ -2,3 +2,4 @@
 **/letsencrypt/acme.json
 envs/*/loomio/
 envs/*/letsencrypt/
+__pycache__
