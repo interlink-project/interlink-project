@@ -25,6 +25,7 @@ setup: ## Clones all components
 	cd .. && git clone https://github.com/interlink-project/backend-catalogue
 	cd .. && git clone https://github.com/interlink-project/backend-coproduction
 	cd .. && git clone https://github.com/interlink-project/backend-logging
+	cd .. && git clone https://github.com/interlink-project/interlinkers-data
 
 	# interlinkers
 	cd .. && git clone https://github.com/interlink-project/interlinker-survey
