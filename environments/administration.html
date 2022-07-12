@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Environments administration &mdash; Interlink  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Collaborative environment" href="../collaborativeenvironment/index.html" />
+    <link rel="prev" title="Data migrations" href="data-migrations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Interlink
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Environments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html">SW development, CI &amp; CD policies for INTERLINK software</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-persistence.html">Data persistence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-migrations.html">Data migrations</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Environments administration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#connect-to-an-environment">Connect to an environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-configuration">Docker configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clear-databases">Clear databases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#restore-db-backup">Restore db backup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#seed-data">Seed data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-up-loomio">Set up loomio</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../collaborativeenvironment/index.html">Collaborative environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interlinkers/index.html">Interlinkers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing/acceptance-tests/index.html">User Acceptance testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/index.html">Logging Instruction for Microservices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kpis/index.html">Instructions to retrieve data for KPIs population</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internationalization/index.html">Internationalization</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Interlink</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Environments</a> &raquo;</li>
+      <li>Environments administration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/environments/administration.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="environments-administration">
+<h1>Environments administration<a class="headerlink" href="#environments-administration" title="Permalink to this heading"></a></h1>
+<section id="connect-to-an-environment">
+<h2>Connect to an environment<a class="headerlink" href="#connect-to-an-environment" title="Permalink to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ssh -i id_rsa interlink@<span class="o">{</span>ENVIRONMENT<span class="o">}</span>.interlink-project.eu
+
+<span class="nb">cd</span> /datadrive/data/interlink-project
+</pre></div>
+</div>
+<p>where {ENVIRONMENT} = dev / demo / mef / zgz / varam</p>
+</section>
+<section id="docker-configuration">
+<h2>Docker configuration<a class="headerlink" href="#docker-configuration" title="Permalink to this heading"></a></h2>
+<p>Default docker configuration stores data at /var/lib/docker/. There is no sufficient storage in the main storage system, so we need to change it to the external drive provided by FBK ( <strong>/datadrive/docker</strong> )</p>
+<ol class="arabic simple">
+<li><p>Stop docker daemon</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo service docker stop
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Add a configuration file to tell the docker daemon what is the location of the data</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>/etc/docker/daemon.json
+<span class="o">{</span>
+  <span class="s2">&quot;data-root&quot;</span>: <span class="s2">&quot;/path/to/your/docker&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Copy the current data directory to the new one (if there is data you want to preserve)</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo rsync -aP /var/lib/docker/ /path/to/your/docker
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Rename the old docker directory</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo mv /var/lib/docker /var/lib/docker.old
+</pre></div>
+</div>
+<p>This is just a sanity check to see that everything is ok and docker daemon will effectively use the new location for its data.</p>
+<ol class="arabic simple" start="5">
+<li><p>Restart docker daemon</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo service docker start
+</pre></div>
+</div>
+</section>
+<section id="clear-databases">
+<h2>Clear databases<a class="headerlink" href="#clear-databases" title="Permalink to this heading"></a></h2>
+<ol class="arabic">
+<li><p>Remove all containers that creates a connection to the databases you want to clear (coproduction, coproductionworker, catalogue)</p></li>
+<li><p>Execute a shell session on the “db” (postgres) container. Two options:</p>
+<ul class="simple">
+<li><p>Create a shell for the container</p></li>
+</ul>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># CONNECT VIA SSH TO THE SERVER</span>
+<span class="nb">cd</span> /datadrive/data/interlink-project/envs/<span class="o">{</span>ENVIRONMENT_NAME<span class="o">}</span>
+docker container list <span class="p">|</span> grep db
+docker <span class="nb">exec</span> -it <span class="o">{</span>CONTAINER_ID<span class="o">}</span> bash
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Use portainer:</p>
+<ul>
+<li><p>https://portainer.dev.interlink-project.eu</p></li>
+<li><p>https://portainer.demo.interlink-project.eu</p></li>
+<li><p>https://portainer.mef.interlink-project.eu</p></li>
+<li><p>https://portainer.varam.interlink-project.eu</p></li>
+<li><p>https://portainer.zgz.interlink-project.eu</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Clear the databases:</p></li>
+</ol>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>psql postgresql://postgres:changethis@localhost:5432
+<span class="c1"># once the session is created</span>
+DROP DATABASE catalogue_production<span class="p">;</span>
+DROP DATABASE coproduction_production<span class="p">;</span>
+CREATE DATABASE catalogue_production<span class="p">;</span>
+CREATE DATABASE coproduction_production<span class="p">;</span>
+<span class="nb">exit</span>
+<span class="c1"># once the session quitted</span>
+psql postgresql://postgres:changethis@localhost:5432/coproduction_production -c <span class="s1">&#39;create extension hstore;&#39;</span>
+psql postgresql://postgres:changethis@localhost:5432/catalogue_production -c <span class="s1">&#39;create extension hstore;&#39;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Run the workflow from GitHub actions to start the containers and seed the initial data</p></li>
+</ol>
+</section>
+<section id="restore-db-backup">
+<h2>Restore db backup<a class="headerlink" href="#restore-db-backup" title="Permalink to this heading"></a></h2>
+<p>Backups are stored in: /datadrive/data/db_backups in .gz file format</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># Unzip backup sql and move it to the folder</span>
+<span class="nb">cd</span> /datadrive/data/db_backups
+gzip -d <span class="o">{</span>BACKUP_NAME<span class="o">}</span>
+cp <span class="o">{</span>BACKUP_NAME<span class="o">}</span>.sql ../interlink-project/envs/<span class="o">{</span>ENVIRONMENT_NAME<span class="o">}</span>
+
+<span class="c1"># Get db container id and execute a shell session</span>
+docker container list <span class="p">|</span> grep db
+docker cp <span class="o">{</span>BACKUP_NAME<span class="o">}</span>.sql <span class="o">{</span>CONTAINER_ID<span class="o">}</span>:/catalogue.sql
+docker cp <span class="o">{</span>BACKUP_NAME<span class="o">}</span>.sql <span class="o">{</span>CONTAINER_ID<span class="o">}</span>:/coproduction.sql
+docker <span class="nb">exec</span> -it <span class="o">{</span>CONTAINER_ID<span class="o">}</span> bash
+
+<span class="c1"># Clear the databases</span>
+psql postgresql://postgres:changethis@localhost:5432
+DROP DATABASE catalogue_production<span class="p">;</span>
+DROP DATABASE coproduction_production<span class="p">;</span>
+CREATE DATABASE catalogue_production<span class="p">;</span>
+CREATE DATABASE coproduction_production<span class="p">;</span>
+<span class="nb">exit</span>
+psql postgresql://postgres:changethis@localhost:5432/coproduction_production -c <span class="s1">&#39;create extension hstore;&#39;</span>
+psql postgresql://postgres:changethis@localhost:5432/catalogue_production -c <span class="s1">&#39;create extension hstore;&#39;</span>
+
+<span class="c1"># Import the backups</span>
+psql -U postgres -d catalogue_production &lt; catalogue.sql
+psql -U postgres -d coproduction_production &lt; coproduction.sql
+
+<span class="c1"># RUN WORKFLOW FROM GITHUB ACTIONS</span>
+</pre></div>
+</div>
+</section>
+<section id="seed-data">
+<h2>Seed data<a class="headerlink" href="#seed-data" title="Permalink to this heading"></a></h2>
+<p>It is runned automatically by the workflows</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">ENVIRONMENT</span><span class="o">={</span>development/demo/mef/varam/zgz<span class="o">}</span>
+docker-compose <span class="nb">exec</span> -T catalogue ./seed.sh
+</pre></div>
+</div>
+</section>
+<section id="set-up-loomio">
+<h2>Set up loomio<a class="headerlink" href="#set-up-loomio" title="Permalink to this heading"></a></h2>
+<p>In case of being the first launch</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>docker-compose <span class="nb">exec</span> -T loomio rake db:setup 
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="data-migrations.html" class="btn btn-neutral float-left" title="Data migrations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../collaborativeenvironment/index.html" class="btn btn-neutral float-right" title="Collaborative environment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Interlink team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
