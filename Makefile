@@ -17,7 +17,9 @@ net: ## Creates needed network to communicate through different docker-compose f
 
 .PHONY: setup
 setup: ## Clones all components
+	# frontend
 	cd .. && git clone https://github.com/interlink-project/frontend
+
 	# platform components
 	cd .. && git clone https://github.com/interlink-project/backend-auth
 	cd .. && git clone https://github.com/interlink-project/backend-catalogue
@@ -28,9 +30,11 @@ setup: ## Clones all components
 	cd .. && git clone https://github.com/interlink-project/interlinker-survey
 	cd .. && git clone https://github.com/interlink-project/interlinker-googledrive
 	cd .. && git clone https://github.com/interlink-project/interlinker-ceditor
+	# service augmenter and loomio
   
 .PHONY: down
 down: ## Stops all containers and removes volumes
+	# platform components
 	cd ../backend-auth && make down
 	cd ../backend-catalogue && make down
 	cd ../backend-coproduction && make down
@@ -41,6 +45,7 @@ down: ## Stops all containers and removes volumes
 	cd ../interlinker-googledrive && make down
 	cd ../interlinker-survey && make down
 
+	# Most of the times we only want to restart backend components because frontend lasts a lot to start in dev mode
 	# cd ../frontend && make down
 	
 	cd ./envs/local && docker-compose down --remove-orphans
@@ -57,11 +62,11 @@ start: down net ## Run containers (restarts them if already running)
 	cd ../backend-logging && make integrated
 
 	# interlinkers
-	# cd ../interlinker-ceditor && make integrated
+	cd ../interlinker-ceditor && make integrated
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
 
-	# frontend
+	# Most of the times we only want to restart backend components because frontend lasts a lot to start in dev mode
 	# cd ../frontend && make integrated
 
 .PHONY: build
@@ -80,9 +85,6 @@ build: ## Build containers
 
 	cd ../frontend && make build
 
-.PHONY: upb
-upb: down net build up ## Build and run containers
-
 .PHONY: seed
 seed: ## Set initial data
 	cd ../backend-catalogue && make localseed
@@ -90,7 +92,6 @@ seed: ## Set initial data
 	
 .PHONY: applymigrations
 applymigrations: ## Set initial data
-	# cd ../backend-coproduction && make migrations message="treeitems"
 	cd ../backend-catalogue && make applymigrations
 	cd ../backend-coproduction && make applymigrations
 	
@@ -106,22 +107,13 @@ restartcontainers: ## Run containers (restarts them if already running)
 
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
-	# cd ../interlinker-ceditor && make integrated
+	cd ../interlinker-ceditor && make integrated
 
+	# Most of the times we only want to restart backend components because frontend lasts a lot to start in dev mode
 	# cd ../frontend && make integrated
 
 .PHONY: restart
 restart: restartcontainers applymigrations seed ## Run containers (restarts them if already running)	
-
-.PHONY: fullrestart
-fullrestart:
-	make down
-	docker volume prune -f
-	make start
-	# cd ../backend-catalogue && make migrations message="treeitems"
-	# cd ../backend-coproduction && make migrations message="treeitems"
-	make applymigrations
-	make seed
 
 .PHONY: up
 up: start applymigrations seed ## Run containers and seeds them with data
