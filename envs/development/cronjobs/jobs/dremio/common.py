@@ -13,7 +13,7 @@ class Config():
     lastName = os.environ.get("DREMIO_USERNAME", "admin")
     password = os.environ.get("DREMIO_PASSWORD", "Administr@tor123")
     email = os.environ.get("DREMIO_EMAIL", "interlink@admin.com")
-    dremioServer = os.environ.get("DREMIO_SERVER", 'http://localhost:9047')
+    dremioServer = os.environ.get("DREMIO_SERVER", 'http://dremio:9047')
     token = None
 
     def get_headers(self):
