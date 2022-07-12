@@ -3,9 +3,9 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/interlink-project/frontend">
+  <!-- <a href="https://github.com/interlink-project/frontend">
     <img src="mddocs/images/logo.png" alt="Logo" width="172" height="80">
-  </a>
+  </a> -->
   <h3 align="center">Interlink collaborative environment orquestrator</h3>
 
   <p align="center">
@@ -39,10 +39,7 @@ Deployed in:
 
 
 ### Technical docs of interlink:
-https://github.com/interlink-project/interlink-project/tree/master/docs
 
-Deployed in:
-* https://dev.interlink-project.eu/techdocs/en/
-* https://dev.interlink-project.eu/techdocs/es/
-* https://dev.interlink-project.eu/techdocs/it/
-* https://dev.interlink-project.eu/techdocs/lv/
+Documentation files: https://github.com/interlink-project/interlink-project/tree/master/docs
+
+Deployed in: https://interlink-project.github.io/interlink-project/
