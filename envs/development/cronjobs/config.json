@@ -1,6 +1,6 @@
 [
     {
-        "schedule": "@every 1m",
+        "schedule": "@every 30m",
         "command": "cd /opt/jobs/dremio && python3 queries.py",
         "onstart": true
     },
