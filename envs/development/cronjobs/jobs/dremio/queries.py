@@ -1,3 +1,4 @@
+from datetime import datetime
 from common import *
 
 login()
@@ -203,4 +204,40 @@ while len(jobs) > 0:
 
 print(json.dumps(results))
 
-# send data to DB
+# send data to GoogleDrive
+
+from apiclient.discovery import build
+from oauth2client.service_account import ServiceAccountCredentials
+
+GOOGLE_CREDENTIALS = {
+        "type": "service_account",
+        "project_id":  os.environ.get("GOOGLE_PROJECT_ID"),
+        "private_key_id": os.environ.get("GOOGLE_PRIVATE_KEY_ID"),
+        "private_key":  os.environ.get("GOOGLE_PRIVATE_KEY").replace("\\n", "\n"),
+        "client_email":  os.environ.get("settings.GOOGLE_CLIENT_EMAIL"),
+        "client_id":  os.environ.get("settings.GOOGLE_CLIENT_ID"),
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/interlinker%40interlink-deusto.iam.gserviceaccount.com"
+    }
+scope = ['https://www.googleapis.com/auth/spreadsheets']
+
+credentials = ServiceAccountCredentials.from_json_keyfile_dict(GOOGLE_CREDENTIALS, scope)
+
+
+service = build('sheets', 'v4', credentials=credentials)
+
+spreadsheet_id = '1Sx8gSmKsvescug4j9QBGr1TH11Ts4hVz05oLr4q9UUc'
+columns = [value for key, value in results.items()]
+
+service = build('sheets', 'v4', credentials=credentials)
+service.spreadsheets().values().append(
+        spreadsheetId=spreadsheet_id,
+        range="Sheet1!A:Z",
+        body={
+            "majorDimension": "COLUMNS",
+            "values": columns
+        },
+        valueInputOption="USER_ENTERED"
+    ).execute()

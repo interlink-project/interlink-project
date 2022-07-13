@@ -66,11 +66,20 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-crontab
     env_file:
       - .env
+    environment:
+      - GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
+      - GOOGLE_PRIVATE_KEY_ID=${GOOGLE_PRIVATE_KEY_ID}
+      - GOOGLE_PRIVATE_KEY=${GOOGLE_PRIVATE_KEY}
+      - GOOGLE_CLIENT_EMAIL=${GOOGLE_CLIENT_EMAIL}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
     volumes:
+      # Enable docker commands
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Cronjobs configuration and specification
       - ./cronjobs/config.json:/opt/crontab/config.json:rw
       - ./cronjobs/entrypoint.sh:/entrypoint.sh
       - ./cronjobs/jobs:/opt/jobs
+      # Volumes to be backup
       - matomo-data:/opt/volumes/matomo-data
       - mariadb-data:/opt/volumes/mariadb-data
       - mysql-data:/opt/volumes/mysql-data
@@ -83,6 +92,7 @@ services:
       - auth-static:/opt/volumes/auth-static
       - coproduction-static:/opt/volumes/coproduction-static
       - catalogue-static:/opt/volumes/catalogue-static
+      # Volume for the backup files
       - backups:/opt/backups
     networks:
       - traefik-public
@@ -120,7 +130,7 @@ services:
     image: interlinkproject/frontend:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend
     volumes:
-      - ${FRONTEND_CUSTOMIZATION_PATH}:/usr/share/nginx/html/static/customization
+      - ./frontend-customization:/usr/share/nginx/html/static/customization
     environment:
       - DOMAIN
       - NODE_ENV=production
