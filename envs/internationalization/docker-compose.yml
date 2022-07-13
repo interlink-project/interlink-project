@@ -22,6 +22,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   weblate:
+    container_name: internationalization-weblate
     image: weblate/weblate
     tmpfs:
     - /app/cache
@@ -76,7 +77,9 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  
   weblate-cache:
+    container_name: internationalization-cache
     image: redis:6-alpine
     restart: always
     command: [redis-server, --save, '60', '1']

@@ -1,12 +1,17 @@
 [
     {
-        "schedule": "@every 10m",
+        "schedule": "@every 1m",
         "command": "echo works",
         "onstart": true
     },
     {
-        "schedule": "@every 1m",
+        "schedule": "@every 10m",
         "command": "cd /opt/jobs/dremio && python3 queries.py",
+        "onstart": true
+    },
+    {
+        "schedule": "@every 1m",
+        "command": "cd /opt/jobs && python3 backups.py",
         "onstart": true
     }
 ]

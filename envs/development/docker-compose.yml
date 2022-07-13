@@ -71,6 +71,19 @@ services:
       - ./cronjobs/config.json:/opt/crontab/config.json:rw
       - ./cronjobs/entrypoint.sh:/entrypoint.sh
       - ./cronjobs/jobs:/opt/jobs
+      - matomo-data:/opt/volumes/matomo-data
+      - mariadb-data:/opt/volumes/mariadb-data
+      - mysql-data:/opt/volumes/mysql-data
+      - newelasticsearch-data:/opt/volumes/newelasticsearch-data
+      - elasticsearch-data:/opt/volumes/elasticsearch-data
+      - mongodb-data:/opt/volumes/mongodb-data
+      - db-data:/opt/volumes/db-data
+      - dremio-data:/opt/volumes/dremio-data
+      - portainer-data:/opt/volumes/portainer-data
+      - auth-static:/opt/volumes/auth-static
+      - coproduction-static:/opt/volumes/coproduction-static
+      - catalogue-static:/opt/volumes/catalogue-static
+      - backups:/opt/backups
     networks:
       - traefik-public
       - default
@@ -1047,6 +1060,8 @@ networks:
     external: true
 
 volumes:
+  backups:
+  
   loomio-uploads:
   loomio-storage:
   loomio-files:
