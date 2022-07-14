@@ -1,7 +1,12 @@
 [
     {
-        "schedule": "@every 30m",
-        "command": "cd /opt/jobs/dremio && python3 queries.py",
+        "schedule": "@every 3m",
+        "command": "cd /opt/jobs/dremio && python3 kpis.py",
+        "onstart": true
+    },
+    {
+        "schedule": "@every 3m",
+        "command": "cd /opt/jobs/dremio && python3 pilot-kpis.py",
         "onstart": true
     },
     {
