@@ -3,6 +3,10 @@ from datetime import datetime
 from common import *
 import json
 
+# date in the left cell
+date_time = datetime.now()
+str_date = date_time.strftime("%Y-%m-%d %H:%M:%S")
+
 login()
 
 queries = [
@@ -178,6 +182,7 @@ queries = [
     },
 ]
 
+print("Obtaining kpis on", str_date)
 results = run_queries(queries)
 
 # print(json.dumps(results))
@@ -187,32 +192,55 @@ ENVIRONMENT = os.environ.get("PLATFORM_STACK_NAME")
 # send data to GoogleDrive
 try:
     result = service.spreadsheets().values().get( spreadsheetId=sheet_id, range=f"{ENVIRONMENT}!A1:ZZ1").execute()
-    real_header = result.get('values', [[]])
+    header = result.get('values', [[]])[0]
 except:
-    real_header = [[]]
+    header = []
 
 values_to_insert = []
+update = False
 
-# date in the left cell
-date_time = datetime.now()
-str_date = date_time.strftime("%Y-%m-%d %H:%M:%S")
+if len(header) > 0:
+    # check if all query names are present in header and add a new one if not present
+    for query in queries:
+        name = query.get("name")
+        if name not in header:
+            header.append(name)
+            update = True
+            print(f"Added {name} to header")
 
-# if there are no rows, sheet is empty, so create header with kpis names
-header = ["Date time"] + [i.get("name") for i in queries]
-row = [str_date]
-for query_name, query_result in results.items():
-    index = next((index for (index, d) in enumerate(queries) if d["name"] == query_name), None)
-    set_list(row, index+1, json.dumps(query_result))
-
-if real_header[0] != header:
+    # update header if needed
+    if update:
+        service.spreadsheets().values().update(
+            spreadsheetId=sheet_id,
+            range=f"{ENVIRONMENT}!A1:ZZ1",
+            body={
+                "majorDimension": "ROWS",
+                "values": [header]
+            },
+            valueInputOption="USER_ENTERED"
+        ).execute()
+else:
+    # if there are no cells in the header, create them with the kpis names
+    header = ["Date time"] + [i.get("name") for i in queries]
     values_to_insert.append(
         header
     )
+    values_to_insert.append(
+        ["Last value"] + [f"=INDICE( FILTER( {char}3:{char} , NO( ESBLANCO( {char}3:{char} ) ) ) , FILAS( FILTER( {char}3:{char} , NO( ESBLANCO( {char}3:{char} ) ) ) ) )" for char in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
+    )
+
+# set each value of row depending on the index of the name of the kpi in the header
+row = [str_date]
+for query_name, query_result in results.items():
+    index = header.index(query_name)
+    set_list(row, index, json.dumps(query_result))
 
 values_to_insert.append(
     row
 )
 
+
+# append (the header if necessary) and the row to the existing sheet, defined by ENVIRONMENT (development, demo, zgz...)
 service.spreadsheets().values().append(
     spreadsheetId=sheet_id,
     range=f"{ENVIRONMENT}!A:Z",
