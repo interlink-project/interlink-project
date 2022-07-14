@@ -75,6 +75,8 @@ def getQueryResult(query):
         time.sleep(1)
     return apiGet('job/{id}/results?offset={offset}&limit={limit}'.format(id=jobId, offset=0, limit=100))
 
+MAX_ITERATIONS = 10
+
 def run_queries(queries):
     results = {}
     jobs = []
@@ -90,10 +92,11 @@ def run_queries(queries):
             "extract_count": extract_count
         })
 
-    while len(jobs) > 0:
+    iteration = 0
+    while len(jobs) > 0 and iteration <= 10:
         time.sleep(1)
 
-        unfinished_jobs = {}
+        unfinished_jobs = []
         for job_data in jobs:
             jobId = job_data.get("jobid")
             if queryJobStatus(jobId) == "COMPLETED":
@@ -116,5 +119,14 @@ def run_queries(queries):
                 unfinished_jobs.append(job_data)
 
         jobs = unfinished_jobs
-        print(len(unfinished_jobs), "jobs remaining")
+        print(len(unfinished_jobs), "jobs remaining", [i.get("name") for i in unfinished_jobs])
+        iteration += 1
     return results
+
+def set_list(l, i, v):
+    try:
+        l[i] = v
+    except IndexError:
+        for _ in range(i-len(l)+1):
+            l.append(None)
+        l[i] = v

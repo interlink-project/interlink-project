@@ -1,4 +1,4 @@
-from .google import service, sheet_id
+from sheets import service, sheet_id
 from datetime import datetime
 from common import *
 import json
@@ -14,22 +14,22 @@ queries = [
     },
     {
         "name": "Number of coproduction processes in english",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.language LIKE 'en",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'en'",
         "extract_count": True
     },
     {
         "name": "Number of coproduction processes in latvian",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.language LIKE 'lv",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'lv'",
         "extract_count": True
     },
     {
         "name": "Number of coproduction processes in italian",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.language LIKE 'it",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'it'",
         "extract_count": True
     },
     {
         "name": "Number of coproduction processes in spanish",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.language LIKE 'es",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'es'",
         "extract_count": True
     },
     # permissions
@@ -132,7 +132,50 @@ queries = [
         "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\" INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT team.id FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE '%organization%' )",
         "extract_count": True
     },
-
+    # interlinkers
+    {
+        "name": "Number of interlinkers",
+        "sql": "SELECT COUNT(*) FROM catalogue.public.interlinker",
+        "extract_count": True
+    },
+    {
+        "name": "Number of knowledge interlinkers",
+        "sql": "SELECT COUNT(*) FROM catalogue.public.knowledgeinterlinker",
+        "extract_count": True
+    },
+    {
+        "name": "Number of software interlinkers",
+        "sql": "SELECT COUNT(*) FROM catalogue.public.softwareinterlinker",
+        "extract_count": True
+    },
+    {
+        "name": "Number of external software interlinkers",
+        "sql": "SELECT COUNT(*) FROM catalogue.public.externalsoftwareinterlinker",
+        "extract_count": True
+    },
+    {
+        "name": "Number of external knowledge interlinkers",
+        "sql": "SELECT COUNT(*) FROM catalogue.public.externalknowledgeinterlinker",
+        "extract_count": True
+    },
+    {
+        "name": "Used software interlinkers",
+        "sql": "SELECT softwareinterlinker_name as NAME, COUNT(softwareinterlinker_name) as TOTAL_INSTANTIATIONS, COUNT(DISTINCT(coproductionprocess_id)) AS IN_COPRODUCTION_PROCESSES FROM elastic2.logs.log WHERE action LIKE 'CREATE' AND model LIKE 'ASSET' GROUP BY softwareinterlinker_name",
+    },
+    {
+        "name": "Used knowledge interlinkers",
+        "sql": "SELECT knowledgeinterlinker_name as NAME, COUNT(knowledgeinterlinker_name) as TOTAL_INSTANTIATIONS, COUNT(DISTINCT(coproductionprocess_id)) AS IN_COPRODUCTION_PROCESSES FROM elastic2.logs.log WHERE action LIKE 'CREATE' AND model LIKE 'ASSET' GROUP BY knowledgeinterlinker_name",
+    },
+    {
+        "name": "Number of used software interlinkers",
+        "sql": "SELECT COUNT(DISTINCT(softwareinterlinker_id)) FROM elastic2.logs.log WHERE action LIKE 'CREATE' AND model LIKE 'ASSET'",
+        "extract_count": True
+    },
+    {
+        "name": "Number of used knowledge interlinkers",
+        "sql": "SELECT COUNT(DISTINCT(knowledgeinterlinker_id)) FROM elastic2.logs.log WHERE action LIKE 'CREATE' AND model LIKE 'ASSET'",
+        "extract_count": True
+    },
 ]
 
 results = run_queries(queries)
@@ -142,28 +185,32 @@ results = run_queries(queries)
 ENVIRONMENT = os.environ.get("PLATFORM_STACK_NAME")
 
 # send data to GoogleDrive
-
 try:
-    result = service.spreadsheets().values().get(spreadsheetId=sheet_id,
-                                                 range=f"{ENVIRONMENT}!A1:ZZ1").execute()
-    header = result.get('values', [[]])
+    result = service.spreadsheets().values().get( spreadsheetId=sheet_id, range=f"{ENVIRONMENT}!A1:ZZ1").execute()
+    real_header = result.get('values', [[]])
 except:
-    header = [[]]
+    real_header = [[]]
 
-values = []
-# if there are no rows, sheet is empty, so create header with kpis names
-should_be_header = ["Date time"] + [key for key, value in results.items()]
-if header[0] != should_be_header:
-    values.append(
-        should_be_header
-    )
+values_to_insert = []
 
 # date in the left cell
 date_time = datetime.now()
 str_date = date_time.strftime("%Y-%m-%d %H:%M:%S")
 
-values.append(
-    [str_date] + [json.dumps(value) for key, value in results.items()]
+# if there are no rows, sheet is empty, so create header with kpis names
+header = ["Date time"] + [i.get("name") for i in queries]
+row = [str_date]
+for query_name, query_result in results.items():
+    index = next((index for (index, d) in enumerate(queries) if d["name"] == query_name), None)
+    set_list(row, index+1, json.dumps(query_result))
+
+if real_header[0] != header:
+    values_to_insert.append(
+        header
+    )
+
+values_to_insert.append(
+    row
 )
 
 service.spreadsheets().values().append(
@@ -171,7 +218,7 @@ service.spreadsheets().values().append(
     range=f"{ENVIRONMENT}!A:Z",
     body={
         "majorDimension": "ROWS",
-        "values": values
+        "values": values_to_insert
     },
     valueInputOption="USER_ENTERED"
 ).execute()

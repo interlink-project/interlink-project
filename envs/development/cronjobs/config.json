@@ -5,11 +5,6 @@
         "onstart": true
     },
     {
-        "schedule": "@every 3m",
-        "command": "cd /opt/jobs/dremio && python3 pilot-kpis.py",
-        "onstart": true
-    },
-    {
         "schedule": "@every 1d",
         "command": "# cd /opt/jobs && python3 backups.py",
         "onstart": true
