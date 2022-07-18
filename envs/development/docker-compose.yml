@@ -66,6 +66,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-crontab
     env_file:
       - .env
+    restart: always
     environment:
       - GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
       - GOOGLE_PRIVATE_KEY_ID=${GOOGLE_PRIVATE_KEY_ID}

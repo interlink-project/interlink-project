@@ -1,5 +1,6 @@
 from sheets import service, sheet_id
 from datetime import datetime
+import dateutil.relativedelta
 from common import *
 import json
 
@@ -8,6 +9,9 @@ date_time = datetime.now()
 str_date = date_time.strftime("%Y-%m-%d %H:%M:%S")
 
 login()
+
+d2 = date_time - dateutil.relativedelta.relativedelta(months=1)
+one_month_before = d2.strftime("%Y-%m-%d")
 
 queries = [
     # coproductionprocesses
@@ -104,6 +108,11 @@ queries = [
     {
         "name": "Number of users",
         "sql": "SELECT COUNT(*) FROM coproduction.public.\"user\"",
+        "extract_count": True
+    },
+    {
+        "name": "Number of active users",
+        "sql": f"SELECT 'TOTAL' as TYPE, COUNT(DISTINCT(user_id)) FROM elastic2.logs.log AS log WHERE log.\"timestamp\" > '{one_month_before}'",
         "extract_count": True
     },
     {
