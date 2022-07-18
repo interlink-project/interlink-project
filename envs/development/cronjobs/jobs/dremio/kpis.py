@@ -53,6 +53,11 @@ queries = [
         "extract_count": True
     },
     {
+        "name": "Average of members per team",
+        "sql": "SELECT AVG(MEMBER_COUNT) FROM ( SELECT team_id, COUNT(*) as MEMBER_COUNT FROM  coproduction.public.association_user_team GROUP BY team_id )",
+        "extract_count": True
+    },
+    {
         "name": "Number of public administration teams",
         "sql": "SELECT COUNT(*) FROM coproduction.public.team WHERE team.type LIKE 'public_administration'",
         "extract_count": True
