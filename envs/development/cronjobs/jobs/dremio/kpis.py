@@ -117,7 +117,7 @@ queries = [
     },
     {
         "name": "Number of active users",
-        "sql": f"SELECT 'TOTAL' as TYPE, COUNT(DISTINCT(user_id)) FROM elastic2.logs.log AS log WHERE log.\"timestamp\" > '{one_month_before}'",
+        "sql": f"SELECT COUNT(DISTINCT(user_id)) FROM elastic2.logs.log AS log WHERE log.\"timestamp\" > '{one_month_before}'",
         "extract_count": True
     },
     {
