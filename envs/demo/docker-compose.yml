@@ -61,9 +61,47 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  crontab:
+    image: interlinkproject/crontab:master
+    container_name: ${PLATFORM_STACK_NAME}-crontab
+    env_file:
+      - .env
+    restart: always
+    environment:
+      - GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
+      - GOOGLE_PRIVATE_KEY_ID=${GOOGLE_PRIVATE_KEY_ID}
+      - GOOGLE_PRIVATE_KEY=${GOOGLE_PRIVATE_KEY}
+      - GOOGLE_CLIENT_EMAIL=${GOOGLE_CLIENT_EMAIL}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+    volumes:
+      # Enable docker commands
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Cronjobs configuration and specification
+      - ./cronjobs/config.json:/opt/crontab/config.json:rw
+      - ./cronjobs/entrypoint.sh:/entrypoint.sh
+      - ./cronjobs/jobs:/opt/jobs
+      # Volumes to be backup
+      - matomo-data:/opt/volumes/matomo-data
+      - mariadb-data:/opt/volumes/mariadb-data
+      - mysql-data:/opt/volumes/mysql-data
+      - newelasticsearch-data:/opt/volumes/newelasticsearch-data
+      - elasticsearch-data:/opt/volumes/elasticsearch-data
+      - mongodb-data:/opt/volumes/mongodb-data
+      - db-data:/opt/volumes/db-data
+      - dremio-data:/opt/volumes/dremio-data
+      - portainer-data:/opt/volumes/portainer-data
+      - auth-static:/opt/volumes/auth-static
+      - coproduction-static:/opt/volumes/coproduction-static
+      - catalogue-static:/opt/volumes/catalogue-static
+      # Volume for the backup files
+      - backups:/opt/backups
+    networks:
+      - traefik-public
+      - default
+
   portainer:
     image: portainer/portainer-ce:2.11.1-alpine
-    container_name: portainer
+    container_name: ${PLATFORM_STACK_NAME}-portainer
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -93,7 +131,7 @@ services:
     image: interlinkproject/frontend:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend
     volumes:
-      - ${FRONTEND_CUSTOMIZATION_PATH}:/usr/share/nginx/html/static/customization
+      - ./frontend-customization:/usr/share/nginx/html/static/customization
     environment:
       - DOMAIN
       - NODE_ENV=production
@@ -139,6 +177,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   mariadb:
+    container_name: ${PLATFORM_STACK_NAME}-mariadb
     image: mariadb
     command: --max-allowed-packet=64MB
     restart: always
@@ -155,6 +194,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   matomo:
+    container_name: ${PLATFORM_STACK_NAME}-matomo
     image: bitnami/matomo:4.10.1
     restart: always
     volumes:
@@ -196,7 +236,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   dremio:
-    container_name: dremio
+    container_name: ${PLATFORM_STACK_NAME}-dremio
     restart: always
     image: dremio/dremio-oss:21.2
     volumes:
@@ -247,21 +287,21 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # PGAdmin (do not expose)
-  pgadmin:
-    image: dpage/pgadmin4:6.8
-    container_name: ${PLATFORM_STACK_NAME}-pgadmin
-    ports:
-      - "5050:5050"
-    depends_on:
-      - db
-    env_file:
-      - .env
-    networks:
-      - default
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  # pgadmin:
+  #   image: dpage/pgadmin4:6.8
+  #   container_name: ${PLATFORM_STACK_NAME}-pgadmin
+  #   ports:
+  #     - "5050:5050"
+  #   depends_on:
+  #     - db
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - default
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # MongoDB Service
   mongodb:
@@ -422,32 +462,6 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
-  # # Channels Service (Websocket)
-  # channels:
-  #   image: interlinkproject/backend-channels:${CHANNELS_VERSION}
-  #   container_name: ${PLATFORM_STACK_NAME}-channels
-  #   environment:
-  #     - SERVER_NAME=${DOMAIN}
-  #     - SERVER_HOST=https://${DOMAIN}/channels
-  #     - PORT=${PORT}
-  #     - BASE_PATH=/channels
-  #     - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
-  #     - COLLECTION_NAME=channels_assets
-  #   env_file:
-  #     - .env
-  #   labels:
-  #     - traefik.enable=true
-  #     - traefik.docker.network=traefik-public
-  #     - traefik.http.services.${PLATFORM_STACK_NAME}-channels.loadbalancer.server.port=${PORT}
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-channels.tls.certresolver=letsencrypt
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-channels.tls=true
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-channels.rule=Host(`${DOMAIN}`) && PathPrefix(`/channels`)
-  #     - traefik.http.routers.${PLATFORM_STACK_NAME}-channels.middlewares=channels-stripprefix
-  #     - traefik.http.middlewares.channels-stripprefix.stripprefix.prefixes=/channels
-  #   networks:
-  #     - traefik-public
-  #     - default
 
   # Googledrive Interlinker
   googledrive:
@@ -799,7 +813,7 @@ services:
 
   newelasticsearch:
     image: elasticsearch:8.2.2
-    container_name: ${PLATFORM_STACK_NAME}-elasticsearch
+    container_name: ${PLATFORM_STACK_NAME}-elasticsearch8
     environment:
       - xpack.security.enabled=true
       - discovery.type=single-node
@@ -825,6 +839,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
   
   elasticsearch:
+    container_name: ${PLATFORM_STACK_NAME}-elasticsearch6
     image: elasticsearch:6.8.23
     environment:
       - xpack.security.enabled=true
@@ -1056,6 +1071,8 @@ networks:
     external: true
 
 volumes:
+  backups:
+  
   loomio-uploads:
   loomio-storage:
   loomio-files:
