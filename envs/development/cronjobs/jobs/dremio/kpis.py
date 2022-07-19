@@ -3,12 +3,12 @@ from datetime import datetime
 import dateutil.relativedelta
 from common import *
 import json
+# do not remove this line, it setups dremio if not yet
+import setup
 
 # date in the left cell
 date_time = datetime.now()
 str_date = date_time.strftime("%Y-%m-%d %H:%M:%S")
-
-login()
 
 d2 = date_time - dateutil.relativedelta.relativedelta(months=1)
 one_month_before = d2.strftime("%Y-%m-%d")
