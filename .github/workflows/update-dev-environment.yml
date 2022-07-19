@@ -52,7 +52,7 @@ jobs:
             docker-compose pull
             docker network create traefik-public || true
             docker network create grafana-network || true
-            docker-compose -p development up -d
+            docker-compose up -d
             sleep 10
 
             docker-compose exec -T catalogue python /app/app/pre_start.py
