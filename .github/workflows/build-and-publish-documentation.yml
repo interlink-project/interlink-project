@@ -6,7 +6,7 @@ on:
     branches:
       - master
     paths:
-      - ./docs/**
+      - docs/**
       - .github/workflows/build-and-publish-documentation.yml
 
 jobs:
