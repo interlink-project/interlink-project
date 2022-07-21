@@ -17,7 +17,7 @@ Interlink technical documentation
    logging/index.md
    kpis/index.md
    internationalization/index.rst
-
+   other_problems.md
 
 Indices and tables
 ==================

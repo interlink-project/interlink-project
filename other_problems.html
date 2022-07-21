@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search &mdash; Interlink  documentation</title>
+  <title>Errors &mdash; Interlink  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/togglebutton.css" type="text/css" />
-    
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -23,10 +23,9 @@
         <script src="_static/togglebutton.js"></script>
         <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/js/theme.js"></script>
-    <script src="_static/searchtools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Weblate for continous localization" href="internationalization/weblate.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -37,7 +36,7 @@
             <a href="index.html" class="icon icon-home"> Interlink
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -45,7 +44,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="environments/index.html">Environments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="collaborativeenvironment/index.html">Collaborative environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="interlinkers/index.html">Interlinkers</a></li>
@@ -53,7 +52,10 @@
 <li class="toctree-l1"><a class="reference internal" href="logging/index.html">Logging Instruction for Microservices</a></li>
 <li class="toctree-l1"><a class="reference internal" href="kpis/index.html">Instructions to retrieve data for KPIs population</a></li>
 <li class="toctree-l1"><a class="reference internal" href="internationalization/index.html">Internationalization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="other_problems.html">Errors</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Errors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#authorizationexception-403-cluster-block-exception-blocked-by-forbidden-12-index-read-only-allow-delete-api">AuthorizationException(403, ‘cluster_block_exception’, ‘blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];’)</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -70,8 +72,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Search</li>
+      <li>Errors</li>
       <li class="wy-breadcrumbs-aside">
+            <a href="_sources/other_problems.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -79,22 +82,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search functionality.
-    </p>
-  </div>
-  </noscript>
+  <section id="errors">
+<h1>Errors<a class="headerlink" href="#errors" title="Permalink to this heading"></a></h1>
+<section id="authorizationexception-403-cluster-block-exception-blocked-by-forbidden-12-index-read-only-allow-delete-api">
+<h2>AuthorizationException(403, ‘cluster_block_exception’, ‘blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];’)<a class="headerlink" href="#authorizationexception-403-cluster-block-exception-blocked-by-forbidden-12-index-read-only-allow-delete-api" title="Permalink to this heading"></a></h2>
+<p>Go to backend-logging and:</p>
+<p>apt get update &amp;&amp; apt get upgrade
+apt install curl
+curl –user ELASTIC_USER:ELASTIC_PASSWORD -X PUT http://elasticsearch:9200/logs/_settings -H ‘Content-Type: application/json’ -d ‘{ “index”: { “blocks”: { “read_only_allow_delete”: “false” } } }’</p>
+</section>
+</section>
 
-  
-  <div id="search-results">
-  
-  </div>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="internationalization/weblate.html" class="btn btn-neutral float-left" title="Weblate for continous localization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 
@@ -116,14 +120,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-  <script>
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script id="searchindexloader"></script>
-   
-
+  </script> 
 
 </body>
 </html>
