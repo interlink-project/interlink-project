@@ -86,10 +86,16 @@
 <h1>Errors<a class="headerlink" href="#errors" title="Permalink to this heading"></a></h1>
 <section id="authorizationexception-403-cluster-block-exception-blocked-by-forbidden-12-index-read-only-allow-delete-api">
 <h2>AuthorizationException(403, ‘cluster_block_exception’, ‘blocked by: [FORBIDDEN/12/index read-only / allow delete (api)];’)<a class="headerlink" href="#authorizationexception-403-cluster-block-exception-blocked-by-forbidden-12-index-read-only-allow-delete-api" title="Permalink to this heading"></a></h2>
-<p>Go to backend-logging and:</p>
-<p>apt get update &amp;&amp; apt get upgrade
-apt install curl
-curl –user ELASTIC_USER:ELASTIC_PASSWORD -X PUT http://elasticsearch:9200/logs/_settings -H ‘Content-Type: application/json’ -d ‘{ “index”: { “blocks”: { “read_only_allow_delete”: “false” } } }’</p>
+<p>It seems that elasticsearch thinks that there is little space left on the machine. To fix it, the index must not allow the read_only mode.</p>
+<p>For that, you can use portainer to execute a shell in backend-logging container (or any container in the same network of elasticsearch6) and execute the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># if curl is not installed</span>
+<span class="n">apt</span> <span class="n">get</span> <span class="n">update</span> <span class="o">&amp;&amp;</span> <span class="n">apt</span> <span class="n">get</span> <span class="n">upgrade</span>
+<span class="n">apt</span> <span class="n">install</span> <span class="n">curl</span>
+
+<span class="c1"># set the index config</span>
+<span class="n">curl</span> <span class="o">--</span><span class="n">user</span> <span class="n">ELASTIC_USER</span><span class="p">:</span><span class="n">ELASTIC_PASSWORD</span> <span class="o">-</span><span class="n">X</span> <span class="n">PUT</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">elasticsearch</span><span class="p">:</span><span class="mi">9200</span><span class="o">/</span><span class="n">logs</span><span class="o">/</span><span class="n">_settings</span> <span class="o">-</span><span class="n">H</span> <span class="s1">&#39;Content-Type: application/json&#39;</span> <span class="o">-</span><span class="n">d</span> <span class="s1">&#39;{ &quot;index&quot;: { &quot;blocks&quot;: { &quot;read_only_allow_delete&quot;: &quot;false&quot; } } }&#39;</span>
+</pre></div>
+</div>
 </section>
 </section>
 
