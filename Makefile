@@ -88,7 +88,7 @@ build: ## Build containers
 
 .PHONY: seed
 seed: ## Set initial data
-	cd ../backend-catalogue && make localseed
+	cd ../backend-catalogue && make seed
 	cd ../backend-coproduction && make seed
 	
 .PHONY: applymigrations
