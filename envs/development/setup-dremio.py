@@ -32,6 +32,7 @@ def apiPost(endpoint, body=None):
 
     # print(response.__dict__)
     text = response.text
+    print(response.status_code, text)
     assert response.status_code in [200, 409]
 
     # a post may return no data
