@@ -4,12 +4,12 @@ import os
 import time
 
 class Config():
-    userName = os.environ.get("DREMIO_USERNAME", "admin")
-    firstName = os.environ.get("DREMIO_USERNAME", "admin")
-    lastName = os.environ.get("DREMIO_USERNAME", "admin")
-    password = os.environ.get("DREMIO_PASSWORD", "Administr@tor123")
+    userName = os.environ.get("DREMIO_USERNAME")
+    firstName = os.environ.get("DREMIO_USERNAME")
+    lastName = os.environ.get("DREMIO_USERNAME")
+    password = os.environ.get("DREMIO_PASSWORD")
     email = os.environ.get("DREMIO_EMAIL", "interlink@admin.com")
-    dremioServer = os.environ.get("DREMIO_SERVER", 'http://dremio:9047')
+    dremioServer = "http://dremio:9047"
     token = None
 
     def get_headers(self):
