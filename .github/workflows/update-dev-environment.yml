@@ -43,11 +43,14 @@ jobs:
             export GOOGLE_PRIVATE_KEY=${{ secrets.GOOGLE_PRIVATE_KEY }}
             export GOOGLE_CLIENT_EMAIL=${{ secrets.GOOGLE_CLIENT_EMAIL }}
             export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+            export DREMIO_USERNAME=${{ secrets.DREMIO_USERNAME }}
+            export DREMIO_PASSWORD=${{ secrets.DREMIO_PASSWORD }}
             export ENVIRONMENT=development
             git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || true
             cd /datadrive/data/interlink-project/envs/development
             git fetch --force --all --tags
             git checkout origin/${{ github.ref_name }} || git checkout ${{ github.ref_name }}
+            python3 setup-dremio.py
             docker-compose pull
             docker network create traefik-public || true
             docker network create grafana-network || true

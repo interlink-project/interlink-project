@@ -3,8 +3,6 @@ from datetime import datetime
 import dateutil.relativedelta
 from common import *
 import json
-# do not remove this line, it setups dremio if not yet
-import setup
 
 # date in the left cell
 date_time = datetime.now()
@@ -227,7 +225,7 @@ if len(header) > 0:
     # check if all query names are present in header and add a new one if not present
     for query in queries:
         name = query.get("name")
-        if name not in header:
+        if not any(name in string for string in header):
             header.append(name)
             update = True
             print(f"Added {name} to header")
