@@ -221,11 +221,17 @@ except:
 values_to_insert = []
 update = False
 
+def index_containing_substring(the_list, substring):
+    for i, s in enumerate(the_list):
+        if substring in s:
+              return i
+    return -1
+
 if len(header) > 0:
     # check if all query names are present in header and add a new one if not present
     for query in queries:
         name = query.get("name")
-        if not any(name in string for string in header):
+        if not index_containing_substring(header, name):
             header.append(name)
             update = True
             print(f"Added {name} to header")
@@ -254,7 +260,7 @@ else:
 # set each value of row depending on the index of the name of the kpi in the header
 row = [str_date]
 for query_name, query_result in results.items():
-    index = header.index(query_name)
+    index = index_containing_substring(header, query_name)
     set_list(row, index, json.dumps(query_result))
 
 values_to_insert.append(
