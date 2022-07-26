@@ -42,6 +42,8 @@ services:
     # command: --admin-password "${PORTAINER_PASSWORD}"
     security_opt:
       - no-new-privileges:true
+    ports:
+      - 9000:9000
     environment:
       - TZ=${TZ}
     networks:
