@@ -116,7 +116,7 @@ queries = [
         "extract_count": True
     },
     {
-        "name": "Number of active users last month",
+        "name": "A8: Number of active users last month",
         "sql": f"SELECT COUNT(DISTINCT(user_id)) FROM elastic2.logs.log AS log WHERE log.\"timestamp\" > '{one_month_before}'",
         "extract_count": True
     },
