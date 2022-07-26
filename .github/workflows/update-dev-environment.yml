@@ -45,6 +45,7 @@ jobs:
             export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
             export DREMIO_USERNAME=${{ secrets.DREMIO_USERNAME }}
             export DREMIO_PASSWORD=${{ secrets.DREMIO_PASSWORD }}
+            export DREMIO_EMAIL=${{ secrets.DREMIO_EMAIL }}
             export ENVIRONMENT=development
             git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || true
             cd /datadrive/data/interlink-project/envs/development
