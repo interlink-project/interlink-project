@@ -29,9 +29,9 @@ def apiPost(endpoint, body=None):
     response = requests.post('{server}/api/v3/{endpoint}'.format(server=config.dremioServer,
                                                                  endpoint=endpoint), headers=config.get_headers(), data=json.dumps(body))
 
-    # print(response.__dict__)
+    print(response.__dict__)
     text = response.text
-    print(response.status_code, text)
+    # print(response.status_code, text)
     assert response.status_code in [200, 409]
 
     # a post may return no data
