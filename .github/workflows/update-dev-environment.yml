@@ -50,7 +50,7 @@ jobs:
             cd /datadrive/data/interlink-project/envs/development
             git fetch --force --all --tags
             git checkout origin/${{ github.ref_name }} || git checkout ${{ github.ref_name }}
-            python3 setup-dremio.py
+            pip3 install python-dotenv && python3 setup-dremio.py
             docker-compose pull
             docker network create traefik-public || true
             docker network create grafana-network || true

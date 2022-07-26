@@ -2,6 +2,9 @@ import json
 import requests
 import time
 import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 class Config():
     userName = os.environ.get("DREMIO_USERNAME", "admin")
