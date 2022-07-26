@@ -11,6 +11,8 @@ str_date = date_time.strftime("%Y-%m-%d %H:%M:%S")
 d2 = date_time - dateutil.relativedelta.relativedelta(months=1)
 one_month_before = d2.strftime("%Y-%m-%d")
 
+login()
+
 queries = [
     # coproductionprocesses
     {
@@ -254,7 +256,7 @@ else:
 # set each value of row depending on the index of the name of the kpi in the header
 row = [str_date]
 for query_name, query_result in results.items():
-    index = header.index(name)
+    index = header.index(query_name)
     set_list(row, index, json.dumps(query_result))
 
 values_to_insert.append(
