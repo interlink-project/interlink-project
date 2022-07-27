@@ -24,13 +24,24 @@ jobs:
             export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.ZGZ_LOOMIO_SECRET_COOKIE_TOKEN }}
             export LOOMIO_SMTP_PASSWORD=${{ secrets.ZGZ_LOOMIO_SMTP_PASSWORD }}        
             export LOOMIO_DEVISE_SECRET=${{ secrets.ZGZ_LOOMIO_DEVISE_SECRET }}
+            export LOOMIO_DEVISE_SECRET=${{ secrets.ZGZ_LOOMIO_DEVISE_SECRET }}
             export GRAFANA_USERNAME=${{ secrets.ZGZ_GRAFANA_USERNAME }}
             export GRAFANA_PASSWORD=${{ secrets.ZGZ_GRAFANA_PASSWORD }}
-            export GOOGLE_PROJECT_ID=${{ secrets.GOOGLE_PROJECT_ID }}
-            export GOOGLE_PRIVATE_KEY_ID=${{ secrets.GOOGLE_PRIVATE_KEY_ID }}
-            export GOOGLE_PRIVATE_KEY=${{ secrets.GOOGLE_PRIVATE_KEY }}
-            export GOOGLE_CLIENT_EMAIL=${{ secrets.GOOGLE_CLIENT_EMAIL }}
-            export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+            export GOOGLE_PROJECT_ID=${{ secrets.DEMO_GOOGLE_PROJECT_ID }}
+            export GOOGLE_PRIVATE_KEY_ID=${{ secrets.DEMO_GOOGLE_PRIVATE_KEY_ID }}
+            export GOOGLE_PRIVATE_KEY=${{ secrets.DEMO_GOOGLE_PRIVATE_KEY }}
+            export GOOGLE_CLIENT_EMAIL=${{ secrets.DEMO_GOOGLE_CLIENT_EMAIL }}
+            export GOOGLE_CLIENT_ID=${{ secrets.DEMO_GOOGLE_CLIENT_ID }}
+            export GOOGLE_CLIENT_X509=${{ secrets.DEMO_GOOGLE_CLIENT_X509 }}
+            export DREMIO_USERNAME=${{ secrets.DREMIO_USERNAME }}
+            export DREMIO_PASSWORD=${{ secrets.DREMIO_PASSWORD }}
+            export DREMIO_EMAIL=${{ secrets.DREMIO_EMAIL }}
+            export KPIS_GOOGLE_PROJECT_ID=${{ secrets.KPIS_GOOGLE_PROJECT_ID }}
+            export KPIS_GOOGLE_PRIVATE_KEY_ID=${{ secrets.KPIS_GOOGLE_PRIVATE_KEY_ID }}
+            export KPIS_GOOGLE_PRIVATE_KEY=${{ secrets.KPIS_GOOGLE_PRIVATE_KEY }}
+            export KPIS_GOOGLE_CLIENT_EMAIL=${{ secrets.KPIS_GOOGLE_CLIENT_EMAIL }}
+            export KPIS_GOOGLE_CLIENT_ID=${{ secrets.KPIS_GOOGLE_CLIENT_ID }}
+            export KPIS_GOOGLE_CLIENT_X509=${{ secrets.KPIS_GOOGLE_CLIENT_X509 }}
             export ENVIRONMENT=zgz
             git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || true
             cd /datadrive/data/interlink-project/envs/pilot-zgz
