@@ -68,11 +68,15 @@ services:
       - .env
     restart: always
     environment:
-      - GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
-      - GOOGLE_PRIVATE_KEY_ID=${GOOGLE_PRIVATE_KEY_ID}
-      - GOOGLE_PRIVATE_KEY=${GOOGLE_PRIVATE_KEY}
-      - GOOGLE_CLIENT_EMAIL=${GOOGLE_CLIENT_EMAIL}
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - KPIS_GOOGLE_PROJECT_ID=${KPIS_GOOGLE_PROJECT_ID}
+      - KPIS_GOOGLE_PRIVATE_KEY_ID=${KPIS_GOOGLE_PRIVATE_KEY_ID}
+      - KPIS_GOOGLE_PRIVATE_KEY=${KPIS_GOOGLE_PRIVATE_KEY}
+      - KPIS_GOOGLE_CLIENT_EMAIL=${KPIS_GOOGLE_CLIENT_EMAIL}
+      - KPIS_GOOGLE_CLIENT_ID=${KPIS_GOOGLE_CLIENT_ID}
+      - KPIS_GOOGLE_CLIENT_X509=${KPIS_GOOGLE_CLIENT_X509}
+      - DREMIO_EMAIL=${DREMIO_EMAIL}
+      - DREMIO_USERNAME=${DREMIO_USERNAME}
+      - DREMIO_PASSWORD=${DREMIO_PASSWORD}
     volumes:
       # Enable docker commands
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -261,7 +265,7 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
+        
   # Postgres Service
   db:
     image: interlinkproject/postgres:${DB_VERSION}
@@ -478,6 +482,7 @@ services:
       - GOOGLE_PRIVATE_KEY=${GOOGLE_PRIVATE_KEY}
       - GOOGLE_CLIENT_EMAIL=${GOOGLE_CLIENT_EMAIL}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_X509=${GOOGLE_CLIENT_X509}
     env_file:
       - .env
     labels:
@@ -837,7 +842,7 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
+  
   elasticsearch:
     container_name: ${PLATFORM_STACK_NAME}-elasticsearch6
     image: elasticsearch:6.8.23
@@ -1072,7 +1077,7 @@ networks:
 
 volumes:
   backups:
-
+  
   loomio-uploads:
   loomio-storage:
   loomio-files:
@@ -1093,7 +1098,7 @@ volumes:
   catalogue-static:
   matomo-data:
   mariadb-data:
-
+  
   grafana-dashboards:
   grafana-data:
   mysql-data:
