@@ -1,6 +1,6 @@
 [
     {
-        "schedule": "@every 6h",
+        "schedule": "@every 24h",
         "command": "cd /opt/jobs/dremio && python3 kpis.py",
         "onstart": true
     }
