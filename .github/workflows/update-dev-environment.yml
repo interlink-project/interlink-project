@@ -44,6 +44,12 @@ jobs:
             export GOOGLE_CLIENT_EMAIL=${{ secrets.DEV_GOOGLE_CLIENT_EMAIL }}
             export GOOGLE_CLIENT_ID=${{ secrets.DEV_GOOGLE_CLIENT_ID }}
             export GOOGLE_CLIENT_X509=${{ secrets.DEV_GOOGLE_CLIENT_X509 }}
+            export POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }}
+            export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            export ELASTIC_USERNAME=${{ secrets.ELASTIC_USERNAME }}
+            export ELASTIC_PASSWORD=${{ secrets.ELASTIC_PASSWORD }}
+            export MYSQL_USERNAME_MONITORING=${{ secrets.MYSQL_USERNAME_MONITORING }}
+            export MYSQL_PASSWORD_MONITORING=${{ secrets.MYSQL_PASSWORD_MONITORING }}
             export DREMIO_USERNAME=${{ secrets.DREMIO_USERNAME }}
             export DREMIO_PASSWORD=${{ secrets.DREMIO_PASSWORD }}
             export DREMIO_EMAIL=${{ secrets.DREMIO_EMAIL }}
