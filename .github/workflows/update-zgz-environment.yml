@@ -10,6 +10,7 @@ jobs:
 #      group: environment-${{ github.ref }}
 #      cancel-in-progress: true
     runs-on: ubuntu-latest
+    environment: zgz
     steps:
       - name: Deploy PILOT-ZGZ SSH
         uses: appleboy/ssh-action@master

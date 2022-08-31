@@ -10,6 +10,7 @@ jobs:
 #      group: environment-${{ github.ref }}
 #      cancel-in-progress: true
     runs-on: ubuntu-latest
+    environment: mef
     steps:
       - name: Deploy PILOT-MEF SSH
         uses: appleboy/ssh-action@master

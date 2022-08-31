@@ -21,6 +21,7 @@ jobs:
       group: environment-${{ github.ref }}-development
       cancel-in-progress: true
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - name: Deploy Dev SSH
         uses: appleboy/ssh-action@master

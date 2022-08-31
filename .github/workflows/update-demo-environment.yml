@@ -9,6 +9,7 @@ jobs:
       group: environment-${{ github.ref }}-demo
       cancel-in-progress: true
     runs-on: ubuntu-latest
+    environment: demo
     steps:
       - name: Deploy Demo SSH
         uses: appleboy/ssh-action@master

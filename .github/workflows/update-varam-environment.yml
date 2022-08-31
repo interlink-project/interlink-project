@@ -10,6 +10,7 @@ jobs:
 #      group: environment-${{ github.ref }}
 #      cancel-in-progress: true
     runs-on: ubuntu-latest
+    environment: varam
     steps:
       - name: Deploy PILOT-VARAM SSH
         uses: appleboy/ssh-action@master
