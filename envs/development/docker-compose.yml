@@ -798,7 +798,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-logging
 
     environment:
-      - ELASTIC_HOST=elasticsearch
+      - ELASTIC_HOST
       - ELASTIC_PORT
       - ELASTIC_USERNAME
       - ELASTIC_PASSWORD
@@ -1083,7 +1083,7 @@ services:
       # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
       - --strict.perms=false
     links:
-      - newelasticsearch:newelasticsearch
+      - elasticsearch:elasticsearch
     networks:
       - grafana-network
       - traefik-public
