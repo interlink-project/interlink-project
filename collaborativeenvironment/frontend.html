@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frontend &mdash; Interlink  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Authentication" href="authentication/authentication.html" />
+    <link rel="prev" title="Collaborative environment" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Interlink
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../environments/index.html">Environments</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Collaborative environment</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Frontend</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#technologies">Technologies</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#react-components">React components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-add-a-new-element">How to add a new element</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-add-a-new-route">How to add a new route</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-add-a-new-element-in-the-sidebar">How to add a new element in the sidebar</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-structure">File structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#translations">Translations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-calls">API calls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#state-management">State management</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="authentication/authentication.html">Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datamodel.html">Data models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../interlinkers/index.html">Interlinkers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing/acceptance-tests/index.html">User Acceptance testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logging/index.html">Logging Instruction for Microservices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kpis/index.html">Instructions to retrieve data for KPIs population</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internationalization/index.html">Internationalization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other_problems.html">Errors</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Interlink</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Collaborative environment</a> &raquo;</li>
+      <li>Frontend</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/collaborativeenvironment/frontend.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="frontend">
+<h1>Frontend<a class="headerlink" href="#frontend" title="Permalink to this heading"></a></h1>
+<section id="technologies">
+<h2>Technologies<a class="headerlink" href="#technologies" title="Permalink to this heading"></a></h2>
+<p>The main technologies used for the frontend are:</p>
+<ol class="arabic simple">
+<li><p><strong>NGINX:</strong> is open source software for web serving, reverse proxying, caching, load balancing, media streaming, and more.</p></li>
+<li><p><strong>React:</strong> is a free and open-source front-end JavaScript library for building user interfaces based on UI components. It is maintained by Meta (formerly Facebook) and a community of individual developers and companies. React can be used as a base in the development of single-page, mobile, or server-rendered applications with frameworks like Next.js. However, React is only concerned with state management and rendering that state to the DOM, so creating React applications usually requires the use of additional libraries for routing, as well as certain client-side functionality.</p></li>
+<li><p><strong>MUI:</strong> is a massive library of UI components designers and developers can use to build React applications. The open-source project follows Google’s guidelines for creating components, giving you a customizable library of foundational and advanced UI elements.</p></li>
+</ol>
+<section id="react-components">
+<h3>React components<a class="headerlink" href="#react-components" title="Permalink to this heading"></a></h3>
+<p>Class based components are not recommended since React 16. The following are different ways to create function based components:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>function ReactExampleComponent({ text }) {
+  return (
+    &lt;div&gt;
+        &lt;p&gt;
+            {text}
+        &lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+</pre></div>
+</div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>const ReactExampleComponent = ({ text }) =&gt; {
+    // if you want to put logic here
+  return (
+    &lt;div&gt;
+        &lt;p&gt;
+            {text}
+        &lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+</pre></div>
+</div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>const ReactExampleComponent = ({ text }) =&gt; &lt;div&gt;
+        &lt;p&gt;
+            {text}
+        &lt;/p&gt;
+    &lt;/div&gt;
+</pre></div>
+</div>
+</section>
+<section id="how-to-add-a-new-element">
+<h3>How to add a new element<a class="headerlink" href="#how-to-add-a-new-element" title="Permalink to this heading"></a></h3>
+<p>Given the previous component, we could add a MUI button adding:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>import { Button } from &#39;@material-ui/core&#39;;
+
+const ReactExampleComponent = ({ text }) =&gt; {
+  const handleClick = () =&gt; {
+    // do something
+  }
+
+  return &lt;div&gt;
+        &lt;p&gt;
+          &lt;Button
+            size=&#39;small&#39;
+            onClick={handleClick}
+          &gt;
+            Text inside the button
+          &lt;/Button&gt;
+        &lt;/p&gt;
+    &lt;/div&gt;
+}
+</pre></div>
+</div>
+<p>Checkout the MUI components:
+https://mui.com/material-ui/</p>
+</section>
+<section id="how-to-add-a-new-route">
+<h3>How to add a new route<a class="headerlink" href="#how-to-add-a-new-route" title="Permalink to this heading"></a></h3>
+<p>React Router DOM is an npm package that enables you to implement dynamic routing in a web app. It allows you to display pages and allow users to navigate them. It is a fully-featured client and server-side routing library for React.</p>
+<p>Routes are stored in https://github.com/interlink-project/frontend/tree/master/react/src/routes</p>
+<p>To add the route coproductionprocesses/:processId/mynewsection would be something like:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>...
+const ReactExampleComponent = Loadable(lazy(() =&gt; import(&#39;../components/ReactExampleComponent&#39;)));
+...
+
+export const routes = [
+  {
+    path: &#39;dashboard&#39;,
+    element: (
+      &lt;DashboardLayout /&gt;
+    ),
+    children: [
+      {
+        path: &#39;coproductionprocesses/:processId&#39;,
+        children: [
+          {
+            path: &#39;&#39;,
+            element: &lt;AuthGuard&gt;&lt;CoproductionProcessProfile /&gt;&lt;/AuthGuard&gt;
+          },
+          {
+            path: &#39;mynewsection&#39;,
+            element: &lt;ReactExampleComponent&gt;
+          },
+          ...
+        ]
+      },
+      ...
+    ],
+  },
+];
+</pre></div>
+</div>
+</section>
+<section id="how-to-add-a-new-element-in-the-sidebar">
+<h3>How to add a new element in the sidebar<a class="headerlink" href="#how-to-add-a-new-element-in-the-sidebar" title="Permalink to this heading"></a></h3>
+<p>At the end of the day, the sidebar is a react component. At the time of writing, the sidebar code is at https://github.com/interlink-project/frontend/blob/master/react/src/components/navsidebars/ProcessSidebar.js.</p>
+<p>The only thing you have to do is to add a new element in the <em>sections</em> variable:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">sections</span> <span class="o">=</span> <span class="p">[</span>
+
+    <span class="p">{</span>
+      <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+      <span class="nx">items</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="nx">title</span><span class="o">:</span> <span class="nx">t</span><span class="p">(</span><span class="s1">&#39;Overview&#39;</span><span class="p">),</span>
+          <span class="nx">path</span><span class="o">:</span> <span class="sb">`/dashboard/coproductionprocesses/</span><span class="si">${</span><span class="nx">processId</span><span class="si">}</span><span class="sb">/overview`</span><span class="p">,</span>
+          <span class="nx">icon</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">Dashboard</span> <span class="o">/&gt;</span><span class="p">,</span>
+          <span class="nx">disabled</span><span class="o">:</span> <span class="kc">false</span>
+        <span class="p">},</span>
+        <span class="p">...</span>
+        <span class="p">{</span>
+          <span class="nx">title</span><span class="o">:</span> <span class="nx">t</span><span class="p">(</span><span class="s1">&#39;My new section&#39;</span><span class="p">),</span>
+          <span class="nx">path</span><span class="o">:</span> <span class="sb">`/dashboard/coproductionprocesses/</span><span class="si">${</span><span class="nx">processId</span><span class="si">}</span><span class="sb">/mynewsection`</span><span class="p">,</span>
+          <span class="nx">icon</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">Dashboard</span> <span class="o">/&gt;</span><span class="p">,</span>
+          <span class="nx">disabled</span><span class="o">:</span> <span class="kc">false</span>
+        <span class="p">},</span>
+      <span class="p">]</span>
+    <span class="p">},</span>
+  <span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="file-structure">
+<h3>File structure<a class="headerlink" href="#file-structure" title="Permalink to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
+├── Dockerfile                # file for generating the docker image based on the nginx official image
+├── entrypoint.sh             # shell script to execute on container start
+├── i18next-parser.config.js  # configuration of the translation files parser
+├── jsconfig.json
+├── nginx.conf                # configuration of nginx
+├── node_modules              # javascript dependencies for the app
+├── package-lock.json       
+├── package.json              # dependencies and metadata of the application
+├── public                    # public static files (not dynamic: css, images, favicon, main index.html used where react is imported...)
+│   ├── _redirects
+│   ├── index.html
+│   └── static
+└── src                       # files of the react app
+    ├── App.js                # has the root component of the react app because every view and component are handled with hierarchy in React, where &lt;App /&gt; is the top most component in the hierarchy. This gives you the feel that you maintain hierarchy in your code starting from App.js.Other than that, you can have the App logic in the index.js file itself. But it&#39;s something related to conventions followed by the community using the library or framework. It always feels good to go along the community.
+    ├── __api__               # calls to the API (coproduction / catalogue services)
+    ├── axiosInstance.js      # axios (http library) customized object
+    ├── components            # components of the application
+    ├── configuration.js      # some environment variables
+    ├── constants.js          # some constants
+    ├── contexts
+    ├── hooks
+    ├── icons                 # some svg icons
+    ├── index.js              # is the traditional and actual entry point for all node apps. Here in React it just has code of what to render and where to render.
+    ├── pages                 # at the end of the day, they are components, but those ones used by the routes
+    ├── routes                # specification of the routes of the application
+    ├── slices
+    ├── store
+    ├── theme                 # variables of the theme of the app
+    ├── translations          # translation files and i18n object
+    └── utils                 # some generic utils
+</pre></div>
+</div>
+</section>
+<section id="translations">
+<h3>Translations<a class="headerlink" href="#translations" title="Permalink to this heading"></a></h3>
+</section>
+<section id="api-calls">
+<h3>API calls<a class="headerlink" href="#api-calls" title="Permalink to this heading"></a></h3>
+</section>
+<section id="state-management">
+<h3>State management<a class="headerlink" href="#state-management" title="Permalink to this heading"></a></h3>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Collaborative environment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="authentication/authentication.html" class="btn btn-neutral float-right" title="Authentication" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Interlink team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
