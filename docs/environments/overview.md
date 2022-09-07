@@ -1,6 +1,6 @@
 # Overview
 
-## Local environment (http://localhost)
+## Local (development) environment (http://localhost)
 
 To get a local copy up and running follow these simple example steps.
 
@@ -13,15 +13,15 @@ To get a local copy up and running follow these simple example steps.
 * linux or macOS: 
 
     ```sh
-    mkdir interlink && cd interlink #Important because "make setup" will create directories on parent
+    # create a parent directory
+    mkdir interlink && cd interlink
+    # clone the main repository
     git clone https://github.com/interlink-project/interlink-project && cd interlink-project
+    # clones all the github repositories in the parent folder
     make setup
-    ```
-
-    To START all containers:
-    ```sh
-    # from /interlink-project
-    make up # will last couple minutes
+    # here you need to create the .secrets files in the backend-auth and interlinker-googledrive folders.
+    # start the containers
+    make up
     ```
 
     To STOP all containers:
@@ -31,17 +31,6 @@ To get a local copy up and running follow these simple example steps.
     ```
     ![Setup](images/setup.gif)
     
-1. (Optional) Seed databases with data **can throw errors because we are constantly making changes to the database model**
-
-    * linux or macOS: 
-    
-    ```sh
-    # from /interlink-project
-    make seed
-    ```
-
-    * windows: *soon*
-
 ## Development and Demo
 
 * https://dev.interlink-project.eu

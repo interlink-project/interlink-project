@@ -47,7 +47,7 @@ down: ## Stops all containers and removes volumes
 	cd ../interlinker-survey && make down
 
 	# Most of the times we only want to restart backend components because frontend lasts a lot to start in dev mode
-	# cd ../frontend && make down
+	cd ../frontend && make down
 	
 	cd ./envs/local && docker-compose down --remove-orphans
 	docker network rm traefik-public || true
@@ -68,7 +68,7 @@ start: down net ## Run containers (restarts them if already running)
 	cd ../interlinker-survey && make integrated
 
 	# Most of the times we only want to restart backend components because frontend lasts a lot to start in dev mode
-	# cd ../frontend && make integrated
+	cd ../frontend && make integrated
 
 .PHONY: build
 build: ## Build containers
