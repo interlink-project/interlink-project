@@ -8,7 +8,7 @@ The main technologies used for the frontend are:
 1. **React:** is a free and open-source front-end JavaScript library for building user interfaces based on UI components. It is maintained by Meta (formerly Facebook) and a community of individual developers and companies. React can be used as a base in the development of single-page, mobile, or server-rendered applications with frameworks like Next.js. However, React is only concerned with state management and rendering that state to the DOM, so creating React applications usually requires the use of additional libraries for routing, as well as certain client-side functionality.
 1. **MUI:** is a massive library of UI components designers and developers can use to build React applications. The open-source project follows Google's guidelines for creating components, giving you a customizable library of foundational and advanced UI elements. 
 
-### React components
+## React components
 
 Class based components are not recommended since React 16. The following are different ways to create function based components:
 
@@ -46,7 +46,7 @@ const ReactExampleComponent = ({ text }) => <div>
 ```
 
 
-### How to add a new element
+## How to add a new element
 
 Given the previous component, we could add a MUI button adding:
 
@@ -74,7 +74,7 @@ const ReactExampleComponent = ({ text }) => {
 Checkout the MUI components: 
 https://mui.com/material-ui/
 
-### How to add a new route
+## How to add a new route
 
 React Router DOM is an npm package that enables you to implement dynamic routing in a web app. It allows you to display pages and allow users to navigate them. It is a fully-featured client and server-side routing library for React.
 
@@ -113,7 +113,10 @@ export const routes = [
   },
 ];
 ```
-### How to add a new element in the sidebar
+
+Now, the route is accessible through the specified URI. Instead, we want the users to be able to get to the route by clicking on some element in the graphical interface, for example, a button or a sidebar entry.
+
+## How to add a new element in the sidebar
 
 At the end of the day, the sidebar is a react component. At the time of writing, the sidebar code is at https://github.com/interlink-project/frontend/blob/master/react/src/components/navsidebars/ProcessSidebar.js.
 
@@ -143,7 +146,7 @@ const sections = [
   ];
 ```
 
-### File structure
+## File structure
 
 ```
 .
@@ -179,8 +182,138 @@ const sections = [
     └── utils                 # some generic utils
 ```
 
-### Translations
+## Translations
 
-### API calls
+react-i18next is a powerful internationalization framework for React / React Native which is based on i18next. The module provides multiple components eg. to assert that needed translations get loaded or that your content gets rendered when the language changes.
 
-### State management
+You should read the i18next documentation. The configuration options and translation functionalities like plurals, formatting, interpolation, ... are documented there.
+https://react.i18next.com/guides/quick-start
+
+The i18n.js file (https://github.com/interlink-project/frontend/blob/master/react/src/translations/i18n.js) creates the i18n object. There is a hook (provided by the module) to access the function to translate the strings.
+
+```javascript
+...
+import { useTranslation } from 'react-i18next';
+...
+
+const Example = () => {
+  ...
+  const { t } = useTranslation();
+
+  return (
+    <>
+    {t("Hi, this is a translatable string")}
+    </>
+  );
+};
+
+export default Home;
+```
+
+The translation files are located in https://github.com/interlink-project/frontend/blob/master/react/src/translations
+
+When new translatable strings are added into the javascript files, the translation files may be updated. For that, we can use the i18n parser by executing:
+
+```bash
+# from /react directory, where the package.json file is located
+npm run translations
+```
+
+## API calls
+
+For reasons of cleanliness, the API calls are located in the https://github.com/interlink-project/frontend/tree/master/react/src/_\_api__ folder.
+
+The general.js file defines the class from which the other classes will inherit. It defines the basic HTTP calls (GET - retrieve / list, POST - create, PUT - update, DELETE - remove).
+
+There is a class for each entity of the data model (following the REST philosophy) that inherit from the generic class. For example, the API endpoints related with the interlinker entity are served from http://localhost/catalogue/api/v1/interlinkers
+
+```javascript
+import axiosInstance from 'axiosInstance';
+import GeneralApi, { removeEmpty } from '../general';
+
+class InterlinkersApi extends GeneralApi {
+  // set the main path of the API in the constructor. 
+  constructor() {
+    super('catalogue/api/v1/interlinkers');
+  }
+
+  // set specific methods for this entity
+  async getRelated(page, size, id) {
+    const res = await axiosInstance.get(
+      `/${this.url}/${id}/related`, {
+        params: removeEmpty({
+          page,
+          size
+        })
+      }
+    );
+    console.log('get related interlinkers call', res.data);
+    return res.data;
+  }
+}
+
+export const interlinkersApi = new InterlinkersApi();
+```
+
+## State management
+
+There are multiple state management concerns in react. 
+
+### Props
+
+Props are read-only
+
+```javascript
+const PropsExample = ({ counter }) => {
+    return <p> {counter} times clicked </p>;
+}
+```
+### Component level state
+
+The key difference between props and state is that state is internal and controlled by the component itself while props are external and controlled by whatever renders the component. State can be changed (Mutable), whereas Props can't (Immutable)
+
+Functional components should use "useState" react hook to create and manage their states.
+
+```javascript
+const ReactExampleComponent = () => {
+  
+  const [counter, setCounter] = useState(0)
+  return (
+    <div>
+        <p>
+            {counter} times clicked
+        </p>
+    </div>
+  );
+}
+```
+
+Combined with props:
+
+```javascript
+const PropsExampleButton = ({ clickCount, onClick }) => {
+    return <Button
+            size='small'
+            onClick={onClick}
+          >
+            This button has been clicked {clickCount}
+          </Button>;
+}
+
+const PropsExample = () => {
+    const [clickCount, setClickCount] = useState(0)
+
+    const onClick = (e) => {
+      setClickCount(clickCount + 1)
+    }
+
+    return <PropsExampleButton clickCount={clickCount} onClick={onClick} />;
+}
+```
+
+### Global state
+
+
+## Hooks
+### State
+### Effects

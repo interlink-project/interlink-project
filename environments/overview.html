@@ -48,7 +48,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Environments</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Overview</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#local-environment-http-localhost">Local environment (http://localhost)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#local-development-environment-http-localhost">Local (development) environment (http://localhost)</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#installation">Installation</a></li>
 </ul>
@@ -61,6 +61,7 @@
 <li class="toctree-l2"><a class="reference internal" href="data-persistence.html">Data persistence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data-migrations.html">Data migrations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="administration.html">Environments administration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="google.html">Google keys</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../collaborativeenvironment/index.html">Collaborative environment</a></li>
@@ -99,8 +100,8 @@
              
   <section id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h1>
-<section id="local-environment-http-localhost">
-<h2>Local environment (http://localhost)<a class="headerlink" href="#local-environment-http-localhost" title="Permalink to this heading"></a></h2>
+<section id="local-development-environment-http-localhost">
+<h2>Local (development) environment (http://localhost)<a class="headerlink" href="#local-development-environment-http-localhost" title="Permalink to this heading"></a></h2>
 <p>To get a local copy up and running follow these simple example steps.</p>
 <section id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h3>
@@ -112,14 +113,15 @@
 <h3>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h3>
 <ul>
 <li><p>linux or macOS:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>mkdir interlink <span class="o">&amp;&amp;</span> <span class="nb">cd</span> interlink <span class="c1">#Important because &quot;make setup&quot; will create directories on parent</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a parent directory</span>
+mkdir interlink <span class="o">&amp;&amp;</span> <span class="nb">cd</span> interlink
+<span class="c1"># clone the main repository</span>
 git clone https://github.com/interlink-project/interlink-project <span class="o">&amp;&amp;</span> <span class="nb">cd</span> interlink-project
+<span class="c1"># clones all the github repositories in the parent folder</span>
 make setup
-</pre></div>
-</div>
-<p>To START all containers:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># from /interlink-project</span>
-make up <span class="c1"># will last couple minutes</span>
+<span class="c1"># here you need to create the .secrets files in the backend-auth and interlinker-googledrive folders.</span>
+<span class="c1"># start the containers</span>
+make up
 </pre></div>
 </div>
 <p>To STOP all containers:</p>
@@ -130,20 +132,6 @@ make down
 <p><img alt="Setup" src="../_images/setup.gif" /></p>
 </li>
 </ul>
-<ol class="arabic">
-<li><p>(Optional) Seed databases with data <strong>can throw errors because we are constantly making changes to the database model</strong></p>
-<ul class="simple">
-<li><p>linux or macOS:</p></li>
-</ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># from /interlink-project</span>
-make seed
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>windows: <em>soon</em></p></li>
-</ul>
-</li>
-</ol>
 </section>
 </section>
 <section id="development-and-demo">

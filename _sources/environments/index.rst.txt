@@ -10,3 +10,4 @@ Environments
   data-persistence.md
   data-migrations.md
   administration.md
+  google.md

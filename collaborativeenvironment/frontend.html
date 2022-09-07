@@ -49,15 +49,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../environments/index.html">Environments</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Collaborative environment</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Frontend</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#technologies">Technologies</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#react-components">React components</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#how-to-add-a-new-element">How to add a new element</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#how-to-add-a-new-route">How to add a new route</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#how-to-add-a-new-element-in-the-sidebar">How to add a new element in the sidebar</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#file-structure">File structure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#translations">Translations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#api-calls">API calls</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#state-management">State management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#technologies">Technologies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#react-components">React components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-add-a-new-element">How to add a new element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-add-a-new-route">How to add a new route</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-add-a-new-element-in-the-sidebar">How to add a new element in the sidebar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-structure">File structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#translations">Translations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-calls">API calls</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#state-management">State management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#props">Props</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#component-level-state">Component level state</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#global-state">Global state</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hooks">Hooks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#state">State</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#effects">Effects</a></li>
 </ul>
 </li>
 </ul>
@@ -110,8 +118,9 @@
 <li><p><strong>React:</strong> is a free and open-source front-end JavaScript library for building user interfaces based on UI components. It is maintained by Meta (formerly Facebook) and a community of individual developers and companies. React can be used as a base in the development of single-page, mobile, or server-rendered applications with frameworks like Next.js. However, React is only concerned with state management and rendering that state to the DOM, so creating React applications usually requires the use of additional libraries for routing, as well as certain client-side functionality.</p></li>
 <li><p><strong>MUI:</strong> is a massive library of UI components designers and developers can use to build React applications. The open-source project follows Google’s guidelines for creating components, giving you a customizable library of foundational and advanced UI elements.</p></li>
 </ol>
+</section>
 <section id="react-components">
-<h3>React components<a class="headerlink" href="#react-components" title="Permalink to this heading"></a></h3>
+<h2>React components<a class="headerlink" href="#react-components" title="Permalink to this heading"></a></h2>
 <p>Class based components are not recommended since React 16. The following are different ways to create function based components:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>function ReactExampleComponent({ text }) {
   return (
@@ -145,7 +154,7 @@
 </div>
 </section>
 <section id="how-to-add-a-new-element">
-<h3>How to add a new element<a class="headerlink" href="#how-to-add-a-new-element" title="Permalink to this heading"></a></h3>
+<h2>How to add a new element<a class="headerlink" href="#how-to-add-a-new-element" title="Permalink to this heading"></a></h2>
 <p>Given the previous component, we could add a MUI button adding:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>import { Button } from &#39;@material-ui/core&#39;;
 
@@ -171,7 +180,7 @@ const ReactExampleComponent = ({ text }) =&gt; {
 https://mui.com/material-ui/</p>
 </section>
 <section id="how-to-add-a-new-route">
-<h3>How to add a new route<a class="headerlink" href="#how-to-add-a-new-route" title="Permalink to this heading"></a></h3>
+<h2>How to add a new route<a class="headerlink" href="#how-to-add-a-new-route" title="Permalink to this heading"></a></h2>
 <p>React Router DOM is an npm package that enables you to implement dynamic routing in a web app. It allows you to display pages and allow users to navigate them. It is a fully-featured client and server-side routing library for React.</p>
 <p>Routes are stored in https://github.com/interlink-project/frontend/tree/master/react/src/routes</p>
 <p>To add the route coproductionprocesses/:processId/mynewsection would be something like:</p>
@@ -206,9 +215,10 @@ export const routes = [
 ];
 </pre></div>
 </div>
+<p>Now, the route is accessible through the specified URI. Instead, we want the users to be able to get to the route by clicking on some element in the graphical interface, for example, a button or a sidebar entry.</p>
 </section>
 <section id="how-to-add-a-new-element-in-the-sidebar">
-<h3>How to add a new element in the sidebar<a class="headerlink" href="#how-to-add-a-new-element-in-the-sidebar" title="Permalink to this heading"></a></h3>
+<h2>How to add a new element in the sidebar<a class="headerlink" href="#how-to-add-a-new-element-in-the-sidebar" title="Permalink to this heading"></a></h2>
 <p>At the end of the day, the sidebar is a react component. At the time of writing, the sidebar code is at https://github.com/interlink-project/frontend/blob/master/react/src/components/navsidebars/ProcessSidebar.js.</p>
 <p>The only thing you have to do is to add a new element in the <em>sections</em> variable:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">sections</span> <span class="o">=</span> <span class="p">[</span>
@@ -236,7 +246,7 @@ export const routes = [
 </div>
 </section>
 <section id="file-structure">
-<h3>File structure<a class="headerlink" href="#file-structure" title="Permalink to this heading"></a></h3>
+<h2>File structure<a class="headerlink" href="#file-structure" title="Permalink to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.
 ├── Dockerfile                # file for generating the docker image based on the nginx official image
 ├── entrypoint.sh             # shell script to execute on container start
@@ -272,13 +282,131 @@ export const routes = [
 </div>
 </section>
 <section id="translations">
-<h3>Translations<a class="headerlink" href="#translations" title="Permalink to this heading"></a></h3>
+<h2>Translations<a class="headerlink" href="#translations" title="Permalink to this heading"></a></h2>
+<p>react-i18next is a powerful internationalization framework for React / React Native which is based on i18next. The module provides multiple components eg. to assert that needed translations get loaded or that your content gets rendered when the language changes.</p>
+<p>You should read the i18next documentation. The configuration options and translation functionalities like plurals, formatting, interpolation, … are documented there.
+https://react.i18next.com/guides/quick-start</p>
+<p>The i18n.js file (https://github.com/interlink-project/frontend/blob/master/react/src/translations/i18n.js) creates the i18n object. There is a hook (provided by the module) to access the function to translate the strings.</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>...
+import { useTranslation } from &#39;react-i18next&#39;;
+...
+
+const Example = () =&gt; {
+  ...
+  const { t } = useTranslation();
+
+  return (
+    &lt;&gt;
+    {t(&quot;Hi, this is a translatable string&quot;)}
+    &lt;/&gt;
+  );
+};
+
+export default Home;
+</pre></div>
+</div>
+<p>The translation files are located in https://github.com/interlink-project/frontend/blob/master/react/src/translations</p>
+<p>When new translatable strings are added into the javascript files, the translation files may be updated. For that, we can use the i18n parser by executing:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># from /react directory, where the package.json file is located</span>
+npm run translations
+</pre></div>
+</div>
 </section>
 <section id="api-calls">
-<h3>API calls<a class="headerlink" href="#api-calls" title="Permalink to this heading"></a></h3>
+<h2>API calls<a class="headerlink" href="#api-calls" title="Permalink to this heading"></a></h2>
+<p>For reasons of cleanliness, the API calls are located in the https://github.com/interlink-project/frontend/tree/master/react/src/__api__ folder.</p>
+<p>The general.js file defines the class from which the other classes will inherit. It defines the basic HTTP calls (GET - retrieve / list, POST - create, PUT - update, DELETE - remove).</p>
+<p>There is a class for each entity of the data model (following the REST philosophy) that inherit from the generic class. For example, the API endpoints related with the interlinker entity are served from http://localhost/catalogue/api/v1/interlinkers</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">axiosInstance</span> <span class="nx">from</span> <span class="s1">&#39;axiosInstance&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">GeneralApi</span><span class="p">,</span> <span class="p">{</span> <span class="nx">removeEmpty</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../general&#39;</span><span class="p">;</span>
+
+<span class="kr">class</span> <span class="nx">InterlinkersApi</span> <span class="kr">extends</span> <span class="nx">GeneralApi</span> <span class="p">{</span>
+  <span class="c1">// set the main path of the API in the constructor. </span>
+  <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kr">super</span><span class="p">(</span><span class="s1">&#39;catalogue/api/v1/interlinkers&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">// set specific methods for this entity</span>
+  <span class="nx">async</span> <span class="nx">getRelated</span><span class="p">(</span><span class="nx">page</span><span class="p">,</span> <span class="nx">size</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">axiosInstance</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span>
+      <span class="sb">`/</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">url</span><span class="si">}</span><span class="sb">/</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">/related`</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">params</span><span class="o">:</span> <span class="nx">removeEmpty</span><span class="p">({</span>
+          <span class="nx">page</span><span class="p">,</span>
+          <span class="nx">size</span>
+        <span class="p">})</span>
+      <span class="p">}</span>
+    <span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;get related interlinkers call&#39;</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">interlinkersApi</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InterlinkersApi</span><span class="p">();</span>
+</pre></div>
+</div>
 </section>
 <section id="state-management">
-<h3>State management<a class="headerlink" href="#state-management" title="Permalink to this heading"></a></h3>
+<h2>State management<a class="headerlink" href="#state-management" title="Permalink to this heading"></a></h2>
+<p>There are multiple state management concerns in react.</p>
+<section id="props">
+<h3>Props<a class="headerlink" href="#props" title="Permalink to this heading"></a></h3>
+<p>Props are read-only</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>const PropsExample = ({ counter }) =&gt; {
+    return &lt;p&gt; {counter} times clicked &lt;/p&gt;;
+}
+</pre></div>
+</div>
+</section>
+<section id="component-level-state">
+<h3>Component level state<a class="headerlink" href="#component-level-state" title="Permalink to this heading"></a></h3>
+<p>The key difference between props and state is that state is internal and controlled by the component itself while props are external and controlled by whatever renders the component. State can be changed (Mutable), whereas Props can’t (Immutable)</p>
+<p>Functional components should use “useState” react hook to create and manage their states.</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>const ReactExampleComponent = () =&gt; {
+  
+  const [counter, setCounter] = useState(0)
+  return (
+    &lt;div&gt;
+        &lt;p&gt;
+            {counter} times clicked
+        &lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+</pre></div>
+</div>
+<p>Combined with props:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>const PropsExampleButton = ({ clickCount, onClick }) =&gt; {
+    return &lt;Button
+            size=&#39;small&#39;
+            onClick={onClick}
+          &gt;
+            This button has been clicked {clickCount}
+          &lt;/Button&gt;;
+}
+
+const PropsExample = () =&gt; {
+    const [clickCount, setClickCount] = useState(0)
+
+    const onClick = (e) =&gt; {
+      setClickCount(clickCount + 1)
+    }
+
+    return &lt;PropsExampleButton clickCount={clickCount} onClick={onClick} /&gt;;
+}
+</pre></div>
+</div>
+</section>
+<section id="global-state">
+<h3>Global state<a class="headerlink" href="#global-state" title="Permalink to this heading"></a></h3>
+</section>
+</section>
+<section id="hooks">
+<h2>Hooks<a class="headerlink" href="#hooks" title="Permalink to this heading"></a></h2>
+<section id="state">
+<h3>State<a class="headerlink" href="#state" title="Permalink to this heading"></a></h3>
+</section>
+<section id="effects">
+<h3>Effects<a class="headerlink" href="#effects" title="Permalink to this heading"></a></h3>
 </section>
 </section>
 </section>
