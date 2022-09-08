@@ -7,3 +7,4 @@ Interlinkers
 
   external.md
   internal.md
+  add_interlinker.md
