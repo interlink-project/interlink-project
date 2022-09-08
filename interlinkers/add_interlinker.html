@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; Interlink  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Interlink
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../environments/index.html">Environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../collaborativeenvironment/index.html">Collaborative environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testing/acceptance-tests/index.html">User Acceptance testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other_problems.html">Errors</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Interlink</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/interlinkers/add_interlinker.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p><strong>Instructions to create new Interlinkers</strong></p>
+<p>A new software interlinker can be added directly to the catalogue following the steps below:</p>
+<ul class="simple">
+<li><p>Create a new folder with the name`s name, if the name has multiple words, it can’t use spaces (hyphens between words):</p></li>
+</ul>
+<p>For example:</p>
+<p>“Survey Editor Interlinker” should be named: survey-editor</p>
+<ul class="simple">
+<li><p>Inside the interlinker’s folder create the following files and directories:</p></li>
+</ul>
+<p>snapshots (directory)</p>
+<p>instructions.md (file)</p>
+<p>logo.jpeg (file)</p>
+<p>metadata.json (file)</p>
+<ul class="simple">
+<li><p>The catalogue allow to any interlinker to have several snapshots which display the interlinker functionality. All images must be included in the <strong>snapshots</strong> folder. For example for the interlinker augmenter the snapshots are:</p>
+<ol class="arabic simple">
+<li><p>annotate.png</p></li>
+<li><p>approve.png</p></li>
+<li><p>descriptions.png</p></li>
+<li><p>manage.png</p></li>
+</ol>
+</li>
+<li><p>Fill the _ <strong>instructions.md</strong> _ file with all necessary information to be able to use this interlinker. The instructions must follow markdown language (<a class="reference external" href="https://en.wikipedia.org/wiki/Markdown">https://en.wikipedia.org/wiki/Markdown</a>).</p></li>
+<li><p>The _ <strong>logo.jpeg</strong> _ must be the logo which will identify assets created by the interlinker.</p></li>
+<li><p>The _ <strong>metadata.</strong> _ <strong>json</strong> must include the following information:</p></li>
+<li><p><strong>Administrative_scopes</strong></p></li>
+</ul>
+<p>This metadata information refers to the scope where the interlink is implemented, this information must be one of the follow options:</p>
+<p>eu = European Union</p>
+<p>national= Inside a specific country</p>
+<p>local= Inside a specific city</p>
+<ul class="simple">
+<li><p><strong>Constraints_and_limitations_translations</strong></p></li>
+<li><p><strong>Description_translations</strong></p></li>
+</ul>
+<p>This metadata describes and present the interlinker. It could be added as a list of several languages. For example, in the case of two languages the metadata information will be:</p>
+<p>“en”: “Augmenter is an Open Source application …”,</p>
+<p>“es”:”Augmenter es una aplicación de código abierto …”</p>
+<ul class="simple">
+<li><p><strong>Difficulty</strong></p></li>
+</ul>
+<p>Describe the leve lof difficulty in the use of the interlinker. For example if the component is very easy and requires few easy steps to deploy then the level of difficulty could be easy. In others cases the level could be greater as it need a lot of parameters to configure or depends on other software to deploy, the level then could be hard.</p>
+<ul class="simple">
+<li><p><strong>Environments</strong></p></li>
+</ul>
+<p>The environment where the interlinker will be deploy. For example, if there are several severs where the platform is deployed, it will contain a list with the names of each server.</p>
+<ul class="simple">
+<li><p><strong>Id</strong></p></li>
+</ul>
+<p>A unique identifier for the interlinker in the catalogue.</p>
+<ul class="simple">
+<li><p><strong>Instructions_translations</strong></p></li>
+</ul>
+<p>This metadata contains a link to a document where the instructions to create a new translation language.</p>
+<ul class="simple">
+<li><p><strong>Integration</strong></p></li>
+</ul>
+<p>This metadata contains several variables used by the collaborative environment to integrate with a new interlinker. Several of them can be grouped inside the same category.</p>
+<p><em>Server configuration parameters. For example, in case of augmenter it will be located inside a subdomain called “servicepedia” (https://servicepedia.dev.interlink-project.ue):</em></p>
+<p>Domain: “”,</p>
+<p>Is_subdomain: true,</p>
+<p>Path: “servicepedia”,</p>
+<p>Service_name: “servicepedia”</p>
+<p><em>Interlinker calling options. For example, for the interlinker augmenter the options used to call the interlinker functionality are:</em></p>
+<p>“<em>capabilities”: {</em></p>
+<p><em>“clone”:false,</em></p>
+<p>“<em>delete”:true,</em></p>
+<p>“<em>edit”:true,</em></p>
+<p>“<em>instantiate”:true,</em></p>
+<p>“<em>open_in_modal”:false,</em></p>
+<p>“<em>preview”:false,</em></p>
+<p>“<em>shortcut”:true,</em></p>
+<p>“<em>view”:true</em></p>
+<p><em>}</em></p>
+<p><em>Translation messages needed when the interlinker is called. For example, in case of the augmenter the options are:</em></p>
+<p>“capabilities_translations”: {</p>
+<p>“delete_text_translations”:</p>
+<p>{ “en”: “Delete una description of Augmenter”,</p>
+<p>“es”: “Eliminar una descripción del Augmenter”},</p>
+<p>“instantiate_text_translations”:</p>
+<p>{ “en”: “Create a new description in Augmenter”,</p>
+<p>“es”: “Crear una nueva descripci\u00f3n en Augmenter”},</p>
+<p>“view_text_translations”:</p>
+<p>{“en”: “Open a description web site to annotate.”,</p>
+<p>“es”: “Abrir una p\u00e1gina con descripciones para anotar”}</p>
+<ul class="simple">
+<li><p><strong>Is_responsive</strong></p></li>
+</ul>
+<p>This metadata specifies if the component is responsive</p>
+<ul class="simple">
+<li><p><strong>Is_sustainability_related</strong></p></li>
+<li><p><strong>Laguages</strong></p></li>
+</ul>
+<p>This metadata specifies the languages supported by the interlinker.</p>
+<ul class="simple">
+<li><p><strong>Licence</strong></p></li>
+</ul>
+<p>This metadata specifies the license needed to use this interlinker.</p>
+<ul class="simple">
+<li><p><strong>Logotype</strong></p></li>
+</ul>
+<p>This metadata specifies the location of the logo file.</p>
+<ul class="simple">
+<li><p><strong>Name_translations</strong></p></li>
+</ul>
+<p>This metadata specifies the translations of the interlinker’s name. For example, in the case of the augmenter all the translation are the same:</p>
+<p>“name_translations”: {</p>
+<p>“en”: “Augmenter”,</p>
+<p>“es”: “Augmenter”,</p>
+<p>“it”: “Augmenter”,</p>
+<p>“iv”: “Augmenter”</p>
+<p>}</p>
+<ul class="simple">
+<li><p><strong>Overview_text</strong></p></li>
+</ul>
+<p>This metadata contains a short description of the interlinker.</p>
+<ul class="simple">
+<li><p><strong>Problemprofiles</strong></p></li>
+</ul>
+<p>This metadata contains all the related problem profiles.</p>
+<ul class="simple">
+<li><p><strong>Regulations_and_standards_translations</strong></p></li>
+</ul>
+<p>“regulations_and_standards_translations”: {</p>
+<p>“en”: “None”,</p>
+<p>“es”: “None”</p>
+<p>},</p>
+<ul class="simple">
+<li><p><strong>Supported_by</strong></p></li>
+</ul>
+<p>This metadata specifies if the interlinker is deployed together with the platform or in a external server.</p>
+<ul class="simple">
+<li><p><strong>Supports_internationalization</strong></p></li>
+</ul>
+<p>Specifies if the interlinker support several languages.</p>
+<ul class="simple">
+<li><p><strong>Tags_translations</strong></p></li>
+</ul>
+<p>Contains a several tags where the interlinker that describe the interlinker functionality.</p>
+<p>“en”: [</p>
+<p>“decision making”,</p>
+<p>“idea management”,</p>
+<p>“improve descriptions”,</p>
+<p>“public service descriptions”</p>
+<p>]</p>
+<ul class="simple">
+<li><p><strong>Targets</strong></p></li>
+</ul>
+<p>“targets”: [</p>
+<p>“all”</p>
+<p>],</p>
+<ul class="simple">
+<li><p><strong>Type</strong></p></li>
+</ul>
+<p>This metadata specifies the type of interlinker, there is two options:</p>
+<ul class="simple">
+<li><p>Software</p></li>
+<li><p>Knowledge</p></li>
+<li><p><strong>Types</strong></p></li>
+</ul>
+<p>“types”: [</p>
+<p>“enabling_services;operation_services”</p>
+<p>]</p>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Interlink team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
