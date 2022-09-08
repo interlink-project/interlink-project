@@ -6,4 +6,5 @@ Data model
   :caption: Contents:
 
   datamodel.md
+  migrations.md
   interlinkers.md
