@@ -1,14 +1,12 @@
-# Overview
+# Local (development) environment 
 
-## Local (development) environment (http://localhost)
+To get a local copy up and running (http://localhost) follow these simple example steps.
 
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
+## Prerequisites
 
 * Install [docker-compose](https://docs.docker.com/compose/install/) to run this project.
 
-### Installation
+## Installation
 
 * linux or macOS: 
 
@@ -41,3 +39,6 @@ To get a local copy up and running follow these simple example steps.
 * https://mef.interlink-project.eu
 * https://varam.interlink-project.eu
 * https://zgz.interlink-project.eu
+
+
+

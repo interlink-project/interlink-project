@@ -1,3 +1,4 @@
+
 # Weblate for continous localization
 
 Weblate is a libre web-based translation tool with tight version control integration. It provides two user interfaces, propagation of translations across components, quality checks and automatic linking to source files.
@@ -13,9 +14,28 @@ https://github.com/interlink-project/interlink-project/tree/master/envs/internat
 
 ```sh
 cd /datadrive/data/interlink-project/envs/internationalization
+# FIRST CREATE THE .ENV FILE
 docker-compose up -d
 ```
 
+".env" file contents:
+```bash
+DOMAIN=demo.interlink-project.eu
+ADMIN_PASS=
+GOOGLE_KEY=
+GOOGLE_SECRET=
+
+# Postgres
+POSTGRES_SERVER=
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+PGDATA=/var/lib/postgresql/data/pgdata
+
+FROM_EMAIL=
+SMTP_SERVER=
+SMTP_USERNAME=
+SMTP_PASSWORD=
+```
 ## Components in weblate
 
 ### Collaborative environment frontend component

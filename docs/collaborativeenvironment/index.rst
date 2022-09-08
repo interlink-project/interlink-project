@@ -7,5 +7,6 @@ Collaborative environment
 
   frontend.md
   authentication/authentication.rst
-  datamodel.md
+  datamodel/index.rst
+  internationalization.md
   testing.md
