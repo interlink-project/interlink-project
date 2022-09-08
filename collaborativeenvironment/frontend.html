@@ -61,12 +61,13 @@
 <li class="toctree-l4"><a class="reference internal" href="#props">Props</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#component-level-state">Component level state</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#global-state">Global state</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#state-managed-by-redux">State managed by Redux</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="authentication/authentication.html">Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datamodel/index.html">Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datamodel/index.html">Data model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="internationalization.html">Translation files manipulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="testing.html">Testing</a></li>
 </ul>
@@ -278,7 +279,8 @@ export const routes = [
 <p>react-i18next is a powerful internationalization framework for React / React Native which is based on i18next. The module provides multiple components eg. to assert that needed translations get loaded or that your content gets rendered when the language changes.</p>
 <p>You should read the i18next documentation. The configuration options and translation functionalities like plurals, formatting, interpolation, … are documented there.
 https://react.i18next.com/guides/quick-start</p>
-<p>The i18n.js file (https://github.com/interlink-project/frontend/blob/master/react/src/translations/i18n.js) creates the i18n object. There is a hook (provided by the module) to access the function to translate the strings.</p>
+<p>The i18n.js file (https://github.com/interlink-project/frontend/blob/master/react/src/translations/i18n.js) initializes the i18n object with some custom settings, such as allowed languages and the fallback language, in case of a key not having a translation for a given language.</p>
+<p>There is a generic hook (provided by the module) to access the function to translate the strings.</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>...
 import { useTranslation } from &#39;react-i18next&#39;;
 ...
@@ -297,10 +299,53 @@ const Example = () =&gt; {
 export default Home;
 </pre></div>
 </div>
-<p>The translation files are located in https://github.com/interlink-project/frontend/blob/master/react/src/translations</p>
-<p>When new translatable strings are added into the javascript files, the translation files may be updated. For that, we can use the i18n parser by executing:</p>
+<p>Instead, two custom hooks have been created for the project (both of them specified in https://github.com/interlink-project/frontend/blob/master/react/src/hooks/useDependantTranslation.js):</p>
+<ul class="simple">
+<li><p>useDependantTranslation: gets the language of the process in the global state (will be explained later)</p></li>
+<li><p>useCustomTranslation: accepts a language code as a parameter.</p></li>
+</ul>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>...
+import useDependantTranslation, { useCustomTranslation } from &#39;hooks/useDependantTranslation&#39;;
+
+...
+
+const Example = () =&gt; {
+  ...
+  const custom_t = useCustomTranslation(&#39;es&#39;);
+  const process_t = useDependantTranslation();
+
+  return (
+    &lt;&gt;
+    {custom_t(&quot;Hi&quot;)} &lt;!-- returns &quot;Hola&quot;--&gt;
+    {process_t(&quot;Hi&quot;)} &lt;!-- returns &quot;Ciao&quot;--&gt;
+    &lt;/&gt;
+  );
+};
+
+export default Home;
+</pre></div>
+</div>
+<blockquote>
+<div><p>IMPORTANT: For the sake of clarity, the variable names custom_t and process_t have been used, but in order for the parser, as will now be seen, to find the keys, the variable must be named “t”.</p>
+</div></blockquote>
+<p>When new translatable strings are added into the javascript files, the translation files may be updated. For that, we can use the i18n parser, which scans the files to find new translatable elements, by executing:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># from /react directory, where the package.json file is located</span>
 npm run translations
+</pre></div>
+</div>
+<p>Then, you can modify the translated strings by modifying the value in the JSON file. The translation files are located in https://github.com/interlink-project/frontend/blob/master/react/src/translations:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+  &quot;Cancel&quot;: &quot;Cancelar&quot;,
+  &quot;external-resource&quot;: &quot;Recurso externo&quot;,
+  &quot;Name&quot;: &quot;Nombre&quot;,
+  &quot;Created&quot;: &quot;Creado&quot;,
+  &quot;Updated&quot;: &quot;Actualizado&quot;,
+  &quot;Interlinker&quot;: &quot;INTERLINKER&quot;,
+  &quot;Actions&quot;: &quot;Acciones&quot;,
+  &quot;No resources yet&quot;: &quot;No existen recursos aún&quot;,
+  &quot;(it will be not related to project but it is useful for features exploration)&quot;: &quot;(no estará relacionado con el proyecto pero es útil para la exploración de características)&quot;,
+  ...
+}
 </pre></div>
 </div>
 </section>
@@ -492,6 +537,10 @@ export default SettingsContext;
 </pre></div>
 </div>
 <p>https://github.com/interlink-project/frontend/blob/master/react/src/components/navsidebars/SettingsPopover.js</p>
+</section>
+<section id="state-managed-by-redux">
+<h3>State managed by Redux<a class="headerlink" href="#state-managed-by-redux" title="Permalink to this heading"></a></h3>
+<p>#TODO</p>
 </section>
 </section>
 </section>
