@@ -310,10 +310,117 @@ const PropsExample = () => {
     return <PropsExampleButton clickCount={clickCount} onClick={onClick} />;
 }
 ```
-
+ 
 ### Global state
 
+There are plenty of third party libraries aiming to provide a single place to store our state, but when we are talking about React, Redux is the king in that regard.
 
-## Hooks
-### State
-### Effects
+With the release of context API in React 16.3 and especially hooks in React 16.8, a new world of possibilites suddenly arose. 
+React context suffers from a common problem: useContext hook will re-render whenever your context is modified. In other words, every component subscribed to our global state will re-render upon a context change, which in some scenarios might lead to performance issues.
+
+```javascript
+import { AuthProvider } from './contexts/CookieContext';
+import { SettingsProvider } from './contexts/SettingsContext';
+import store from './store';
+
+...
+
+ReactDOM.render(
+  <StrictMode>
+    ...
+    <ReduxProvider store={store}>
+      <SettingsProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </SettingsProvider>
+    </ReduxProvider>
+    ...
+  </StrictMode>, document.getElementById('root')
+);
+```
+
+In https://github.com/interlink-project/frontend/blob/master/react/src/index.js
+
+
+Context provides a way to pass data through the component tree without having to pass props down manually at every level, more info about it in this link
+
+This is great! We can make data accessible to many different components regardless its level in the tree, that is to say, we can subscribe components to a "global" data store. Just wrap your app within a context provider and feed that provider with the data you want to make global:
+
+```javascript
+import { createContext, useEffect, useState } from 'react';
+import { createCustomTheme } from 'theme';
+import { THEMES } from '../constants';
+import { getLanguage, setLanguage } from '../translations/i18n';
+
+const initialSettings = {
+  ...
+
+};
+
+export const restoreSettings = () => {
+  ...
+};
+
+export const storeSettings = (settings) => {
+  window.localStorage.setItem('settings', JSON.stringify(settings));
+};
+
+const SettingsContext = createContext({
+  settings: initialSettings,
+  saveSettings: (settings) => { },
+});
+
+export const SettingsProvider = (props) => {
+  const { children } = props;
+  const [settings, setSettings] = useState(initialSettings);
+
+  const saveSettings = (updatedSettings) => {
+    ...
+  };
+
+  return (
+    <SettingsContext.Provider
+      value={{
+        settings,
+        saveSettings,
+      }}
+    >
+      {children}
+    </SettingsContext.Provider>
+  );
+};
+
+SettingsProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export const SettingsConsumer = SettingsContext.Consumer;
+
+export default SettingsContext;
+
+```
+https://github.com/interlink-project/frontend/blob/master/react/src/contexts/SettingsContext.js
+
+```javascript
+import { useContext } from 'react';
+import SettingsContext from '../contexts/SettingsContext';
+
+const useSettings = () => useContext(SettingsContext);
+
+export default useSettings;
+```
+https://github.com/interlink-project/frontend/blob/master/react/src/hooks/useSettings.js
+
+Example component accessing global state managed by the SettingsContext
+```javascript
+import useSettings from '../../hooks/useSettings';
+
+...
+
+const SettingsPage = () => {
+  const { settings, saveSettings } = useSettings();
+  ...
+}
+```
+https://github.com/interlink-project/frontend/blob/master/react/src/components/navsidebars/SettingsPopover.js

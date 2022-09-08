@@ -5,28 +5,28 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Internal interlinkers &mdash; Interlink  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/togglebutton.css" type="text/css" />
   <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
+    <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
-        <script src="../_static/togglebutton.js"></script>
+        <script src="../../_static/togglebutton.js"></script>
         <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="User Acceptance testing" href="../testing/acceptance-tests/index.html" />
-    <link rel="prev" title="External interlinkers" href="external.html" /> 
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Translation files manipulation" href="../internationalization.html" />
+    <link rel="prev" title="Data models" href="datamodel.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -34,10 +34,10 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Interlink
+            <a href="../../index.html" class="icon icon-home"> Interlink
           </a>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
@@ -46,25 +46,25 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../environments/index.html">Environments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../collaborativeenvironment/index.html">Collaborative environment</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Interlinkers</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="external.html">External interlinkers</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Internal interlinkers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#endpoints-needed-for-software-interlinkers-integration">Endpoints needed for SOFTWARE INTERLINKERS integration</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#in-conclusion">In conclusion:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../environments/index.html">Environments</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Collaborative environment</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../frontend.html">Frontend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../authentication/authentication.html">Authentication</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Authentication</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="datamodel.html">Data models</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Internal interlinkers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#endpoints-needed-for-software-interlinkers-integration">Endpoints needed for SOFTWARE INTERLINKERS integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-flow-with-googledrive-interlinker">Example flow with Googledrive interlinker</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#example-flow-with-googledrive-interlinker">Example flow with Googledrive interlinker</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../internationalization.html">Translation files manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing.html">Testing</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../testing/acceptance-tests/index.html">User Acceptance testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../logging/index.html">Logging Instruction for Microservices</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../kpis/index.html">Instructions to retrieve data for KPIs population</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../internationalization/index.html">Internationalization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../other_problems.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../testing/acceptance-tests/index.html">User Acceptance testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../other_problems.html">Errors</a></li>
 </ul>
 
         </div>
@@ -73,18 +73,19 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Interlink</a>
+          <a href="../../index.html">Interlink</a>
       </nav>
 
       <div class="wy-nav-content">
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Interlinkers</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Collaborative environment</a> &raquo;</li>
+          <li><a href="index.html">Authentication</a> &raquo;</li>
       <li>Internal interlinkers</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/interlinkers/internal.md.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/collaborativeenvironment/datamodel/interlinkers.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -103,7 +104,7 @@
 <li><p><strong>Knowledge interlinkers</strong>:</p>
 <p>Refer to assets made by users that can be used as templates. For example, an user can create a google drive word document using <strong>googledrive</strong> interlinker and add some text to it. Now, this document could be reused, as if it was a template.</p>
 <p>A knowledge interlinker points to the software interlinker used to create an asset (softwareinterlinker_id) and the id of the specific asset that should be treated as the template (genesis_asset_id).</p>
-<p><img alt="Interlinkers models" src="../_images/model.png" /></p>
+<p><img alt="Interlinkers models" src="../../_images/model.png" /></p>
 <p>This allows us to create knowledge interlinkers based on any software interlinker (with some conditions, as it is going to be explained later):</p>
 <ul class="simple">
 <li><p>Survey: create survey templates for specific aspects that users could reuse (such us “Survey for interlinker quality assurance”)</p></li>
@@ -133,7 +134,7 @@
 <li><p>googledrive interlinker (left): file input</p></li>
 <li><p>survey interlinker (right): form name and description</p></li>
 </ul>
-<p><img alt="Google Drive instantiate" src="../_images/instantiators.png" /></p>
+<p><img alt="Google Drive instantiate" src="../../_images/instantiators.png" /></p>
 <ul class="simple">
 <li><p>etherpad: text input for specifying a name</p></li>
 </ul>
@@ -166,7 +167,7 @@
 <li><p>googledrive interlinker (left): redirects to Google Drive</p></li>
 <li><p>survey (right): renders HTML</p></li>
 </ul>
-<p><img alt="Asset data" src="../_images/viewers.png" /></p>
+<p><img alt="Asset data" src="../../_images/viewers.png" /></p>
 <ul class="simple">
 <li><p>etherpad: renders an iframe that shows etherpad GUI running in a diferent location (such as /etherpad/p/{padID})</p></li>
 </ul>
@@ -191,7 +192,7 @@
 <li><p>etherpad: not necessary</p></li>
 <li><p>survey: renders a GUI for modifying the survey</p></li>
 </ul>
-<p><img alt="Asset data" src="../_images/editor.png" /></p>
+<p><img alt="Asset data" src="../../_images/editor.png" /></p>
 </li>
 </ul>
 </li>
@@ -207,7 +208,7 @@
 <div><p>:warning: If /clone not specified, the interlinker can not be used to generate knowledge interlinkers.</p>
 </div></blockquote>
 <p>Furthermore, interlinkers can implement any other endpoints needed for its functionality. For example, Googledrive (left) and survey (right) interlinker implements:</p>
-<p><img alt="APIS" src="../_images/APIS.png" /></p>
+<p><img alt="APIS" src="../../_images/APIS.png" /></p>
 <section id="in-conclusion">
 <h3>In conclusion:<a class="headerlink" href="#in-conclusion" title="Permalink to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span>                           <span class="n">GET</span>       <span class="n">redirects</span> <span class="n">to</span> <span class="n">swagger</span> <span class="o">/</span> <span class="n">redoc</span> <span class="n">DOCS</span> <span class="p">(</span><span class="n">maybe</span> <span class="ow">not</span> <span class="n">possible</span><span class="p">)</span>
@@ -228,9 +229,9 @@
 <h2>Example flow with Googledrive interlinker<a class="headerlink" href="#example-flow-with-googledrive-interlinker" title="Permalink to this heading"></a></h2>
 <p>VIDEO: https://youtu.be/N3jB3lwOsRo</p>
 <p>When the user selects a file, a POST request to /api/v1/assets <strong>OF THE INTERLINKER</strong> (in this case /googledrive/api/v1/assets) is made with the data needed for the asset instantiation (in this case, the file). When response received, a message to the parent is sent with the asset data:</p>
-<p><img alt="Googledrive instantiator code" src="../_images/code.png" /></p>
+<p><img alt="Googledrive instantiator code" src="../../_images/code.png" /></p>
 <p>When the <strong>Collaborative Environment frontend</strong> receives the message, makes a POST request to /coproduction/api/v1/assets/ to store that asset for the task where the user has pressed “Add asset” button.</p>
-<p><img alt="Collaborative environment message listener" src="../_images/frontend.png" /></p>
+<p><img alt="Collaborative environment message listener" src="../../_images/frontend.png" /></p>
 </section>
 </section>
 
@@ -238,8 +239,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="external.html" class="btn btn-neutral float-left" title="External interlinkers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../testing/acceptance-tests/index.html" class="btn btn-neutral float-right" title="User Acceptance testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="datamodel.html" class="btn btn-neutral float-left" title="Data models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../internationalization.html" class="btn btn-neutral float-right" title="Translation files manipulation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

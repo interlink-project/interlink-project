@@ -25,7 +25,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Overview" href="overview.html" />
+    <link rel="next" title="Local (development) environment" href="overview.html" />
     <link rel="prev" title="Interlink technical documentation" href="../index.html" /> 
 </head>
 
@@ -47,20 +47,17 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Environments</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Local (development) environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cicd.html">SW development, CI &amp; CD policies for INTERLINK software</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-persistence.html">Data persistence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-migrations.html">Data migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update.html">Environments update</a></li>
 <li class="toctree-l2"><a class="reference internal" href="administration.html">Environments administration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging Instruction for Microservices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weblate.html">Weblate for continous localization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="google.html">Google keys</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../collaborativeenvironment/index.html">Collaborative environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../interlinkers/index.html">Interlinkers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../testing/acceptance-tests/index.html">User Acceptance testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../logging/index.html">Logging Instruction for Microservices</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../kpis/index.html">Instructions to retrieve data for KPIs population</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../internationalization/index.html">Internationalization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other_problems.html">Errors</a></li>
 </ul>
 
@@ -93,8 +90,9 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#local-development-environment-http-localhost">Local (development) environment (http://localhost)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Local (development) environment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#development-and-demo">Development and Demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#pilots-mef-varam-zgz">Pilots (mef / varam / zgz)</a></li>
 </ul>
@@ -107,8 +105,12 @@
 <li class="toctree-l2"><a class="reference internal" href="cicd.html#data-persistency">Data persistency</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="data-persistence.html">Data persistence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data-migrations.html">Data migrations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="update.html">Environments update</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="update.html#demo-and-pilots">Demo and pilots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update.html#generating-new-versions-of-the-components">Generating new versions of the components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update.html#when-to-update-demo-and-pilots">When to update demo and pilots</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="administration.html">Environments administration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="administration.html#connect-to-an-environment">Connect to an environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="administration.html#docker-configuration">Docker configuration</a></li>
@@ -116,6 +118,16 @@
 <li class="toctree-l2"><a class="reference internal" href="administration.html#restore-db-backup">Restore db backup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="administration.html#seed-data">Seed data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="administration.html#set-up-loomio">Set up loomio</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging Instruction for Microservices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logging.html#send-or-produce-logs">Send or produce logs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="weblate.html">Weblate for continous localization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="weblate.html#how-to-use-weblate">How to use weblate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weblate.html#deployment-of-weblate">Deployment of weblate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weblate.html#components-in-weblate">Components in weblate</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="google.html">Google keys</a><ul>
@@ -132,7 +144,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../index.html" class="btn btn-neutral float-left" title="Interlink technical documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="overview.html" class="btn btn-neutral float-right" title="Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="overview.html" class="btn btn-neutral float-right" title="Local (development) environment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

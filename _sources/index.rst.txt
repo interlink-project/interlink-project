@@ -12,11 +12,7 @@ Interlink technical documentation
 
    environments/index.rst
    collaborativeenvironment/index.rst
-   interlinkers/index.md
    testing/acceptance-tests/index.md
-   logging/index.md
-   kpis/index.md
-   internationalization/index.rst
    other_problems.md
 
 Indices and tables

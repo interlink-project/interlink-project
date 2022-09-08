@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Overview &mdash; Interlink  documentation</title>
+  <title>Local (development) environment &mdash; Interlink  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
@@ -47,29 +47,23 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Environments</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Overview</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#local-development-environment-http-localhost">Local (development) environment (http://localhost)</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#installation">Installation</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Local (development) environment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#development-and-demo">Development and Demo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pilots-mef-varam-zgz">Pilots (mef / varam / zgz)</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="cicd.html">SW development, CI &amp; CD policies for INTERLINK software</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-persistence.html">Data persistence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-migrations.html">Data migrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="update.html">Environments update</a></li>
 <li class="toctree-l2"><a class="reference internal" href="administration.html">Environments administration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging.html">Logging Instruction for Microservices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="weblate.html">Weblate for continous localization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="google.html">Google keys</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../collaborativeenvironment/index.html">Collaborative environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../interlinkers/index.html">Interlinkers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../testing/acceptance-tests/index.html">User Acceptance testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../logging/index.html">Logging Instruction for Microservices</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../kpis/index.html">Instructions to retrieve data for KPIs population</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../internationalization/index.html">Internationalization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other_problems.html">Errors</a></li>
 </ul>
 
@@ -88,7 +82,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html">Environments</a> &raquo;</li>
-      <li>Overview</li>
+      <li>Local (development) environment</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/environments/overview.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -98,19 +92,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="overview">
-<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h1>
-<section id="local-development-environment-http-localhost">
-<h2>Local (development) environment (http://localhost)<a class="headerlink" href="#local-development-environment-http-localhost" title="Permalink to this heading"></a></h2>
-<p>To get a local copy up and running follow these simple example steps.</p>
+  <section id="local-development-environment">
+<h1>Local (development) environment<a class="headerlink" href="#local-development-environment" title="Permalink to this heading"></a></h1>
+<p>To get a local copy up and running (http://localhost) follow these simple example steps.</p>
 <section id="prerequisites">
-<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h3>
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Install <a class="reference external" href="https://docs.docker.com/compose/install/">docker-compose</a> to run this project.</p></li>
 </ul>
 </section>
 <section id="installation">
-<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h3>
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h2>
 <ul>
 <li><p>linux or macOS:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a parent directory</span>
@@ -132,7 +124,6 @@ make down
 <p><img alt="Setup" src="../_images/setup.gif" /></p>
 </li>
 </ul>
-</section>
 </section>
 <section id="development-and-demo">
 <h2>Development and Demo<a class="headerlink" href="#development-and-demo" title="Permalink to this heading"></a></h2>

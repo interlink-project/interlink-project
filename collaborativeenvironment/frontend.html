@@ -63,23 +63,15 @@
 <li class="toctree-l4"><a class="reference internal" href="#global-state">Global state</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#hooks">Hooks</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#state">State</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#effects">Effects</a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="authentication/authentication.html">Authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datamodel.html">Data models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datamodel/index.html">Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internationalization.html">Translation files manipulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="testing.html">Testing</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../interlinkers/index.html">Interlinkers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../testing/acceptance-tests/index.html">User Acceptance testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../logging/index.html">Logging Instruction for Microservices</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../kpis/index.html">Instructions to retrieve data for KPIs population</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../internationalization/index.html">Internationalization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other_problems.html">Errors</a></li>
 </ul>
 
@@ -398,15 +390,108 @@ const PropsExample = () =&gt; {
 </section>
 <section id="global-state">
 <h3>Global state<a class="headerlink" href="#global-state" title="Permalink to this heading"></a></h3>
-</section>
-</section>
-<section id="hooks">
-<h2>Hooks<a class="headerlink" href="#hooks" title="Permalink to this heading"></a></h2>
-<section id="state">
-<h3>State<a class="headerlink" href="#state" title="Permalink to this heading"></a></h3>
-</section>
-<section id="effects">
-<h3>Effects<a class="headerlink" href="#effects" title="Permalink to this heading"></a></h3>
+<p>There are plenty of third party libraries aiming to provide a single place to store our state, but when we are talking about React, Redux is the king in that regard.</p>
+<p>With the release of context API in React 16.3 and especially hooks in React 16.8, a new world of possibilites suddenly arose.
+React context suffers from a common problem: useContext hook will re-render whenever your context is modified. In other words, every component subscribed to our global state will re-render upon a context change, which in some scenarios might lead to performance issues.</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>import { AuthProvider } from &#39;./contexts/CookieContext&#39;;
+import { SettingsProvider } from &#39;./contexts/SettingsContext&#39;;
+import store from &#39;./store&#39;;
+
+...
+
+ReactDOM.render(
+  &lt;StrictMode&gt;
+    ...
+    &lt;ReduxProvider store={store}&gt;
+      &lt;SettingsProvider&gt;
+        &lt;AuthProvider&gt;
+          &lt;App /&gt;
+        &lt;/AuthProvider&gt;
+      &lt;/SettingsProvider&gt;
+    &lt;/ReduxProvider&gt;
+    ...
+  &lt;/StrictMode&gt;, document.getElementById(&#39;root&#39;)
+);
+</pre></div>
+</div>
+<p>In https://github.com/interlink-project/frontend/blob/master/react/src/index.js</p>
+<p>Context provides a way to pass data through the component tree without having to pass props down manually at every level, more info about it in this link</p>
+<p>This is great! We can make data accessible to many different components regardless its level in the tree, that is to say, we can subscribe components to a “global” data store. Just wrap your app within a context provider and feed that provider with the data you want to make global:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>import { createContext, useEffect, useState } from &#39;react&#39;;
+import { createCustomTheme } from &#39;theme&#39;;
+import { THEMES } from &#39;../constants&#39;;
+import { getLanguage, setLanguage } from &#39;../translations/i18n&#39;;
+
+const initialSettings = {
+  ...
+
+};
+
+export const restoreSettings = () =&gt; {
+  ...
+};
+
+export const storeSettings = (settings) =&gt; {
+  window.localStorage.setItem(&#39;settings&#39;, JSON.stringify(settings));
+};
+
+const SettingsContext = createContext({
+  settings: initialSettings,
+  saveSettings: (settings) =&gt; { },
+});
+
+export const SettingsProvider = (props) =&gt; {
+  const { children } = props;
+  const [settings, setSettings] = useState(initialSettings);
+
+  const saveSettings = (updatedSettings) =&gt; {
+    ...
+  };
+
+  return (
+    &lt;SettingsContext.Provider
+      value={{
+        settings,
+        saveSettings,
+      }}
+    &gt;
+      {children}
+    &lt;/SettingsContext.Provider&gt;
+  );
+};
+
+SettingsProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export const SettingsConsumer = SettingsContext.Consumer;
+
+export default SettingsContext;
+
+</pre></div>
+</div>
+<p>https://github.com/interlink-project/frontend/blob/master/react/src/contexts/SettingsContext.js</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">useContext</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">SettingsContext</span> <span class="nx">from</span> <span class="s1">&#39;../contexts/SettingsContext&#39;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">useSettings</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">SettingsContext</span><span class="p">);</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="nx">useSettings</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>https://github.com/interlink-project/frontend/blob/master/react/src/hooks/useSettings.js</p>
+<p>Example component accessing global state managed by the SettingsContext</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">useSettings</span> <span class="nx">from</span> <span class="s1">&#39;../../hooks/useSettings&#39;</span><span class="p">;</span>
+
+<span class="p">...</span>
+
+<span class="kr">const</span> <span class="nx">SettingsPage</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="p">{</span> <span class="nx">settings</span><span class="p">,</span> <span class="nx">saveSettings</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">useSettings</span><span class="p">();</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>https://github.com/interlink-project/frontend/blob/master/react/src/components/navsidebars/SettingsPopover.js</p>
 </section>
 </section>
 </section>

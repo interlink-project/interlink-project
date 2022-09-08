@@ -7,7 +7,9 @@ Environments
 
   overview.md
   cicd.md
-  data-persistence.md
-  data-migrations.md
+  update.md
   administration.md
+  logging.md
+  weblate.md
   google.md
+  
