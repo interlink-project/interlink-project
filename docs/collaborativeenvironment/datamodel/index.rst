@@ -1,4 +1,4 @@
-Authentication
+Data model
 =====================================
 
 .. toctree::

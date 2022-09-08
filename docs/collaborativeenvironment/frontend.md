@@ -189,7 +189,9 @@ react-i18next is a powerful internationalization framework for React / React Nat
 You should read the i18next documentation. The configuration options and translation functionalities like plurals, formatting, interpolation, ... are documented there.
 https://react.i18next.com/guides/quick-start
 
-The i18n.js file (https://github.com/interlink-project/frontend/blob/master/react/src/translations/i18n.js) creates the i18n object. There is a hook (provided by the module) to access the function to translate the strings.
+The i18n.js file (https://github.com/interlink-project/frontend/blob/master/react/src/translations/i18n.js) initializes the i18n object with some custom settings, such as allowed languages and the fallback language, in case of a key not having a translation for a given language. 
+
+There is a generic hook (provided by the module) to access the function to translate the strings.
 
 ```javascript
 ...
@@ -209,16 +211,58 @@ const Example = () => {
 
 export default Home;
 ```
+Instead, two custom hooks have been created for the project (both of them specified in https://github.com/interlink-project/frontend/blob/master/react/src/hooks/useDependantTranslation.js):
 
-The translation files are located in https://github.com/interlink-project/frontend/blob/master/react/src/translations
+* useDependantTranslation: gets the language of the process in the global state (will be explained later)
+* useCustomTranslation: accepts a language code as a parameter.
 
-When new translatable strings are added into the javascript files, the translation files may be updated. For that, we can use the i18n parser by executing:
+
+```javascript
+...
+import useDependantTranslation, { useCustomTranslation } from 'hooks/useDependantTranslation';
+
+...
+
+const Example = () => {
+  ...
+  const custom_t = useCustomTranslation('es');
+  const process_t = useDependantTranslation();
+
+  return (
+    <>
+    {custom_t("Hi")} <!-- returns "Hola"-->
+    {process_t("Hi")} <!-- returns "Ciao"-->
+    </>
+  );
+};
+
+export default Home;
+```
+
+> IMPORTANT: For the sake of clarity, the variable names custom_t and process_t have been used, but in order for the parser, as will now be seen, to find the keys, the variable must be named "t". 
+
+When new translatable strings are added into the javascript files, the translation files may be updated. For that, we can use the i18n parser, which scans the files to find new translatable elements, by executing:
 
 ```bash
 # from /react directory, where the package.json file is located
 npm run translations
 ```
 
+Then, you can modify the translated strings by modifying the value in the JSON file. The translation files are located in https://github.com/interlink-project/frontend/blob/master/react/src/translations:
+```json
+{
+  "Cancel": "Cancelar",
+  "external-resource": "Recurso externo",
+  "Name": "Nombre",
+  "Created": "Creado",
+  "Updated": "Actualizado",
+  "Interlinker": "INTERLINKER",
+  "Actions": "Acciones",
+  "No resources yet": "No existen recursos aún",
+  "(it will be not related to project but it is useful for features exploration)": "(no estará relacionado con el proyecto pero es útil para la exploración de características)",
+  ...
+}
+```
 ## API calls
 
 For reasons of cleanliness, the API calls are located in the https://github.com/interlink-project/frontend/tree/master/react/src/_\_api__ folder.
@@ -424,3 +468,7 @@ const SettingsPage = () => {
 }
 ```
 https://github.com/interlink-project/frontend/blob/master/react/src/components/navsidebars/SettingsPopover.js
+
+### State managed by Redux
+
+#TODO
