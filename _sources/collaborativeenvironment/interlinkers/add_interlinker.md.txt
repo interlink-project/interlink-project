@@ -22,9 +22,9 @@ snapshots (directory)
    * approve.png
    * descriptions.png
    * manage.png
-2. Fill the _ **instructions.md** _ file with all necessary information to be able to use this interlinker. The instructions must follow markdown language ([https://en.wikipedia.org/wiki/Markdown](https://en.wikipedia.org/wiki/Markdown)).
+2. Fill the **instructions.md** file with all necessary information to be able to use this interlinker. The instructions must follow markdown language ([https://en.wikipedia.org/wiki/Markdown](https://en.wikipedia.org/wiki/Markdown)).
 
-3. The **logo.jpeg** _ must be the logo which will identify assets created by the interlinker.
+3. The **logo.jpeg** must be the logo which will identify assets created by the interlinker.
 
 4. The **metadata.json** must include the following information:
 
@@ -66,14 +66,14 @@ snapshots (directory)
 
     This metadata contains several variables used by the collaborative environment to integrate with a new interlinker. Several of them can be grouped inside the same category.
 
-    Server configuration parameters. For example, in case of augmenter it will be located inside a subdomain called "servicepedia" (https://servicepedia.dev.interlink-project.ue):_
+    Server configuration parameters. For example, in case of augmenter it will be located inside a subdomain called "servicepedia" (https://servicepedia.dev.interlink-project.ue):
 
         Domain: "",
         Is_subdomain: true,
         Path: "servicepedia",
         Service_name: "servicepedia"
 
-    Interlinker calling options. For example, for the interlinker augmenter the options used to call the interlinker functionality are:_
+    Interlinker calling options. For example, for the interlinker augmenter the options used to call the interlinker functionality are:
 
     ```
     "capabilities": {
