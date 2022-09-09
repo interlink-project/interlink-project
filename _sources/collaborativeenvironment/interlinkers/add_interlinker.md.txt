@@ -22,7 +22,7 @@ snapshots (directory)
    * descriptions.png
    * manage.png
    All the images will be displayed in the carrusel de images del catalogue.
-   ![Carousel](/carruselInterlinker.png)
+   ![Carousel](./carruselInterlinker.png)
 2. Fill the **instructions.md** file with all necessary information to be able to use this interlinker. The instructions must follow markdown language ([https://en.wikipedia.org/wiki/Markdown](https://en.wikipedia.org/wiki/Markdown)).
 
 3. The **logo.jpeg** must be the logo which will identify assets created by the interlinker.
