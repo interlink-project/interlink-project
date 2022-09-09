@@ -23,7 +23,7 @@ snapshots (directory)
    * manage.png
    All the images will be displayed in the carrusel de images del catalogue.
    
-   ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker.png)
+   ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker.png){:height="36px" width="36px"}
    
    <img src="[https://github.com/your_image.png](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker.png)" alt="Carousel" width="250"/>
    
