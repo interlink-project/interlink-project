@@ -6,7 +6,7 @@ Collaborative environment
   :caption: Contents:
 
   frontend.md
-  authentication/authentication.rst
+  authentication/index.rst
   datamodel/index.rst
   interlinkers/index.rst
   internationalization.md

@@ -6,6 +6,7 @@ Environments
   :caption: Contents:
 
   overview.md
+  stack.md
   cicd.md
   update.md
   administration.md
