@@ -103,7 +103,7 @@ body = {
     "config": {
         "username": os.environ.get("POSTGRES_USER"),
         "password": os.environ.get("POSTGRES_PASSWORD"),
-        "hostname": os.environ.get("POSTGRES_SERVER"),
+        "hostname": os.environ.get("POSTGRES_HOST"),
         "port": "5432",
         "authenticationType": "MASTER",
         "fetchSize": "0",
@@ -121,7 +121,7 @@ body = {
     "config": {
         "username": os.environ.get("POSTGRES_USER"),
         "password": os.environ.get("POSTGRES_PASSWORD"),
-        "hostname": os.environ.get("POSTGRES_SERVER"),
+        "hostname": os.environ.get("POSTGRES_HOST"),
         "port": "5432",
         "authenticationType": "MASTER",
         "fetchSize": "0",

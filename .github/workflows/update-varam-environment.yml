@@ -54,6 +54,8 @@ jobs:
             docker-compose up -d
             sleep 10
 
+            pip3 install python-dotenv && python3 setup-dremio.py
+
             docker-compose exec -T catalogue python /app/app/pre_start.py
             docker-compose exec -T coproduction python /app/app/pre_start.py
 
