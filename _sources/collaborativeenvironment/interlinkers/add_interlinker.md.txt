@@ -25,6 +25,8 @@ snapshots (directory)
    
    ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker.png)
    
+   <img src="[https://github.com/your_image.png](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker.png)" alt="Carousel" width="250"/>
+   
 2. Fill the **instructions.md** file with all necessary information to be able to use this interlinker. The instructions must follow markdown language ([https://en.wikipedia.org/wiki/Markdown](https://en.wikipedia.org/wiki/Markdown)).
 
 3. The **logo.jpeg** must be the logo which will identify assets created by the interlinker.
