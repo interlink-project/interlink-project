@@ -7,4 +7,3 @@ Data model
 
   datamodel.md
   migrations.md
-  interlinkers.md
