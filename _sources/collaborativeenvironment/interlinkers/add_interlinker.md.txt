@@ -24,10 +24,8 @@ snapshots (directory)
    
     All the images will be displayed in the carrusel de images del catalogue.
    
-   ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker_1.png)
-   
    <p align="center">
-  <img width="460" height="300" src="http://www.fillmurray.com/460/300">
+   ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker_1.png)
 </p>
 
    
