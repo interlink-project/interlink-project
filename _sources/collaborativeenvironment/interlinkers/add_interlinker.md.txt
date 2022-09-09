@@ -21,7 +21,8 @@ snapshots (directory)
    * approve.png
    * descriptions.png
    * manage.png
-   All the images will be displayed in the carrusel de images del catalogue.
+   
+    All the images will be displayed in the carrusel de images del catalogue.
    
    ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker.png)
 
