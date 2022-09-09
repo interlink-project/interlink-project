@@ -22,7 +22,7 @@ snapshots (directory)
    * descriptions.png
    * manage.png
    
-    All the images will be displayed in the carrusel de images del catalogue.
+    All the images will be displayed in the carrusel of images inside the catalogue.
    
 
    ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker_1.png)
@@ -44,6 +44,8 @@ snapshots (directory)
         local= Inside a specific city
 
     *Constraints_and_limitations_translations*
+    
+    This metadata desccribes general information about the translations.
 
     *Description_translations*
 
@@ -65,13 +67,13 @@ snapshots (directory)
 
     A unique identifier for the interlinker in the catalogue.
 
-    *Instructions\_translations*
+    *Instructions\translations*
 
     This metadata contains a link to a document where the instructions to create a new translation language.
 
     *Integration*
 
-    This metadata contains several variables used by the collaborative environment to integrate with a new interlinker. Several of them can be grouped inside the same category.
+    This metadata contains several variables used by the collaborative environment to integrate with a new *software interlinker*. Several of them can be grouped inside the same category.
 
     Server configuration parameters. For example, in case of augmenter it will be located inside a subdomain called "servicepedia" (https://servicepedia.dev.interlink-project.ue):
 
@@ -95,7 +97,7 @@ snapshots (directory)
         }
     ```
 
-    Translation messages needed when the interlinker is called. For example, in case of the augmenter the options are:_
+    Translation messages needed when the interlinker is called. For example, in case of the augmenter the options are:
 
     ```
     "capabilities_translations": {
@@ -110,11 +112,13 @@ snapshots (directory)
             "es": "Abrir una p\u00e1gina con descripciones para anotar"}
     ```
 
-    *Is\_responsive*
+    *Is_responsive*
 
     This metadata specifies if the component is responsive
 
-    *Is\_sustainability\_related*
+    *Is_sustainability_related*
+    
+    This metadata register if the interlinker is sustainable.
 
     *Laguages*
 
@@ -128,7 +132,7 @@ snapshots (directory)
 
     This metadata specifies the location of the logo file.
 
-    *Name\_translations*
+    *Name_translations*
 
     This metadata specifies the translations of the interlinker's name. For example, in the case of the augmenter all the translation are the same:
 
@@ -140,7 +144,7 @@ snapshots (directory)
         "iv": "Augmenter"
     }
     ```
-    *Overview\_text*
+    *Overview\text*
 
     This metadata contains a short description of the interlinker.
 
@@ -156,15 +160,15 @@ snapshots (directory)
     },
     ```
 
-    *Supported\_by*
+    *Supported_by*
 
     This metadata specifies if the interlinker is deployed together with the platform or in a external server.
 
-    *Supports\_internationalization*
+    *Supports_internationalization*
 
     Specifies if the interlinker support several languages.
 
-    *Tags\_translations*
+    *Tags_translations*
 
     Contains a several tags where the interlinker that describe the interlinker functionality.
 
