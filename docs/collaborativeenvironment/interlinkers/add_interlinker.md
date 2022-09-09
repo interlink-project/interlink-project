@@ -24,9 +24,9 @@ snapshots (directory)
    
     All the images will be displayed in the carrusel de images del catalogue.
    
-   <p align="center">
+
    ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker_1.png)
-</p>
+
 
    
 2. Fill the **instructions.md** file with all necessary information to be able to use this interlinker. The instructions must follow markdown language ([https://en.wikipedia.org/wiki/Markdown](https://en.wikipedia.org/wiki/Markdown)).
