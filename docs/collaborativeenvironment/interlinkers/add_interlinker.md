@@ -17,11 +17,13 @@ snapshots (directory)
 └── metadata.json (file)               
 ```
 1. The catalogue allow to any interlinker to have several snapshots which display the interlinker functionality. All images must be included in the **snapshots folder**. For example, the interlinker augmenter has the follow snapshots:
+
    * annotate.png
    * approve.png
    * descriptions.png
    * manage.png
-   All the images will be displayed in the carrusel de images del catalogue.
+   
+    All the images will be displayed in the carrusel de images del catalogue.
    
    ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker.png)
 
