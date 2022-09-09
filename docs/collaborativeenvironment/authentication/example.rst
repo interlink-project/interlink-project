@@ -3,7 +3,7 @@ Auth flow example
 
 1. User has not logged in yet (there is no cookie).
 
-  ![Auth1](images/auth/auth1.png)
+  ![Auth1](images/auth1.png)
 
 2. After making a GET request to /auth/login, if user is not logged in, browser redirects to the OIDC service where the user can log in with credentials or third party providers, such as Google.
 
@@ -11,24 +11,24 @@ Auth flow example
 
 3. After a successful login, token is stored as a "samesite" cookie. Now, all requests made to the backend microservices behind **localhost** (or the site where is running the **auth** microservice) send the cookie together with the request.
 
-  ![Auth2](images/auth/merged.jpg)
+  ![Auth2](images/merged.jpg)
 
 
 ### How do microservices check that a request is authenticated?
 
 * Each endpoint checks if the access token is present **as a cookie or as an authorization header** (being prioritized the cookie), checks its validity and decodes it to set the *user_data* (contained inside the access token, having name, email and profile image, for example) inside **request** data
 
-  ![Auth deps](images/auth/deps.png)
+  ![Auth deps](images/deps.png)
 
 
 ## Advantages and drawbacks of cookie authentication
 
 
-To understand the advantages of this authentication we must really understand how the different services are integrated in the frontend. If we look again at the example of how the interlinker **forum** is integrated into the frontend, we will see that it is done through an iframe that loads the path "/forum/assets/{id}/viewer/".
+To understand the advantages of this authentication we must really understand how the different services are integrated in the frontend. If we look again at the example of how the interlinker **googledrive** is integrated into the frontend, we will see that it is done through an iframe that loads the path "/googledrive/assets/{id}/instantiate".
 
-![Forum integration](images/interlinkers/forumintegration.png)
+![Googledrive interlinker integration](images/googledrive.png)
 
-<iframe src="/forum/assets/{id}/viewer/" frameBorder="0"></iframe>
+<iframe src="/googledrive/assets/{id}/instantiate" frameBorder="0"></iframe>
 
 
 ### Alternatives ("authorization" header):
