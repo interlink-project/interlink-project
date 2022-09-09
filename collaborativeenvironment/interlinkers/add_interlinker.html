@@ -115,7 +115,7 @@
 <li><p>descriptions.png</p></li>
 <li><p>manage.png</p></li>
 </ul>
-<p>All the images will be displayed in the carrusel de images del catalogue.</p>
+<p>All the images will be displayed in the carrusel of images inside the catalogue.</p>
 <p><img alt="Carousel" src="https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker_1.png" /></p>
 </li>
 <li><p>Fill the <strong>instructions.md</strong> file with all necessary information to be able to use this interlinker. The instructions must follow markdown language (<a class="reference external" href="https://en.wikipedia.org/wiki/Markdown">https://en.wikipedia.org/wiki/Markdown</a>).</p></li>
@@ -129,6 +129,7 @@
 </pre></div>
 </div>
 <p><em>Constraints_and_limitations_translations</em></p>
+<p>This metadata desccribes general information about the translations.</p>
 <p><em>Description_translations</em></p>
 <p>This metadata describes and present the interlinker. It could be added as a list of several languages. For example, in the case of two languages the metadata information will be:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span> &quot;en&quot;: &quot;Augmenter is an Open Source application …&quot;,
@@ -142,10 +143,10 @@
 <p>The environment where the interlinker will be deploy. For example, if there are several severs where the platform is deployed, it will contain a list with the names of each server.</p>
 <p><em>Id</em></p>
 <p>A unique identifier for the interlinker in the catalogue.</p>
-<p><em>Instructions_translations</em></p>
+<p><em>Instructions\translations</em></p>
 <p>This metadata contains a link to a document where the instructions to create a new translation language.</p>
 <p><em>Integration</em></p>
-<p>This metadata contains several variables used by the collaborative environment to integrate with a new interlinker. Several of them can be grouped inside the same category.</p>
+<p>This metadata contains several variables used by the collaborative environment to integrate with a new <em>software interlinker</em>. Several of them can be grouped inside the same category.</p>
 <p>Server configuration parameters. For example, in case of augmenter it will be located inside a subdomain called “servicepedia” (https://servicepedia.dev.interlink-project.ue):</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span> Domain: &quot;&quot;,
  Is_subdomain: true,
@@ -166,7 +167,7 @@
     <span class="p">}</span>
 </pre></div>
 </div>
-<p>Translation messages needed when the interlinker is called. For example, in case of the augmenter the options are:_</p>
+<p>Translation messages needed when the interlinker is called. For example, in case of the augmenter the options are:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;capabilities_translations&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;delete_text_translations&quot;</span><span class="p">:</span>
         <span class="p">{</span> <span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;Delete una description of Augmenter&quot;</span><span class="p">,</span>
@@ -182,6 +183,7 @@
 <p><em>Is_responsive</em></p>
 <p>This metadata specifies if the component is responsive</p>
 <p><em>Is_sustainability_related</em></p>
+<p>This metadata register if the interlinker is sustainable.</p>
 <p><em>Laguages</em></p>
 <p>This metadata specifies the languages supported by the interlinker.</p>
 <p><em>Licence</em></p>
@@ -198,7 +200,7 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><em>Overview_text</em></p>
+<p><em>Overview\text</em></p>
 <p>This metadata contains a short description of the interlinker.</p>
 <p><em>Problemprofiles</em></p>
 <p>This metadata contains all the related problem profiles.</p>
