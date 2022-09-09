@@ -5,6 +5,7 @@ Interlinkers
   :maxdepth: 2
   :caption: Contents:
 
-  external.md
   internal.md
+  external.md
   add_interlinker.md
+  

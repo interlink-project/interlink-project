@@ -98,12 +98,16 @@
 <h1>Environments administration<a class="headerlink" href="#environments-administration" title="Permalink to this heading"></a></h1>
 <section id="connect-to-an-environment">
 <h2>Connect to an environment<a class="headerlink" href="#connect-to-an-environment" title="Permalink to this heading"></a></h2>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ssh -i id_rsa interlink@<span class="o">{</span>ENVIRONMENT<span class="o">}</span>.interlink-project.eu
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ssh -i <span class="o">{</span>PUBLIC_KEY_FILENAME<span class="o">}</span> interlink@<span class="o">{</span>ENVIRONMENT<span class="o">}</span>.interlink-project.eu
 
 <span class="nb">cd</span> /datadrive/data/interlink-project
 </pre></div>
 </div>
-<p>where {ENVIRONMENT} = dev / demo / mef / zgz / varam</p>
+<p>where:</p>
+<ul class="simple">
+<li><p>ENVIRONMENT = dev / demo / mef / zgz / varam</p></li>
+<li><p>PUBLIC_KEY_FILENAME: name of your public key file</p></li>
+</ul>
 </section>
 <section id="docker-configuration">
 <h2>Docker configuration<a class="headerlink" href="#docker-configuration" title="Permalink to this heading"></a></h2>
@@ -221,7 +225,7 @@ psql -U postgres -d coproduction_production &lt; coproduction.sql
 </section>
 <section id="seed-data">
 <h2>Seed data<a class="headerlink" href="#seed-data" title="Permalink to this heading"></a></h2>
-<p>It is runned automatically by the workflows</p>
+<p>It is runned automatically by the workflows, but if needed, you can execute the seeding script manually.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">ENVIRONMENT</span><span class="o">={</span>development/demo/mef/varam/zgz<span class="o">}</span>
 docker-compose <span class="nb">exec</span> -T catalogue ./seed.sh
 </pre></div>

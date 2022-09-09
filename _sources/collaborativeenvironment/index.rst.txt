@@ -8,5 +8,6 @@ Collaborative environment
   frontend.md
   authentication/authentication.rst
   datamodel/index.rst
+  interlinkers/index.rst
   internationalization.md
   testing.md
