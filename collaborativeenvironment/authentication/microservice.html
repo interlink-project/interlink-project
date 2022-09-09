@@ -50,7 +50,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Collaborative environment</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../frontend.html">Frontend</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="authentication.html">Authentication</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Auth microservice</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Auth microservice</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#login-endpoint-implementation">Login endpoint implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#callback-code-implementation">Callback code implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logout-implementation">Logout implementation</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="example.html">Auth flow example</a></li>
 </ul>
 </li>
@@ -96,9 +101,8 @@
 <ul class="simple">
 <li><p>/auth/login: redirects to the OIDC provider where the users can log in. Accepts <em>redirect_on_callback</em>.</p></li>
 </ul>
-<div class="dropdown admonition note">
-<p class="admonition-title">Note</p>
-<p>Login endpoint implementation</p>
+<section id="login-endpoint-implementation">
+<h2>Login endpoint implementation<a class="headerlink" href="#login-endpoint-implementation" title="Permalink to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@router.get</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">)</span>
 <span class="n">async</span> <span class="k">def</span> <span class="nf">login</span><span class="p">(</span>
 <span class="hll">    <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
@@ -120,8 +124,10 @@
         <span class="k">return</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">redirect_on_callback</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Callback code implementation
-Gets tokens returned by the OIDC provider and sets the access_token to <em>auth_token</em> cookie [samesite](<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite</a>). Then, redirects the browser to the path specified by the <em>redirect_on_callback</em> cookie after deleting it.</p>
+</section>
+<section id="callback-code-implementation">
+<h2>Callback code implementation<a class="headerlink" href="#callback-code-implementation" title="Permalink to this heading"></a></h2>
+<p>Gets tokens returned by the OIDC provider and sets the access_token to <em>auth_token</em> cookie [samesite](<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite</a>). Then, redirects the browser to the path specified by the <em>redirect_on_callback</em> cookie after deleting it.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@router.get</span><span class="p">(</span><span class="s2">&quot;/callback&quot;</span><span class="p">)</span>
 <span class="n">async</span> <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">redirect_on_callback</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cookie</span><span class="p">(</span><span class="bp">None</span><span class="p">),</span> <span class="n">collection</span><span class="p">:</span> <span class="n">AsyncIOMotorCollection</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_collection</span><span class="p">)):</span>
     <span class="n">token</span> <span class="o">=</span> <span class="n">await</span> <span class="n">oauth</span><span class="o">.</span><span class="n">smartcommunitylab</span><span class="o">.</span><span class="n">authorize_access_token</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
@@ -143,12 +149,12 @@ Gets tokens returned by the OIDC provider and sets the access_token to <em>auth_
     <span class="k">return</span> <span class="n">response</span>
 </pre></div>
 </div>
-</div>
+</section>
+<section id="logout-implementation">
+<h2>Logout implementation<a class="headerlink" href="#logout-implementation" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>/auth/logout: logouts user. Accepts <em>redirect_on_callback</em>.</p></li>
 </ul>
-<div class="dropdown admonition note">
-<p class="admonition-title">Note</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@router.get</span><span class="p">(</span><span class="s2">&quot;/logout&quot;</span><span class="p">)</span>
 <span class="n">async</span> <span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="n">redirect_on_callback</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="p">):</span>
 <span class="hll">    <span class="n">response</span> <span class="o">=</span> <span class="n">RedirectResponse</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">redirect_on_callback</span><span class="p">)</span>
@@ -156,7 +162,7 @@ Gets tokens returned by the OIDC provider and sets the access_token to <em>auth_
     <span class="k">return</span> <span class="n">response</span>
 </pre></div>
 </div>
-</div>
+</section>
 </section>
 
 
