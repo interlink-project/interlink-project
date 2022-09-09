@@ -3,13 +3,14 @@
 ## Connect to an environment
 
 ```sh
-ssh -i id_rsa interlink@{ENVIRONMENT}.interlink-project.eu
+ssh -i {PUBLIC_KEY_FILENAME} interlink@{ENVIRONMENT}.interlink-project.eu
 
 cd /datadrive/data/interlink-project
 ```
 
-where {ENVIRONMENT} = dev / demo / mef / zgz / varam
-
+where:
+* ENVIRONMENT = dev / demo / mef / zgz / varam
+* PUBLIC_KEY_FILENAME: name of your public key file
 
 ## Docker configuration
 
@@ -123,7 +124,8 @@ psql -U postgres -d coproduction_production < coproduction.sql
 
 
 ## Seed data
-It is runned automatically by the workflows
+It is runned automatically by the workflows, but if needed, you can execute the seeding script manually.
+
 ```sh
 export ENVIRONMENT={development/demo/mef/varam/zgz}
 docker-compose exec -T catalogue ./seed.sh
