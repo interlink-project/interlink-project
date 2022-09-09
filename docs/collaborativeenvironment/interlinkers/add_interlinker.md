@@ -21,9 +21,12 @@ snapshots (directory)
    * approve.png
    * descriptions.png
    * manage.png
-   All the images will be displayed in the carrusel de images del catalogue.
    
-   ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker.png)
+    All the images will be displayed in the carrusel de images del catalogue.
+   
+
+   ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker_1.png)
+
 
    
 2. Fill the **instructions.md** file with all necessary information to be able to use this interlinker. The instructions must follow markdown language ([https://en.wikipedia.org/wiki/Markdown](https://en.wikipedia.org/wiki/Markdown)).
