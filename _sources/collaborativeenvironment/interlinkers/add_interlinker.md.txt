@@ -22,11 +22,10 @@ snapshots (directory)
    * descriptions.png
    * manage.png
    
-    All the images will be displayed in the carrusel of images inside the catalogue.
+    All the images will be displayed in the carousel of images inside the catalogue.
    
 
    ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker_1.png)
-
 
    
 2. Fill the **instructions.md** file with all necessary information to be able to use this interlinker. The instructions must follow markdown language ([https://en.wikipedia.org/wiki/Markdown](https://en.wikipedia.org/wiki/Markdown)).
@@ -35,7 +34,7 @@ snapshots (directory)
 
 4. The **metadata.json** must include the following information:
 
-    *Administrative_scopes* 
+    ***Administrative_scopes***
 
     This metadata information refers to the scope where the interlink is implemented, this information must be one of the follow options:
 
@@ -43,11 +42,11 @@ snapshots (directory)
         national= Inside a specific country
         local= Inside a specific city
 
-    *Constraints_and_limitations_translations*
+    ***Constraints_and_limitations_translations***
     
-    This metadata desccribes general information about the translations.
+    This metadata describes general information about the translations.
 
-    *Description_translations*
+    ***Description_translations***
 
     This metadata describes and present the interlinker. It could be added as a list of several languages. For example, in the case of two languages the metadata information will be:
 
@@ -55,23 +54,23 @@ snapshots (directory)
 
         "es":"Augmenter es una aplicación de código abierto …"
 
-    *Difficulty*
+    ***Difficulty***
 
-    Describe the leve lof difficulty in the use of the interlinker. For example if the component is very easy and requires few easy steps to deploy then the level of difficulty could be easy. In others cases the level could be greater as it need a lot of parameters to configure or depends on other software to deploy, the level then could be hard.
+    Describe the level of difficulty in the use of the interlinker. For example if the component is very easy and requires few easy steps to deploy then the level of difficulty could be easy. In others cases the level could be greater as it need a lot of parameters to configure or depends on other software to deploy, the level then could be hard.
 
-    *Environments*
+    ***Environments***
 
     The environment where the interlinker will be deploy. For example, if there are several severs where the platform is deployed, it will contain a list with the names of each server.
 
-    *Id*
+    ***Id***
 
     A unique identifier for the interlinker in the catalogue.
 
-    *Instructions\translations*
+    ***Instructions_translations***
 
     This metadata contains a link to a document where the instructions to create a new translation language.
 
-    *Integration*
+    ***Integration***
 
     This metadata contains several variables used by the collaborative environment to integrate with a new *software interlinker*. Several of them can be grouped inside the same category.
 
@@ -112,27 +111,27 @@ snapshots (directory)
             "es": "Abrir una p\u00e1gina con descripciones para anotar"}
     ```
 
-    *Is_responsive*
+    ***Is_responsive***
 
     This metadata specifies if the component is responsive
 
-    *Is_sustainability_related*
+    ***Is_sustainability_related***
     
     This metadata register if the interlinker is sustainable.
 
-    *Laguages*
+    ***Laguages***
 
     This metadata specifies the languages supported by the interlinker.
 
-    *Licence*
+    ***Licence***
 
     This metadata specifies the license needed to use this interlinker.
 
-    *Logotype*
+    ***Logotype***
 
     This metadata specifies the location of the logo file.
 
-    *Name_translations*
+    ***Name_translations***
 
     This metadata specifies the translations of the interlinker's name. For example, in the case of the augmenter all the translation are the same:
 
@@ -144,15 +143,15 @@ snapshots (directory)
         "iv": "Augmenter"
     }
     ```
-    *Overview\text*
+    ***Overview_text***
 
     This metadata contains a short description of the interlinker.
 
-    *Problemprofiles*
+    ***Problemprofiles***
 
     This metadata contains all the related problem profiles.
 
-    *Regulations_and_standards_translations*
+    ***Regulations_and_standards_translations***
     ```
     "regulations_and_standards_translations": {
         "en": "None",
@@ -160,15 +159,15 @@ snapshots (directory)
     },
     ```
 
-    *Supported_by*
+    ***Supported_by***
 
     This metadata specifies if the interlinker is deployed together with the platform or in a external server.
 
-    *Supports_internationalization*
+    ***Supports_internationalization***
 
     Specifies if the interlinker support several languages.
 
-    *Tags_translations*
+    ***Tags_translations***
 
     Contains a several tags where the interlinker that describe the interlinker functionality.
 
@@ -181,7 +180,7 @@ snapshots (directory)
     ]
     ```
 
-    *Targets*
+    ***Targets***
 
     ```
     "targets": [
@@ -189,15 +188,34 @@ snapshots (directory)
     ],
     ```
 
-    *Type*
+    ***Type***
 
     This metadata specifies the type of interlinker, there is two options:
     - Software
     - Knowledge
 
-    *Types*
+    ***Types***
+    This metadata specifies the functionality of the interlinker. 
     ```
     "types": [
-        "enabling\_services;operation\_services"
+        "enabling_services;operation_services"
     ]
     ```
+
+5. The final step is to upload this folder to the container interlinkers-data. Inside there is the folder called "interlinkers" with several separated types of interlinker.
+
+    ```
+    interlinkers-data (container)
+    └── interlinkers
+        ├── externalknowledge
+        ├── externalsoftware
+        ├── images 
+        ├── knowledge
+        └── software
+
+    ```
+
+    For example, the interlinker augmenter was placed in:
+   ```
+   interlinkers-data/interlinkers/software/
+   ```

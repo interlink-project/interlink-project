@@ -115,37 +115,37 @@
 <li><p>descriptions.png</p></li>
 <li><p>manage.png</p></li>
 </ul>
-<p>All the images will be displayed in the carrusel of images inside the catalogue.</p>
+<p>All the images will be displayed in the carousel of images inside the catalogue.</p>
 <p><img alt="Carousel" src="https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker_1.png" /></p>
 </li>
 <li><p>Fill the <strong>instructions.md</strong> file with all necessary information to be able to use this interlinker. The instructions must follow markdown language (<a class="reference external" href="https://en.wikipedia.org/wiki/Markdown">https://en.wikipedia.org/wiki/Markdown</a>).</p></li>
 <li><p>The <strong>logo.jpeg</strong> must be the logo which will identify assets created by the interlinker.</p></li>
 <li><p>The <strong>metadata.json</strong> must include the following information:</p>
-<p><em>Administrative_scopes</em></p>
+<p><em><strong>Administrative_scopes</strong></em></p>
 <p>This metadata information refers to the scope where the interlink is implemented, this information must be one of the follow options:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span> eu = European Union
  national= Inside a specific country
  local= Inside a specific city
 </pre></div>
 </div>
-<p><em>Constraints_and_limitations_translations</em></p>
-<p>This metadata desccribes general information about the translations.</p>
-<p><em>Description_translations</em></p>
+<p><em><strong>Constraints_and_limitations_translations</strong></em></p>
+<p>This metadata describes general information about the translations.</p>
+<p><em><strong>Description_translations</strong></em></p>
 <p>This metadata describes and present the interlinker. It could be added as a list of several languages. For example, in the case of two languages the metadata information will be:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span> &quot;en&quot;: &quot;Augmenter is an Open Source application …&quot;,
 
  &quot;es&quot;:&quot;Augmenter es una aplicación de código abierto …&quot;
 </pre></div>
 </div>
-<p><em>Difficulty</em></p>
-<p>Describe the leve lof difficulty in the use of the interlinker. For example if the component is very easy and requires few easy steps to deploy then the level of difficulty could be easy. In others cases the level could be greater as it need a lot of parameters to configure or depends on other software to deploy, the level then could be hard.</p>
-<p><em>Environments</em></p>
+<p><em><strong>Difficulty</strong></em></p>
+<p>Describe the level of difficulty in the use of the interlinker. For example if the component is very easy and requires few easy steps to deploy then the level of difficulty could be easy. In others cases the level could be greater as it need a lot of parameters to configure or depends on other software to deploy, the level then could be hard.</p>
+<p><em><strong>Environments</strong></em></p>
 <p>The environment where the interlinker will be deploy. For example, if there are several severs where the platform is deployed, it will contain a list with the names of each server.</p>
-<p><em>Id</em></p>
+<p><em><strong>Id</strong></em></p>
 <p>A unique identifier for the interlinker in the catalogue.</p>
-<p><em>Instructions\translations</em></p>
+<p><em><strong>Instructions_translations</strong></em></p>
 <p>This metadata contains a link to a document where the instructions to create a new translation language.</p>
-<p><em>Integration</em></p>
+<p><em><strong>Integration</strong></em></p>
 <p>This metadata contains several variables used by the collaborative environment to integrate with a new <em>software interlinker</em>. Several of them can be grouped inside the same category.</p>
 <p>Server configuration parameters. For example, in case of augmenter it will be located inside a subdomain called “servicepedia” (https://servicepedia.dev.interlink-project.ue):</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span> Domain: &quot;&quot;,
@@ -180,17 +180,17 @@
         <span class="s2">&quot;es&quot;</span><span class="p">:</span> <span class="s2">&quot;Abrir una p</span><span class="se">\u00e1</span><span class="s2">gina con descripciones para anotar&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
-<p><em>Is_responsive</em></p>
+<p><em><strong>Is_responsive</strong></em></p>
 <p>This metadata specifies if the component is responsive</p>
-<p><em>Is_sustainability_related</em></p>
+<p><em><strong>Is_sustainability_related</strong></em></p>
 <p>This metadata register if the interlinker is sustainable.</p>
-<p><em>Laguages</em></p>
+<p><em><strong>Laguages</strong></em></p>
 <p>This metadata specifies the languages supported by the interlinker.</p>
-<p><em>Licence</em></p>
+<p><em><strong>Licence</strong></em></p>
 <p>This metadata specifies the license needed to use this interlinker.</p>
-<p><em>Logotype</em></p>
+<p><em><strong>Logotype</strong></em></p>
 <p>This metadata specifies the location of the logo file.</p>
-<p><em>Name_translations</em></p>
+<p><em><strong>Name_translations</strong></em></p>
 <p>This metadata specifies the translations of the interlinker’s name. For example, in the case of the augmenter all the translation are the same:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;name_translations&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;Augmenter&quot;</span><span class="p">,</span>
@@ -200,22 +200,22 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><em>Overview\text</em></p>
+<p><em><strong>Overview_text</strong></em></p>
 <p>This metadata contains a short description of the interlinker.</p>
-<p><em>Problemprofiles</em></p>
+<p><em><strong>Problemprofiles</strong></em></p>
 <p>This metadata contains all the related problem profiles.</p>
-<p><em>Regulations_and_standards_translations</em></p>
+<p><em><strong>Regulations_and_standards_translations</strong></em></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;regulations_and_standards_translations&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="s2">&quot;None&quot;</span><span class="p">,</span>
     <span class="s2">&quot;es&quot;</span><span class="p">:</span> <span class="s2">&quot;None&quot;</span>
 <span class="p">},</span>
 </pre></div>
 </div>
-<p><em>Supported_by</em></p>
+<p><em><strong>Supported_by</strong></em></p>
 <p>This metadata specifies if the interlinker is deployed together with the platform or in a external server.</p>
-<p><em>Supports_internationalization</em></p>
+<p><em><strong>Supports_internationalization</strong></em></p>
 <p>Specifies if the interlinker support several languages.</p>
-<p><em>Tags_translations</em></p>
+<p><em><strong>Tags_translations</strong></em></p>
 <p>Contains a several tags where the interlinker that describe the interlinker functionality.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;en&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="s2">&quot;decision making&quot;</span><span class="p">,</span>
@@ -225,22 +225,39 @@
 <span class="p">]</span>
 </pre></div>
 </div>
-<p><em>Targets</em></p>
+<p><em><strong>Targets</strong></em></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;targets&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="s2">&quot;all&quot;</span>
 <span class="p">],</span>
 </pre></div>
 </div>
-<p><em>Type</em></p>
+<p><em><strong>Type</strong></em></p>
 <p>This metadata specifies the type of interlinker, there is two options:</p>
 <ul class="simple">
 <li><p>Software</p></li>
 <li><p>Knowledge</p></li>
 </ul>
-<p><em>Types</em></p>
+<p><em><strong>Types</strong></em>
+This metadata specifies the functionality of the interlinker.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;types&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;enabling\_services;operation\_services&quot;</span>
+    <span class="s2">&quot;enabling_services;operation_services&quot;</span>
 <span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p>The final step is to upload this folder to the container interlinkers-data. Inside there is the folder called “interlinkers” with several separated types of interlinker.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>interlinkers-data (container)
+└── interlinkers
+    ├── externalknowledge
+    ├── externalsoftware
+    ├── images 
+    ├── knowledge
+    └── software
+
+</pre></div>
+</div>
+<p>For example, the interlinker augmenter was placed in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">interlinkers</span><span class="o">-</span><span class="n">data</span><span class="o">/</span><span class="n">interlinkers</span><span class="o">/</span><span class="n">software</span><span class="o">/</span>
 </pre></div>
 </div>
 </li>
