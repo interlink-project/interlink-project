@@ -6,4 +6,4 @@ Authentication
   :caption: Contents:
 
   microservice.rst
-  example.rst
+  example.md

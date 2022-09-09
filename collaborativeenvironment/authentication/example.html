@@ -49,9 +49,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../environments/index.html">Environments</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Collaborative environment</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../frontend.html">Frontend</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="authentication.html">Authentication</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Authentication</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="microservice.html">Auth microservice</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Auth flow example</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Auth flow example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-do-microservices-check-that-a-request-is-authenticated">How do microservices check that a request is authenticated?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#advantages-and-drawbacks-of-cookie-authentication">Advantages and drawbacks of cookie authentication</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../datamodel/index.html">Data model</a></li>
@@ -79,10 +83,10 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../index.html">Collaborative environment</a> &raquo;</li>
-          <li><a href="authentication.html">Authentication</a> &raquo;</li>
+          <li><a href="index.html">Authentication</a> &raquo;</li>
       <li>Auth flow example</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/collaborativeenvironment/authentication/example.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/collaborativeenvironment/authentication/example.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -95,57 +99,52 @@
 <ol class="arabic simple">
 <li><p>User has not logged in yet (there is no cookie).</p></li>
 </ol>
-<blockquote>
-<div><p>![Auth1](images/auth1.png)</p>
-</div></blockquote>
+<p><img alt="Auth1" src="../../_images/auth1.png" /></p>
 <ol class="arabic simple" start="2">
 <li><p>After making a GET request to /auth/login, if user is not logged in, browser redirects to the OIDC service where the user can log in with credentials or third party providers, such as Google.</p></li>
 </ol>
-<blockquote>
-<div><p>![Login](images/auth/login.png)</p>
-</div></blockquote>
+<p><img alt="Login" src="../../_images/login.png" /></p>
 <ol class="arabic simple" start="3">
 <li><p>After a successful login, token is stored as a “samesite” cookie. Now, all requests made to the backend microservices behind <strong>localhost</strong> (or the site where is running the <strong>auth</strong> microservice) send the cookie together with the request.</p></li>
 </ol>
-<blockquote>
-<div><p>![Auth2](images/merged.jpg)</p>
-</div></blockquote>
-<p>### How do microservices check that a request is authenticated?</p>
-<ul>
-<li><p>Each endpoint checks if the access token is present <strong>as a cookie or as an authorization header</strong> (being prioritized the cookie), checks its validity and decodes it to set the <em>user_data</em> (contained inside the access token, having name, email and profile image, for example) inside <strong>request</strong> data</p>
-<p>![Auth deps](images/deps.png)</p>
-</li>
-</ul>
-<p>## Advantages and drawbacks of cookie authentication</p>
+<p><img alt="Auth2" src="../../_images/merged.jpg" /></p>
+<section id="how-do-microservices-check-that-a-request-is-authenticated">
+<h2>How do microservices check that a request is authenticated?<a class="headerlink" href="#how-do-microservices-check-that-a-request-is-authenticated" title="Permalink to this heading"></a></h2>
+<p>Each endpoint checks if the access token is present <strong>as a cookie or as an authorization header</strong> (being prioritized the cookie), checks its validity and decodes it to set the <em>user_data</em> (contained inside the access token, having name, email and profile image, for example) inside <strong>request</strong> data</p>
+<p><img alt="Auth deps" src="collaborativeenvironment/authentication/images/deps.png" /></p>
+</section>
+<section id="advantages-and-drawbacks-of-cookie-authentication">
+<h2>Advantages and drawbacks of cookie authentication<a class="headerlink" href="#advantages-and-drawbacks-of-cookie-authentication" title="Permalink to this heading"></a></h2>
 <p>To understand the advantages of this authentication we must really understand how the different services are integrated in the frontend. If we look again at the example of how the interlinker <strong>googledrive</strong> is integrated into the frontend, we will see that it is done through an iframe that loads the path “/googledrive/assets/{id}/instantiate”.</p>
-<p>![Googledrive interlinker integration](images/googledrive.png)</p>
-<p>&lt;iframe src=”/googledrive/assets/{id}/instantiate” frameBorder=”0”&gt;&lt;/iframe&gt;</p>
-<p>### Alternatives (“authorization” header):</p>
+<p><img alt="Googledrive interlinker integration" src="../../_images/googledrive.png" /></p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">iframe</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/googledrive/assets/{id}/instantiate&quot;</span> <span class="na">frameBorder</span><span class="o">=</span><span class="s">&quot;0&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">iframe</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<section id="alternatives-authorization-header">
+<h3>Alternatives (“authorization” header):<a class="headerlink" href="#alternatives-authorization-header" title="Permalink to this heading"></a></h3>
 <ul class="simple">
 <li><p>That each service / interlinker integrate its own authentication flow (being complex both to develop and maintain). Likewise, it would entail that the user had to perform the login steps for and for each of the external services that are being injected into the main frontend. <strong>In fact, it would not be possible, because the OIDC provider does not support its loading inside an iframe</strong>.</p></li>
 <li><p>We should find a plausible way to pass the access token to the service contained in the iframe. One way to do this would be to inject it as a parameter in the iframe’s src, which would expose the token:</p></li>
 </ul>
-<p><code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">&lt;iframe</span> <span class="pre">src=&quot;/forum/assets/{id}/viewer?access_token={access_token}&quot;&gt;&lt;/iframe&gt;</span>
-<span class="pre">`</span></code></p>
-<p>### Advantages of using cookie-based auth:</p>
-<blockquote>
-<div><ul class="simple">
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">iframe</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;/forum/assets/{id}/viewer?access_token={access_token}&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">iframe</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="advantages-of-using-cookie-based-auth">
+<h3>Advantages of using cookie-based auth:<a class="headerlink" href="#advantages-of-using-cookie-based-auth" title="Permalink to this heading"></a></h3>
+<ul class="simple">
 <li><p>Once a user has logged in once, through any service (main frontend or interlinker GUIs), ALL the services can make authenticated requests.</p></li>
 <li><p>Logic to implement authentication in any service is trivial and <strong>not framework-dependant</strong>. Given <strong>forum</strong> interlinker as an example, which is developed with NextJS framework, the logic to authenticate an user would be as simple as redirecting the user to the /auth/login route (the auth microservice is responsible to retrieve the token and to set it to a samesite cookie):</p></li>
-</ul>
-<p>![Auth2](images/auth/nextjs.png)</p>
-<p>(being <em>auth</em> object an user_data “storage object” in order to access it fastly)</p>
-<ul class="simple">
 <li><p>By the way, <strong>authentication through authorization headers is also allowed (check AuthMiddleware)</strong></p></li>
 </ul>
-</div></blockquote>
-<p>### Drawbacks:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>All services MUST BE behind the same sitename (being allowed subdomains). In development, this is achieved by the <strong>proxy</strong> microservice, powered by Traefik (take a look in [ROUTING.md](/docs/ROUTING.md)).</p></li>
+</section>
+<section id="drawbacks">
+<h3>Drawbacks:<a class="headerlink" href="#drawbacks" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>All services MUST BE behind the same sitename (being allowed subdomains). In development, this is achieved by the <strong>proxy</strong> microservice, powered by Traefik (take a look in <span class="xref myst">ROUTING.md</span>).</p></li>
 </ul>
-</div></blockquote>
+</section>
+</section>
 </section>
 
 
