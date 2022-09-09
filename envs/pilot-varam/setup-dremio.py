@@ -101,7 +101,7 @@ body = {
     "description": "catalogue data",
     "type": "POSTGRES",
     "config": {
-        "username": os.environ.get("POSTGRES_USER"),
+        "username": os.environ.get("POSTGRES_USERNAME"),
         "password": os.environ.get("POSTGRES_PASSWORD"),
         "hostname": os.environ.get("POSTGRES_HOST"),
         "port": "5432",
@@ -119,7 +119,7 @@ body = {
     "description": "coproduction data",
     "type": "POSTGRES",
     "config": {
-        "username": os.environ.get("POSTGRES_USER"),
+        "username": os.environ.get("POSTGRES_USERNAME"),
         "password": os.environ.get("POSTGRES_PASSWORD"),
         "hostname": os.environ.get("POSTGRES_HOST"),
         "port": "5432",
