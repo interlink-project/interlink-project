@@ -144,6 +144,9 @@ body = {
         "authenticationType": "MASTER",
     },
 }
+print(body)
+apiPost('catalog', body=body)
+
 
 body = {
     "entityType": "source",
