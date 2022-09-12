@@ -55,9 +55,10 @@
 <li class="toctree-l2"><a class="reference internal" href="logging.html">Logging Instruction for Microservices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="kpis.html">KPI obtention</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Weblate for continous localization</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#how-to-use-weblate">How to use weblate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-use-weblate-as-a-user">How to use weblate as a user</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#deployment-of-weblate">Deployment of weblate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#components-in-weblate">Components in weblate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creation-of-components">Creation of components</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#collaborative-environment-frontend-component">Collaborative environment frontend component</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#seeding-data-component">Seeding data component</a></li>
 </ul>
@@ -100,14 +101,14 @@
   <section id="weblate-for-continous-localization">
 <h1>Weblate for continous localization<a class="headerlink" href="#weblate-for-continous-localization" title="Permalink to this heading"></a></h1>
 <p>Weblate is a libre web-based translation tool with tight version control integration. It provides two user interfaces, propagation of translations across components, quality checks and automatic linking to source files.</p>
-<section id="how-to-use-weblate">
-<h2>How to use weblate<a class="headerlink" href="#how-to-use-weblate" title="Permalink to this heading"></a></h2>
-<p>https://docs.google.com/document/u/2/d/1GApY_q1txqRJeYgQ_pZk01WG5XZXl38R-VyLXpIh3t4/edit</p>
+<section id="how-to-use-weblate-as-a-user">
+<h2>How to use weblate as a user<a class="headerlink" href="#how-to-use-weblate-as-a-user" title="Permalink to this heading"></a></h2>
+<p><a class="reference external" href="https://docs.google.com/document/u/2/d/1GApY_q1txqRJeYgQ_pZk01WG5XZXl38R-VyLXpIh3t4/edit">Weblate instructions</a></p>
 </section>
 <section id="deployment-of-weblate">
 <h2>Deployment of weblate<a class="headerlink" href="#deployment-of-weblate" title="Permalink to this heading"></a></h2>
-<p>Weblate is deployed only in the demo environment. You can find its docker-compose in the interlink-project repository:</p>
-<p>https://github.com/interlink-project/interlink-project/tree/master/envs/internationalization</p>
+<p>Weblate is separated from the rest of the services, since it is thought to be deployed only in one (in this case, demo) environment. You can find its docker-compose in the interlink-project repository:</p>
+<p><a class="reference external" href="https://github.com/interlink-project/interlink-project/tree/master/envs/internationalization">Weblate docker compose and files</a></p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> /datadrive/data/interlink-project/envs/internationalization
 <span class="c1"># FIRST CREATE THE .ENV FILE</span>
 docker-compose up -d
@@ -116,6 +117,7 @@ docker-compose up -d
 <p>“.env” file contents:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">DOMAIN</span><span class="o">=</span>demo.interlink-project.eu
 <span class="nv">ADMIN_PASS</span><span class="o">=</span>
+<span class="c1"># allow login with google</span>
 <span class="nv">GOOGLE_KEY</span><span class="o">=</span>
 <span class="nv">GOOGLE_SECRET</span><span class="o">=</span>
 
@@ -134,18 +136,43 @@ docker-compose up -d
 </section>
 <section id="components-in-weblate">
 <h2>Components in weblate<a class="headerlink" href="#components-in-weblate" title="Permalink to this heading"></a></h2>
+<section id="creation-of-components">
+<h3>Creation of components<a class="headerlink" href="#creation-of-components" title="Permalink to this heading"></a></h3>
+<p>Video on github access token and weblate component creation:</p>
+<p><a class="reference external" href="https://drive.google.com/file/d/1KAXBS6TaO0m9y1jHiwS1mATKyieoguUe/view?usp=sharing"><img alt="Watch the video" src="https://images.drivereasy.com/wp-content/uploads/2017/07/img_596dda8d77553.png" /></a></p>
+<p>Steps showed:</p>
+<ul class="simple">
+<li><p>Creation of the github access token:</p>
+<ul>
+<li><p>Go to https://github.com/settings/tokens and create an access token</p></li>
+</ul>
+</li>
+<li><p>Creation of the weblate component:</p>
+<ul>
+<li><p><strong>Repository branch:</strong> master</p></li>
+<li><p><strong>Repository push URL:</strong> https://{GITHUB_USER}:{ACCESS_TOKEN}&#64;github.com/interlink-project/{REPOSITORY_NAME}.git</p></li>
+<li><p><strong>Push branch:</strong> weblate</p></li>
+</ul>
+</li>
+<li><p>Set a webhook on every repository added weblate:</p>
+<ul>
+<li><p>https://github.com/interlink-project/{REPOSITORY_NAME}/settings/hooks</p></li>
+</ul>
+</li>
+</ul>
+</section>
 <section id="collaborative-environment-frontend-component">
 <h3>Collaborative environment frontend component<a class="headerlink" href="#collaborative-environment-frontend-component" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p>Translation files come from: https://github.com/interlink-project/frontend/tree/master/react/src/translations</p></li>
-<li><p>Weblate project: https://demo.interlink-project.eu/weblate/projects/collaborative-environment/frontend/</p></li>
+<li><p><a class="reference external" href="https://github.com/interlink-project/frontend/tree/master/react/src/translations">Translation files</a></p></li>
+<li><p><a class="reference external" href="https://demo.interlink-project.eu/weblate/projects/collaborative-environment/frontend/">Frontend weblate project</a></p></li>
 </ul>
 </section>
 <section id="seeding-data-component">
 <h3>Seeding data component<a class="headerlink" href="#seeding-data-component" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p>Translation files come from: https://github.com/interlink-project/interlinkers-data/tree/master/weblate</p></li>
-<li><p>Weblate project: https://demo.interlink-project.eu/weblate/projects/seeding-data/</p></li>
+<li><p><a class="reference external" href="https://github.com/interlink-project/interlinkers-data/tree/master/weblate">Translation files</a></p></li>
+<li><p><a class="reference external" href="https://demo.interlink-project.eu/weblate/projects/seeding-data/">Seeding data weblate project</a></p></li>
 </ul>
 </section>
 </section>
