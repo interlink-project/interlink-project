@@ -11,6 +11,7 @@ Environments
   update.md
   administration.md
   logging.md
+  kpis.md
   weblate.md
   google.md
   
