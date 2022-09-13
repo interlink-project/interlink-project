@@ -3,14 +3,14 @@
 ## Connect to an environment
 
 ```sh
-ssh -i {PUBLIC_KEY_FILENAME} interlink@{ENVIRONMENT}.interlink-project.eu
+ssh -i {PRIVATE_KEY_FILENAME} interlink@{ENVIRONMENT}.interlink-project.eu
 
 cd /datadrive/data/interlink-project
 ```
 
 where:
 * ENVIRONMENT = dev / demo / mef / zgz / varam
-* PUBLIC_KEY_FILENAME: name of your public key file
+* PRIVATE_KEY_FILENAME: name of the file
 
 ## Docker configuration
 
@@ -65,11 +65,11 @@ sudo service docker start
     ```
 
     * Use portainer:
-      * https://portainer.dev.interlink-project.eu
-      * https://portainer.demo.interlink-project.eu
-      * https://portainer.mef.interlink-project.eu
-      * https://portainer.varam.interlink-project.eu
-      * https://portainer.zgz.interlink-project.eu
+      * [Portainer dev](https://portainer.dev.interlink-project.eu)
+      * [Portainer demo](https://portainer.demo.interlink-project.eu)
+      * [Portainer mef](https://portainer.mef.interlink-project.eu)
+      * [Portainer varam](https://portainer.varam.interlink-project.eu)
+      * [Portainer zgz](https://portainer.zgz.interlink-project.eu)
   
 
 3. Clear the databases:

@@ -100,7 +100,7 @@
 <h1>Environments administration<a class="headerlink" href="#environments-administration" title="Permalink to this heading"></a></h1>
 <section id="connect-to-an-environment">
 <h2>Connect to an environment<a class="headerlink" href="#connect-to-an-environment" title="Permalink to this heading"></a></h2>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ssh -i <span class="o">{</span>PUBLIC_KEY_FILENAME<span class="o">}</span> interlink@<span class="o">{</span>ENVIRONMENT<span class="o">}</span>.interlink-project.eu
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ssh -i <span class="o">{</span>PRIVATE_KEY_FILENAME<span class="o">}</span> interlink@<span class="o">{</span>ENVIRONMENT<span class="o">}</span>.interlink-project.eu
 
 <span class="nb">cd</span> /datadrive/data/interlink-project
 </pre></div>
@@ -108,7 +108,7 @@
 <p>where:</p>
 <ul class="simple">
 <li><p>ENVIRONMENT = dev / demo / mef / zgz / varam</p></li>
-<li><p>PUBLIC_KEY_FILENAME: name of your public key file</p></li>
+<li><p>PRIVATE_KEY_FILENAME: name of the file</p></li>
 </ul>
 </section>
 <section id="docker-configuration">
@@ -166,11 +166,11 @@ docker <span class="nb">exec</span> -it <span class="o">{</span>CONTAINER_ID<spa
 <ul class="simple">
 <li><p>Use portainer:</p>
 <ul>
-<li><p>https://portainer.dev.interlink-project.eu</p></li>
-<li><p>https://portainer.demo.interlink-project.eu</p></li>
-<li><p>https://portainer.mef.interlink-project.eu</p></li>
-<li><p>https://portainer.varam.interlink-project.eu</p></li>
-<li><p>https://portainer.zgz.interlink-project.eu</p></li>
+<li><p><a class="reference external" href="https://portainer.dev.interlink-project.eu">Portainer dev</a></p></li>
+<li><p><a class="reference external" href="https://portainer.demo.interlink-project.eu">Portainer demo</a></p></li>
+<li><p><a class="reference external" href="https://portainer.mef.interlink-project.eu">Portainer mef</a></p></li>
+<li><p><a class="reference external" href="https://portainer.varam.interlink-project.eu">Portainer varam</a></p></li>
+<li><p><a class="reference external" href="https://portainer.zgz.interlink-project.eu">Portainer zgz</a></p></li>
 </ul>
 </li>
 </ul>

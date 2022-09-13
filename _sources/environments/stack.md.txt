@@ -9,7 +9,7 @@ The environments do not have dependencies within this repository and download th
 At least, six different environment configuration will be available for INTERLINK, corresponding to the folders in this repository:
 
 - **local**: environment for deploying the components of the INTERLINK platform in a local private machine. It does not use SSL/TLS and will be deployed in [localhost](http://localhost). It can be useful as a basis for developing and integrating components. It is expected to match latest development edge (master/main branches of the components) and data is in general not persisted.
-- **development**: integration environment that will be deployed in [dev.interlink-project.eu](https://dev.interlink-project.eu). It is expected to be automarically updated with the latest development edge (master/main branches of the components) and data is in general not persisted and will likely be overwrote with sample default data in each new re-deployment.
+- **development**: integration environment that will be deployed in [dev.interlink-project.eu](https://dev.interlink-project.eu). It is expected to be automarically updated with the latest development edge (master/main branches of the components).
 - **demo**: central demo or staging environment [demo.interlink-project.eu](https://demo.interlink-project.eu) to demostrate new features and carry out demonstration. In general, data persistence and version stability (no latest images but fixed tagged versions) should be ensured.
 - **pilot-zgz**: pilot environment [pilot-zgz.interlink-project.eu](https://pilot-zgz.interlink-project.eu). Production-like environment, data persistence and version stability (no latest images but fixed tagged versions) should be ensured.
 - **pilot-mef**: pilot environment [pilot-mef.interlink-project.eu](https://pilot-mef.interlink-project.eu). Production-like environment, data persistence and version stability (no latest images but fixed tagged versions) should be ensured.
@@ -19,11 +19,11 @@ For now, the environments are deployed in a single machine with Docker Compose. 
 
 All the environments deploy the same docker-compose stack.
 
-> https://github.com/interlink-project/interlink-project/blob/master/envs/development/docker-compose.yml
-> https://github.com/interlink-project/interlink-project/blob/master/envs/demo/docker-compose.yml
-> https://github.com/interlink-project/interlink-project/blob/master/envs/pilot-zgz/docker-compose.yml
-> https://github.com/interlink-project/interlink-project/blob/master/envs/pilot-mef/docker-compose.yml
-> https://github.com/interlink-project/interlink-project/blob/master/envs/pilot-varam/docker-compose.yml
+* [Development Docker Compose](https://github.com/interlink-project/interlink-project/blob/master/envs/development/docker-compose.yml)
+* [Demo Docker Compose](https://github.com/interlink-project/interlink-project/blob/master/envs/demo/docker-compose.yml)
+* [Zgz Docker Compose](https://github.com/interlink-project/interlink-project/blob/master/envs/pilot-zgz/docker-compose.yml)
+* [Mef Docker Compose](https://github.com/interlink-project/interlink-project/blob/master/envs/pilot-mef/docker-compose.yml)
+* [Varam Docker Compose](https://github.com/interlink-project/interlink-project/blob/master/envs/pilot-varam/docker-compose.yml)
 
 This docker composes depend on the .env files present in the directories. Those are used to define some of the environment variables dependant on the environment.
 
@@ -118,3 +118,4 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-auth.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-auth.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME}-auth.rule=Host(`${DOMAIN}`) && PathPrefix(`/auth`)
+```
