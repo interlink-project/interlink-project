@@ -1,4 +1,5 @@
 # Instructions to create new Interlinkers
+## For internal software INTERLINKERS:
 
 A new software interlinker can be added directly to the catalogue following the steps below:
 
@@ -74,12 +75,19 @@ snapshots (directory)
 
     This metadata contains several variables used by the collaborative environment to integrate with a new *software interlinker*. Several of them can be grouped inside the same category.
 
-    Server configuration parameters. For example, in case of augmenter it will be located inside a subdomain called "servicepedia" (https://servicepedia.dev.interlink-project.ue):
+    Server configuration parameters. 
+        - For example, in case of augmenter it will be located inside a subdomain called "servicepedia" (https://servicepedia.dev.interlink-project.ue):
 
-        Domain: "",
-        Is_subdomain: true,
-        Path: "servicepedia",
-        Service_name: "servicepedia"
+            Domain: "",
+            Is_subdomain: true,
+            Path: "servicepedia",
+            Service_name: "servicepedia"
+
+        - Another example is the case of google Drive
+            "domain": "",
+            "is_subdomain": false,
+            "path": "googledrive",
+            “service_name": "googledrive"
 
     Interlinker calling options. For example, for the interlinker augmenter the options used to call the interlinker functionality are:
 
@@ -190,9 +198,12 @@ snapshots (directory)
 
     ***Type***
 
-    This metadata specifies the type of interlinker, there is two options:
+    This metadata specifies the type of interlinker, there is four options:
     - Software
+    - Externalsoftware
     - Knowledge
+    - Externalknowledge
+    
 
     ***Types***
     This metadata specifies the functionality of the interlinker. 
@@ -202,10 +213,11 @@ snapshots (directory)
     ]
     ```
 
-5. The final step is to upload this folder to the container interlinkers-data. Inside there is the folder called "interlinkers" with several separated types of interlinker.
+5. The next step is to upload this folder to the container interlinkers-catalogue. Inside there is the folder under "/catalogue/seed/" called "interlinkers" with several separated types of interlinker.
 
     ```
-    interlinkers-data (container)
+    backend-catalogue (container)
+    /catalogue/seed/ (subfolder)
     └── interlinkers
         ├── externalknowledge
         ├── externalsoftware
@@ -219,3 +231,20 @@ snapshots (directory)
    ```
    interlinkers-data/interlinkers/software/
    ```
+## For external software INTERLINKERS:
+    1. Clone one of the directories under (backend-catalogue/catalogue/seed/interlinkers/externalsoftware/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalsoftware]
+    2. Rename the folder to the corresponding name of such component
+    3. Add logo.png, instructions.md and modify adequately metadata.json
+## For internal knowledge INTERLINKER, populate folder (backend-catalogue/catalogue/seed/interlinkers/knowledge/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge]:
+    1. Clone one of the directories under (backend-catalogue/catalogue/seed/interlinkers/knowledge/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge]
+    2. Rename the folder according to the sought internal knowledge INTERLINKER
+    3. Update folder snapshots, metadata.json and corresponding resource
+## For external knowledge INTERLINKER:
+    1. Clone one of the directories under (backend-catalogue/catalogue/seed/interlinkers/externalknowledge/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalknowledge]
+    2. Rename the folder according to the sought internal knowledge INTERLINKER
+    3. Update folder snapshots, metadata.json and corresponding resource
+
+ 
+ 
+ 
+ 
