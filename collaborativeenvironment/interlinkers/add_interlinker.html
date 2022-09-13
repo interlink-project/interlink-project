@@ -54,7 +54,13 @@
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Interlinkers</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="internal.html">Internal interlinkers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="external.html">External interlinkers</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Instructions to create new Interlinkers</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Instructions to create new Interlinkers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#for-internal-software-interlinkers">For internal software INTERLINKERS:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-external-software-interlinkers">For external software INTERLINKERS:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-internal-knowledge-interlinker-populate-folder-backend-catalogue-catalogue-seed-interlinkers-knowledge-https-github-com-interlink-project-backend-catalogue-tree-master-catalogue-seed-interlinkers-knowledge">For internal knowledge INTERLINKER, populate folder (backend-catalogue/catalogue/seed/interlinkers/knowledge/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge]:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-external-knowledge-interlinker">For external knowledge INTERLINKER:</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../internationalization.html">Translation files manipulation</a></li>
@@ -93,6 +99,8 @@
              
   <section id="instructions-to-create-new-interlinkers">
 <h1>Instructions to create new Interlinkers<a class="headerlink" href="#instructions-to-create-new-interlinkers" title="Permalink to this heading"></a></h1>
+<section id="for-internal-software-interlinkers">
+<h2>For internal software INTERLINKERS:<a class="headerlink" href="#for-internal-software-interlinkers" title="Permalink to this heading"></a></h2>
 <p>A new software interlinker can be added directly to the catalogue following the steps below:</p>
 <ol class="arabic">
 <li><p>Create a new folder with the interlinker name, if the name has multiple words, it can’t use spaces (hyphens between words):</p>
@@ -147,11 +155,18 @@
 <p>This metadata contains a link to a document where the instructions to create a new translation language.</p>
 <p><em><strong>Integration</strong></em></p>
 <p>This metadata contains several variables used by the collaborative environment to integrate with a new <em>software interlinker</em>. Several of them can be grouped inside the same category.</p>
-<p>Server configuration parameters. For example, in case of augmenter it will be located inside a subdomain called “servicepedia” (https://servicepedia.dev.interlink-project.ue):</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> Domain: &quot;&quot;,
- Is_subdomain: true,
- Path: &quot;servicepedia&quot;,
- Service_name: &quot;servicepedia&quot;
+<p>Server configuration parameters.
+- For example, in case of augmenter it will be located inside a subdomain called “servicepedia” (https://servicepedia.dev.interlink-project.ue):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>     Domain: &quot;&quot;,
+     Is_subdomain: true,
+     Path: &quot;servicepedia&quot;,
+     Service_name: &quot;servicepedia&quot;
+
+ - Another example is the case of google Drive
+     &quot;domain&quot;: &quot;&quot;,
+     &quot;is_subdomain&quot;: false,
+     &quot;path&quot;: &quot;googledrive&quot;,
+     “service_name&quot;: &quot;googledrive&quot;
 </pre></div>
 </div>
 <p>Interlinker calling options. For example, for the interlinker augmenter the options used to call the interlinker functionality are:</p>
@@ -232,10 +247,12 @@
 </pre></div>
 </div>
 <p><em><strong>Type</strong></em></p>
-<p>This metadata specifies the type of interlinker, there is two options:</p>
+<p>This metadata specifies the type of interlinker, there is four options:</p>
 <ul class="simple">
 <li><p>Software</p></li>
+<li><p>Externalsoftware</p></li>
 <li><p>Knowledge</p></li>
+<li><p>Externalknowledge</p></li>
 </ul>
 <p><em><strong>Types</strong></em>
 This metadata specifies the functionality of the interlinker.</p>
@@ -245,8 +262,9 @@ This metadata specifies the functionality of the interlinker.</p>
 </pre></div>
 </div>
 </li>
-<li><p>The final step is to upload this folder to the container interlinkers-data. Inside there is the folder called “interlinkers” with several separated types of interlinker.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>interlinkers-data (container)
+<li><p>The next step is to upload this folder to the container interlinkers-catalogue. Inside there is the folder under “/catalogue/seed/” called “interlinkers” with several separated types of interlinker.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>backend-catalogue (container)
+/catalogue/seed/ (subfolder)
 └── interlinkers
     ├── externalknowledge
     ├── externalsoftware
@@ -262,6 +280,31 @@ This metadata specifies the functionality of the interlinker.</p>
 </div>
 </li>
 </ol>
+</section>
+<section id="for-external-software-interlinkers">
+<h2>For external software INTERLINKERS:<a class="headerlink" href="#for-external-software-interlinkers" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. Clone one of the directories under (backend-catalogue/catalogue/seed/interlinkers/externalsoftware/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalsoftware]
+2. Rename the folder to the corresponding name of such component
+3. Add logo.png, instructions.md and modify adequately metadata.json
+</pre></div>
+</div>
+</section>
+<section id="for-internal-knowledge-interlinker-populate-folder-backend-catalogue-catalogue-seed-interlinkers-knowledge-https-github-com-interlink-project-backend-catalogue-tree-master-catalogue-seed-interlinkers-knowledge">
+<h2>For internal knowledge INTERLINKER, populate folder (backend-catalogue/catalogue/seed/interlinkers/knowledge/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge]:<a class="headerlink" href="#for-internal-knowledge-interlinker-populate-folder-backend-catalogue-catalogue-seed-interlinkers-knowledge-https-github-com-interlink-project-backend-catalogue-tree-master-catalogue-seed-interlinkers-knowledge" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. Clone one of the directories under (backend-catalogue/catalogue/seed/interlinkers/knowledge/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge]
+2. Rename the folder according to the sought internal knowledge INTERLINKER
+3. Update folder snapshots, metadata.json and corresponding resource
+</pre></div>
+</div>
+</section>
+<section id="for-external-knowledge-interlinker">
+<h2>For external knowledge INTERLINKER:<a class="headerlink" href="#for-external-knowledge-interlinker" title="Permalink to this heading"></a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. Clone one of the directories under (backend-catalogue/catalogue/seed/interlinkers/externalknowledge/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalknowledge]
+2. Rename the folder according to the sought internal knowledge INTERLINKER
+3. Update folder snapshots, metadata.json and corresponding resource
+</pre></div>
+</div>
+</section>
 </section>
 
 
