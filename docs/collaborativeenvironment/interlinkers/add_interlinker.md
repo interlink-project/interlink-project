@@ -232,9 +232,9 @@ snapshots (directory)
    interlinkers-data/interlinkers/software/
    ```
 ## For external software INTERLINKERS:
-    1. Clone one of the directories under (backend-catalogue/catalogue/seed/interlinkers/externalsoftware/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalsoftware]
-    2. Rename the folder to the corresponding name of such component
-    3. Add logo.png, instructions.md and modify adequately metadata.json
+1. Clone one of the directories under [backend-catalogue/catalogue/seed/interlinkers/externalsoftware/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalsoftware)
+2. Rename the folder to the corresponding name of such component
+3. Add logo.png, instructions.md and modify adequately metadata.json
 ## For internal knowledge INTERLINKER, populate folder (backend-catalogue/catalogue/seed/interlinkers/knowledge/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge]:
     1. Clone one of the directories under (backend-catalogue/catalogue/seed/interlinkers/knowledge/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge]
     2. Rename the folder according to the sought internal knowledge INTERLINKER
