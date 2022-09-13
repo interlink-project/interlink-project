@@ -11,16 +11,20 @@ A new software interlinker can be added directly to the catalogue following the 
 
 2. Inside the interlinker's folder create the following files:
 
-```
-snapshots (directory)
-├── instructions.md (file)
-├── logo.jpeg (file)
-└── metadata.json (file)               
-```
+    ```
+    interlinker-name
+    ├── sanpshots (directory)
+    |    └── img_1.png (file) 
+    |    └── img_2.png (file) 
+    |    ...
+    ├── instructions.md (file)
+    ├── logo.jpeg (file)
+    └── metadata.json (file)               
+    ```
 
-   For example for the [augmenter INTERLINKER folder](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/software/augmenter) can be taken as a reference.
+    For example for the [augmenter INTERLINKER folder](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/software/augmenter) can be taken as a reference.
 
-1. The catalogue allow to any interlinker to have several snapshots which display the interlinker functionality. All images must be included in the **snapshots folder**. For example, the interlinker augmenter has the follow snapshots:()
+3. The catalogue allow to any interlinker to have several snapshots which display the interlinker functionality. All images must be included in the **snapshots folder**. For example, the interlinker augmenter has the follow snapshots:()
    * annotate.png
    * approve.png
    * descriptions.png
@@ -32,11 +36,11 @@ snapshots (directory)
    ![Carousel](https://github.com/interlink-project/interlink-project/raw/master/docs/collaborativeenvironment/interlinkers/images/addInterlinker/carruselInterlinker_1.png)
 
    
-2. Fill the **instructions.md** file with all necessary information to be able to use this interlinker. The instructions must follow markdown language ([https://en.wikipedia.org/wiki/Markdown](https://en.wikipedia.org/wiki/Markdown)).
+4. Fill the **instructions.md** file with all necessary information to be able to use this interlinker. The instructions must follow markdown language ([https://en.wikipedia.org/wiki/Markdown](https://en.wikipedia.org/wiki/Markdown)).
 
-3. The **logo.jpeg** must be the logo which will identify assets created by the interlinker.
+5. The **logo.jpeg** must be the logo which will identify assets created by the interlinker.
 
-4. The **metadata.json** must include the following information:
+6. The **metadata.json** must include the following information:
 
     ***Administrative_scopes***
 
@@ -216,7 +220,7 @@ snapshots (directory)
     ]
     ```
 
-5. The next step is to upload this folder to the container interlinkers-catalogue. Inside there is the folder under "/catalogue/seed/" called "[interlinkers](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/)" with several separated types of interlinker.
+7. The next step is to upload this folder to the container interlinkers-catalogue. Inside there is the folder under "/catalogue/seed/" called "[interlinkers](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/)" with several separated types of interlinker.
 
     ```
     backend-catalogue (container)
@@ -231,9 +235,9 @@ snapshots (directory)
     ```
 
     For example, the interlinker augmenter was placed in:
-   ```
-   interlinkers-data/interlinkers/software/
-   ```
+    ```
+    interlinkers-data/interlinkers/software/
+    ```
 ## For external software INTERLINKERS:
 1. Clone one of the directories under [backend-catalogue/catalogue/seed/interlinkers/externalsoftware/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalsoftware).
 2. Rename the folder to the corresponding name of such component.
