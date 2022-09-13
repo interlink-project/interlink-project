@@ -84,13 +84,11 @@ A new software interlinker can be added directly to the catalogue following the 
 
     Server configuration parameters. 
         - For example, in case of augmenter it will be located inside a subdomain called "servicepedia" (https://servicepedia.dev.interlink-project.ue):
-
             Domain: "",
             Is_subdomain: true,
             Path: "servicepedia",
             Service_name: "servicepedia"
-
-        - Another example is the case of google Drive
+        - Another example is the case of google Drive (external software INTERLINKER)
             "domain": "",
             "is_subdomain": false,
             "path": "googledrive",
