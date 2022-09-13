@@ -245,12 +245,13 @@ A new software interlinker can be added directly to the catalogue following the 
 2. Rename the folder to the corresponding name of such component.
 3. Add logo.png, instructions.md and modify adequately metadata.json. (most of it is already explained in the first section, internal software INTERLINKERS)
 4. On the integration section of metadata.json for example the google drive INTERLINKER the information is:  
-    
+    ```
     "domain": "",
     "is_subdomain": false,
     "path": "googledrive",
     “service_name": "googledrive"
-
+    ```
+    
 ## For internal knowledge INTERLINKER:
 1. Clone one of the directories under [backend-catalogue/catalogue/seed/interlinkers/knowledge/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge).
 2. Rename the folder according to the sought internal knowledge INTERLINKER.
