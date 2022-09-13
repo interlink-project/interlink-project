@@ -22,7 +22,7 @@ A new software interlinker can be added directly to the catalogue following the 
     └── metadata.json (file)               
     ```
 
-    For example for the [augmenter INTERLINKER folder](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/software/augmenter) can be taken as a reference.
+    For example for the [augmenter INTERLINKER folder](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/software/augmenter) can be taken as a reference of a internal software INTERLINKER.
 
 3. The catalogue allow to any interlinker to have several snapshots which display the interlinker functionality. All images must be included in the **snapshots folder**. For example, the interlinker augmenter has the follow snapshots:()
    * annotate.png
