@@ -235,14 +235,14 @@ snapshots (directory)
 1. Clone one of the directories under [backend-catalogue/catalogue/seed/interlinkers/externalsoftware/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalsoftware)
 2. Rename the folder to the corresponding name of such component
 3. Add logo.png, instructions.md and modify adequately metadata.json
-## For internal knowledge INTERLINKER, populate folder (backend-catalogue/catalogue/seed/interlinkers/knowledge/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge]:
-    1. Clone one of the directories under (backend-catalogue/catalogue/seed/interlinkers/knowledge/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge]
-    2. Rename the folder according to the sought internal knowledge INTERLINKER
-    3. Update folder snapshots, metadata.json and corresponding resource
+## For internal knowledge INTERLINKER, populate folder [backend-catalogue/catalogue/seed/interlinkers/knowledge/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge):
+1. Clone one of the directories under [backend-catalogue/catalogue/seed/interlinkers/knowledge/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge)
+2. Rename the folder according to the sought internal knowledge INTERLINKER
+3. Update folder snapshots, metadata.json and corresponding resource
 ## For external knowledge INTERLINKER:
-    1. Clone one of the directories under (backend-catalogue/catalogue/seed/interlinkers/externalknowledge/)[https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalknowledge]
-    2. Rename the folder according to the sought internal knowledge INTERLINKER
-    3. Update folder snapshots, metadata.json and corresponding resource
+1. Clone one of the directories under [backend-catalogue/catalogue/seed/interlinkers/externalknowledge/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalknowledge)
+2. Rename the folder according to the sought internal knowledge INTERLINKER
+3. Update folder snapshots, metadata.json and corresponding resource
 
  
  
