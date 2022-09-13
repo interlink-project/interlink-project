@@ -17,7 +17,8 @@ snapshots (directory)
 ├── logo.jpeg (file)
 └── metadata.json (file)               
 ```
-For example for the [augmenter INTERLINKER folder](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/software/augmenter) can be taken as a reference.
+
+    For example for the [augmenter INTERLINKER folder](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/software/augmenter) can be taken as a reference.
 1. The catalogue allow to any interlinker to have several snapshots which display the interlinker functionality. All images must be included in the **snapshots folder**. For example, the interlinker augmenter has the follow snapshots:()
    * annotate.png
    * approve.png
