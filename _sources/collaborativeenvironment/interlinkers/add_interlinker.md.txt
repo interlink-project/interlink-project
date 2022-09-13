@@ -17,7 +17,8 @@ snapshots (directory)
 ├── logo.jpeg (file)
 └── metadata.json (file)               
 ```
-1. The catalogue allow to any interlinker to have several snapshots which display the interlinker functionality. All images must be included in the **snapshots folder**. For example, the interlinker augmenter has the follow snapshots:
+    For example for the augmenter INTERLINKER the folder is [this](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/software/augmenter).
+1. The catalogue allow to any interlinker to have several snapshots which display the interlinker functionality. All images must be included in the **snapshots folder**. For example, the interlinker augmenter has the follow snapshots:()
    * annotate.png
    * approve.png
    * descriptions.png
@@ -213,7 +214,7 @@ snapshots (directory)
     ]
     ```
 
-5. The next step is to upload this folder to the container interlinkers-catalogue. Inside there is the folder under "/catalogue/seed/" called "interlinkers" with several separated types of interlinker.
+5. The next step is to upload this folder to the container interlinkers-catalogue. Inside there is the folder under "/catalogue/seed/" called "[interlinkers](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/)" with several separated types of interlinker.
 
     ```
     backend-catalogue (container)
@@ -232,17 +233,17 @@ snapshots (directory)
    interlinkers-data/interlinkers/software/
    ```
 ## For external software INTERLINKERS:
-1. Clone one of the directories under [backend-catalogue/catalogue/seed/interlinkers/externalsoftware/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalsoftware)
-2. Rename the folder to the corresponding name of such component
-3. Add logo.png, instructions.md and modify adequately metadata.json
-## For internal knowledge INTERLINKER, populate folder [backend-catalogue/catalogue/seed/interlinkers/knowledge/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge):
-1. Clone one of the directories under [backend-catalogue/catalogue/seed/interlinkers/knowledge/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge)
-2. Rename the folder according to the sought internal knowledge INTERLINKER
-3. Update folder snapshots, metadata.json and corresponding resource
+1. Clone one of the directories under [backend-catalogue/catalogue/seed/interlinkers/externalsoftware/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalsoftware).
+2. Rename the folder to the corresponding name of such component.
+3. Add logo.png, instructions.md and modify adequately metadata.json.
+## For internal knowledge INTERLINKER:
+1. Clone one of the directories under [backend-catalogue/catalogue/seed/interlinkers/knowledge/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/knowledge).
+2. Rename the folder according to the sought internal knowledge INTERLINKER.
+3. Update folder snapshots, metadata.json and corresponding resource.
 ## For external knowledge INTERLINKER:
-1. Clone one of the directories under [backend-catalogue/catalogue/seed/interlinkers/externalknowledge/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalknowledge)
-2. Rename the folder according to the sought internal knowledge INTERLINKER
-3. Update folder snapshots, metadata.json and corresponding resource
+1. Clone one of the directories under [backend-catalogue/catalogue/seed/interlinkers/externalknowledge/](https://github.com/interlink-project/backend-catalogue/tree/master/catalogue/seed/interlinkers/externalknowledge).
+2. Rename the folder according to the sought internal knowledge INTERLINKER.
+3. Update folder snapshots, metadata.json and corresponding resource.
 
  
  
