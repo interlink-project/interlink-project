@@ -142,7 +142,7 @@ queries = [
     },
     {
         "name": "A2.1. Number of citizens involved in co-delivered services",
-        "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\", coproduction.public.team INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT team.id FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'citizen' INNER JOIN coproduction.public.organization ON team.organization_id = organization.id AND organization.id IN (SELECT coproductionprocess.organization_id FROM coproduction.public.coproductionprocess INNER JOIN coproduction.public.phase",
+        "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\" INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT team.id FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'citizen' INNER JOIN coproduction.public.organization ON team.organization_id = organization.id AND organization.id IN (SELECT coproductionprocess.organization_id FROM coproduction.public.coproductionprocess INNER JOIN coproduction.public.phase ON phase.coproductionprocess_id = coproductionprocess.id AND phase.is_part_of_codelivery='true' ) )",
         "extract_count": True
     },
     {
