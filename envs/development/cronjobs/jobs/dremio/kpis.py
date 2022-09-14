@@ -17,39 +17,39 @@ queries = [
     # coproductionprocesses
     {
         "name": "A7: Number of coproduction processes",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess",
+        "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess",
         "extract_count": True
     },
     {
         "name": "A7.1: Number of coproduction processes in english",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'en'",
+        "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'en'",
         "extract_count": True
     },
     {
         "name": "A7.2: Number of coproduction processes in latvian",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'lv'",
+        "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'lv'",
         "extract_count": True
     },
     {
         "name": "A7.3: Number of coproduction processes in italian",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'it'",
+        "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'it'",
         "extract_count": True
     },
     {
         "name": "A7.4: Number of coproduction processes in spanish",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'es'",
+        "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'es'",
         "extract_count": True
     },
     # permissions
     {
         "name": "Number of permissions",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.permission",
+        "sql": "SELECT COUNT(DISTINCT(permission.id)) FROM coproduction.public.permission",
         "extract_count": True
     },
     # teams
     {
         "name": "A6: Number of teams",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.team",
+        "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team",
         "extract_count": True
     },
     {
@@ -59,60 +59,60 @@ queries = [
     },
     {
         "name": "A6.1: Number of public administration teams",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.team WHERE team.type LIKE 'public_administration'",
+        "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team WHERE team.type LIKE 'public_administration'",
         "extract_count": True
     },
     {
         "name": "A6.2: Number of public administration teams involved in a coproductionprocess",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'public_administration'",
+        "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'public_administration'",
         "extract_count": True
     },
     {
         "name": "A6.3: Number of citizen teams",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.team WHERE team.type LIKE 'citizen'",
+        "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team WHERE team.type LIKE 'citizen'",
         "extract_count": True
     },
     {
         "name": "A6.4: Number of citizen teams involved in a coproductionprocess",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'citizen'",
+        "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'citizen'",
         "extract_count": True
     },
     {
         "name": "A6.5: Number of TSO teams",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.team WHERE team.type LIKE '%organization%'",
+        "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team WHERE team.type LIKE '%organization%'",
         "extract_count": True
     },
     {
         "name": "A6.6: Number of TSO teams involved in a coproductionprocess",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE '%organization%'",
+        "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE '%organization%'",
         "extract_count": True
     },
     # organizations
     {
         "name": "A27: Number of organizations",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.organization",
+        "sql": "SELECT COUNT(DISTINCT(organization.id)) FROM coproduction.public.organization",
         "extract_count": True
     },
     # assets
     {
         "name": "A26: Number of assets",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.asset",
+        "sql": "SELECT COUNT(DISTINCT(asset.id)) FROM coproduction.public.asset",
         "extract_count": True
     },
     {
         "name": "A26.1: Number of external assets",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.externalasset",
+        "sql": "SELECT COUNT(DISTINCT(externalasset.id)) FROM coproduction.public.externalasset",
         "extract_count": True
     },
     {
         "name": "A26.2: Number of internal assets",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.internalasset",
+        "sql": "SELECT COUNT(DISTINCT(internalasset.id)) FROM coproduction.public.internalasset",
         "extract_count": True
     },
     # users
     {
         "name": "Number of users",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.\"user\"",
+        "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\"",
         "extract_count": True
     },
     {
@@ -158,12 +158,12 @@ queries = [
     # interlinkers
     {
         "name": "A1: Number of interlinkers",
-        "sql": "SELECT COUNT(*) FROM catalogue.public.interlinker",
+        "sql": "SELECT COUNT(DISTINCT(interlinker.id)) FROM catalogue.public.interlinker",
         "extract_count": True
     },
     {
         "name": "A1.1: Number of software interlinkers",
-        "sql": "SELECT COUNT(*) FROM catalogue.public.softwareinterlinker",
+        "sql": "SELECT COUNT(DISTINCT(softwareinterlinker.id)) FROM catalogue.public.softwareinterlinker",
         "extract_count": True
     },
     {
@@ -177,12 +177,12 @@ queries = [
     },
     {
         "name": "A1.4: Number of external software interlinkers",
-        "sql": "SELECT COUNT(*) FROM catalogue.public.externalsoftwareinterlinker",
+        "sql": "SELECT COUNT(DISTINCT(externalsoftwareinterlinker.id)) FROM catalogue.public.externalsoftwareinterlinker",
         "extract_count": True
     },
     {
         "name": "A1.5: Number of external knowledge interlinkers",
-        "sql": "SELECT COUNT(*) FROM catalogue.public.externalknowledgeinterlinker",
+        "sql": "SELECT COUNT(DISTINCT(externalknowledgeinterlinker.id)) FROM catalogue.public.externalknowledgeinterlinker",
         "extract_count": True
     },
     {
@@ -192,7 +192,7 @@ queries = [
     },
     {
         "name": "A1.8: Number of knowledge interlinkers",
-        "sql": "SELECT COUNT(*) FROM catalogue.public.knowledgeinterlinker",
+        "sql": "SELECT COUNT(DISTINCT(knowledgeinterlinker.id)) FROM catalogue.public.knowledgeinterlinker",
         "extract_count": True
     },
     {
@@ -206,12 +206,12 @@ queries = [
     },
     {
         "name": "A3. Number of INTERLINKERs with flag is_sustainabilty related",
-        "sql": "SELECT COUNT(*) FROM catalogue.public.interlinker WHERE interlinker.is_sustainability_related='true'",
+        "sql": "SELECT COUNT(DISTINCT(interlinker.id)) FROM catalogue.public.interlinker WHERE interlinker.is_sustainability_related='true'",
         "extract_count": True
     },
     {
         "name": "A10. Number of private companies involved in co-delivered services",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.organization INNER JOIN coproduction.public.team ON team.organization_id = organization.id AND team.type LIKE '%organization%' AND team.id IN (SELECT permission.team_id FROM coproduction.public.permission INNER JOIN coproduction.public.phase ON phase.coproductionprocess_id = permission.coproductionprocess_id AND phase.is_part_of_codelivery='true' )",
+        "sql": "SELECT COUNT(DISTINCT(organization.id)) FROM coproduction.public.organization INNER JOIN coproduction.public.team ON team.organization_id = organization.id AND team.type LIKE '%organization%' AND team.id IN (SELECT permission.team_id FROM coproduction.public.permission INNER JOIN coproduction.public.phase ON phase.coproductionprocess_id = permission.coproductionprocess_id AND phase.is_part_of_codelivery='true' )",
         "extract_count": True
     },
     {
