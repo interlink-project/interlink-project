@@ -1,11 +1,63 @@
 # Environments update
 
-Update-dev-environment workflow, as well as the other workflows for the different environments (demo and pilots), is responsible for establishing an ssh connection to the server where the application is hosted (using different credentials for each workflow by using different secrets in host, username and key attributes) to get the latest changes and start the docker services based on them.
+The demo and pilots are static instances of the platform. By this we mean that only the dev environment changes on a frequent basis, with the aim that developers see their changes in a different environment to the local, more production-like environment (in reality it is practically the same as production).
+
+Once the dev environment is verified to be usable and stable (take a look at [Acceptance testing](https://interlink-project.github.io/interlink-project/testing/acceptance-tests/index.html)), the demo and pilot environments should be updated to reflect the new changes.
+
+To start with, when changes are made to any of the components enumerated in the [Stack section](https://interlink-project.github.io/interlink-project/environments/stack.html), a new Docker image of the component is generated and triggers the "update-dev-environment" workflow by sending an event to the interlink-project repository.
+
+Let's take backend-coproduction as an example:
+
+``` bash
+name: build-and-publish-docker
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+    branches:
+      - "master"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+
+        (...)
+
+      - name: Build and push Docker Image
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: |
+            interlinkproject/backend-coproduction:${{ github.ref_name }}
+            interlinkproject/backend-coproduction:${{ github.ref_name }}.${{ steps.date.outputs.date }}
+          cache-from: type=registry,ref=interlinkproject/backend-coproduction:buildcache
+          cache-to: type=registry,ref=interlinkproject/backend-coproduction:buildcache,mode=max
+
+      - name: Trigger Dev Deployment
+        uses: octokit/request-action@v2.x
+        id: trigger_dev_deployment
+        with:
+          route: POST /repos/{owner}/{repo}/dispatches
+          owner: interlink-project
+          repo: interlink-project
+          event_type: update-dev-environment
+        env:
+          GITHUB_TOKEN: ${{ secrets.INTERLINK_PROJECT_GITHUB_TOKEN }}
+```
+> "build-and-publish-docker" workflow in the backend-coproduction repository: [https://github.com/interlink-project/backend-coproduction/blob/master/.github/workflows/build-and-publish-docker.yml](https://github.com/interlink-project/backend-coproduction/blob/master/.github/workflows/build-and-publish-docker.yml)
+
+Update-dev-environment workflow, as well as the other workflows for the different environments (demo and pilots), is responsible for establishing an ssh connection to the server where the application is hosted and executing the commands needed to get the latest changes and start the docker services based on them.
 
 The triggers for the dev workflow are as follows:
 
 * **workflow_dispatch:** to manually trigger a workflow run using the GitHub API, GitHub CLI, or GitHub browser interface. 
-* **repository_dispatch:** use the GitHub API to trigger a webhook event called repository_dispatch when you want to trigger a workflow for activity that happens outside of GitHub or, as it happens in this case, from other repositories.
+* **repository_dispatch:** use the GitHub API to trigger a webhook event called repository_dispatch when you want to trigger a workflow for activity that happens outside of GitHub or, as it happens in this case, from other repositories. (used by the other components, such as backend-coproduction, the example above)
 * **push:** Runs workflow when you push a commit or tag.
 * **release:** runs  workflow when release activity in your repository occurs.
 
@@ -72,59 +124,15 @@ jobs:
             docker-compose exec -T catalogue ./seed.sh
             docker-compose exec -T coproduction ./seed.sh            
 ```
-> Update-dev-environment workflow: https://github.com/interlink-project/interlink-project/blob/master/.github/workflows/update-dev-environment.yml
+> Update-dev-environment workflow: [https://github.com/interlink-project/interlink-project/blob/master/.github/workflows/update-dev-environment.yml](https://github.com/interlink-project/interlink-project/blob/master/.github/workflows/update-dev-environment.yml)
 
-Each of the different components, let's take backend-coproduction as an example, has a workflow that executes on each commit, generating a Docker image and triggering the "update-dev-environment" event directed to the interlink-project repository.
 
-``` bash
-name: build-and-publish-docker
-
-on:
-  workflow_dispatch:
-  push:
-    tags:
-      - '*'
-    branches:
-      - "master"
-
-jobs:
-  docker:
-    runs-on: ubuntu-latest
-    steps:
-
-        (...)
-
-      - name: Build and push Docker Image
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile
-          push: true
-          tags: |
-            interlinkproject/backend-coproduction:${{ github.ref_name }}
-            interlinkproject/backend-coproduction:${{ github.ref_name }}.${{ steps.date.outputs.date }}
-          cache-from: type=registry,ref=interlinkproject/backend-coproduction:buildcache
-          cache-to: type=registry,ref=interlinkproject/backend-coproduction:buildcache,mode=max
-
-      - name: Trigger Dev Deployment
-        uses: octokit/request-action@v2.x
-        id: trigger_dev_deployment
-        with:
-          route: POST /repos/{owner}/{repo}/dispatches
-          owner: interlink-project
-          repo: interlink-project
-          event_type: update-dev-environment
-        env:
-          GITHUB_TOKEN: ${{ secrets.INTERLINK_PROJECT_GITHUB_TOKEN }}
-```
-> Backend-coproduction repository "build-and-publish-docker" workflow: https://github.com/interlink-project/backend-coproduction/blob/master/.github/workflows/build-and-publish-docker.yml
 
 This way, every time a change is made to the master of any of the components, the dev environment is automatically updated (it takes about 3 minutes to generate the docker image and another 3 minutes to update the environment).
 
 ## Demo and pilots
 
-The workflows for updating demo and pilots are similar to the one for updating dev. The only change is the triggers; they can now only be executed manually (workflow_dispatch).
+The workflows for updating demo and pilots are similar to the one for updating dev. The only change are the triggers; they can now only be executed manually (workflow_dispatch).
 
 ```bash
 name: update-demo-environment
@@ -147,12 +155,12 @@ jobs:
           username: ${{ secrets.DEMO_USERNAME }}
           (...)
 ```
-> Update-demo-environment workflow: https://github.com/interlink-project/interlink-project/blob/master/.github/workflows/update-demo-environment.yml
+> Update-demo-environment workflow: [https://github.com/interlink-project/interlink-project/blob/master/.github/workflows/update-demo-environment.yml](https://github.com/interlink-project/interlink-project/blob/master/.github/workflows/update-demo-environment.yml)
 
 
 One important consideration here is the ".env" file. As you can see in the docker-compose files, the versions of the services are defined by a variable. This variable is retrieved from the ".env" file. 
 
-
+Fragment of the docker-compose used in ALL the environments:
 ```yaml
 version: "3.9"
 services:
@@ -178,7 +186,8 @@ services:
     image: interlinkproject/backend-logging:${LOGGING_VERSION}
     ...
 ```
-> Fragment of the docker-compose
+
+Fragment of the env file of dev environment: [https://github.com/interlink-project/interlink-project/blob/master/envs/development/.env](https://github.com/interlink-project/interlink-project/blob/master/envs/development/.env):
 
 ```bash
 MAIN_DOMAIN=interlink-project.eu
@@ -205,7 +214,8 @@ LOKI_VERSION=master
 PROMTAIL_VERSION=master
 FILEBEAT_VERSION=master
 ```
-> Fragment of the env file of dev environment: https://github.com/interlink-project/interlink-project/blob/master/envs/development/.env
+
+Fragment of the env file of demo environment: [https://github.com/interlink-project/interlink-project/blob/master/envs/demo/.env](https://github.com/interlink-project/interlink-project/blob/master/envs/demo/.env):
 
 ```bash
 MAIN_DOMAIN=interlink-project.eu
@@ -232,7 +242,7 @@ LOKI_VERSION=v1.0.2
 PROMTAIL_VERSION=v1.0.2
 FILEBEAT_VERSION=v1.0.2
 ```
-> Fragment of the env file of demo environment: https://github.com/interlink-project/interlink-project/blob/master/envs/demo/.env
+
 
 
 The string "master" (in dev) refers to the latest docker image available, while in demo, it refers to specific versions of each component. So, logically, every time the dev workflow is executed, the services will be started in their latest version, while it doesn't matter how many times or at what time the demo workflow is executed, as it will depend on the versions specified in the .env file. 
@@ -270,7 +280,7 @@ on:
           cache-to: type=registry,ref=interlinkproject/backend-coproduction:buildcache,mode=max
     (...)
 ```
-> Backend-coproduction repository "build-and-publish-docker" workflow: https://github.com/interlink-project/backend-coproduction/blob/master/.github/workflows/build-and-publish-docker.yml
+> Backend-coproduction repository "build-and-publish-docker" workflow: [https://github.com/interlink-project/backend-coproduction/blob/master/.github/workflows/build-and-publish-docker.yml](https://github.com/interlink-project/backend-coproduction/blob/master/.github/workflows/build-and-publish-docker.yml)
 
 To create a tag in a given component:
 ```bash
@@ -284,10 +294,8 @@ git push origin v1.2.1
 ```
 
 Results:
-* Multiple tags for every component: https://hub.docker.com/r/interlinkproject/backend-coproduction/tags
-* Different docker images for each component: https://hub.docker.com/search?q=interlinkproject
-
-
+* Multiple tags for every component: [https://github.com/interlink-project/backend-coproduction/tags](https://github.com/interlink-project/backend-coproduction/tags)
+* Different docker images for each component: [https://hub.docker.com/r/interlinkproject/backend-coproduction/tags](https://hub.docker.com/r/interlinkproject/backend-coproduction/tags)
 
 ## When to update demo and pilots
 

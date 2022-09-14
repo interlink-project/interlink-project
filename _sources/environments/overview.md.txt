@@ -35,6 +35,8 @@ To get a local copy up and running (http://localhost) follow these simple exampl
     make up
     ```
 
+    Check [Google keys section](https://interlink-project.github.io/interlink-project/environments/google.html) for the obtention of the credentials to put in interlinker-googledrive/.secrets and ask FBK/DEUSTO in order to get the CLIENT_SECRET for the backend-auth/.secrets file.
+
     To STOP all containers:
     ```sh
     # from /interlink-project

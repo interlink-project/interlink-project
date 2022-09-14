@@ -10,6 +10,7 @@ The purpose of this short manual is to describe the series of steps that a micro
 The data sent to the registration service needs to contain the information relevant to the application. In the case of the coproduction microservice, for example, a data log could contain the following information when a user creates a new asset.
 
 ```python
+# any crud.py file
 await log({
     "model": "ASSET",
     "action": "CREATE",
@@ -27,7 +28,22 @@ await log({
 })
 ```
 
-The above line of code calls the log function (mentioned afterwards) with a dictionary including relevant data about the action performed (model, action, phase, task_id, etc). The amount of information saved in a log depends on the specific action that you want to record, therefore the structure could vary from one service to another. 
+```python
+# messages.py of the coproduction service
+async def log(data: dict):
+    if is_logging_disabled():
+        return
+
+    if not "user_id" in data:
+        data["user_id"] = context.data.get("user", {}).get("sub", "anonymous")
+            
+    data["service"] = "coproduction"
+    res = requests.post("http://logging/api/v1/log", data=json.dumps(data,cls=UUIDEncoder), timeout=2)
+```
+
+The above line of code calls the log function (mentioned afterwards) with a dictionary including relevant data about the action performed (model, action, phase, task_id, etc). The log function itself adds ALWAYS the user_id and the service attributes.
+
+The amount of information saved in a log depends on the specific action that you want to record, therefore the structure could vary from one service to another. 
 
 The mandatory fields are:
 * "user_id": subject of the token provided by the AAC. Corresponds to the user that performs the action.
@@ -40,7 +56,7 @@ Nevertheless, it is recommended to add at least these keys:
 
 ### Send a log through a POST request to the API (Synchronous approach)
 
-![API](images/api.png)
+![API](images/logging-API.png)
 
 You can log an action by simply creating a POST request to these endpoints (depending on the environment).
 
@@ -51,6 +67,6 @@ You can log an action by simply creating a POST request to these endpoints (depe
 * POST https://varam.interlink-project.eu/logging/api/v1/log
 * POST https://mef.interlink-project.eu/logging/api/v1/log
 
-Furthermore, the calls can be made internally, by replacing the DNS name by the name of the logging docker service:
+Furthermore, the calls SHOULD be made internally, by replacing the DNS name by the name of the logging docker service:
 
-* POST http://logging/logging/api/v1/log
+* POST http://logging/api/v1/log

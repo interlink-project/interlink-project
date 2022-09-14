@@ -54,6 +54,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Current data models of the main components of the collaborative environment backend</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#catalogue-service">Catalogue service</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#coproduction-service">Coproduction service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-are-these-images-generated">How are these images generated</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="migrations.html">Migrations on the data models</a></li>
@@ -103,6 +104,37 @@
 <section id="coproduction-service">
 <h2>Coproduction service<a class="headerlink" href="#coproduction-service" title="Permalink to this heading"></a></h2>
 <p><img alt="Coproduction" src="https://raw.githubusercontent.com/interlink-project/backend-coproduction/master/coproduction/dbschema.png" /></p>
+</section>
+<section id="how-are-these-images-generated">
+<h2>How are these images generated<a class="headerlink" href="#how-are-these-images-generated" title="Permalink to this heading"></a></h2>
+<p>When the catalogue and coproduction services start in development mode (local environment only), the <a class="reference external" href="https://github.com/interlink-project/backend-coproduction/blob/master/coproduction/start-dev.sh">entrypoint script</a> executes the <a class="reference external" href="https://github.com/interlink-project/backend-coproduction/blob/master/coproduction/app/development.py">development.py</a> python script, which uses <a class="reference external" href="https://pypi.org/project/sqlalchemy_schemadisplay/">sqlalchemy_schemadisplay</a> library to obtain the database schema from postgres and creates the images shown.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">app.general.db</span> <span class="kn">import</span> <span class="n">base</span>
+<span class="c1"># make sure all SQL Alchemy models are imported (app.general.db.base) before initializing DB</span>
+<span class="c1"># otherwise, SQL Alchemy might fail to initialize relationships properly</span>
+<span class="c1"># for more details: https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/28</span>
+<span class="kn">from</span> <span class="nn">app.general.db.base_class</span> <span class="kn">import</span> <span class="n">Base</span> <span class="k">as</span> <span class="n">BaseModel</span>
+<span class="kn">from</span> <span class="nn">app.general.db.session</span> <span class="kn">import</span> <span class="n">SessionLocal</span><span class="p">,</span> <span class="n">engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">MetaData</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy_schemadisplay</span> <span class="kn">import</span> <span class="n">create_schema_graph</span>
+<span class="kn">from</span> <span class="nn">app.config</span> <span class="kn">import</span> <span class="n">settings</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># create the pydot graph object by autoloading all tables via a bound metadata object</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">create_schema_graph</span><span class="p">(</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="n">MetaData</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">SQLALCHEMY_DATABASE_URI</span><span class="p">),</span>
+        <span class="n">show_datatypes</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>  <span class="c1"># The image would get nasty big if we&#39;d show the datatypes</span>
+        <span class="n">show_indexes</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>  <span class="c1"># ditto for indexes</span>
+        <span class="c1"># From left to right (instead of top to bottom)</span>
+        <span class="n">rankdir</span><span class="o">=</span><span class="s2">&quot;LR&quot;</span><span class="p">,</span>
+        <span class="n">concentrate</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>  <span class="c1"># Don&#39;t try to join the relation lines together</span>
+    <span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">write_png</span><span class="p">(</span><span class="s2">&quot;dbschema.png&quot;</span><span class="p">)</span>  <span class="c1"># write out the file</span>
+</pre></div>
+</div>
 </section>
 </section>
 

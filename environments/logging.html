@@ -104,7 +104,8 @@
 <section id="data-structure">
 <h3>Data structure<a class="headerlink" href="#data-structure" title="Permalink to this heading"></a></h3>
 <p>The data sent to the registration service needs to contain the information relevant to the application. In the case of the coproduction microservice, for example, a data log could contain the following information when a user creates a new asset.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">await</span> <span class="n">log</span><span class="p">({</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># any crud.py file</span>
+<span class="n">await</span> <span class="n">log</span><span class="p">({</span>
     <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;ASSET&quot;</span><span class="p">,</span>
     <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;CREATE&quot;</span><span class="p">,</span>
     <span class="s2">&quot;coproductionprocess_id&quot;</span><span class="p">:</span> <span class="n">asset</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">phase</span><span class="o">.</span><span class="n">coproductionprocess_id</span><span class="p">,</span>
@@ -121,7 +122,20 @@
 <span class="p">})</span>
 </pre></div>
 </div>
-<p>The above line of code calls the log function (mentioned afterwards) with a dictionary including relevant data about the action performed (model, action, phase, task_id, etc). The amount of information saved in a log depends on the specific action that you want to record, therefore the structure could vary from one service to another.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># messages.py of the coproduction service</span>
+<span class="n">async</span> <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">is_logging_disabled</span><span class="p">():</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;user_id&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;user_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sub&quot;</span><span class="p">,</span> <span class="s2">&quot;anonymous&quot;</span><span class="p">)</span>
+            
+    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;service&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;coproduction&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;http://logging/api/v1/log&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="bp">cls</span><span class="o">=</span><span class="n">UUIDEncoder</span><span class="p">),</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The above line of code calls the log function (mentioned afterwards) with a dictionary including relevant data about the action performed (model, action, phase, task_id, etc). The log function itself adds ALWAYS the user_id and the service attributes.</p>
+<p>The amount of information saved in a log depends on the specific action that you want to record, therefore the structure could vary from one service to another.</p>
 <p>The mandatory fields are:</p>
 <ul class="simple">
 <li><p>“user_id”: subject of the token provided by the AAC. Corresponds to the user that performs the action.</p></li>
@@ -135,7 +149,7 @@
 </section>
 <section id="send-a-log-through-a-post-request-to-the-api-synchronous-approach">
 <h3>Send a log through a POST request to the API (Synchronous approach)<a class="headerlink" href="#send-a-log-through-a-post-request-to-the-api-synchronous-approach" title="Permalink to this heading"></a></h3>
-<p><img alt="API" src="environments/images/api.png" /></p>
+<p><img alt="API" src="../_images/logging-API.png" /></p>
 <p>You can log an action by simply creating a POST request to these endpoints (depending on the environment).</p>
 <ul class="simple">
 <li><p>POST http://localhost/logging/api/v1/log</p></li>
@@ -145,9 +159,9 @@
 <li><p>POST https://varam.interlink-project.eu/logging/api/v1/log</p></li>
 <li><p>POST https://mef.interlink-project.eu/logging/api/v1/log</p></li>
 </ul>
-<p>Furthermore, the calls can be made internally, by replacing the DNS name by the name of the logging docker service:</p>
+<p>Furthermore, the calls SHOULD be made internally, by replacing the DNS name by the name of the logging docker service:</p>
 <ul class="simple">
-<li><p>POST http://logging/logging/api/v1/log</p></li>
+<li><p>POST http://logging/api/v1/log</p></li>
 </ul>
 </section>
 </section>

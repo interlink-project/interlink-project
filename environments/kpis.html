@@ -165,9 +165,7 @@
 </div>
 <p>Once the docker service is up, Dremio GUI is accessible through https://dremio.dev.interlink-project.eu/</p>
 <p>Nevertheless, in the first launch there is no admin account yet. For that, a python script has been created (setup-dremio.py) that calls the Dremio API to set up the administrator account and the different backends.</p>
-<blockquote>
-<div><p>https://github.com/interlink-project/interlink-project/blob/master/envs/development/setup-dremio.py</p>
-</div></blockquote>
+<p>Dremio setup script at <a class="reference external" href="https://github.com/interlink-project/interlink-project/blob/master/envs/development/setup-dremio.py">https://github.com/interlink-project/interlink-project/blob/master/envs/development/setup-dremio.py</a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -272,7 +270,7 @@
 <span class="n">apiPost</span><span class="p">(</span><span class="s1">&#39;catalog&#39;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The variables are obtained from the .env file (find_dotenv and load_dotenv functions) or directly from the environment. As this script is executed from the update-ENV-environment workflows, it has access to ALL the credentials needed for establishing a connection to the databases.</p>
+<p>The variables are obtained from the .env file (find_dotenv and load_dotenv functions) or directly from the environment. <strong>THAT IS WHY THIS SCRIPT MUST BE EXECUTED BY THE WORKFLOWS AND NOT MANUALLY</strong>, since it needs to has access to ALL the credentials needed for establishing a connection to the databases. Some of that credentials are only in the Github secrets, and consequently, only in the shell executed by the workflows.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>name: update-dev-environment
 ...
 jobs:
