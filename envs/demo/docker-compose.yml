@@ -276,7 +276,8 @@ services:
       - .env
     environment:
       - POSTGRES_MULTIPLE_DATABASES=loomio_production,coproduction_production,catalogue_production
-      - PGUSER=${POSTGRES_USER} # https://stackoverflow.com/questions/60193781/postgres-with-docker-compose-gives-fatal-role-root-does-not-exist-error
+      - PGUSER=${POSTGRES_USERNAME} # https://stackoverflow.com/questions/60193781/postgres-with-docker-compose-gives-fatal-role-root-does-not-exist-error
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready"]
       interval: 10s
@@ -314,7 +315,7 @@ services:
     env_file:
       - .env
     healthcheck:
-      test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u $MONGODB_ROOT_USER -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
+      test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u $MONGODB_ROOT_USERNAME -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
       interval: 10s
       timeout: 10s
       retries: 3
@@ -343,6 +344,8 @@ services:
       - BASE_PATH=/coproduction
       - POSTGRES_DB=coproduction_production
       - POSTGRES_SERVER=db
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - CATALOGUE_SERVICE_NAME=catalogue
       - CATALOGUE_PORT=80
       - DEFAULT_LANGUAGE
@@ -387,6 +390,8 @@ services:
       - PORT=${PORT}
       - BASE_PATH=/coproduction
       - POSTGRES_DB=coproduction_production
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - CATALOGUE_SERVICE_NAME=catalogue
       - CATALOGUE_PORT=80
       - DEFAULT_LANGUAGE
@@ -410,7 +415,9 @@ services:
       - PORT=${PORT}
       - BASE_PATH=/catalogue
       - POSTGRES_DB=catalogue_production
-      - POSTGRES_SERVER=db
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_SERVER=${POSTGRES_HOST}
       - DEFAULT_LANGUAGE
       - ALLOWED_LANGUAGES
     depends_on:
@@ -575,7 +582,7 @@ services:
       - ETHERPAD_API_KEY=${ETHERPAD_API_KEY}
       - DEFAULT_PAD_TEXT=${ETHERPAD_DEFAULT_PAD_TEXT}
       - ADMIN_PASSWORD=${ETHERPAD_ADMIN_PASSWORD}
-      - ADMIN_USER=${ETHERPAD_ADMIN_USER}
+      - ADMIN_USER=${ETHERPAD_ADMIN_USERNAME}
       - REQUIRE_SESSION=${ETHERPAD_REQUIRE_SESSION}
       - EDIT_ONLY=${ETHERPAD_EDIT_ONLY}
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
@@ -608,7 +615,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-loomio
 
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
+      - DATABASE_URL=postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${LOOMIO_POSTGRES_DB}
       - REDIS_URL=redis://redis:6379
       - AAC_APP_SECRET=${LOOMIO_AAC_APP_SECRET}
       - SECRET_COOKIE_TOKEN=${LOOMIO_SECRET_COOKIE_TOKEN}
@@ -616,6 +623,8 @@ services:
       - DEVISE_SECRET=${LOOMIO_DEVISE_SECRET}
       - SMTP_USERNAME=${LOOMIO_SMTP_USERNAME}
       - SMTP_PASSWORD=${LOOMIO_SMTP_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
     volumes:
       - loomio-uploads:/loomio/public/system
@@ -656,7 +665,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-loomioworker
 
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_SERVER}/${LOOMIO_POSTGRES_DB}
+      - DATABASE_URL=postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${LOOMIO_POSTGRES_DB}
       - REDIS_URL=redis://redis:6379
       - TASK=worker
       - AAC_APP_SECRET=${LOOMIO_AAC_APP_SECRET}
@@ -665,6 +674,8 @@ services:
       - DEVISE_SECRET=${LOOMIO_DEVISE_SECRET}
       - SMTP_USERNAME=${LOOMIO_SMTP_USERNAME}
       - SMTP_PASSWORD=${LOOMIO_SMTP_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - loomio-uploads:/loomio/public/system
       - loomio-storage:/loomio/storage
@@ -787,7 +798,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-logging
 
     environment:
-      - ELASTIC_HOST=elasticsearch
+      - ELASTIC_HOST
       - ELASTIC_PORT
       - ELASTIC_USERNAME
       - ELASTIC_PASSWORD
@@ -881,8 +892,35 @@ services:
       - grafana-dashboards:/var/lib/grafana
       - grafana-data:/etc/grafana/
     environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      # Grafana
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USERNAME}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD}
+
+      # Postgres
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+      # Elasticsearch
+      ELASTIC_HOST: ${ELASTIC_HOST}
+      ELASTIC_PORT: ${ELASTIC_PORT}
+      ELASTIC_USERNAME: ${ELASTIC_USERNAME}
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+
+      # MySQL
+      MYSQL_HOST_MONITORING: ${MYSQL_HOST_MONITORING}
+      MYSQL_PORT_MONITORING: ${MYSQL_PORT_MONITORING}
+      MYSQL_USERNAME_MONITORING: ${MYSQL_USERNAME_MONITORING}
+      MYSQL_PASSWORD_MONITORING: ${MYSQL_PASSWORD_MONITORING}
+      MYSQL_DATABASE_MONITORING: ${MYSQL_DATABASE_MONITORING}
+      MYSQL_ROOT_PASSWORD_MONITORING: ${MYSQL_ROOT_PASSWORD_MONITORING}
+
+      # Dremio
+      DREMIO_HOST: ${DREMIO_HOST}
+      DREMIO_PORT: ${DREMIO_PORT}
+      DREMIO_USERNAME: ${DREMIO_USERNAME}
+      DREMIO_PASSWORD: ${DREMIO_PASSWORD}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -911,7 +949,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_MONITORING}
       MYSQL_DATABASE: ${MYSQL_DATABASE_MONITORING}
-      MYSQL_USER: ${MYSQL_USER_MONITORING}
+      MYSQL_USER: ${MYSQL_USERNAME_MONITORING}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD_MONITORING}
     links:
       - loki:loki
@@ -1045,7 +1083,7 @@ services:
       # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
       - --strict.perms=false
     links:
-      - newelasticsearch:newelasticsearch
+      - elasticsearch:elasticsearch
     networks:
       - grafana-network
       - traefik-public

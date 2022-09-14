@@ -141,6 +141,11 @@ queries = [
         "extract_count": True
     },
     {
+        "name": "A2.1. Number of citizens involved in co-delivered services",
+        "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\", coproduction.public.team INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT team.id FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'citizen' INNER JOIN coproduction.public.organization ON team.organization_id = organization.id AND organization.id IN (SELECT coproductionprocess.organization_id FROM coproduction.public.coproductionprocess INNER JOIN coproduction.public.phase",
+        "extract_count": True
+    },
+    {
         "name": "A5: Number of TSO users",
         "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\" INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT coproduction.public.team.id FROM coproduction.public.team WHERE team.type LIKE '%organization%' )",
         "extract_count": True
@@ -157,13 +162,17 @@ queries = [
         "extract_count": True
     },
     {
-        "name": "A1.8: Number of knowledge interlinkers",
-        "sql": "SELECT COUNT(*) FROM catalogue.public.knowledgeinterlinker",
+        "name": "A1.1: Number of software interlinkers",
+        "sql": "SELECT COUNT(*) FROM catalogue.public.softwareinterlinker",
         "extract_count": True
     },
     {
-        "name": "A1.1: Number of software interlinkers",
-        "sql": "SELECT COUNT(*) FROM catalogue.public.softwareinterlinker",
+        "name": "A1.2: Used software interlinkers",
+        "sql": "SELECT softwareinterlinker_name as NAME, COUNT(softwareinterlinker_name) as TOTAL_INSTANTIATIONS, COUNT(DISTINCT(coproductionprocess_id)) AS IN_COPRODUCTION_PROCESSES FROM elastic2.logs.log WHERE action LIKE 'CREATE' AND model LIKE 'ASSET' GROUP BY softwareinterlinker_name",
+    },
+    {
+        "name": "A1.3: Number of used software interlinkers",
+        "sql": "SELECT COUNT(DISTINCT(softwareinterlinker_id)) FROM elastic2.logs.log WHERE action LIKE 'CREATE' AND model LIKE 'ASSET'",
         "extract_count": True
     },
     {
@@ -177,17 +186,18 @@ queries = [
         "extract_count": True
     },
     {
-        "name": "A1.2: Used software interlinkers",
-        "sql": "SELECT softwareinterlinker_name as NAME, COUNT(softwareinterlinker_name) as TOTAL_INSTANTIATIONS, COUNT(DISTINCT(coproductionprocess_id)) AS IN_COPRODUCTION_PROCESSES FROM elastic2.logs.log WHERE action LIKE 'CREATE' AND model LIKE 'ASSET' GROUP BY softwareinterlinker_name",
+        "name": "A1.6 Number of external interlinkers",
+        "sql": "SELECT COUNT(*) FROM ( SELECT * FROM catalogue.public.interlinker INNER JOIN catalogue.public.externalsoftwareinterlinker ON interlinker.id=externalsoftwareinterlinker.id UNION SELECT * FROM catalogue.public.interlinker INNER JOIN catalogue.public.externalknowledgeinterlinker ON interlinker.id=externalknowledgeinterlinker.id)",
+        "extract_count": True
+    },
+    {
+        "name": "A1.8: Number of knowledge interlinkers",
+        "sql": "SELECT COUNT(*) FROM catalogue.public.knowledgeinterlinker",
+        "extract_count": True
     },
     {
         "name": "A1.9: Used knowledge interlinkers",
         "sql": "SELECT knowledgeinterlinker_name as NAME, COUNT(knowledgeinterlinker_name) as TOTAL_INSTANTIATIONS, COUNT(DISTINCT(coproductionprocess_id)) AS IN_COPRODUCTION_PROCESSES FROM elastic2.logs.log WHERE action LIKE 'CREATE' AND model LIKE 'ASSET' AND knowledgeinterlinker_name IS NOT null GROUP BY knowledgeinterlinker_name",
-    },
-    {
-        "name": "A1.3: Number of used software interlinkers",
-        "sql": "SELECT COUNT(DISTINCT(softwareinterlinker_id)) FROM elastic2.logs.log WHERE action LIKE 'CREATE' AND model LIKE 'ASSET'",
-        "extract_count": True
     },
     {
         "name": "A1.10: Number of used knowledge interlinkers",
@@ -195,8 +205,13 @@ queries = [
         "extract_count": True
     },
     {
-        "name": "A15.1: Number of interlinkers reused in more than one coproduction process",
-        "sql": "SELECT COUNT(*) FROM( SELECT knowledgeinterlinker_name, softwareinterlinker_name, COUNT(DISTINCT(coproductionprocess_id)) AS IN_PROCESSES FROM elastic2.logs.log WHERE action LIKE 'CREATE' AND model LIKE 'ASSET' GROUP BY knowledgeinterlinker_name, softwareinterlinker_name ) WHERE IN_PROCESSES > 1",
+        "name": "A3. Number of INTERLINKERs with flag is_sustainabilty related",
+        "sql": "SELECT COUNT(*) FROM catalogue.public.interlinker WHERE interlinker.is_sustainability_related='true'",
+        "extract_count": True
+    },
+    {
+        "name": "A10. Number of private companies involved in co-delivered services",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.organization INNER JOIN coproduction.public.team ON team.organization_id = organization.id AND team.type LIKE '%organization%' AND team.id IN (SELECT permission.team_id FROM coproduction.public.permission INNER JOIN coproduction.public.phase ON phase.coproductionprocess_id = permission.coproductionprocess_id AND phase.is_part_of_codelivery='true' )",
         "extract_count": True
     },
     {
@@ -204,6 +219,12 @@ queries = [
         "sql": "SELECT COUNT(DISTINCT(coproductionprocess_id)) FROM ( SELECT coproductionprocess_id FROM Coproduction.public.asset INNER JOIN Coproduction.public.internalasset ON asset.id = internalasset.id WHERE knowledgeinterlinker_id in ( SELECT id FROM catalogue.public.interlinker WHERE is_sustainability_related = True ) UNION ALL SELECT coproductionprocess_id FROM Coproduction.public.asset INNER JOIN Coproduction.public.internalasset ON asset.id = internalasset.id WHERE softwareinterlinker_id in ( SELECT id FROM catalogue.public.interlinker WHERE is_sustainability_related = True ) UNION ALL SELECT coproductionprocess_id FROM Coproduction.public.asset INNER JOIN Coproduction.public.externalasset ON asset.id = externalasset.id WHERE externalinterlinker_id in ( SELECT id FROM catalogue.public.interlinker WHERE is_sustainability_related = True ) )",
         "extract_count": True
     },
+    {
+        "name": "A15.1: Number of interlinkers reused in more than one coproduction process",
+        "sql": "SELECT COUNT(*) FROM( SELECT knowledgeinterlinker_name, softwareinterlinker_name, COUNT(DISTINCT(coproductionprocess_id)) AS IN_PROCESSES FROM elastic2.logs.log WHERE action LIKE 'CREATE' AND model LIKE 'ASSET' GROUP BY knowledgeinterlinker_name, softwareinterlinker_name ) WHERE IN_PROCESSES > 1",
+        "extract_count": True
+    },
+    
 ]
 
 print("Obtaining kpis on", str_date)
