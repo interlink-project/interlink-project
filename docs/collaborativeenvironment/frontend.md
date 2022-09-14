@@ -6,7 +6,7 @@ The main technologies used for the frontend are:
 
 1. **NGINX:** is open source software for web serving, reverse proxying, caching, load balancing, media streaming, and more. 
 1. **React:** is a free and open-source front-end JavaScript library for building user interfaces based on UI components. It is maintained by Meta (formerly Facebook) and a community of individual developers and companies. React can be used as a base in the development of single-page, mobile, or server-rendered applications with frameworks like Next.js. However, React is only concerned with state management and rendering that state to the DOM, so creating React applications usually requires the use of additional libraries for routing, as well as certain client-side functionality.
-1. **MUI:** is a massive library of UI components designers and developers can use to build React applications. The open-source project follows Google's guidelines for creating components, giving you a customizable library of foundational and advanced UI elements. 
+1. **MUI:** is a massive library of UI components designers and developers can use to build React applications. The open-source project follows Google's guidelines for creating components, giving you a customizable library of foundational and advanced UI elements. The template used is stored by DEUSTO.
 
 ## React components
 

@@ -64,7 +64,7 @@ Once the docker service is up, Dremio GUI is accessible through https://dremio.d
 
 Nevertheless, in the first launch there is no admin account yet. For that, a python script has been created (setup-dremio.py) that calls the Dremio API to set up the administrator account and the different backends. 
 
-> https://github.com/interlink-project/interlink-project/blob/master/envs/development/setup-dremio.py
+Dremio setup script at [https://github.com/interlink-project/interlink-project/blob/master/envs/development/setup-dremio.py](https://github.com/interlink-project/interlink-project/blob/master/envs/development/setup-dremio.py)
 
 ```python
 import json
@@ -171,7 +171,7 @@ print(body)
 apiPost('catalog', body=body)
 ```
 
-The variables are obtained from the .env file (find_dotenv and load_dotenv functions) or directly from the environment. As this script is executed from the update-ENV-environment workflows, it has access to ALL the credentials needed for establishing a connection to the databases.
+The variables are obtained from the .env file (find_dotenv and load_dotenv functions) or directly from the environment. **THAT IS WHY THIS SCRIPT MUST BE EXECUTED BY THE WORKFLOWS AND NOT MANUALLY**, since it needs to has access to ALL the credentials needed for establishing a connection to the databases. Some of that credentials are only in the Github secrets, and consequently, only in the shell executed by the workflows.
 
 ```bash
 name: update-dev-environment
