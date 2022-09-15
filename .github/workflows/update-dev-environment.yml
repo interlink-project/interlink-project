@@ -36,6 +36,13 @@ jobs:
             export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.LOOMIO_SECRET_COOKIE_TOKEN }}
             export LOOMIO_SMTP_PASSWORD=${{ secrets.LOOMIO_SMTP_PASSWORD }}        
             export LOOMIO_DEVISE_SECRET=${{ secrets.LOOMIO_DEVISE_SECRET }}
+            export LOOMIO_SMTP_USERNAME=${{ secrets.DEV_LOOMIO_SMTP_USERNAME }}
+            export LOOMIO_AAC_APP_SECRET=${{ secrets.DEV_LOOMIO_AAC_APP_SECRET }}
+            export MAIL_PASSWORD=${{ secrets.DEV_MAIL_PASSWORD }}
+            export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.DEV_LOOMIO_SECRET_COOKIE_TOKEN }}
+            export LOOMIO_SMTP_PASSWORD=${{ secrets.DEV_LOOMIO_SMTP_PASSWORD }}        
+            export LOOMIO_DEVISE_SECRET=${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
+            export LOOMIO_DEVISE_SECRET=${{ secrets.DEV_LOOMIO_DEVISE_SECRET }}
             export GRAFANA_USERNAME=${{ secrets.DEV_GRAFANA_USERNAME }}
             export GRAFANA_PASSWORD=${{ secrets.DEV_GRAFANA_PASSWORD }}
             export GOOGLE_PROJECT_ID=${{ secrets.DEV_GOOGLE_PROJECT_ID }}
