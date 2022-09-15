@@ -941,7 +941,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   mysql:
-    image: interlinkproject/backend-monitoring:mysql.${PROMETHEUS_VERSION}
+    image: interlinkproject/backend-monitoring:mysql.${MYSQL_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-mysql
     restart: unless-stopped
     volumes:
