@@ -19,8 +19,8 @@ jobs:
           username: ${{ secrets.VARAM_USERNAME }}
           key: ${{ secrets.VARAM_SSH_KEY }}
           script: |
-            export LOOMIO_SMTP_USERNAME=${{ secrets.VARAM_LOOMIO_SMTP_USERNAME }}
-            export LOOMIO_AAC_APP_SECRET=${{ secrets.VARAM_LOOMIO_AAC_APP_SECRET }}
+            export LOOMIO_SMTP_USERNAME=${{ secrets.LOOMIO_SMTP_USERNAME }}
+            export LOOMIO_AAC_APP_SECRET=${{ secrets.LOOMIO_AAC_APP_SECRET }}
             export MAIL_PASSWORD=${{ secrets.VARAM_MAIL_PASSWORD }}
             export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.LOOMIO_SECRET_COOKIE_TOKEN }}
             export LOOMIO_SMTP_PASSWORD=${{ secrets.LOOMIO_SMTP_PASSWORD }}        

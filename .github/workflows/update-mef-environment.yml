@@ -19,8 +19,8 @@ jobs:
           username: ${{ secrets.MEF_USERNAME }}
           key: ${{ secrets.MEF_SSH_KEY }}
           script: |
-            export LOOMIO_SMTP_USERNAME=${{ secrets.MEF_LOOMIO_SMTP_USERNAME }}
-            export LOOMIO_AAC_APP_SECRET=${{ secrets.MEF_LOOMIO_AAC_APP_SECRET }}
+            export LOOMIO_SMTP_USERNAME=${{ secrets.LOOMIO_SMTP_USERNAME }}
+            export LOOMIO_AAC_APP_SECRET=${{ secrets.LOOMIO_AAC_APP_SECRET }}
             export MAIL_PASSWORD=${{ secrets.MEF_MAIL_PASSWORD }}
             export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.LOOMIO_SECRET_COOKIE_TOKEN }}
             export LOOMIO_SMTP_PASSWORD=${{ secrets.LOOMIO_SMTP_PASSWORD }}        
