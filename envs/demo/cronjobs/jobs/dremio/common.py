@@ -101,19 +101,23 @@ def run_queries(queries):
         for job_data in jobs:
             jobId = job_data.get("jobid")
             if queryJobStatus(jobId) == "COMPLETED":
+                print("Processing response of '", job_data.get("name"))
+
                 # get the result of the query
                 res = apiGet(
                     'job/{id}/results?offset={offset}&limit={limit}'.format(id=jobId, offset=0, limit=100))
 
-                # process the result
-                if job_data.get("extract_count"):
-                    res = res.get("rows")[0].get('EXPR$0')
-                else:
-                    res = res.get("rows")
+                try:
+                    # process the result
+                    if job_data.get("extract_count"):
+                        res = res.get("rows")[0].get('EXPR$0')
+                    else:
+                        res = res.get("rows")
+                except Exception as e:
+                    print(str(e))
 
                 # set the result
                 results[job_data.get("name")] = res
-                print("Query '", job_data.get("name"), "' completed!")
 
             else:
                 # add to the unfinished jobs object in order to check it in the next iteration
