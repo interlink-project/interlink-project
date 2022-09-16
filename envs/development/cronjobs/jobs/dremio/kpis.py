@@ -210,6 +210,11 @@ queries = [
         "extract_count": True
     },
     {
+        "name": "A9. Number of processes with teams of different stakeholders",
+        "sql": "SELECT COUNT (DISTINCT coprod_id) FROM ( SELECT DISTINCT coproductionprocess.id as coprod_id, team.id as team_id, team.type as team_type FROM coproduction.public.coproductionprocess, coproduction.public.team INNER JOIN coproduction.public.permission ON permission.coproductionprocess_id=coproductionprocess.id AND permission.team_id=team.id ORDER BY coproductionprocess.id ) GROUP BY coprod_id HAVING COUNT(DISTINCT team_type)>1",
+        "extract_count": True
+    },
+    {
         "name": "A10. Number of private companies involved in co-delivered services",
         "sql": "SELECT COUNT(DISTINCT(organization.id)) FROM coproduction.public.organization INNER JOIN coproduction.public.team ON team.organization_id = organization.id AND team.type LIKE '%organization%' AND team.id IN (SELECT permission.team_id FROM coproduction.public.permission INNER JOIN coproduction.public.phase ON phase.coproductionprocess_id = permission.coproductionprocess_id AND phase.is_part_of_codelivery='true' )",
         "extract_count": True
