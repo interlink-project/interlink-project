@@ -44,6 +44,51 @@ def apiPost(endpoint, body=None):
     else:
         return None
 
+def run_queries(queries):
+    results = {}
+    jobs = []
+
+    for query_data in queries:
+        name = query_data.get("name")
+        sql = query_data.get("sql")
+        extract_count = query_data.get("extract_count", False)
+
+        jobs.append({
+            "jobid": querySQL(sql),
+            "name": name,
+            "extract_count": extract_count
+        })
+
+    iteration = 0
+    while len(jobs) > 0 and iteration <= 10:
+        time.sleep(1)
+
+        unfinished_jobs = []
+        for job_data in jobs:
+            jobId = job_data.get("jobid")
+            if queryJobStatus(jobId) == "COMPLETED":
+                # get the result of the query
+                res = apiGet(
+                    'job/{id}/results?offset={offset}&limit={limit}'.format(id=jobId, offset=0, limit=100))
+
+                # process the result
+                if job_data.get("extract_count"):
+                    res = res.get("rows")[0].get('EXPR$0')
+                else:
+                    res = res.get("rows")
+
+                # set the result
+                results[job_data.get("name")] = res
+                print("Query '", job_data.get("name"), "' completed!")
+
+            else:
+                # add to the unfinished jobs object in order to check it in the next iteration
+                unfinished_jobs.append(job_data)
+
+        jobs = unfinished_jobs
+        print(len(unfinished_jobs), "jobs remaining", [i.get("name") for i in unfinished_jobs])
+        iteration += 1
+    return results
 
 def apiPut(endpoint, body=None):
     return requests.put('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint), headers=config.get_headers(), data=json.dumps(body)).text
@@ -91,6 +136,15 @@ response = requests.put('{server}/apiv2/bootstrap/firstuser'.format(server=confi
 }))
 
 login()
+
+
+body = {
+  "entityType": "space",
+  "name": "test"
+}
+
+print(body)
+apiPost('catalog', body=body)
 
 # https://docs.dremio.com/software/rest-api/sources/sources/
 
@@ -162,3 +216,27 @@ body = {
 }
 print(body)
 apiPost('catalog', body=body)
+
+body = {
+    "entityType": "source",
+    "name": "elastic2",
+    "description": "elasticsearch for logs",
+    "type": "ELASTIC",
+    "config": {
+        "username": os.environ.get("ELASTIC_USERNAME"),
+        "password": os.environ.get("ELASTIC_PASSWORD"),
+        "hostList": [{"hostname": "elasticsearch", "port": os.environ.get("ELASTIC_PORT")}],
+        "authenticationType": "MASTER",
+    },
+}
+print(body)
+apiPost('catalog', body=body)
+
+
+
+with open("view_queries.json") as f:
+    queries = json.load(f)
+    print(queries)
+
+run_queries(queries)
+
