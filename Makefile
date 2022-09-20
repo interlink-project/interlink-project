@@ -66,6 +66,7 @@ start: down net ## Run containers (restarts them if already running)
 	cd ../interlinker-ceditor && make integrated
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
+	#cd ../interlinker-service-augmenter && make integrated
 
 	# Most of the times we only want to restart backend components because frontend lasts a lot to start in dev mode
 	cd ../frontend && make integrated
