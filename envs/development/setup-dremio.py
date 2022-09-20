@@ -6,6 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
+
 class Config():
     userName = os.environ.get("DREMIO_USERNAME")
     firstName = os.environ.get("DREMIO_USERNAME")
@@ -18,7 +19,8 @@ class Config():
 
     def get_headers(self):
         if self.token:
-            return {'content-type': 'application/json', 'Authorization': '_dremio{authToken}'.format(authToken=self.token)}
+            return {'content-type': 'application/json',
+                    'Authorization': '_dremio{authToken}'.format(authToken=self.token)}
         return {'content-type': 'application/json', 'Authorization': '_dremionull'}
 
 
@@ -26,12 +28,14 @@ config = Config()
 
 
 def apiGet(endpoint):
-    return json.loads(requests.get('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint), headers=config.get_headers()).text)
+    return json.loads(requests.get('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint),
+                                   headers=config.get_headers()).text)
 
 
 def apiPost(endpoint, body=None):
     response = requests.post('{server}/api/v3/{endpoint}'.format(server=config.dremioServer,
-                                                                 endpoint=endpoint), headers=config.get_headers(), data=json.dumps(body))
+                                                                 endpoint=endpoint), headers=config.get_headers(),
+                             data=json.dumps(body))
 
     # print(response.__dict__)
     text = response.text
@@ -43,6 +47,7 @@ def apiPost(endpoint, body=None):
         return json.loads(text)
     else:
         return None
+
 
 def run_queries(queries):
     results = {}
@@ -71,7 +76,7 @@ def run_queries(queries):
                 res = apiGet(
                     'job/{id}/results?offset={offset}&limit={limit}'.format(id=jobId, offset=0, limit=100))
 
-                # process the result
+                #  process the result
                 if job_data.get("extract_count"):
                     res = res.get("rows")[0].get('EXPR$0')
                 else:
@@ -90,19 +95,23 @@ def run_queries(queries):
         iteration += 1
     return results
 
+
 def apiPut(endpoint, body=None):
-    return requests.put('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint), headers=config.get_headers(), data=json.dumps(body)).text
+    return requests.put('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint),
+                        headers=config.get_headers(), data=json.dumps(body)).text
 
 
 def apiDelete(endpoint):
-    return requests.delete('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint), headers=config.get_headers())
+    return requests.delete('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint),
+                           headers=config.get_headers())
 
 
 def login():
     # we login using the old api for now
     loginData = {'userName': config.userName, 'password': config.password}
     response = requests.post(
-        '{server}/apiv2/login'.format(server=config.dremioServer), headers=config.get_headers(), data=json.dumps(loginData))
+        '{server}/apiv2/login'.format(server=config.dremioServer), headers=config.get_headers(),
+        data=json.dumps(loginData))
     data = json.loads(response.text)
 
     # retrieve the login token
@@ -125,22 +134,22 @@ def getQueryResult(query):
         time.sleep(1)
     return apiGet('job/{id}/results?offset={offset}&limit={limit}'.format(id=jobId, offset=0, limit=100))
 
-        
-response = requests.put('{server}/apiv2/bootstrap/firstuser'.format(server=config.dremioServer), headers=config.get_headers(), data=json.dumps({
-    "userName": config.userName,
-    "firstName": config.firstName,
-    "lastName": config.lastName,
-    "createdAt": int(time.time()),
-    "email": config.email,
-    "password": config.password,
-}))
+
+response = requests.put('{server}/apiv2/bootstrap/firstuser'.format(server=config.dremioServer),
+                        headers=config.get_headers(), data=json.dumps({
+        "userName": config.userName,
+        "firstName": config.firstName,
+        "lastName": config.lastName,
+        "createdAt": int(time.time()),
+        "email": config.email,
+        "password": config.password,
+    }))
 
 login()
 
-
 body = {
-  "entityType": "space",
-  "name": "test"
+    "entityType": "space",
+    "name": "test"
 }
 
 print(body)
@@ -201,7 +210,6 @@ body = {
 print(body)
 apiPost('catalog', body=body)
 
-
 body = {
     "entityType": "source",
     "name": "elastic2",
@@ -232,9 +240,7 @@ body = {
 print(body)
 apiPost('catalog', body=body)
 
-
-
-with open("view_queries.json") as f:
+with open("setup_queries.json") as f:
     queries = json.load(f)
     print(queries)
 
