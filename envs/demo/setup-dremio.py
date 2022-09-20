@@ -6,6 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
+
 class Config():
     userName = os.environ.get("DREMIO_USERNAME")
     firstName = os.environ.get("DREMIO_USERNAME")
@@ -18,7 +19,8 @@ class Config():
 
     def get_headers(self):
         if self.token:
-            return {'content-type': 'application/json', 'Authorization': '_dremio{authToken}'.format(authToken=self.token)}
+            return {'content-type': 'application/json',
+                    'Authorization': '_dremio{authToken}'.format(authToken=self.token)}
         return {'content-type': 'application/json', 'Authorization': '_dremionull'}
 
 
@@ -26,12 +28,14 @@ config = Config()
 
 
 def apiGet(endpoint):
-    return json.loads(requests.get('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint), headers=config.get_headers()).text)
+    return json.loads(requests.get('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint),
+                                   headers=config.get_headers()).text)
 
 
 def apiPost(endpoint, body=None):
     response = requests.post('{server}/api/v3/{endpoint}'.format(server=config.dremioServer,
-                                                                 endpoint=endpoint), headers=config.get_headers(), data=json.dumps(body))
+                                                                 endpoint=endpoint), headers=config.get_headers(),
+                             data=json.dumps(body))
 
     # print(response.__dict__)
     text = response.text
@@ -45,19 +49,69 @@ def apiPost(endpoint, body=None):
         return None
 
 
+def run_queries(queries):
+    results = {}
+    jobs = []
+
+    for query_data in queries:
+        name = query_data.get("name")
+        sql = query_data.get("sql")
+        extract_count = query_data.get("extract_count", False)
+
+        jobs.append({
+            "jobid": querySQL(sql),
+            "name": name,
+            "extract_count": extract_count
+        })
+
+    iteration = 0
+    while len(jobs) > 0 and iteration <= 10:
+        time.sleep(1)
+
+        unfinished_jobs = []
+        for job_data in jobs:
+            jobId = job_data.get("jobid")
+            if queryJobStatus(jobId) == "COMPLETED":
+                # get the result of the query
+                res = apiGet(
+                    'job/{id}/results?offset={offset}&limit={limit}'.format(id=jobId, offset=0, limit=100))
+
+                #  process the result
+                if job_data.get("extract_count"):
+                    res = res.get("rows")[0].get('EXPR$0')
+                else:
+                    res = res.get("rows")
+
+                # set the result
+                results[job_data.get("name")] = res
+                print("Query '", job_data.get("name"), "' completed!")
+
+            else:
+                # add to the unfinished jobs object in order to check it in the next iteration
+                unfinished_jobs.append(job_data)
+
+        jobs = unfinished_jobs
+        print(len(unfinished_jobs), "jobs remaining", [i.get("name") for i in unfinished_jobs])
+        iteration += 1
+    return results
+
+
 def apiPut(endpoint, body=None):
-    return requests.put('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint), headers=config.get_headers(), data=json.dumps(body)).text
+    return requests.put('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint),
+                        headers=config.get_headers(), data=json.dumps(body)).text
 
 
 def apiDelete(endpoint):
-    return requests.delete('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint), headers=config.get_headers())
+    return requests.delete('{server}/api/v3/{endpoint}'.format(server=config.dremioServer, endpoint=endpoint),
+                           headers=config.get_headers())
 
 
 def login():
     # we login using the old api for now
     loginData = {'userName': config.userName, 'password': config.password}
     response = requests.post(
-        '{server}/apiv2/login'.format(server=config.dremioServer), headers=config.get_headers(), data=json.dumps(loginData))
+        '{server}/apiv2/login'.format(server=config.dremioServer), headers=config.get_headers(),
+        data=json.dumps(loginData))
     data = json.loads(response.text)
 
     # retrieve the login token
@@ -80,17 +134,26 @@ def getQueryResult(query):
         time.sleep(1)
     return apiGet('job/{id}/results?offset={offset}&limit={limit}'.format(id=jobId, offset=0, limit=100))
 
-        
-response = requests.put('{server}/apiv2/bootstrap/firstuser'.format(server=config.dremioServer), headers=config.get_headers(), data=json.dumps({
-    "userName": config.userName,
-    "firstName": config.firstName,
-    "lastName": config.lastName,
-    "createdAt": int(time.time()),
-    "email": config.email,
-    "password": config.password,
-}))
+
+response = requests.put('{server}/apiv2/bootstrap/firstuser'.format(server=config.dremioServer),
+                        headers=config.get_headers(), data=json.dumps({
+        "userName": config.userName,
+        "firstName": config.firstName,
+        "lastName": config.lastName,
+        "createdAt": int(time.time()),
+        "email": config.email,
+        "password": config.password,
+    }))
 
 login()
+
+body = {
+    "entityType": "space",
+    "name": "test"
+}
+
+print(body)
+apiPost('catalog', body=body)
 
 # https://docs.dremio.com/software/rest-api/sources/sources/
 
@@ -147,6 +210,20 @@ body = {
 print(body)
 apiPost('catalog', body=body)
 
+body = {
+    "entityType": "source",
+    "name": "elastic2",
+    "description": "elasticsearch for logs",
+    "type": "ELASTIC",
+    "config": {
+        "username": os.environ.get("ELASTIC_USERNAME"),
+        "password": os.environ.get("ELASTIC_PASSWORD"),
+        "hostList": [{"hostname": "elasticsearch", "port": os.environ.get("ELASTIC_PORT")}],
+        "authenticationType": "MASTER",
+    },
+}
+print(body)
+apiPost('catalog', body=body)
 
 body = {
     "entityType": "source",
@@ -162,3 +239,10 @@ body = {
 }
 print(body)
 apiPost('catalog', body=body)
+
+with open("setup_queries.json") as f:
+    queries = json.load(f)
+    print(queries)
+
+run_queries(queries)
+
