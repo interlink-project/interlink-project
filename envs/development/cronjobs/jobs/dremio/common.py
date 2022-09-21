@@ -110,7 +110,10 @@ def run_queries(queries):
                 try:
                     # process the result
                     if job_data.get("extract_count"):
-                        res = res.get("rows")[0].get('EXPR$0')
+                        try:
+                            res = res.get("rows")[0].get('EXPR$0')
+                        except Exception as e:
+                            print(str(e))
                     else:
                         res = res.get("rows")
                 except Exception as e:

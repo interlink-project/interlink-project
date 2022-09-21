@@ -211,7 +211,7 @@ queries = [
     },
     {
         "name": "A9. Number of processes with teams of different stakeholders",
-        "sql": "SELECT COUNT (DISTINCT coprod_id) FROM ( SELECT DISTINCT coproductionprocess.id as coprod_id, team.id as team_id, team.type as team_type FROM coproduction.public.coproductionprocess, coproduction.public.team INNER JOIN coproduction.public.permission ON permission.coproductionprocess_id=coproductionprocess.id AND permission.team_id=team.id ORDER BY coproductionprocess.id ) GROUP BY coprod_id HAVING COUNT(DISTINCT team_type)>1",
+        "sql": "SELECT SUM(counted_coprods) FROM (SELECT COUNT(DISTINCT coprod_id) AS counted_coprods  FROM ( SELECT DISTINCT coproductionprocess.id as coprod_id, team.id as team_id, team.type as team_type FROM coproduction.public.coproductionprocess, coproduction.public.team INNER JOIN coproduction.public.permission ON permission.coproductionprocess_id=coproductionprocess.id AND permission.team_id=team.id ORDER BY coproductionprocess.id ) GROUP BY coprod_id HAVING COUNT(DISTINCT team_type)>1)",
         "extract_count": True
     },
     {
