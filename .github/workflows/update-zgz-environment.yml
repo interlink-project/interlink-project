@@ -82,4 +82,6 @@ jobs:
             docker-compose exec -T db psql -U postgres -d catalogue_production -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
             docker-compose exec -T db psql -U postgres -c "ALTER ROLE viewer WITH LOGIN;"
             
+            cd /datadrive/data/interlink-project/grafana
+            python3 setup_dremio_grafana.py
             
