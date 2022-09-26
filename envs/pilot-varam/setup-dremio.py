@@ -149,7 +149,7 @@ login()
 
 body = {
     "entityType": "space",
-    "name": "test"
+    "name": "grafana"
 }
 
 print(body)
