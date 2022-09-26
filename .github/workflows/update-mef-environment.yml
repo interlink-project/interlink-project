@@ -60,7 +60,7 @@ jobs:
             docker-compose up -d
             sleep 10
 
-            sudo apt install python3-pip
+            sudo apt install python3-pip -y
             pip3 install python-dotenv && python3 setup-dremio.py
 
             docker-compose exec -T catalogue python /app/app/pre_start.py
