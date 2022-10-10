@@ -290,6 +290,7 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    command: postgres -N 500
 
   # PGAdmin (do not expose)
   # pgadmin:
