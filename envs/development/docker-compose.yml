@@ -5,6 +5,7 @@ services:
   proxy:
     image: traefik:v2.6.6
     container_name: ${PLATFORM_STACK_NAME}-traefik
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
@@ -64,6 +65,7 @@ services:
   crontab:
     image: interlinkproject/crontab:master
     container_name: ${PLATFORM_STACK_NAME}-crontab
+    restart: unless-stopped
     env_file:
       - .env
     restart: always
@@ -134,6 +136,7 @@ services:
   frontend:
     image: interlinkproject/frontend:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend
+    restart: unless-stopped
     volumes:
       - ./frontend-customization:/usr/share/nginx/html/static/customization
     environment:
@@ -163,6 +166,7 @@ services:
   frontend-docs:
     image: interlinkproject/frontend-docs:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend-docs
+    restart: unless-stopped
     networks:
       - traefik-public
     labels:
@@ -181,8 +185,9 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   mariadb:
-    container_name: ${PLATFORM_STACK_NAME}-mariadb
     image: mariadb
+    container_name: ${PLATFORM_STACK_NAME}-mariadb
+    restart: unless-stopped
     command: --max-allowed-packet=64MB
     restart: always
     volumes:
@@ -198,9 +203,9 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   matomo:
-    container_name: ${PLATFORM_STACK_NAME}-matomo
     image: bitnami/matomo:4.10.1
-    restart: always
+    container_name: ${PLATFORM_STACK_NAME}-matomo
+    restart: unless-stopped
     volumes:
       - matomo-data:/bitnami/matomo
     env_file:
@@ -229,6 +234,7 @@ services:
   redis:
     image: redis:6-alpine
     container_name: ${PLATFORM_STACK_NAME}-redis
+    restart: unless-stopped
     networks:
       - default
       - grafana-network
@@ -240,9 +246,9 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   dremio:
-    container_name: ${PLATFORM_STACK_NAME}-dremio
-    restart: always
     image: dremio/dremio-oss:21.2
+    container_name: ${PLATFORM_STACK_NAME}-dremio
+    restart: unless-stopped
     volumes:
       - dremio-data:/opt/dremio/data
     networks:
@@ -270,6 +276,7 @@ services:
   db:
     image: interlinkproject/postgres:${DB_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-db
+    restart: unless-stopped
     volumes:
       - db-data:${PGDATA}
     env_file:
@@ -313,6 +320,7 @@ services:
   mongodb:
     image: bitnami/mongodb:latest
     container_name: ${PLATFORM_STACK_NAME}-mongodb
+    restart: unless-stopped
     env_file:
       - .env
     healthcheck:
@@ -335,6 +343,7 @@ services:
   coproduction:
     image: interlinkproject/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproduction
+    restart: unless-stopped
     env_file:
       - .env
     volumes:
@@ -377,6 +386,7 @@ services:
   coproductionworker:
     image: interlinkproject/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproductionworker
+    restart: unless-stopped
     command: [ "bash", "./worker-start.sh" ]
     volumes:
       - coproduction-static:/app/static
@@ -409,6 +419,7 @@ services:
   catalogue:
     image: interlinkproject/backend-catalogue:${CATALOGUE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-catalogue
+    restart: unless-stopped
     volumes:
       - catalogue-static:/app/static
     environment:
@@ -448,6 +459,7 @@ services:
   auth:
     image: interlinkproject/backend-auth:${AUTH_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-auth
+    restart: unless-stopped
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -479,6 +491,7 @@ services:
   googledrive:
     image: interlinkproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-googledrive
+    restart: unless-stopped
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -515,6 +528,7 @@ services:
   surveyeditor:
     image: interlinkproject/interlinker-surveyeditor:${SURVEYEDITOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-surveyeditor
+    restart: unless-stopped
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -545,6 +559,7 @@ services:
   ceditor:
     image: interlinkproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-ceditor
+    restart: unless-stopped
     environment:
       - SERVER_NAME=${DOMAIN}
       - PORT=${PORT}
@@ -575,7 +590,6 @@ services:
   etherpad:
     image: interlinkproject/interlinker-ceditor:etherpad.${ETHERPAD_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-etherpad
-
     restart: on-failure
     environment:
       - TITLE=${ETHERPAD_TITLE}
@@ -614,7 +628,7 @@ services:
   loomio:
     image: interlinkproject/interlinker-loomio:${LOOMIO_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomio
-
+    restart: unless-stopped
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${LOOMIO_POSTGRES_DB}
       - REDIS_URL=redis://redis:6379
@@ -664,7 +678,7 @@ services:
   loomioworker:
     image: interlinkproject/interlinker-loomio:${LOOMIOWORKER_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomioworker
-
+    restart: unless-stopped
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${LOOMIO_POSTGRES_DB}
       - REDIS_URL=redis://redis:6379
@@ -696,7 +710,7 @@ services:
   loomiochannels:
     image: loomio/loomio_channel_server:latest
     container_name: ${PLATFORM_STACK_NAME}-loomiochannels
-
+    restart: unless-stopped
     environment:
       - REDIS_URL=redis://redis:6379
       - VIRTUAL_HOST=channels.loomio.${DOMAIN}
@@ -728,7 +742,6 @@ services:
   augmenterservice:
     image: interlinkproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-augmenterservice
-
     restart: always
     env_file:
       - .env
@@ -797,7 +810,7 @@ services:
   logging:
     image: interlinkproject/backend-logging:${LOGGING_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-logging
-
+    restart: unless-stopped
     environment:
       - ELASTIC_HOST
       - ELASTIC_PORT
@@ -818,7 +831,6 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-logging.rule=Host(`${DOMAIN}`) && PathPrefix(`/logging`)
       - traefik.http.routers.${PLATFORM_STACK_NAME}-logging.middlewares=logging-stripprefix
       - traefik.http.middlewares.logging-stripprefix.stripprefix.prefixes=/logging
-    restart: on-failure
     networks:
       - traefik-public
       - default
@@ -831,6 +843,7 @@ services:
   newelasticsearch:
     image: elasticsearch:8.2.2
     container_name: ${PLATFORM_STACK_NAME}-elasticsearch8
+    restart: unless-stopped
     environment:
       - xpack.security.enabled=true
       - discovery.type=single-node
@@ -1029,7 +1042,6 @@ services:
   loki:
     image: interlinkproject/backend-monitoring:loki.${LOKI_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loki
-
     restart: unless-stopped
     command: -config.file=/etc/loki/local-config.yaml
     ports:
@@ -1047,7 +1059,6 @@ services:
   promtail:
     image: interlinkproject/backend-monitoring:promtail.${PROMTAIL_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-promtail
-
     restart: unless-stopped
     command: -config.file=/etc/promtail/config.yml
     volumes:
@@ -1066,6 +1077,7 @@ services:
   filebeat:
     image: interlinkproject/backend-monitoring:filebeat.${FILEBEAT_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-filebeat
+    restart: unless-stopped
     user: root
     volumes:
       - type: bind
