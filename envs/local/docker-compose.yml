@@ -113,7 +113,7 @@ services:
     env_file:
       - .env
     healthcheck:
-      test: echo 'db.runCommand({serverStatus:1}).ok' | mongo admin -u root -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
+      test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin -u root -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
       interval: 10s
       timeout: 10s
       retries: 3
