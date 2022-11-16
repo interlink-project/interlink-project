@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 
 date_time = datetime.now()
-str_date = date_time.strftime("%m%d%Y%H%M%S")
+str_date = date_time.strftime("%Y%m%d%H%M%S")
 
 def make_tarfile(output_filename, source_dir):
     with tarfile.open(output_filename, "w:gz") as tar:
