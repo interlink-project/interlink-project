@@ -108,7 +108,7 @@ services:
   #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   mongodb:
-    image: bitnami/mongodb:5.0.13:latest
+    image: bitnami/mongodb:6.0.3:latest
     container_name: mongodb
     env_file:
       - .env

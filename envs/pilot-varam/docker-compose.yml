@@ -318,7 +318,7 @@ services:
 
   # MongoDB Service
   mongodb:
-    image: bitnami/mongodb:5.0.13
+    image: bitnami/mongodb:6.0.3
     container_name: ${PLATFORM_STACK_NAME}-mongodb
     restart: unless-stopped
     env_file:
