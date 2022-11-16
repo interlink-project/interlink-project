@@ -189,7 +189,6 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-mariadb
     restart: unless-stopped
     command: --max-allowed-packet=64MB
-    restart: always
     volumes:
       - mariadb-data:/var/lib/mysql
     env_file:
