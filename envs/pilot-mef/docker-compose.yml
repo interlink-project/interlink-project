@@ -68,7 +68,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    restart: always
     environment:
       - KPIS_GOOGLE_PROJECT_ID=${KPIS_GOOGLE_PROJECT_ID}
       - KPIS_GOOGLE_PRIVATE_KEY_ID=${KPIS_GOOGLE_PRIVATE_KEY_ID}
@@ -189,7 +188,6 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-mariadb
     restart: unless-stopped
     command: --max-allowed-packet=64MB
-    restart: always
     volumes:
       - mariadb-data:/var/lib/mysql
     env_file:
@@ -318,7 +316,7 @@ services:
 
   # MongoDB Service
   mongodb:
-    image: bitnami/mongodb:6.0.3:latest
+    image: bitnami/mongodb:6.0.3
     container_name: ${PLATFORM_STACK_NAME}-mongodb
     restart: unless-stopped
     env_file:

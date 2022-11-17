@@ -68,7 +68,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    restart: always
     environment:
       - KPIS_GOOGLE_PROJECT_ID=${KPIS_GOOGLE_PROJECT_ID}
       - KPIS_GOOGLE_PRIVATE_KEY_ID=${KPIS_GOOGLE_PRIVATE_KEY_ID}

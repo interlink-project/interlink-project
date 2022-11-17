@@ -68,7 +68,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    restart: always
     environment:
       - KPIS_GOOGLE_PROJECT_ID=${KPIS_GOOGLE_PROJECT_ID}
       - KPIS_GOOGLE_PRIVATE_KEY_ID=${KPIS_GOOGLE_PRIVATE_KEY_ID}
@@ -189,7 +188,6 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-mariadb
     restart: unless-stopped
     command: --max-allowed-packet=64MB
-    restart: always
     volumes:
       - mariadb-data:/var/lib/mysql
     env_file:
@@ -271,7 +269,7 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-        
+
   # Postgres Service
   db:
     image: interlinkproject/postgres:${DB_VERSION}
@@ -318,7 +316,7 @@ services:
 
   # MongoDB Service
   mongodb:
-    image: bitnami/mongodb:6.0.3:latest
+    image: bitnami/mongodb:6.0.3
     container_name: ${PLATFORM_STACK_NAME}-mongodb
     restart: unless-stopped
     env_file:
@@ -867,7 +865,7 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-  
+
   elasticsearch:
     container_name: ${PLATFORM_STACK_NAME}-elasticsearch6
     image: elasticsearch:6.8.23
