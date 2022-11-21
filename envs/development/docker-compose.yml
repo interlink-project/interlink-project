@@ -88,7 +88,7 @@ services:
       # Volumes to be backup
       - matomo-data:/opt/volumes/matomo-data
       - mariadb-data:/opt/volumes/mariadb-data
-      - mysql-data:/opt/volumes/mysql-data
+      - monitoringdb-data:/opt/volumes/monitoringdb-data
       - newelasticsearch-data:/opt/volumes/newelasticsearch-data
       - elasticsearch-data:/opt/volumes/elasticsearch-data
       - mongodb-data:/opt/volumes/mongodb-data
@@ -184,7 +184,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   mariadb:
-    image: mariadb
+    image: mariadb:10.10.2
     container_name: ${PLATFORM_STACK_NAME}-mariadb
     restart: unless-stopped
     command: --max-allowed-packet=64MB
@@ -249,9 +249,6 @@ services:
     restart: unless-stopped
     volumes:
       - dremio-data:/opt/dremio/data
-    networks:
-      - traefik-public
-      - default
     ports:
       - "9047:9047"   # UI (HTTP)
       # - "31010:31010" # ODBC/JDBC clients
@@ -265,6 +262,10 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls=true
       - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.rule=Host(`dremio.${DOMAIN}`)
       - traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9047
+    networks:
+      - traefik-public
+      - default
+      - grafana-network
     logging:
       driver: "json-file"
       options:
@@ -899,7 +900,6 @@ services:
     restart: unless-stopped
     links:
       - prometheus:prometheus
-      - loki:loki
     volumes:
       - grafana-dashboards:/var/lib/grafana
       - grafana-data:/etc/grafana/
@@ -952,19 +952,16 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-  mysql:
-    image: interlinkproject/backend-monitoring:mysql.${MYSQL_VERSION}
-    container_name: ${PLATFORM_STACK_NAME}-mysql
-    restart: unless-stopped
-    volumes:
-      - mysql-data:/var/lib/mysql
+  monitoringdb:
+    image: mariadb:10.10.2
+    container_name: ${PLATFORM_STACK_NAME}-monitoringdb
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_MONITORING}
       MYSQL_DATABASE: ${MYSQL_DATABASE_MONITORING}
       MYSQL_USER: ${MYSQL_USERNAME_MONITORING}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD_MONITORING}
-    links:
-      - loki:loki
+    volumes:
+      - monitoringdb-data:/var/lib/mysql
     networks:
       - grafana-network
       - traefik-public
@@ -972,7 +969,6 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
 
   prometheus:
     image: interlinkproject/backend-monitoring:prometheus.${PROMETHEUS_VERSION}
@@ -1064,7 +1060,7 @@ services:
       - /var/lib/docker/containers/:/var/lib/docker/containers/:ro
       - /datadrive/docker/containers/:/datadrive/docker/containers/:ro
     links:
-      - loki:loki
+      - dremio:dremio
     networks:
       - grafana-network
     logging:
@@ -1126,7 +1122,7 @@ networks:
 
 volumes:
   backups:
-  
+
   loomio-uploads:
   loomio-storage:
   loomio-files:
@@ -1147,10 +1143,10 @@ volumes:
   catalogue-static:
   matomo-data:
   mariadb-data:
-  
+
   grafana-dashboards:
   grafana-data:
-  mysql-data:
+  monitoringdb-data:
   prometheus-data:
   loki-data:
   filebeat:

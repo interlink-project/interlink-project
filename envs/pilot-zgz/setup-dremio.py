@@ -184,3 +184,21 @@ body = {
 }
 print(body)
 apiPost('catalog', body=body)
+
+# MYSQL SOURCE
+body = {
+    "entityType": "source",
+    "name": "monitoringdb",
+    "description": "monitoring data",
+    "type": "MYSQL",
+    "config": {
+        "username": os.environ.get("MYSQL_USERNAME_MONITORING"),
+        "password": os.environ.get("MYSQL_PASSWORD_MONITORING"),
+        "hostname": os.environ.get("MYSQL_HOST_MONITORING"),
+        "port": os.environ.get("MYSQL_PORT_MONITORING"),
+        "authenticationType": "MASTER",
+        "fetchSize": "0"
+    },
+}
+print(body)
+apiPost('catalog', body=body)
