@@ -953,7 +953,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   monitoringdb:
-    image: mariadb:10.10.2
+    image: interlinkproject/backend-monitoring:mysql.${MYSQL_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-monitoringdb
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_MONITORING}
