@@ -322,6 +322,7 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    restart: always
     healthcheck:
       test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin -u $MONGODB_ROOT_USERNAME -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
       interval: 10s
