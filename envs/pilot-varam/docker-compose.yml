@@ -56,7 +56,7 @@ services:
       # - traefik.http.middlewares.iframeHeaders.headers.customresponseheaders.Access-Control-Allow-Headers=Content-Type, Authorization, X-Requested-With
     networks:
       - traefik-public
-      - default
+
     logging:
       driver: "json-file"
       options:
@@ -102,7 +102,7 @@ services:
       - backups:/opt/backups
     networks:
       - traefik-public
-      - default
+
 
   portainer:
     image: portainer/portainer-ce:2.11.1-alpine
@@ -193,7 +193,7 @@ services:
     env_file:
       - .env
     networks:
-      - default
+      - traefik-public
       - grafana-network
     logging:
       driver: "json-file"
@@ -209,7 +209,7 @@ services:
     env_file:
       - .env
     networks:
-      - default
+
       - traefik-public
     depends_on:
       - mariadb
@@ -234,7 +234,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-redis
     restart: unless-stopped
     networks:
-      - default
+
       - grafana-network
     environment:
       - TZ=${TZ}
@@ -264,7 +264,7 @@ services:
       - traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9047
     networks:
       - traefik-public
-      - default
+
       - grafana-network
     logging:
       driver: "json-file"
@@ -290,8 +290,8 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - default
       - grafana-network
+      - traefik-public
     logging:
       driver: "json-file"
       options:
@@ -308,8 +308,6 @@ services:
   #     - db
   #   env_file:
   #     - .env
-  #   networks:
-  #     - default
   #   logging:
   #     driver: "json-file"
   #     options:
@@ -322,7 +320,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    restart: always
     healthcheck:
       test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin -u $MONGODB_ROOT_USERNAME -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
       interval: 10s
@@ -330,8 +327,8 @@ services:
       retries: 3
       # start_period: 20s
     networks:
-      - default
       - grafana-network
+      - traefik-public
     volumes:
       - mongodb-data:/bitnami/mongodb
     logging:
@@ -376,7 +373,8 @@ services:
       - traefik.http.middlewares.coproduction-stripprefix.stripprefix.prefixes=/coproduction
     networks:
       - traefik-public
-      - default
+    links:
+      - db:db
     logging:
       driver: "json-file"
       options:
@@ -409,7 +407,9 @@ services:
       - ALLOWED_LANGUAGES
       - POSTGRES_SERVER=db
     networks:
-      - default
+      - traefik-public
+    links:
+      - db:db
     logging:
       driver: "json-file"
       options:
@@ -449,7 +449,7 @@ services:
     command: ["bash", "./start-prod.sh"]
     networks:
       - traefik-public
-      - default
+
     logging:
       driver: "json-file"
       options:
@@ -481,7 +481,6 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-auth.rule=Host(`${DOMAIN}`) && PathPrefix(`/auth`)
     networks:
       - traefik-public
-      - default
     logging:
       driver: "json-file"
       options:
@@ -518,7 +517,6 @@ services:
       - traefik.http.middlewares.googledrive-stripprefix.stripprefix.prefixes=/googledrive
     networks:
       - traefik-public
-      - default
     logging:
       driver: "json-file"
       options:
@@ -549,7 +547,6 @@ services:
       - traefik.http.middlewares.surveyeditor-stripprefix.stripprefix.prefixes=/surveyeditor
     networks:
       - traefik-public
-      - default
     logging:
       driver: "json-file"
       options:
@@ -580,7 +577,6 @@ services:
       - traefik.http.middlewares.ceditor-stripprefix.stripprefix.prefixes=/ceditor
     networks:
       - traefik-public
-      - default
     logging:
       driver: "json-file"
       options:
@@ -616,7 +612,6 @@ services:
       - traefik.http.middlewares.etherpad-stripprefix.stripprefix.prefixes=/etherpad
     networks:
       - traefik-public
-      - default
     depends_on:
       db:
         condition: service_healthy
@@ -640,7 +635,6 @@ services:
       - SMTP_PASSWORD=${LOOMIO_SMTP_PASSWORD}
       - POSTGRES_USER=${POSTGRES_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-
     volumes:
       - loomio-uploads:/loomio/public/system
       - loomio-storage:/loomio/storage
@@ -669,7 +663,6 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-loomio.rule=Host(`loomio.${DOMAIN}`)
     networks:
       - traefik-public
-      - default
     logging:
       driver: "json-file"
       options:
@@ -701,7 +694,6 @@ services:
       - .env
     networks:
       - traefik-public
-      - default
     logging:
       driver: "json-file"
       options:
@@ -731,7 +723,6 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-loomiochannels.rule=Host(`channels.loomio.${DOMAIN}`)
     networks:
       - traefik-public
-      - default
     logging:
       driver: "json-file"
       options:
@@ -747,7 +738,6 @@ services:
       - .env
     networks:
       - traefik-public
-      - default
     environment:
       # TODO: verify secrets
       - VIRTUAL_HOST=servicepedia.${DOMAIN}
@@ -833,7 +823,6 @@ services:
       - traefik.http.middlewares.logging-stripprefix.stripprefix.prefixes=/logging
     networks:
       - traefik-public
-      - default
     command: "wait-for-it --service ${ELASTIC_HOST}:${ELASTIC_PORT} -- uvicorn main:app --reload --host 0.0.0.0 --port ${PORT}"
     logging:
       driver: "json-file"
@@ -859,7 +848,6 @@ services:
         hard: 65536
     networks:
       - traefik-public
-      - default
     volumes:
       - newelasticsearch-data:/usr/share/elasticsearch/data
       - newelasticsearch-config:/usr/share/elasticsearch/config
@@ -886,7 +874,6 @@ services:
         hard: 65536
     networks:
       - traefik-public
-      - default
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
       - elasticsearch-config:/usr/share/elasticsearch/config
@@ -1116,8 +1103,6 @@ services:
 networks:
   traefik-public:
     external: true
-  default:
-    name: ${PLATFORM_STACK_NAME}-default
   grafana-network:
     external: true
 
