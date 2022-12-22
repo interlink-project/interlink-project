@@ -290,7 +290,6 @@ services:
       timeout: 5s
       retries: 5
     networks:
-
       - grafana-network
     logging:
       driver: "json-file"
@@ -327,7 +326,6 @@ services:
       retries: 3
       # start_period: 20s
     networks:
-
       - grafana-network
     volumes:
       - mongodb-data:/bitnami/mongodb
@@ -373,7 +371,8 @@ services:
       - traefik.http.middlewares.coproduction-stripprefix.stripprefix.prefixes=/coproduction
     networks:
       - traefik-public
-
+    links:
+      - db:db
     logging:
       driver: "json-file"
       options:
@@ -407,6 +406,8 @@ services:
       - POSTGRES_SERVER=db
     networks:
       - traefik-public
+    links:
+      - db:db
     logging:
       driver: "json-file"
       options:
@@ -478,7 +479,6 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-auth.rule=Host(`${DOMAIN}`) && PathPrefix(`/auth`)
     networks:
       - traefik-public
-
     logging:
       driver: "json-file"
       options:
@@ -515,7 +515,6 @@ services:
       - traefik.http.middlewares.googledrive-stripprefix.stripprefix.prefixes=/googledrive
     networks:
       - traefik-public
-
     logging:
       driver: "json-file"
       options:
@@ -546,7 +545,6 @@ services:
       - traefik.http.middlewares.surveyeditor-stripprefix.stripprefix.prefixes=/surveyeditor
     networks:
       - traefik-public
-
     logging:
       driver: "json-file"
       options:
@@ -577,7 +575,6 @@ services:
       - traefik.http.middlewares.ceditor-stripprefix.stripprefix.prefixes=/ceditor
     networks:
       - traefik-public
-
     logging:
       driver: "json-file"
       options:
@@ -613,7 +610,6 @@ services:
       - traefik.http.middlewares.etherpad-stripprefix.stripprefix.prefixes=/etherpad
     networks:
       - traefik-public
-
     depends_on:
       db:
         condition: service_healthy
@@ -637,7 +633,6 @@ services:
       - SMTP_PASSWORD=${LOOMIO_SMTP_PASSWORD}
       - POSTGRES_USER=${POSTGRES_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-
     volumes:
       - loomio-uploads:/loomio/public/system
       - loomio-storage:/loomio/storage
@@ -666,7 +661,6 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-loomio.rule=Host(`loomio.${DOMAIN}`)
     networks:
       - traefik-public
-
     logging:
       driver: "json-file"
       options:
@@ -698,7 +692,6 @@ services:
       - .env
     networks:
       - traefik-public
-
     logging:
       driver: "json-file"
       options:
@@ -728,7 +721,6 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-loomiochannels.rule=Host(`channels.loomio.${DOMAIN}`)
     networks:
       - traefik-public
-
     logging:
       driver: "json-file"
       options:
@@ -744,7 +736,6 @@ services:
       - .env
     networks:
       - traefik-public
-
     environment:
       # TODO: verify secrets
       - VIRTUAL_HOST=servicepedia.${DOMAIN}
@@ -830,7 +821,6 @@ services:
       - traefik.http.middlewares.logging-stripprefix.stripprefix.prefixes=/logging
     networks:
       - traefik-public
-
     command: "wait-for-it --service ${ELASTIC_HOST}:${ELASTIC_PORT} -- uvicorn main:app --reload --host 0.0.0.0 --port ${PORT}"
     logging:
       driver: "json-file"
@@ -856,7 +846,6 @@ services:
         hard: 65536
     networks:
       - traefik-public
-
     volumes:
       - newelasticsearch-data:/usr/share/elasticsearch/data
       - newelasticsearch-config:/usr/share/elasticsearch/config
@@ -883,7 +872,6 @@ services:
         hard: 65536
     networks:
       - traefik-public
-
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
       - elasticsearch-config:/usr/share/elasticsearch/config
