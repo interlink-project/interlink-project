@@ -291,6 +291,7 @@ services:
       retries: 5
     networks:
       - grafana-network
+      - traefik-public
     logging:
       driver: "json-file"
       options:
