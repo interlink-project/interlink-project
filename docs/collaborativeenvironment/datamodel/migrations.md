@@ -15,7 +15,7 @@ Migrations are stored in "revision files".
 cd backend-coproduction
 
 # create a new migration file
-make migration message="Migration message" # does docker-compose exec coproduction alembic revision --autogenerate -m $(message)
+make migrations message="Migration message" # does docker-compose exec coproduction alembic revision --autogenerate -m $(message)
 
 # update the database schema with the last migrations
 make applymigrations # does "docker-compose exec coproduction alembic upgrade head"
