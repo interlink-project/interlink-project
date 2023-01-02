@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Migrations on the data models &mdash; Interlink  documentation</title>
@@ -17,6 +17,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -82,10 +83,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Collaborative environment</a> &raquo;</li>
-          <li><a href="index.html">Data model</a> &raquo;</li>
-      <li>Migrations on the data models</li>
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Collaborative environment</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Data model</a></li>
+      <li class="breadcrumb-item active">Migrations on the data models</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/collaborativeenvironment/datamodel/migrations.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -108,13 +109,13 @@
 </section>
 <section id="how-to-create-new-revisions">
 <h2>How to create new revisions<a class="headerlink" href="#how-to-create-new-revisions" title="Permalink to this heading"></a></h2>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> backend-coproduction
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>backend-coproduction
 
 <span class="c1"># create a new migration file</span>
-make migration <span class="nv">message</span><span class="o">=</span><span class="s2">&quot;Migration message&quot;</span> <span class="c1"># does docker-compose exec coproduction alembic revision --autogenerate -m $(message)</span>
+make<span class="w"> </span>migrations<span class="w"> </span><span class="nv">message</span><span class="o">=</span><span class="s2">&quot;Migration message&quot;</span><span class="w"> </span><span class="c1"># does docker-compose exec coproduction alembic revision --autogenerate -m $(message)</span>
 
 <span class="c1"># update the database schema with the last migrations</span>
-make applymigrations <span class="c1"># does &quot;docker-compose exec coproduction alembic upgrade head&quot;</span>
+make<span class="w"> </span>applymigrations<span class="w"> </span><span class="c1"># does &quot;docker-compose exec coproduction alembic upgrade head&quot;</span>
 </pre></div>
 </div>
 <p>Sometimes it is necessary to implement the migration of the data. For that, take this into account:</p>
@@ -123,16 +124,16 @@ make applymigrations <span class="c1"># does &quot;docker-compose exec coproduct
 <section id="downgrade-revisions">
 <h2>Downgrade revisions<a class="headerlink" href="#downgrade-revisions" title="Permalink to this heading"></a></h2>
 <p>Assuming that you only want to go back one revision, use alembic downgrade with a relative migration identifier of -1:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>alembic downgrade -1
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>alembic<span class="w"> </span>downgrade<span class="w"> </span>-1
 </pre></div>
 </div>
 <p>This will run the downgrade() method of your latest revision and update the alembic_version table to indicate the revision you’re now at.</p>
 <p>If you need to go back multiple migrations, run</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>alembic <span class="nb">history</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>alembic<span class="w"> </span><span class="nb">history</span>
 </pre></div>
 </div>
 <p>to view a list of all the migrations in your project (from newest to oldest), then copy and paste the identifier of the migration you want to go back to:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>alembic downgrade 8ac14e223d1e
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>alembic<span class="w"> </span>downgrade<span class="w"> </span>8ac14e223d1e
 </pre></div>
 </div>
 <p>There’s currently no command to delete migrations from the versions directory, so if you want to completely wipe away all trace of your bad migration, you’ll need to delete the version file (like 4c009570237e_add_widget_table.py) manually.</p>

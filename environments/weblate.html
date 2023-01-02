@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weblate for continous localization &mdash; Interlink  documentation</title>
@@ -17,6 +17,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -86,9 +87,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Environments</a> &raquo;</li>
-      <li>Weblate for continous localization</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Environments</a></li>
+      <li class="breadcrumb-item active">Weblate for continous localization</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/environments/weblate.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -109,9 +110,9 @@
 <h2>Deployment of weblate<a class="headerlink" href="#deployment-of-weblate" title="Permalink to this heading"></a></h2>
 <p>Weblate is separated from the rest of the services, since it is thought to be deployed only in one (in this case, demo) environment. You can find its docker-compose in the interlink-project repository:</p>
 <p><a class="reference external" href="https://github.com/interlink-project/interlink-project/tree/master/envs/internationalization">Weblate docker compose and files</a></p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> /datadrive/data/interlink-project/envs/internationalization
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/datadrive/data/interlink-project/envs/internationalization
 <span class="c1"># FIRST CREATE THE .ENV FILE</span>
-docker-compose up -d
+docker-compose<span class="w"> </span>up<span class="w"> </span>-d
 </pre></div>
 </div>
 <p>“.env” file contents:</p>

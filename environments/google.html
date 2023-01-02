@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Google keys &mdash; Interlink  documentation</title>
@@ -17,6 +17,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -80,9 +81,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Environments</a> &raquo;</li>
-      <li>Google keys</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Environments</a></li>
+      <li class="breadcrumb-item active">Google keys</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/environments/google.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -106,16 +107,16 @@
 <h2>Setting the credentials in the GitHub secrets<a class="headerlink" href="#setting-the-credentials-in-the-github-secrets" title="Permalink to this heading"></a></h2>
 <p>Given the following JSON with the Google credentials:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;service_account&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;project_id&quot;</span><span class="p">:</span> <span class="s2">&quot;exempl(...)512&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;private_key_id&quot;</span><span class="p">:</span> <span class="s2">&quot;38457732b(...)0d8336dd7a7&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;private_key&quot;</span><span class="p">:</span> <span class="s2">&quot;-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCbfIDAC/AXAqB6\nYEy13H7Q81ekV2vPKPGWEGSvedkTysDn8ws6AZCMcmcy/Rsnq1daF0ipit3kdsgG\nGBG3szX7s0I4yQJywhd4wLZH3VfEl/4cuhKH3zEwydyPM5m6WBl/ycnyC/EFY+qX\njhAwMLSdNOn1KHXmy67QDnLZaVMKMjPECrCorkgOrZIXWDUU6FGyPEvOtWVFf1G1\np1gEeaLVmHiH8Ma8v3vygWXs7PzEyuYnbR127Lz4OyXOAzMxEYvCVth92vq6g/4E\nG...plkLrZnIBynwbBUfUZ0rOagVnDR5kqLLtJ1MUdLe7f/1ubqhMkZq\nfA1DI4F/EFemSzEzZTeQCpOAkNAZyzIFer/mR4ag+vWh/GtCvGEBcUqhJM3m8f48\nYt5ABw7DfWefjy44SAazLwPL2Q==\n-----END PRIVATE KEY-----\n&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;client_email&quot;</span><span class="p">:</span> <span class="s2">&quot;development-environment@(...)com&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;client_id&quot;</span><span class="p">:</span> <span class="s2">&quot;11457(...)7096844&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;auth_uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://accounts.google.com/o/oauth2/auth&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;token_uri&quot;</span><span class="p">:</span> <span class="s2">&quot;https://oauth2.googleapis.com/token&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;auth_provider_x509_cert_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.googleapis.com/oauth2/v1/certs&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;client_x509_cert_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.googleap(...)ccount.com&quot;</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;service_account&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;project_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;exempl(...)512&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;private_key_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;38457732b(...)0d8336dd7a7&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;private_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCbfIDAC/AXAqB6\nYEy13H7Q81ekV2vPKPGWEGSvedkTysDn8ws6AZCMcmcy/Rsnq1daF0ipit3kdsgG\nGBG3szX7s0I4yQJywhd4wLZH3VfEl/4cuhKH3zEwydyPM5m6WBl/ycnyC/EFY+qX\njhAwMLSdNOn1KHXmy67QDnLZaVMKMjPECrCorkgOrZIXWDUU6FGyPEvOtWVFf1G1\np1gEeaLVmHiH8Ma8v3vygWXs7PzEyuYnbR127Lz4OyXOAzMxEYvCVth92vq6g/4E\nG...plkLrZnIBynwbBUfUZ0rOagVnDR5kqLLtJ1MUdLe7f/1ubqhMkZq\nfA1DI4F/EFemSzEzZTeQCpOAkNAZyzIFer/mR4ag+vWh/GtCvGEBcUqhJM3m8f48\nYt5ABw7DfWefjy44SAazLwPL2Q==\n-----END PRIVATE KEY-----\n&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;client_email&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;development-environment@(...)com&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;client_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;11457(...)7096844&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;auth_uri&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://accounts.google.com/o/oauth2/auth&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;token_uri&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://oauth2.googleapis.com/token&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;auth_provider_x509_cert_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://www.googleapis.com/oauth2/v1/certs&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;client_x509_cert_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://www.googleap(...)ccount.com&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>

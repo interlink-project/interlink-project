@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Local (development) environment &mdash; Interlink  documentation</title>
@@ -17,6 +17,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -82,9 +83,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Environments</a> &raquo;</li>
-      <li>Local (development) environment</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Environments</a></li>
+      <li class="breadcrumb-item active">Local (development) environment</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/environments/overview.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -108,13 +109,13 @@
 <ul>
 <li><p>linux or macOS:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a parent directory</span>
-mkdir interlink <span class="o">&amp;&amp;</span> <span class="nb">cd</span> interlink
+mkdir<span class="w"> </span>interlink<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>interlink
 <span class="c1"># clone the main repository</span>
-git clone https://github.com/interlink-project/interlink-project <span class="o">&amp;&amp;</span> <span class="nb">cd</span> interlink-project
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/interlink-project/interlink-project<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>interlink-project
 <span class="c1"># clones all the github repositories in the parent folder</span>
-make setup
+make<span class="w"> </span>setup
 <span class="c1"># set the necessary secret files</span>
-cat <span class="s">&lt;&lt;EOF &gt;&gt;interlinker-googledrive/.secrets</span>
+cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt;&gt;interlinker-googledrive/.secrets</span>
 <span class="s">GOOGLE_PROJECT_ID=</span>
 <span class="s">GOOGLE_PRIVATE_KEY_ID=</span>
 <span class="s"># Google private key must be between double quotes and replace all the &quot;\n&quot; characters with &quot;\\n&quot;</span>
@@ -124,17 +125,17 @@ cat <span class="s">&lt;&lt;EOF &gt;&gt;interlinker-googledrive/.secrets</span>
 <span class="s">GOOGLE_CLIENT_X509=</span>
 <span class="s">EOF</span>
 
-cat <span class="s">&lt;&lt;EOF &gt;&gt;backend-auth/.secrets</span>
+cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt;&gt;backend-auth/.secrets</span>
 <span class="s">CLIENT_SECRET=</span>
 <span class="s">EOF</span>
 <span class="c1"># start the containers</span>
-make up
+make<span class="w"> </span>up
 </pre></div>
 </div>
 <p>Check <a class="reference external" href="https://interlink-project.github.io/interlink-project/environments/google.html">Google keys section</a> for the obtention of the credentials to put in interlinker-googledrive/.secrets and ask FBK/DEUSTO in order to get the CLIENT_SECRET for the backend-auth/.secrets file.</p>
 <p>To STOP all containers:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="c1"># from /interlink-project</span>
-make down
+make<span class="w"> </span>down
 </pre></div>
 </div>
 </li>
@@ -147,7 +148,7 @@ make down
 </ul>
 </li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo apt-get update
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
 </pre></div>
 </div>
 </section>

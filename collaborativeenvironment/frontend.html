@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Frontend &mdash; Interlink  documentation</title>
@@ -17,6 +17,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -90,9 +91,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Collaborative environment</a> &raquo;</li>
-      <li>Frontend</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Collaborative environment</a></li>
+      <li class="breadcrumb-item active">Frontend</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/collaborativeenvironment/frontend.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -215,27 +216,27 @@ export const routes = [
 <h2>How to add a new element in the sidebar<a class="headerlink" href="#how-to-add-a-new-element-in-the-sidebar" title="Permalink to this heading"></a></h2>
 <p>At the end of the day, the sidebar is a react component. At the time of writing, the sidebar code is at https://github.com/interlink-project/frontend/blob/master/react/src/components/navsidebars/ProcessSidebar.js.</p>
 <p>The only thing you have to do is to add a new element in the <em>sections</em> variable:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">sections</span> <span class="o">=</span> <span class="p">[</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">sections</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 
-    <span class="p">{</span>
-      <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-      <span class="nx">items</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-          <span class="nx">title</span><span class="o">:</span> <span class="nx">t</span><span class="p">(</span><span class="s1">&#39;Overview&#39;</span><span class="p">),</span>
-          <span class="nx">path</span><span class="o">:</span> <span class="sb">`/dashboard/coproductionprocesses/</span><span class="si">${</span><span class="nx">processId</span><span class="si">}</span><span class="sb">/overview`</span><span class="p">,</span>
-          <span class="nx">icon</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">Dashboard</span> <span class="o">/&gt;</span><span class="p">,</span>
-          <span class="nx">disabled</span><span class="o">:</span> <span class="kc">false</span>
-        <span class="p">},</span>
-        <span class="p">...</span>
-        <span class="p">{</span>
-          <span class="nx">title</span><span class="o">:</span> <span class="nx">t</span><span class="p">(</span><span class="s1">&#39;My new section&#39;</span><span class="p">),</span>
-          <span class="nx">path</span><span class="o">:</span> <span class="sb">`/dashboard/coproductionprocesses/</span><span class="si">${</span><span class="nx">processId</span><span class="si">}</span><span class="sb">/mynewsection`</span><span class="p">,</span>
-          <span class="nx">icon</span><span class="o">:</span> <span class="o">&lt;</span><span class="nx">Dashboard</span> <span class="o">/&gt;</span><span class="p">,</span>
-          <span class="nx">disabled</span><span class="o">:</span> <span class="kc">false</span>
-        <span class="p">},</span>
-      <span class="p">]</span>
-    <span class="p">},</span>
-  <span class="p">];</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">items</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="nx">t</span><span class="p">(</span><span class="s1">&#39;Overview&#39;</span><span class="p">),</span>
+<span class="w">          </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="sb">`/dashboard/coproductionprocesses/</span><span class="si">${</span><span class="nx">processId</span><span class="si">}</span><span class="sb">/overview`</span><span class="p">,</span>
+<span class="w">          </span><span class="nx">icon</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">Dashboard</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">,</span>
+<span class="w">          </span><span class="nx">disabled</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">...</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="nx">t</span><span class="p">(</span><span class="s1">&#39;My new section&#39;</span><span class="p">),</span>
+<span class="w">          </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="sb">`/dashboard/coproductionprocesses/</span><span class="si">${</span><span class="nx">processId</span><span class="si">}</span><span class="sb">/mynewsection`</span><span class="p">,</span>
+<span class="w">          </span><span class="nx">icon</span><span class="o">:</span><span class="w"> </span><span class="o">&lt;</span><span class="nx">Dashboard</span><span class="w"> </span><span class="o">/&gt;</span><span class="p">,</span>
+<span class="w">          </span><span class="nx">disabled</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">  </span><span class="p">];</span>
 </pre></div>
 </div>
 </section>
@@ -331,7 +332,7 @@ export default Home;
 </div></blockquote>
 <p>When new translatable strings are added into the javascript files, the translation files may be updated. For that, we can use the i18n parser, which scans the files to find new translatable elements, by executing:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># from /react directory, where the package.json file is located</span>
-npm run translations
+npm<span class="w"> </span>run<span class="w"> </span>translations
 </pre></div>
 </div>
 <p>Then, you can modify the translated strings by modifying the value in the JSON file. The translation files are located in https://github.com/interlink-project/frontend/blob/master/react/src/translations:</p>
@@ -355,31 +356,31 @@ npm run translations
 <p>For reasons of cleanliness, the API calls are located in the https://github.com/interlink-project/frontend/tree/master/react/src/__api__ folder.</p>
 <p>The general.js file defines the class from which the other classes will inherit. It defines the basic HTTP calls (GET - retrieve / list, POST - create, PUT - update, DELETE - remove).</p>
 <p>There is a class for each entity of the data model (following the REST philosophy) that inherit from the generic class. For example, the API endpoints related with the interlinker entity are served from http://localhost/catalogue/api/v1/interlinkers</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">axiosInstance</span> <span class="nx">from</span> <span class="s1">&#39;axiosInstance&#39;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="nx">GeneralApi</span><span class="p">,</span> <span class="p">{</span> <span class="nx">removeEmpty</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../general&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">axiosInstance</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;axiosInstance&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">GeneralApi</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">removeEmpty</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../general&#39;</span><span class="p">;</span>
 
-<span class="kr">class</span> <span class="nx">InterlinkersApi</span> <span class="kr">extends</span> <span class="nx">GeneralApi</span> <span class="p">{</span>
-  <span class="c1">// set the main path of the API in the constructor. </span>
-  <span class="nx">constructor</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kr">super</span><span class="p">(</span><span class="s1">&#39;catalogue/api/v1/interlinkers&#39;</span><span class="p">);</span>
-  <span class="p">}</span>
+<span class="kd">class</span><span class="w"> </span><span class="nx">InterlinkersApi</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">GeneralApi</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// set the main path of the API in the constructor. </span>
+<span class="w">  </span><span class="kr">constructor</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">super</span><span class="p">(</span><span class="s1">&#39;catalogue/api/v1/interlinkers&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
 
-  <span class="c1">// set specific methods for this entity</span>
-  <span class="nx">async</span> <span class="nx">getRelated</span><span class="p">(</span><span class="nx">page</span><span class="p">,</span> <span class="nx">size</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">axiosInstance</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span>
-      <span class="sb">`/</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">url</span><span class="si">}</span><span class="sb">/</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">/related`</span><span class="p">,</span> <span class="p">{</span>
-        <span class="nx">params</span><span class="o">:</span> <span class="nx">removeEmpty</span><span class="p">({</span>
-          <span class="nx">page</span><span class="p">,</span>
-          <span class="nx">size</span>
-        <span class="p">})</span>
-      <span class="p">}</span>
-    <span class="p">);</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;get related interlinkers call&#39;</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
-  <span class="p">}</span>
+<span class="w">  </span><span class="c1">// set specific methods for this entity</span>
+<span class="w">  </span><span class="k">async</span><span class="w"> </span><span class="nx">getRelated</span><span class="p">(</span><span class="nx">page</span><span class="p">,</span><span class="w"> </span><span class="nx">size</span><span class="p">,</span><span class="w"> </span><span class="nx">id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">axiosInstance</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span>
+<span class="w">      </span><span class="sb">`/</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">url</span><span class="si">}</span><span class="sb">/</span><span class="si">${</span><span class="nx">id</span><span class="si">}</span><span class="sb">/related`</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">params</span><span class="o">:</span><span class="w"> </span><span class="nx">removeEmpty</span><span class="p">({</span>
+<span class="w">          </span><span class="nx">page</span><span class="p">,</span>
+<span class="w">          </span><span class="nx">size</span>
+<span class="w">        </span><span class="p">})</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;get related interlinkers call&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kr">export</span> <span class="kr">const</span> <span class="nx">interlinkersApi</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InterlinkersApi</span><span class="p">();</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">interlinkersApi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">InterlinkersApi</span><span class="p">();</span>
 </pre></div>
 </div>
 </section>
@@ -517,23 +518,23 @@ export default SettingsContext;
 </pre></div>
 </div>
 <p>https://github.com/interlink-project/frontend/blob/master/react/src/contexts/SettingsContext.js</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">useContext</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="nx">SettingsContext</span> <span class="nx">from</span> <span class="s1">&#39;../contexts/SettingsContext&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">useContext</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">SettingsContext</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../contexts/SettingsContext&#39;</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">useSettings</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">SettingsContext</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">useSettings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">useContext</span><span class="p">(</span><span class="nx">SettingsContext</span><span class="p">);</span>
 
-<span class="kr">export</span> <span class="k">default</span> <span class="nx">useSettings</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nx">useSettings</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>https://github.com/interlink-project/frontend/blob/master/react/src/hooks/useSettings.js</p>
 <p>Example component accessing global state managed by the SettingsContext</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">import</span> <span class="nx">useSettings</span> <span class="nx">from</span> <span class="s1">&#39;../../hooks/useSettings&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">useSettings</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../../hooks/useSettings&#39;</span><span class="p">;</span>
 
 <span class="p">...</span>
 
-<span class="kr">const</span> <span class="nx">SettingsPage</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
-  <span class="kr">const</span> <span class="p">{</span> <span class="nx">settings</span><span class="p">,</span> <span class="nx">saveSettings</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">useSettings</span><span class="p">();</span>
-  <span class="p">...</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">SettingsPage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">settings</span><span class="p">,</span><span class="w"> </span><span class="nx">saveSettings</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">useSettings</span><span class="p">();</span>
+<span class="w">  </span><span class="p">...</span>
 <span class="p">}</span>
 </pre></div>
 </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KPI obtention &mdash; Interlink  documentation</title>
@@ -17,6 +17,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -87,9 +88,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Environments</a> &raquo;</li>
-      <li>KPI obtention</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Environments</a></li>
+      <li class="breadcrumb-item active">KPI obtention</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/environments/kpis.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -139,28 +140,28 @@
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span>
 
 <span class="nt">dremio</span><span class="p">:</span>
-    <span class="nt">container_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">${PLATFORM_STACK_NAME}-dremio</span>
-    <span class="nt">restart</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">always</span>
-    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dremio/dremio-oss:21.2</span>
-    <span class="nt">volumes</span><span class="p">:</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">dremio-data:/opt/dremio/data</span>
-    <span class="nt">networks</span><span class="p">:</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">traefik-public</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">default</span>
-    <span class="nt">ports</span><span class="p">:</span>
-        <span class="p p-Indicator">-</span> <span class="s">&quot;9047:9047&quot;</span>   <span class="c1"># UI (HTTP)</span>
-        <span class="c1"># - &quot;31010:31010&quot; # ODBC/JDBC clients</span>
-        <span class="c1"># - &quot;2181:2181&quot;   # ZooKeeper</span>
-        <span class="c1"># - &quot;45678:45678&quot; # Inter-node communication</span>
-    <span class="nt">labels</span><span class="p">:</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">traefik.enable=true</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">traefik.docker.network=traefik-public</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.entrypoints=websecure</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls.certresolver=letsencrypt</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls=true</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.rule=Host(`dremio.${DOMAIN}`)</span>
-        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9047</span>
-    <span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${PLATFORM_STACK_NAME}-dremio</span>
+<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dremio/dremio-oss:21.2</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dremio-data:/opt/dremio/data</span>
+<span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">traefik-public</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;9047:9047&quot;</span><span class="w">   </span><span class="c1"># UI (HTTP)</span>
+<span class="w">        </span><span class="c1"># - &quot;31010:31010&quot; # ODBC/JDBC clients</span>
+<span class="w">        </span><span class="c1"># - &quot;2181:2181&quot;   # ZooKeeper</span>
+<span class="w">        </span><span class="c1"># - &quot;45678:45678&quot; # Inter-node communication</span>
+<span class="w">    </span><span class="nt">labels</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">traefik.enable=true</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">traefik.docker.network=traefik-public</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.entrypoints=websecure</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls.certresolver=letsencrypt</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls=true</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.rule=Host(`dremio.${DOMAIN}`)</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9047</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </pre></div>
 </div>
 <p>Once the docker service is up, Dremio GUI is accessible through https://dremio.dev.interlink-project.eu/</p>
@@ -182,11 +183,11 @@
     <span class="n">password</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DREMIO_PASSWORD&quot;</span><span class="p">)</span>
     <span class="n">email</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DREMIO_EMAIL&quot;</span><span class="p">)</span>
     <span class="n">dremioServer</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:9047&quot;</span>
-    <span class="n">token</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">get_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;content-type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span> <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;_dremio{authToken}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">authToken</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">)}</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;content-type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span> <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;_dremio</span><span class="si">{authToken}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">authToken</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">)}</span>
         <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;content-type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span> <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="s1">&#39;_dremionull&#39;</span><span class="p">}</span>
 
 
@@ -194,7 +195,7 @@
 
 <span class="o">...</span>
 
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;{server}/apiv2/bootstrap/firstuser&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dremioServer</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_headers</span><span class="p">(),</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{server}</span><span class="s1">/apiv2/bootstrap/firstuser&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dremioServer</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">get_headers</span><span class="p">(),</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span>
     <span class="s2">&quot;userName&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">userName</span><span class="p">,</span>
     <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">firstName</span><span class="p">,</span>
     <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="n">config</span><span class="o">.</span><span class="n">lastName</span><span class="p">,</span>
@@ -266,37 +267,37 @@
         <span class="s2">&quot;authenticationType&quot;</span><span class="p">:</span> <span class="s2">&quot;MASTER&quot;</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
-<span class="k">print</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
 <span class="n">apiPost</span><span class="p">(</span><span class="s1">&#39;catalog&#39;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The variables are obtained from the .env file (find_dotenv and load_dotenv functions) or directly from the environment. <strong>THAT IS WHY THIS SCRIPT MUST BE EXECUTED BY THE WORKFLOWS AND NOT MANUALLY</strong>, since it needs to has access to ALL the credentials needed for establishing a connection to the databases. Some of that credentials are only in the Github secrets, and consequently, only in the shell executed by the workflows.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>name: update-dev-environment
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>name:<span class="w"> </span>update-dev-environment
 ...
 jobs:
-  deploy:
-    ...
-    runs-on: ubuntu-latest
-    environment: dev
-    steps:
-      - name: Deploy Dev SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: <span class="si">${</span><span class="p">{ secrets.DEV_HOST </span><span class="si">}</span><span class="o">}</span>
-          username: <span class="si">${</span><span class="p">{ secrets.DEV_USERNAME </span><span class="si">}</span><span class="o">}</span>
-          key: <span class="si">${</span><span class="p">{ secrets.SSH_KEY </span><span class="si">}</span><span class="o">}</span>
-          script: <span class="p">|</span>
-            <span class="nb">export</span> <span class="nv">LOOMIO_SMTP_USERNAME</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_SMTP_USERNAME </span><span class="si">}</span><span class="o">}</span>
-            <span class="nb">export</span> <span class="nv">LOOMIO_AAC_APP_SECRET</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_AAC_APP_SECRET </span><span class="si">}</span><span class="o">}</span>
-            <span class="nb">export</span> <span class="nv">MAIL_PASSWORD</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.DEV_MAIL_PASSWORD </span><span class="si">}</span><span class="o">}</span>
-            <span class="nb">export</span> <span class="nv">LOOMIO_SECRET_COOKIE_TOKEN</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_SECRET_COOKIE_TOKEN </span><span class="si">}</span><span class="o">}</span>
-            <span class="nb">export</span> <span class="nv">LOOMIO_SMTP_PASSWORD</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_SMTP_PASSWORD </span><span class="si">}</span><span class="o">}</span>        
-            <span class="nb">export</span> <span class="nv">LOOMIO_DEVISE_SECRET</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_DEVISE_SECRET </span><span class="si">}</span><span class="o">}</span>
-            <span class="nb">export</span> <span class="nv">LOOMIO_DEVISE_SECRET</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_DEVISE_SECRET </span><span class="si">}</span><span class="o">}</span>
-            ...
+<span class="w">  </span>deploy:
+<span class="w">    </span>...
+<span class="w">    </span>runs-on:<span class="w"> </span>ubuntu-latest
+<span class="w">    </span>environment:<span class="w"> </span>dev
+<span class="w">    </span>steps:
+<span class="w">      </span>-<span class="w"> </span>name:<span class="w"> </span>Deploy<span class="w"> </span>Dev<span class="w"> </span>SSH
+<span class="w">        </span>uses:<span class="w"> </span>appleboy/ssh-action@master
+<span class="w">        </span>with:
+<span class="w">          </span>host:<span class="w"> </span><span class="si">${</span><span class="p">{ secrets.DEV_HOST </span><span class="si">}</span><span class="o">}</span>
+<span class="w">          </span>username:<span class="w"> </span><span class="si">${</span><span class="p">{ secrets.DEV_USERNAME </span><span class="si">}</span><span class="o">}</span>
+<span class="w">          </span>key:<span class="w"> </span><span class="si">${</span><span class="p">{ secrets.SSH_KEY </span><span class="si">}</span><span class="o">}</span>
+<span class="w">          </span>script:<span class="w"> </span><span class="p">|</span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOOMIO_SMTP_USERNAME</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_SMTP_USERNAME </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOOMIO_AAC_APP_SECRET</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_AAC_APP_SECRET </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">MAIL_PASSWORD</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.DEV_MAIL_PASSWORD </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOOMIO_SECRET_COOKIE_TOKEN</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_SECRET_COOKIE_TOKEN </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOOMIO_SMTP_PASSWORD</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_SMTP_PASSWORD </span><span class="si">}</span><span class="o">}</span><span class="w">        </span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOOMIO_DEVISE_SECRET</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_DEVISE_SECRET </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOOMIO_DEVISE_SECRET</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_DEVISE_SECRET </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span>...
 
-            pip3 install python-dotenv <span class="o">&amp;&amp;</span> python3 setup-dremio.py
-            ...
+<span class="w">            </span>pip3<span class="w"> </span>install<span class="w"> </span>python-dotenv<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>python3<span class="w"> </span>setup-dremio.py
+<span class="w">            </span>...
 </pre></div>
 </div>
 <blockquote>
@@ -309,17 +310,17 @@ jobs:
 <section id="simple-queries">
 <h4>Simple queries<a class="headerlink" href="#simple-queries" title="Permalink to this heading"></a></h4>
 <p>Count all the coproduction processes in the postgres <em>coproduction</em> database:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">FROM</span> <span class="n">coproduction</span><span class="p">.</span><span class="k">public</span><span class="p">.</span><span class="n">coproductionprocess</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">coproduction</span><span class="p">.</span><span class="k">public</span><span class="p">.</span><span class="n">coproductionprocess</span>
 </pre></div>
 </div>
 <p>Get all the user activity logs (from the <em>logs</em> index in the <em>elastic2</em> backend):</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">elastic2</span><span class="p">.</span><span class="n">logs</span><span class="p">.</span><span class="n">log</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">elastic2</span><span class="p">.</span><span class="n">logs</span><span class="p">.</span><span class="n">log</span>
 </pre></div>
 </div>
 </section>
 <section id="cross-backend-queries">
 <h4>Cross-backend queries<a class="headerlink" href="#cross-backend-queries" title="Permalink to this heading"></a></h4>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">catalogue</span><span class="p">.</span><span class="k">public</span><span class="p">.</span><span class="n">interlinker</span> <span class="k">WHERE</span> <span class="n">id</span> <span class="k">IN</span> <span class="p">(</span><span class="k">SELECT</span> <span class="n">softwareinterlinker_id</span> <span class="k">FROM</span> <span class="n">elastic2</span><span class="p">.</span><span class="n">logs</span><span class="p">.</span><span class="n">log</span> <span class="k">WHERE</span> <span class="n">action</span> <span class="k">LIKE</span> <span class="s1">&#39;CREATE&#39;</span> <span class="k">AND</span> <span class="n">model</span> <span class="k">LIKE</span> <span class="s1">&#39;ASSET&#39;</span><span class="p">)</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">catalogue</span><span class="p">.</span><span class="k">public</span><span class="p">.</span><span class="n">interlinker</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">softwareinterlinker_id</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">elastic2</span><span class="p">.</span><span class="n">logs</span><span class="p">.</span><span class="n">log</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;CREATE&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;ASSET&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -350,17 +351,17 @@ jobs:
     <span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;A7: Number of coproduction processes&quot;</span><span class="p">,</span>
         <span class="s2">&quot;sql&quot;</span><span class="p">:</span> <span class="s2">&quot;SELECT COUNT(*) FROM coproduction.public.coproductionprocess&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;extract_count&quot;</span><span class="p">:</span> <span class="bp">True</span>
+        <span class="s2">&quot;extract_count&quot;</span><span class="p">:</span> <span class="kc">True</span>
     <span class="p">},</span>
     <span class="p">{</span>
         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;A7.1: Number of coproduction processes in english&quot;</span><span class="p">,</span>
         <span class="s2">&quot;sql&quot;</span><span class="p">:</span> <span class="s2">&quot;SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.</span><span class="se">\&quot;</span><span class="s2">language</span><span class="se">\&quot;</span><span class="s2"> LIKE &#39;en&#39;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;extract_count&quot;</span><span class="p">:</span> <span class="bp">True</span>
+        <span class="s2">&quot;extract_count&quot;</span><span class="p">:</span> <span class="kc">True</span>
     <span class="p">},</span>
     <span class="p">(</span><span class="o">...</span><span class="p">)</span>    
 <span class="p">]</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Obtaining kpis on&quot;</span><span class="p">,</span> <span class="n">str_date</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Obtaining kpis on&quot;</span><span class="p">,</span> <span class="n">str_date</span><span class="p">)</span>
 <span class="n">results</span> <span class="o">=</span> <span class="n">run_queries</span><span class="p">(</span><span class="n">queries</span><span class="p">)</span>
 
 <span class="c1"># print(json.dumps(results))</span>
@@ -369,13 +370,13 @@ jobs:
 
 <span class="c1"># send data to GoogleDrive</span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">spreadsheets</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span> <span class="n">spreadsheetId</span><span class="o">=</span><span class="n">sheet_id</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;{ENVIRONMENT}!A1:ZZ1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">spreadsheets</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span> <span class="n">spreadsheetId</span><span class="o">=</span><span class="n">sheet_id</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ENVIRONMENT</span><span class="si">}</span><span class="s2">!A1:ZZ1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
     <span class="n">header</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;values&#39;</span><span class="p">,</span> <span class="p">[[]])[</span><span class="mi">0</span><span class="p">]</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="n">header</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="n">values_to_insert</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">update</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">update</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
     <span class="c1"># check if all query names are present in header and add a new one if not present</span>
@@ -383,14 +384,14 @@ jobs:
         <span class="n">name</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
             <span class="n">header</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="n">update</span> <span class="o">=</span> <span class="bp">True</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Added {name} to header&quot;</span><span class="p">)</span>
+            <span class="n">update</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Added </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> to header&quot;</span><span class="p">)</span>
 
     <span class="c1"># update header if needed</span>
     <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
         <span class="n">service</span><span class="o">.</span><span class="n">spreadsheets</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
             <span class="n">spreadsheetId</span><span class="o">=</span><span class="n">sheet_id</span><span class="p">,</span>
-            <span class="nb">range</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;{ENVIRONMENT}!A1:ZZ1&quot;</span><span class="p">,</span>
+            <span class="nb">range</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ENVIRONMENT</span><span class="si">}</span><span class="s2">!A1:ZZ1&quot;</span><span class="p">,</span>
             <span class="n">body</span><span class="o">=</span><span class="p">{</span>
                 <span class="s2">&quot;majorDimension&quot;</span><span class="p">:</span> <span class="s2">&quot;ROWS&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">header</span><span class="p">]</span>
@@ -404,7 +405,7 @@ jobs:
         <span class="n">header</span>
     <span class="p">)</span>
     <span class="n">values_to_insert</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-        <span class="p">[</span><span class="s2">&quot;Last value&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">f</span><span class="s2">&quot;=INDICE( FILTER( {char}3:{char} , NO( ESBLANCO( {char}3:{char} ) ) ) , FILAS( FILTER( {char}3:{char} , NO( ESBLANCO( {char}3:{char} ) ) ) ) )&quot;</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="s2">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="p">]</span>
+        <span class="p">[</span><span class="s2">&quot;Last value&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;=INDICE( FILTER( </span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s2">3:</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s2"> , NO( ESBLANCO( </span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s2">3:</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s2"> ) ) ) , FILAS( FILTER( </span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s2">3:</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s2"> , NO( ESBLANCO( </span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s2">3:</span><span class="si">{</span><span class="n">char</span><span class="si">}</span><span class="s2"> ) ) ) ) )&quot;</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="s2">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span><span class="p">]</span>
     <span class="p">)</span>
 
 <span class="c1"># set each value of row depending on the index of the name of the kpi in the header</span>
@@ -421,7 +422,7 @@ jobs:
 <span class="c1"># append (the header if necessary) and the row to the existing sheet, defined by ENVIRONMENT (development, demo, zgz...)</span>
 <span class="n">service</span><span class="o">.</span><span class="n">spreadsheets</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
     <span class="n">spreadsheetId</span><span class="o">=</span><span class="n">sheet_id</span><span class="p">,</span>
-    <span class="nb">range</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;{ENVIRONMENT}!A:Z&quot;</span><span class="p">,</span>
+    <span class="nb">range</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ENVIRONMENT</span><span class="si">}</span><span class="s2">!A:Z&quot;</span><span class="p">,</span>
     <span class="n">body</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;majorDimension&quot;</span><span class="p">:</span> <span class="s2">&quot;ROWS&quot;</span><span class="p">,</span>
         <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">values_to_insert</span>
@@ -429,8 +430,8 @@ jobs:
     <span class="n">valueInputOption</span><span class="o">=</span><span class="s2">&quot;USER_ENTERED&quot;</span>
 <span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
 
-<span class="k">print</span><span class="p">(</span>
-    <span class="n">f</span><span class="s2">&quot;Document updated. See it at: https://docs.google.com/spreadsheets/d/{sheet_id}&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Document updated. See it at: https://docs.google.com/spreadsheets/d/</span><span class="si">{</span><span class="n">sheet_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 </pre></div>
 </div>

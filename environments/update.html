@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Environments update &mdash; Interlink  documentation</title>
@@ -17,6 +17,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -81,9 +82,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Environments</a> &raquo;</li>
-      <li>Environments update</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Environments</a></li>
+      <li class="breadcrumb-item active">Environments update</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/environments/update.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -99,46 +100,46 @@
 <p>Once the dev environment is verified to be usable and stable (take a look at <a class="reference external" href="https://interlink-project.github.io/interlink-project/testing/acceptance-tests/index.html">Acceptance testing</a>), the demo and pilot environments should be updated to reflect the new changes.</p>
 <p>To start with, when changes are made to any of the components enumerated in the <a class="reference external" href="https://interlink-project.github.io/interlink-project/environments/stack.html">Stack section</a>, a new Docker image of the component is generated and triggers the “update-dev-environment” workflow by sending an event to the interlink-project repository.</p>
 <p>Let’s take backend-coproduction as an example:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>name: build-and-publish-docker
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>name:<span class="w"> </span>build-and-publish-docker
 
 on:
-  workflow_dispatch:
-  push:
-    tags:
-      - <span class="s1">&#39;*&#39;</span>
-    branches:
-      - <span class="s2">&quot;master&quot;</span>
+<span class="w">  </span>workflow_dispatch:
+<span class="w">  </span>push:
+<span class="w">    </span>tags:
+<span class="w">      </span>-<span class="w"> </span><span class="s1">&#39;*&#39;</span>
+<span class="w">    </span>branches:
+<span class="w">      </span>-<span class="w"> </span><span class="s2">&quot;master&quot;</span>
 
 jobs:
-  docker:
-    runs-on: ubuntu-latest
-    steps:
+<span class="w">  </span>docker:
+<span class="w">    </span>runs-on:<span class="w"> </span>ubuntu-latest
+<span class="w">    </span>steps:
 
-        <span class="o">(</span>...<span class="o">)</span>
+<span class="w">        </span><span class="o">(</span>...<span class="o">)</span>
 
-      - name: Build and push Docker Image
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile
-          push: <span class="nb">true</span>
-          tags: <span class="p">|</span>
-            interlinkproject/backend-coproduction:<span class="si">${</span><span class="p">{ github.ref_name </span><span class="si">}</span><span class="o">}</span>
-            interlinkproject/backend-coproduction:<span class="si">${</span><span class="p">{ github.ref_name </span><span class="si">}</span><span class="o">}</span>.<span class="si">${</span><span class="p">{ steps.date.outputs.date </span><span class="si">}</span><span class="o">}</span>
-          cache-from: <span class="nv">type</span><span class="o">=</span>registry,ref<span class="o">=</span>interlinkproject/backend-coproduction:buildcache
-          cache-to: <span class="nv">type</span><span class="o">=</span>registry,ref<span class="o">=</span>interlinkproject/backend-coproduction:buildcache,mode<span class="o">=</span>max
+<span class="w">      </span>-<span class="w"> </span>name:<span class="w"> </span>Build<span class="w"> </span>and<span class="w"> </span>push<span class="w"> </span>Docker<span class="w"> </span>Image
+<span class="w">        </span>id:<span class="w"> </span>docker_build
+<span class="w">        </span>uses:<span class="w"> </span>docker/build-push-action@v2
+<span class="w">        </span>with:
+<span class="w">          </span>context:<span class="w"> </span>.
+<span class="w">          </span>file:<span class="w"> </span>Dockerfile
+<span class="w">          </span>push:<span class="w"> </span><span class="nb">true</span>
+<span class="w">          </span>tags:<span class="w"> </span><span class="p">|</span>
+<span class="w">            </span>interlinkproject/backend-coproduction:<span class="si">${</span><span class="p">{ github.ref_name </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span>interlinkproject/backend-coproduction:<span class="si">${</span><span class="p">{ github.ref_name </span><span class="si">}</span><span class="o">}</span>.<span class="si">${</span><span class="p">{ steps.date.outputs.date </span><span class="si">}</span><span class="o">}</span>
+<span class="w">          </span>cache-from:<span class="w"> </span><span class="nv">type</span><span class="o">=</span>registry,ref<span class="o">=</span>interlinkproject/backend-coproduction:buildcache
+<span class="w">          </span>cache-to:<span class="w"> </span><span class="nv">type</span><span class="o">=</span>registry,ref<span class="o">=</span>interlinkproject/backend-coproduction:buildcache,mode<span class="o">=</span>max
 
-      - name: Trigger Dev Deployment
-        uses: octokit/request-action@v2.x
-        id: trigger_dev_deployment
-        with:
-          route: POST /repos/<span class="o">{</span>owner<span class="o">}</span>/<span class="o">{</span>repo<span class="o">}</span>/dispatches
-          owner: interlink-project
-          repo: interlink-project
-          event_type: update-dev-environment
-        env:
-          GITHUB_TOKEN: <span class="si">${</span><span class="p">{ secrets.INTERLINK_PROJECT_GITHUB_TOKEN </span><span class="si">}</span><span class="o">}</span>
+<span class="w">      </span>-<span class="w"> </span>name:<span class="w"> </span>Trigger<span class="w"> </span>Dev<span class="w"> </span>Deployment
+<span class="w">        </span>uses:<span class="w"> </span>octokit/request-action@v2.x
+<span class="w">        </span>id:<span class="w"> </span>trigger_dev_deployment
+<span class="w">        </span>with:
+<span class="w">          </span>route:<span class="w"> </span>POST<span class="w"> </span>/repos/<span class="o">{</span>owner<span class="o">}</span>/<span class="o">{</span>repo<span class="o">}</span>/dispatches
+<span class="w">          </span>owner:<span class="w"> </span>interlink-project
+<span class="w">          </span>repo:<span class="w"> </span>interlink-project
+<span class="w">          </span>event_type:<span class="w"> </span>update-dev-environment
+<span class="w">        </span>env:
+<span class="w">          </span>GITHUB_TOKEN:<span class="w"> </span><span class="si">${</span><span class="p">{ secrets.INTERLINK_PROJECT_GITHUB_TOKEN </span><span class="si">}</span><span class="o">}</span>
 </pre></div>
 </div>
 <blockquote>
@@ -152,67 +153,67 @@ jobs:
 <li><p><strong>push:</strong> Runs workflow when you push a commit or tag.</p></li>
 <li><p><strong>release:</strong> runs  workflow when release activity in your repository occurs.</p></li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>name: update-dev-environment
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>name:<span class="w"> </span>update-dev-environment
 on:
-  workflow_dispatch:
-  repository_dispatch:
-    types: <span class="o">[</span>update-dev-environment<span class="o">]</span>
+<span class="w">  </span>workflow_dispatch:
+<span class="w">  </span>repository_dispatch:
+<span class="w">    </span>types:<span class="w"> </span><span class="o">[</span>update-dev-environment<span class="o">]</span>
 
-  release:
-    types: <span class="o">[</span> published <span class="o">]</span>
+<span class="w">  </span>release:
+<span class="w">    </span>types:<span class="w"> </span><span class="o">[</span><span class="w"> </span>published<span class="w"> </span><span class="o">]</span>
 
-  push:
-    branches:
-      - <span class="s2">&quot;master&quot;</span>      
-    paths:
-      - <span class="s2">&quot;.github/workflows/update-dev-environment.yml&quot;</span>
-      - <span class="s2">&quot;envs/development/**&quot;</span>
+<span class="w">  </span>push:
+<span class="w">    </span>branches:
+<span class="w">      </span>-<span class="w"> </span><span class="s2">&quot;master&quot;</span><span class="w">      </span>
+<span class="w">    </span>paths:
+<span class="w">      </span>-<span class="w"> </span><span class="s2">&quot;.github/workflows/update-dev-environment.yml&quot;</span>
+<span class="w">      </span>-<span class="w"> </span><span class="s2">&quot;envs/development/**&quot;</span>
 
 jobs:
-  deploy:
-    <span class="c1"># Ensures that only one deploy task per branch/environment will run at a time.</span>
-    concurrency:
-      group: environment-<span class="si">${</span><span class="p">{ github.ref </span><span class="si">}</span><span class="o">}</span>-development
-      cancel-in-progress: <span class="nb">true</span>
-    runs-on: ubuntu-latest
-    environment: dev
-    steps:
-      - name: Deploy Dev SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: <span class="si">${</span><span class="p">{ secrets.DEV_HOST </span><span class="si">}</span><span class="o">}</span>
-          username: <span class="si">${</span><span class="p">{ secrets.DEV_USERNAME </span><span class="si">}</span><span class="o">}</span>
-          key: <span class="si">${</span><span class="p">{ secrets.SSH_KEY </span><span class="si">}</span><span class="o">}</span>
-          script: <span class="p">|</span>
-            <span class="nb">export</span> <span class="nv">LOOMIO_SMTP_USERNAME</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_SMTP_USERNAME </span><span class="si">}</span><span class="o">}</span>
-            <span class="nb">export</span> <span class="nv">LOOMIO_AAC_APP_SECRET</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_AAC_APP_SECRET </span><span class="si">}</span><span class="o">}</span>
-            <span class="nb">export</span> <span class="nv">MAIL_PASSWORD</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.DEV_MAIL_PASSWORD </span><span class="si">}</span><span class="o">}</span>
-            <span class="nb">export</span> <span class="nv">LOOMIO_SECRET_COOKIE_TOKEN</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_SECRET_COOKIE_TOKEN </span><span class="si">}</span><span class="o">}</span>
-            <span class="nb">export</span> <span class="nv">LOOMIO_SMTP_PASSWORD</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_SMTP_PASSWORD </span><span class="si">}</span><span class="o">}</span>        
-            <span class="nb">export</span> <span class="nv">LOOMIO_DEVISE_SECRET</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_DEVISE_SECRET </span><span class="si">}</span><span class="o">}</span>
-            <span class="nb">export</span> <span class="nv">LOOMIO_DEVISE_SECRET</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_DEVISE_SECRET </span><span class="si">}</span><span class="o">}</span>
-            <span class="o">(</span>...<span class="o">)</span>
-            git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project <span class="o">||</span> <span class="nb">true</span>
-            <span class="nb">cd</span> /datadrive/data/interlink-project/envs/development
-            git fetch --force --all --tags
-            git checkout origin/<span class="si">${</span><span class="p">{ github.ref_name </span><span class="si">}</span><span class="o">}</span> <span class="o">||</span> git checkout <span class="si">${</span><span class="p">{ github.ref_name </span><span class="si">}</span><span class="o">}</span>
-            pip3 install python-dotenv <span class="o">&amp;&amp;</span> python3 setup-dremio.py
-            docker-compose pull
-            docker network create traefik-public <span class="o">||</span> <span class="nb">true</span>
-            docker network create grafana-network <span class="o">||</span> <span class="nb">true</span>
-            docker-compose up -d
-            sleep <span class="m">10</span>
+<span class="w">  </span>deploy:
+<span class="w">    </span><span class="c1"># Ensures that only one deploy task per branch/environment will run at a time.</span>
+<span class="w">    </span>concurrency:
+<span class="w">      </span>group:<span class="w"> </span>environment-<span class="si">${</span><span class="p">{ github.ref </span><span class="si">}</span><span class="o">}</span>-development
+<span class="w">      </span>cancel-in-progress:<span class="w"> </span><span class="nb">true</span>
+<span class="w">    </span>runs-on:<span class="w"> </span>ubuntu-latest
+<span class="w">    </span>environment:<span class="w"> </span>dev
+<span class="w">    </span>steps:
+<span class="w">      </span>-<span class="w"> </span>name:<span class="w"> </span>Deploy<span class="w"> </span>Dev<span class="w"> </span>SSH
+<span class="w">        </span>uses:<span class="w"> </span>appleboy/ssh-action@master
+<span class="w">        </span>with:
+<span class="w">          </span>host:<span class="w"> </span><span class="si">${</span><span class="p">{ secrets.DEV_HOST </span><span class="si">}</span><span class="o">}</span>
+<span class="w">          </span>username:<span class="w"> </span><span class="si">${</span><span class="p">{ secrets.DEV_USERNAME </span><span class="si">}</span><span class="o">}</span>
+<span class="w">          </span>key:<span class="w"> </span><span class="si">${</span><span class="p">{ secrets.SSH_KEY </span><span class="si">}</span><span class="o">}</span>
+<span class="w">          </span>script:<span class="w"> </span><span class="p">|</span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOOMIO_SMTP_USERNAME</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_SMTP_USERNAME </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOOMIO_AAC_APP_SECRET</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_AAC_APP_SECRET </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">MAIL_PASSWORD</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.DEV_MAIL_PASSWORD </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOOMIO_SECRET_COOKIE_TOKEN</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_SECRET_COOKIE_TOKEN </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOOMIO_SMTP_PASSWORD</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_SMTP_PASSWORD </span><span class="si">}</span><span class="o">}</span><span class="w">        </span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOOMIO_DEVISE_SECRET</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_DEVISE_SECRET </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span><span class="nb">export</span><span class="w"> </span><span class="nv">LOOMIO_DEVISE_SECRET</span><span class="o">=</span><span class="si">${</span><span class="p">{ secrets.LOOMIO_DEVISE_SECRET </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span><span class="o">(</span>...<span class="o">)</span>
+<span class="w">            </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/interlink-project/interlink-project.git<span class="w"> </span>/datadrive/data/interlink-project<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">            </span><span class="nb">cd</span><span class="w"> </span>/datadrive/data/interlink-project/envs/development
+<span class="w">            </span>git<span class="w"> </span>fetch<span class="w"> </span>--force<span class="w"> </span>--all<span class="w"> </span>--tags
+<span class="w">            </span>git<span class="w"> </span>checkout<span class="w"> </span>origin/<span class="si">${</span><span class="p">{ github.ref_name </span><span class="si">}</span><span class="o">}</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>git<span class="w"> </span>checkout<span class="w"> </span><span class="si">${</span><span class="p">{ github.ref_name </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span>pip3<span class="w"> </span>install<span class="w"> </span>python-dotenv<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>python3<span class="w"> </span>setup-dremio.py
+<span class="w">            </span>docker-compose<span class="w"> </span>pull
+<span class="w">            </span>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>traefik-public<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">            </span>docker<span class="w"> </span>network<span class="w"> </span>create<span class="w"> </span>grafana-network<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">            </span>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
+<span class="w">            </span>sleep<span class="w"> </span><span class="m">10</span>
 
-            docker-compose <span class="nb">exec</span> -T catalogue python /app/app/pre_start.py
-            docker-compose <span class="nb">exec</span> -T coproduction python /app/app/pre_start.py
+<span class="w">            </span>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>catalogue<span class="w"> </span>python<span class="w"> </span>/app/app/pre_start.py
+<span class="w">            </span>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>coproduction<span class="w"> </span>python<span class="w"> </span>/app/app/pre_start.py
 
-            <span class="c1"># Apply last migrations (if they exist)</span>
-            docker-compose <span class="nb">exec</span> -T catalogue alembic upgrade head
-            docker-compose <span class="nb">exec</span> -T coproduction alembic upgrade head
-            
-            <span class="c1"># Seed the database (if objects already exist, initial_data.py script updates them)</span>
-            docker-compose <span class="nb">exec</span> -T catalogue ./seed.sh
-            docker-compose <span class="nb">exec</span> -T coproduction ./seed.sh            
+<span class="w">            </span><span class="c1"># Apply last migrations (if they exist)</span>
+<span class="w">            </span>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>catalogue<span class="w"> </span>alembic<span class="w"> </span>upgrade<span class="w"> </span>head
+<span class="w">            </span>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>coproduction<span class="w"> </span>alembic<span class="w"> </span>upgrade<span class="w"> </span>head
+<span class="w">            </span>
+<span class="w">            </span><span class="c1"># Seed the database (if objects already exist, initial_data.py script updates them)</span>
+<span class="w">            </span>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>catalogue<span class="w"> </span>./seed.sh
+<span class="w">            </span>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-T<span class="w"> </span>coproduction<span class="w"> </span>./seed.sh<span class="w">            </span>
 </pre></div>
 </div>
 <blockquote>
@@ -222,25 +223,25 @@ jobs:
 <section id="demo-and-pilots">
 <h2>Demo and pilots<a class="headerlink" href="#demo-and-pilots" title="Permalink to this heading"></a></h2>
 <p>The workflows for updating demo and pilots are similar to the one for updating dev. The only change are the triggers; they can now only be executed manually (workflow_dispatch).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>name: update-demo-environment
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>name:<span class="w"> </span>update-demo-environment
 on:
-  workflow_dispatch:
+<span class="w">  </span>workflow_dispatch:
 
 jobs:
-  deploy:
-    <span class="c1"># Ensures that only one deploy task per branch/environment will run at a time.</span>
-    concurrency:
-      group: environment-<span class="si">${</span><span class="p">{ github.ref </span><span class="si">}</span><span class="o">}</span>-demo
-      cancel-in-progress: <span class="nb">true</span>
-    runs-on: ubuntu-latest
-    environment: demo
-    steps:
-      - name: Deploy Demo SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: <span class="si">${</span><span class="p">{ secrets.DEMO_HOST </span><span class="si">}</span><span class="o">}</span>
-          username: <span class="si">${</span><span class="p">{ secrets.DEMO_USERNAME </span><span class="si">}</span><span class="o">}</span>
-          <span class="o">(</span>...<span class="o">)</span>
+<span class="w">  </span>deploy:
+<span class="w">    </span><span class="c1"># Ensures that only one deploy task per branch/environment will run at a time.</span>
+<span class="w">    </span>concurrency:
+<span class="w">      </span>group:<span class="w"> </span>environment-<span class="si">${</span><span class="p">{ github.ref </span><span class="si">}</span><span class="o">}</span>-demo
+<span class="w">      </span>cancel-in-progress:<span class="w"> </span><span class="nb">true</span>
+<span class="w">    </span>runs-on:<span class="w"> </span>ubuntu-latest
+<span class="w">    </span>environment:<span class="w"> </span>demo
+<span class="w">    </span>steps:
+<span class="w">      </span>-<span class="w"> </span>name:<span class="w"> </span>Deploy<span class="w"> </span>Demo<span class="w"> </span>SSH
+<span class="w">        </span>uses:<span class="w"> </span>appleboy/ssh-action@master
+<span class="w">        </span>with:
+<span class="w">          </span>host:<span class="w"> </span><span class="si">${</span><span class="p">{ secrets.DEMO_HOST </span><span class="si">}</span><span class="o">}</span>
+<span class="w">          </span>username:<span class="w"> </span><span class="si">${</span><span class="p">{ secrets.DEMO_USERNAME </span><span class="si">}</span><span class="o">}</span>
+<span class="w">          </span><span class="o">(</span>...<span class="o">)</span>
 </pre></div>
 </div>
 <blockquote>
@@ -248,29 +249,29 @@ jobs:
 </div></blockquote>
 <p>One important consideration here is the “.env” file. As you can see in the docker-compose files, the versions of the services are defined by a variable. This variable is retrieved from the “.env” file.</p>
 <p>Fragment of the docker-compose used in ALL the environments:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span> <span class="s">&quot;3.9&quot;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3.9&quot;</span>
 <span class="nt">services</span><span class="p">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 
-  <span class="l l-Scalar l-Scalar-Plain">frontend</span><span class="p p-Indicator">:</span>
-    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">interlinkproject/frontend:${FRONTEND_VERSION}</span>
-    <span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">frontend</span><span class="p p-Indicator">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interlinkproject/frontend:${FRONTEND_VERSION}</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 
-<span class=" -Error">  </span><span class="nt">googledrive</span><span class="p">:</span>
-    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">interlinkproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}</span>
-    <span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w w-Error">  </span><span class="nt">googledrive</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interlinkproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 
-  <span class="nt">ceditor</span><span class="p">:</span>
-    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">interlinkproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}</span>
-    <span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">ceditor</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interlinkproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 
-  <span class="nt">augmenterservice</span><span class="p">:</span>
-    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">interlinkproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}</span>
-    <span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">augmenterservice</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interlinkproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 
-  <span class="nt">logging</span><span class="p">:</span>
-    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">interlinkproject/backend-logging:${LOGGING_VERSION}</span>
-    <span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">  </span><span class="nt">logging</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interlinkproject/backend-logging:${LOGGING_VERSION}</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </pre></div>
 </div>
 <p>Fragment of the env file of dev environment: <a class="reference external" href="https://github.com/interlink-project/interlink-project/blob/master/envs/development/.env">https://github.com/interlink-project/interlink-project/blob/master/envs/development/.env</a>:</p>
@@ -331,43 +332,43 @@ jobs:
 <section id="generating-new-versions-of-the-components">
 <h2>Generating new versions of the components<a class="headerlink" href="#generating-new-versions-of-the-components" title="Permalink to this heading"></a></h2>
 <p>Going back to the component workflow, like the backend-coproduction workflow presented above, it creates an image with the master name on each push of a commit, but in case of a tag push, it creates an image with the name assigned to the tag. This happens thanks to the ${{ github.ref_name }} variable.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>name: build-and-publish-docker
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>name:<span class="w"> </span>build-and-publish-docker
 
 on:
-  workflow_dispatch:
-  push:
-    tags:
-      - <span class="s1">&#39;*&#39;</span>
-    branches:
-      - <span class="s2">&quot;master&quot;</span>
-      <span class="o">(</span>...<span class="o">)</span>
+<span class="w">  </span>workflow_dispatch:
+<span class="w">  </span>push:
+<span class="w">    </span>tags:
+<span class="w">      </span>-<span class="w"> </span><span class="s1">&#39;*&#39;</span>
+<span class="w">    </span>branches:
+<span class="w">      </span>-<span class="w"> </span><span class="s2">&quot;master&quot;</span>
+<span class="w">      </span><span class="o">(</span>...<span class="o">)</span>
 
-      - name: Build and push Docker Image
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile
-          push: <span class="nb">true</span>
-          tags: <span class="p">|</span>
-            interlinkproject/backend-coproduction:<span class="si">${</span><span class="p">{ github.ref_name </span><span class="si">}</span><span class="o">}</span>
-            interlinkproject/backend-coproduction:<span class="si">${</span><span class="p">{ github.ref_name </span><span class="si">}</span><span class="o">}</span>.<span class="si">${</span><span class="p">{ steps.date.outputs.date </span><span class="si">}</span><span class="o">}</span>
-          cache-from: <span class="nv">type</span><span class="o">=</span>registry,ref<span class="o">=</span>interlinkproject/backend-coproduction:buildcache
-          cache-to: <span class="nv">type</span><span class="o">=</span>registry,ref<span class="o">=</span>interlinkproject/backend-coproduction:buildcache,mode<span class="o">=</span>max
-    <span class="o">(</span>...<span class="o">)</span>
+<span class="w">      </span>-<span class="w"> </span>name:<span class="w"> </span>Build<span class="w"> </span>and<span class="w"> </span>push<span class="w"> </span>Docker<span class="w"> </span>Image
+<span class="w">        </span>id:<span class="w"> </span>docker_build
+<span class="w">        </span>uses:<span class="w"> </span>docker/build-push-action@v2
+<span class="w">        </span>with:
+<span class="w">          </span>context:<span class="w"> </span>.
+<span class="w">          </span>file:<span class="w"> </span>Dockerfile
+<span class="w">          </span>push:<span class="w"> </span><span class="nb">true</span>
+<span class="w">          </span>tags:<span class="w"> </span><span class="p">|</span>
+<span class="w">            </span>interlinkproject/backend-coproduction:<span class="si">${</span><span class="p">{ github.ref_name </span><span class="si">}</span><span class="o">}</span>
+<span class="w">            </span>interlinkproject/backend-coproduction:<span class="si">${</span><span class="p">{ github.ref_name </span><span class="si">}</span><span class="o">}</span>.<span class="si">${</span><span class="p">{ steps.date.outputs.date </span><span class="si">}</span><span class="o">}</span>
+<span class="w">          </span>cache-from:<span class="w"> </span><span class="nv">type</span><span class="o">=</span>registry,ref<span class="o">=</span>interlinkproject/backend-coproduction:buildcache
+<span class="w">          </span>cache-to:<span class="w"> </span><span class="nv">type</span><span class="o">=</span>registry,ref<span class="o">=</span>interlinkproject/backend-coproduction:buildcache,mode<span class="o">=</span>max
+<span class="w">    </span><span class="o">(</span>...<span class="o">)</span>
 </pre></div>
 </div>
 <blockquote>
 <div><p>Backend-coproduction repository “build-and-publish-docker” workflow: <a class="reference external" href="https://github.com/interlink-project/backend-coproduction/blob/master/.github/workflows/build-and-publish-docker.yml">https://github.com/interlink-project/backend-coproduction/blob/master/.github/workflows/build-and-publish-docker.yml</a></p>
 </div></blockquote>
 <p>To create a tag in a given component:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> /backend-coproduction
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/backend-coproduction
 <span class="c1"># check existent tags</span>
-git tag
+git<span class="w"> </span>tag
 <span class="c1"># create a new tag</span>
-git tag -a v1.2.1 -m <span class="s2">&quot;message&quot;</span>
+git<span class="w"> </span>tag<span class="w"> </span>-a<span class="w"> </span>v1.2.1<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;message&quot;</span>
 <span class="c1"># push the tag</span>
-git push origin v1.2.1
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v1.2.1
 </pre></div>
 </div>
 <p>Results:</p>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Logging Instruction for Microservices &mdash; Interlink  documentation</title>
@@ -17,6 +17,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -83,9 +84,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">Environments</a> &raquo;</li>
-      <li>Logging Instruction for Microservices</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Environments</a></li>
+      <li class="breadcrumb-item active">Logging Instruction for Microservices</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/environments/logging.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -105,7 +106,7 @@
 <h3>Data structure<a class="headerlink" href="#data-structure" title="Permalink to this heading"></a></h3>
 <p>The data sent to the registration service needs to contain the information relevant to the application. In the case of the coproduction microservice, for example, a data log could contain the following information when a user creates a new asset.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># any crud.py file</span>
-<span class="n">await</span> <span class="n">log</span><span class="p">({</span>
+<span class="k">await</span> <span class="n">log</span><span class="p">({</span>
     <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;ASSET&quot;</span><span class="p">,</span>
     <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;CREATE&quot;</span><span class="p">,</span>
     <span class="s2">&quot;coproductionprocess_id&quot;</span><span class="p">:</span> <span class="n">asset</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">objective</span><span class="o">.</span><span class="n">phase</span><span class="o">.</span><span class="n">coproductionprocess_id</span><span class="p">,</span>
@@ -113,7 +114,7 @@
     <span class="s2">&quot;objective_id&quot;</span><span class="p">:</span> <span class="n">asset</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">objective_id</span><span class="p">,</span>
     <span class="s2">&quot;task_id&quot;</span><span class="p">:</span> <span class="n">asset</span><span class="o">.</span><span class="n">task_id</span><span class="p">,</span>
     <span class="s2">&quot;asset_id&quot;</span><span class="p">:</span> <span class="n">asset</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-    <span class="s2">&quot;external_interlinker&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s2">&quot;external_interlinker&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;interlinker_type&quot;</span><span class="p">:</span> <span class="s2">&quot;SOFTWAREINTERLINKER EXTERNALINTERLINKER&quot;</span><span class="p">,</span>
     <span class="s2">&quot;knowledgeinterlinker_id&quot;</span><span class="p">:</span> <span class="n">asset</span><span class="o">.</span><span class="n">knowledgeinterlinker_id</span><span class="p">,</span>
     <span class="s2">&quot;knowledgeinterlinker_name&quot;</span><span class="p">:</span> <span class="n">interlinker</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">),</span>
@@ -123,7 +124,7 @@
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># messages.py of the coproduction service</span>
-<span class="n">async</span> <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">is_logging_disabled</span><span class="p">():</span>
         <span class="k">return</span>
 

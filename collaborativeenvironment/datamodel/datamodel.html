@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Current data models of the main components of the collaborative environment backend &mdash; Interlink  documentation</title>
@@ -17,6 +17,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
         <script>let toggleHintShow = 'Click to show';</script>
         <script>let toggleHintHide = 'Click to hide';</script>
         <script>let toggleOpenOnPrint = 'true';</script>
@@ -82,10 +83,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Collaborative environment</a> &raquo;</li>
-          <li><a href="index.html">Data model</a> &raquo;</li>
-      <li>Current data models of the main components of the collaborative environment backend</li>
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Collaborative environment</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Data model</a></li>
+      <li class="breadcrumb-item active">Current data models of the main components of the collaborative environment backend</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/collaborativeenvironment/datamodel/datamodel.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -126,11 +127,11 @@
     <span class="c1"># create the pydot graph object by autoloading all tables via a bound metadata object</span>
     <span class="n">graph</span> <span class="o">=</span> <span class="n">create_schema_graph</span><span class="p">(</span>
         <span class="n">metadata</span><span class="o">=</span><span class="n">MetaData</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">SQLALCHEMY_DATABASE_URI</span><span class="p">),</span>
-        <span class="n">show_datatypes</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>  <span class="c1"># The image would get nasty big if we&#39;d show the datatypes</span>
-        <span class="n">show_indexes</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>  <span class="c1"># ditto for indexes</span>
+        <span class="n">show_datatypes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># The image would get nasty big if we&#39;d show the datatypes</span>
+        <span class="n">show_indexes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># ditto for indexes</span>
         <span class="c1"># From left to right (instead of top to bottom)</span>
         <span class="n">rankdir</span><span class="o">=</span><span class="s2">&quot;LR&quot;</span><span class="p">,</span>
-        <span class="n">concentrate</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>  <span class="c1"># Don&#39;t try to join the relation lines together</span>
+        <span class="n">concentrate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Don&#39;t try to join the relation lines together</span>
     <span class="p">)</span>
     <span class="n">graph</span><span class="o">.</span><span class="n">write_png</span><span class="p">(</span><span class="s2">&quot;dbschema.png&quot;</span><span class="p">)</span>  <span class="c1"># write out the file</span>
 </pre></div>
