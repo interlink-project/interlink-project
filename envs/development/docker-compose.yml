@@ -234,7 +234,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-redis
     restart: unless-stopped
     networks:
-
+      - traefik-public
       - grafana-network
     environment:
       - TZ=${TZ}
