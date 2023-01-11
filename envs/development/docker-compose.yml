@@ -1084,7 +1084,7 @@ services:
       # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
       - --strict.perms=false
     links:
-      - elasticsearch:elasticsearch
+      - grafana-elasticsearch:grafana-elasticsearch
     networks:
       - grafana-network
       - traefik-public
@@ -1097,8 +1097,8 @@ services:
       - xpack.security.enabled=true
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
-      - ELASTIC_USERNAME
-      - ELASTIC_PASSWORD
+      - ELASTIC_GRAFANA_USERNAME
+      - ELASTIC_GRAFANA_PASSWORD
     ulimits:
       memlock:
         soft: -1
