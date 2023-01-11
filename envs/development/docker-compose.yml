@@ -1083,21 +1083,33 @@ services:
       - grafana-network
       - traefik-public
 
-#  alertmanager:
-#    image: interlinkproject/backend-monitoring:alertmanager.${ALERTMANAGER_VERSION}
-#    container_name: ${PLATFORM_STACK_NAME}-alertmanager
-#    restart: unless-stopped
-#    ports:
-#      - "9093:9093"
-#    command:
-#      - '-config.file=/etc/alertmanager/config.yml'
-#      - '-storage.path=/alertmanager'
-#    networks:
-#      - grafana-network
-#    logging:
-#      driver: "json-file"
-#      options:
-#        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  grafana-elasticsearch:
+    image: elasticsearch:8.2.2
+    container_name: ${PLATFORM_STACK_NAME}-grafana-elasticsearch
+    restart: unless-stopped
+    environment:
+      - xpack.security.enabled=true
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_USERNAME
+      - ELASTIC_PASSWORD
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - grafana-network
+      - traefik-public
+    volumes:
+      - grafanaelasticsearchelasticsearch-data:/usr/share/elasticsearch/data
+      - grafanaelasticsearchelasticsearch-config:/usr/share/elasticsearch/config
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
 
 networks:
