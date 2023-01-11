@@ -1104,8 +1104,8 @@ services:
       - grafana-network
       - traefik-public
     volumes:
-      - grafanaelasticsearchelasticsearch-data:/usr/share/elasticsearch/data
-      - grafanaelasticsearchelasticsearch-config:/usr/share/elasticsearch/config
+      - grafana-elasticsearch-data:/usr/share/elasticsearch/data
+      - grafana-elasticsearch-config:/usr/share/elasticsearch/config
     logging:
       driver: "json-file"
       options:
@@ -1148,4 +1148,6 @@ volumes:
   prometheus-data:
   loki-data:
   filebeat:
+  grafana-elasticsearch-data:
+  grafana-elasticsearch-config:
 #  alertmanager-data:
