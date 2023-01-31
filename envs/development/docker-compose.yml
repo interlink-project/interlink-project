@@ -1108,10 +1108,12 @@ services:
       - SERVER_PORT=${PORT}
       - CONTEXT_PATH=/interlink-gamification
       - IMPORT_DIR=/home/interlink-gamification
-      - SPRING_DATA_MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/interlink-gamification
-      - MONGO_DBNAME=interlink-gamification
+      - SPRING_DATA_MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
+      - MONGO_DBNAME=${MONGODB_DATABASE}
     env_file:
       - .env
+    depends_on:
+      - mongodb
     volumes:
       - gamification-engine-data:/home/interlink-gamification/logs
     logging:
