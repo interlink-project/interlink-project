@@ -1117,6 +1117,21 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  # Gamification engine
+  gamification-engine:
+    image: interlinkproject/interlink-gamification:${GAMIFICATION_VERSION}
+    container_name: interlink-gamification-engine
+    restart: unless-stopped
+    environment:
+      - SERVER_PORT=${PORT}
+      - CONTEXT_PATH=/interlink-gamification
+      - IMPORT_DIR=/home/interlink-gamification
+      - SPRING_DATA_MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/interlink-gamification
+      - MONGO_DBNAME=interlink-gamification
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/home/interlink-gamification/logs
 
 networks:
   traefik-public:
