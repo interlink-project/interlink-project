@@ -1026,24 +1026,6 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-
-  loki:
-    image: interlinkproject/backend-monitoring:loki.${LOKI_VERSION}
-    container_name: ${PLATFORM_STACK_NAME}-loki
-    restart: unless-stopped
-    command: -config.file=/etc/loki/local-config.yaml
-    ports:
-      - "3100:3100"
-    volumes:
-      - loki-data:/loki
-    networks:
-      - grafana-network
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
-
   promtail:
     image: interlinkproject/backend-monitoring:promtail.${PROMTAIL_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-promtail
@@ -1167,8 +1149,6 @@ volumes:
   grafana-data:
   monitoringdb-data:
   prometheus-data:
-  loki-data:
   filebeat:
   grafana-elasticsearch-data:
   grafana-elasticsearch-config:
-#  alertmanager-data:

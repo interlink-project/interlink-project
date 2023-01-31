@@ -1026,24 +1026,6 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-
-  loki:
-    image: interlinkproject/backend-monitoring:loki.${LOKI_VERSION}
-    container_name: ${PLATFORM_STACK_NAME}-loki
-    restart: unless-stopped
-    command: -config.file=/etc/loki/local-config.yaml
-    ports:
-      - "3100:3100"
-    volumes:
-      - loki-data:/loki
-    networks:
-      - grafana-network
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
-
   promtail:
     image: interlinkproject/backend-monitoring:promtail.${PROMTAIL_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-promtail
@@ -1117,6 +1099,21 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  # Gamification engine
+  gamification-engine:
+    image: interlinkproject/interlink-gamification:${GAMIFICATION_VERSION}
+    container_name: interlink-gamification-engine
+    restart: unless-stopped
+    environment:
+      - SERVER_PORT=${PORT}
+      - CONTEXT_PATH=/interlink-gamification
+      - IMPORT_DIR=/home/interlink-gamification
+      - SPRING_DATA_MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/interlink-gamification
+      - MONGO_DBNAME=interlink-gamification
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/home/interlink-gamification/logs
 
 networks:
   traefik-public:
@@ -1152,8 +1149,6 @@ volumes:
   grafana-data:
   monitoringdb-data:
   prometheus-data:
-  loki-data:
   filebeat:
   grafana-elasticsearch-data:
   grafana-elasticsearch-config:
-#  alertmanager-data:
