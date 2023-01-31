@@ -1113,7 +1113,11 @@ services:
     env_file:
       - .env
     volumes:
-      - ./logs:/home/interlink-gamification/logs
+      - gamification-engine-data:/home/interlink-gamification/logs
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
 networks:
   traefik-public:
@@ -1152,3 +1156,5 @@ volumes:
   filebeat:
   grafana-elasticsearch-data:
   grafana-elasticsearch-config:
+
+  gamification-engine-data:
