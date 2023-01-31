@@ -234,7 +234,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-redis
     restart: unless-stopped
     networks:
-
+      - traefik-public
       - grafana-network
     environment:
       - TZ=${TZ}
@@ -908,6 +908,12 @@ services:
       ELASTIC_USERNAME: ${ELASTIC_USERNAME}
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
 
+      # Elasticsearch grafana
+      ELASTIC_GRAFANA_HOST: ${ELASTIC_GRAFANA_HOST}
+      ELASTIC_GRAFANA_PORT: ${ELASTIC_GRAFANA_PORT}
+      ELASTIC_GRAFANA_USERNAME: ${ELASTIC_GRAFANA_USERNAME}
+      ELASTIC_GRAFANA_PASSWORD: ${ELASTIC_GRAFANA_PASSWORD}
+
       # MySQL
       MYSQL_HOST_MONITORING: ${MYSQL_HOST_MONITORING}
       MYSQL_PORT_MONITORING: ${MYSQL_PORT_MONITORING}
@@ -1078,26 +1084,38 @@ services:
       # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
       - --strict.perms=false
     links:
-      - elasticsearch:elasticsearch
+      - grafana-elasticsearch:grafana-elasticsearch
     networks:
       - grafana-network
       - traefik-public
 
-#  alertmanager:
-#    image: interlinkproject/backend-monitoring:alertmanager.${ALERTMANAGER_VERSION}
-#    container_name: ${PLATFORM_STACK_NAME}-alertmanager
-#    restart: unless-stopped
-#    ports:
-#      - "9093:9093"
-#    command:
-#      - '-config.file=/etc/alertmanager/config.yml'
-#      - '-storage.path=/alertmanager'
-#    networks:
-#      - grafana-network
-#    logging:
-#      driver: "json-file"
-#      options:
-#        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  grafana-elasticsearch:
+    image: elasticsearch:8.2.2
+    container_name: ${PLATFORM_STACK_NAME}-grafana-elasticsearch
+    restart: unless-stopped
+    environment:
+      - xpack.security.enabled=true
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_GRAFANA_USERNAME
+      - ELASTIC_GRAFANA_PASSWORD
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - grafana-network
+      - traefik-public
+    volumes:
+      - grafana-elasticsearch-data:/usr/share/elasticsearch/data
+      - grafana-elasticsearch-config:/usr/share/elasticsearch/config
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
 
 networks:
@@ -1136,4 +1154,6 @@ volumes:
   prometheus-data:
   loki-data:
   filebeat:
+  grafana-elasticsearch-data:
+  grafana-elasticsearch-config:
 #  alertmanager-data:
