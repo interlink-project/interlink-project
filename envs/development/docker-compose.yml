@@ -1116,6 +1116,8 @@ services:
       - mongodb
     volumes:
       - gamification-engine-data:/home/interlink-gamification/logs
+    networks:
+      - traefik-public
     logging:
       driver: "json-file"
       options:
