@@ -1111,6 +1111,7 @@ services:
     image: interlinkproject/interlink-gamification:${GAMIFICATION_VERSION}
     container_name: interlink-gamification-engine
     restart: unless-stopped
+    user: 1000
     environment:
       - SERVER_PORT=${PORT}
       - CONTEXT_PATH=/interlink-gamification
