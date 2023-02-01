@@ -1107,6 +1107,12 @@ services:
       - "27017"
     volumes:
       - gamification-mongo-data:/data/db
+    networks:
+      - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
   gamification-engine:
     image: interlinkproject/interlink-gamification:${GAMIFICATION_VERSION}
     container_name: interlink-gamification-engine
