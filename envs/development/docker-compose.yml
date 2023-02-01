@@ -1100,6 +1100,13 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # Gamification engine
+  gamification-mongo:
+    image: bitnami/mongodb:6.0.3
+    container_name: interlink-gamification-mongo
+    ports:
+      - "27017"
+    volumes:
+      - gamification-mongo-data:/data/db
   gamification-engine:
     image: interlinkproject/interlink-gamification:${GAMIFICATION_VERSION}
     container_name: interlink-gamification-engine
@@ -1108,12 +1115,12 @@ services:
       - SERVER_PORT=${PORT}
       - CONTEXT_PATH=/interlink-gamification
       - IMPORT_DIR=/home/interlink-gamification
-      - SPRING_DATA_MONGODB_URL=mongodb://${MONGODB_ROOT_USERNAME}:${MONGODB_ROOT_PASSWORD}@mongodb:27017/${GAMIFICATION_DB}?retryWrites=true&w=majority
+      - SPRING_DATA_MONGODB_URL=mongodb://gamification-mongo:27017/${GAMIFICATION_DB}	                            
       - MONGO_DBNAME=${GAMIFICATION_DB}
     env_file:
       - .env
     depends_on:
-      - mongodb
+      - gamification-mongo
     volumes:
       - gamification-engine-data:/home/interlink-gamification/logs
     ports:
@@ -1163,4 +1170,5 @@ volumes:
   grafana-elasticsearch-data:
   grafana-elasticsearch-config:
 
+  gamification-mongo-data:
   gamification-engine-data:
