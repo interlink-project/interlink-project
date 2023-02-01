@@ -1115,7 +1115,7 @@ services:
       - SERVER_PORT=${PORT}
       - CONTEXT_PATH=/interlink-gamification
       - IMPORT_DIR=/home/interlink-gamification
-      - SPRING_DATA_MONGODB_URL=mongodb://gamification-mongo:27017/${GAMIFICATION_DB}	                            
+      - SPRING_DATA_MONGODB_URL=mongodb://gamification-mongo:27017/${GAMIFICATION_DB}                            
       - MONGO_DBNAME=${GAMIFICATION_DB}
     env_file:
       - .env
