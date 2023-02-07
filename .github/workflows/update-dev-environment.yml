@@ -30,43 +30,10 @@ jobs:
           username: ${{ secrets.DEV_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            export LOOMIO_SMTP_USERNAME=${{ secrets.LOOMIO_SMTP_USERNAME }}
-            export LOOMIO_AAC_APP_SECRET=${{ secrets.LOOMIO_AAC_APP_SECRET }}
-            export MAIL_PASSWORD=${{ secrets.DEV_MAIL_PASSWORD }}
-            export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.LOOMIO_SECRET_COOKIE_TOKEN }}
-            export LOOMIO_SMTP_PASSWORD=${{ secrets.LOOMIO_SMTP_PASSWORD }}        
-            export LOOMIO_DEVISE_SECRET=${{ secrets.LOOMIO_DEVISE_SECRET }}
-            export GRAFANA_USERNAME=${{ secrets.DEV_GRAFANA_USERNAME }}
-            export GRAFANA_PASSWORD=${{ secrets.DEV_GRAFANA_PASSWORD }}
-            export GOOGLE_PROJECT_ID=${{ secrets.DEV_GOOGLE_PROJECT_ID }}
-            export GOOGLE_PRIVATE_KEY_ID=${{ secrets.DEV_GOOGLE_PRIVATE_KEY_ID }}
-            export GOOGLE_PRIVATE_KEY=${{ secrets.DEV_GOOGLE_PRIVATE_KEY }}
-            export GOOGLE_CLIENT_EMAIL=${{ secrets.DEV_GOOGLE_CLIENT_EMAIL }}
-            export GOOGLE_CLIENT_ID=${{ secrets.DEV_GOOGLE_CLIENT_ID }}
-            export GOOGLE_CLIENT_X509=${{ secrets.DEV_GOOGLE_CLIENT_X509 }}
-            export POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }}
-            export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-            export ELASTIC_USERNAME=${{ secrets.ELASTIC_USERNAME }}
-            export ELASTIC_PASSWORD=${{ secrets.ELASTIC_PASSWORD }}
-            export MYSQL_USERNAME_MONITORING=${{ secrets.MYSQL_USERNAME_MONITORING }}
-            export MYSQL_PASSWORD_MONITORING=${{ secrets.MYSQL_PASSWORD_MONITORING }}
-            export DREMIO_USERNAME=${{ secrets.DREMIO_USERNAME }}
-            export DREMIO_PASSWORD=${{ secrets.DREMIO_PASSWORD }}
-            export DREMIO_EMAIL=${{ secrets.DREMIO_EMAIL }}
-            export KPIS_GOOGLE_PROJECT_ID=${{ secrets.KPIS_GOOGLE_PROJECT_ID }}
-            export KPIS_GOOGLE_PRIVATE_KEY_ID=${{ secrets.KPIS_GOOGLE_PRIVATE_KEY_ID }}
-            export KPIS_GOOGLE_PRIVATE_KEY=${{ secrets.KPIS_GOOGLE_PRIVATE_KEY }}
-            export KPIS_GOOGLE_CLIENT_EMAIL=${{ secrets.KPIS_GOOGLE_CLIENT_EMAIL }}
-            export KPIS_GOOGLE_CLIENT_ID=${{ secrets.KPIS_GOOGLE_CLIENT_ID }}
-            export KPIS_GOOGLE_CLIENT_X509=${{ secrets.KPIS_GOOGLE_CLIENT_X509 }}
-            export ENVIRONMENT=development
-            
             git clone https://github.com/interlink-project/interlink-project.git ${{ secrets.PATH }}/interlink-project || true
             cd ${{ secrets.PATH }}/interlink-project/envs/development
             git fetch --force --all --tags
             git checkout origin/${{ github.ref_name }} || git checkout ${{ github.ref_name }}
-            
-            # copy secrets file
             
             echo "${{ secrets.SECRETS }}" > ${{ secrets.PATH }}/interlink-project/envs/development/secrets.env
             
