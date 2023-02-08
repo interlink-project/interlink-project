@@ -61,14 +61,14 @@ jobs:
             export KPIS_GOOGLE_CLIENT_X509=${{ secrets.KPIS_GOOGLE_CLIENT_X509 }}
             export ENVIRONMENT=development
             
-            git clone https://github.com/interlink-project/interlink-project.git ${{ secrets.PATH }}/interlink-project || true
-            cd ${{ secrets.PATH }}/interlink-project/envs/development
-            git fetch --force --all --tags
-            git checkout origin/${{ github.ref_name }} || git checkout ${{ github.ref_name }}
-            
             # copy secrets file
             
-            echo "${{ secrets.SECRETS }}" > ${{ secrets.PATH }}/interlink-project/envs/development/secrets.env
+            echo "${{ secrets.SECRETS }}" > /datadrive/data/interlink-project/envs/development/secrets.env
+            
+            git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || true
+            cd /datadrive/data/interlink-project/envs/development
+            git fetch --force --all --tags
+            git checkout origin/${{ github.ref_name }} || git checkout ${{ github.ref_name }}
             
             docker-compose pull
             docker network create traefik-public || true
