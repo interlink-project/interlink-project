@@ -1,8 +1,8 @@
-name: update-dev-environment
+name: test-update-dev-environment
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [update-dev-environment]
+    types: [test-update-dev-environment]
 
   release:
     types: [ published ]
@@ -11,7 +11,7 @@ on:
     branches:
       - "master"      
     paths:
-      - ".github/workflows/update-dev-environment.yml"
+      - ".github/workflows/test-update-dev-environment.yml"
       - "envs/development/**"
 
 jobs:
