@@ -47,7 +47,7 @@ jobs:
             git fetch --force --all --tags
             git checkout origin/${{ github.ref_name }} || git checkout ${{ github.ref_name }}
             
-            echo ${{ secrets.PATH }} >> .env
+            echo ${{ secrets.SECRETS }} >> .env
             
             docker-compose pull
             docker network create traefik-public || true
