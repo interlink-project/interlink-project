@@ -48,6 +48,7 @@ jobs:
             git checkout origin/${{ github.ref_name }} || git checkout ${{ github.ref_name }}
             
             echo ${{ secrets.SECRETS }} >> .env
+            echo ${{ secrets.SECRETS }} >> secrets.env
             
             docker-compose pull
             docker network create traefik-public || true
