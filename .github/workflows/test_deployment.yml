@@ -26,12 +26,6 @@ jobs:
             export LOOMIO_DEVISE_SECRET=${{ secrets.LOOMIO_DEVISE_SECRET }}
             export GRAFANA_USERNAME=${{ secrets.DEV_GRAFANA_USERNAME }}
             export GRAFANA_PASSWORD=${{ secrets.DEV_GRAFANA_PASSWORD }}
-#            export GOOGLE_PROJECT_ID=${{ secrets.DEV_GOOGLE_PROJECT_ID }}
-#            export GOOGLE_PRIVATE_KEY_ID=${{ secrets.DEV_GOOGLE_PRIVATE_KEY_ID }}
-#            export GOOGLE_PRIVATE_KEY=${{ secrets.DEV_GOOGLE_PRIVATE_KEY }}
-#            export GOOGLE_CLIENT_EMAIL=${{ secrets.DEV_GOOGLE_CLIENT_EMAIL }}
-#            export GOOGLE_CLIENT_ID=${{ secrets.DEV_GOOGLE_CLIENT_ID }}
-#            export GOOGLE_CLIENT_X509=${{ secrets.DEV_GOOGLE_CLIENT_X509 }}
             export POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }}
             export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             export ELASTIC_USERNAME=${{ secrets.ELASTIC_USERNAME }}
