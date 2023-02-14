@@ -24,7 +24,7 @@ jobs:
             
             cd ${{ secrets.PATH }}/interlink-project/envs/demo
             git fetch --force --all --tags
-            git checkout origin/${{ github.ref_name }} || git checkout ${{ github.ref_name }}
+            git checkout --force origin/${{ github.ref_name }} || git checkout --force ${{ github.ref_name }}
             
             git restore .env
             
