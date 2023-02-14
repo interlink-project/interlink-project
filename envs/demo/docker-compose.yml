@@ -1079,8 +1079,8 @@ services:
       - xpack.security.enabled=true
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
-      - ELASTIC_GRAFANA_USERNAME
-      - ELASTIC_GRAFANA_PASSWORD
+      - ELASTIC_USERNAME=${ELASTIC_GRAFANA_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_GRAFANA_PASSWORD}
     ulimits:
       memlock:
         soft: -1
@@ -1100,20 +1100,44 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   # Gamification engine
+  gamification-mongo:
+    image: bitnami/mongodb:6.0.3
+    container_name: interlink-gamification-mongo
+    ports:
+      - "27017"
+    volumes:
+      - gamification-mongo-data:/data/db
+    networks:
+      - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
   gamification-engine:
     image: interlinkproject/interlink-gamification:${GAMIFICATION_VERSION}
     container_name: interlink-gamification-engine
     restart: unless-stopped
+    user: 1000:1000
     environment:
       - SERVER_PORT=${PORT}
       - CONTEXT_PATH=/interlink-gamification
       - IMPORT_DIR=/home/interlink-gamification
-      - SPRING_DATA_MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/interlink-gamification
-      - MONGO_DBNAME=interlink-gamification
+      - SPRING_DATA_MONGODB_URL=mongodb://interlink-gamification-mongo:27017/${GAMIFICATION_DB}
+      - MONGO_DBNAME=${GAMIFICATION_DB}
     env_file:
       - .env
+    depends_on:
+      - gamification-mongo
     volumes:
-      - ./logs:/home/interlink-gamification/logs
+      - gamification-engine-data:/home/interlink-gamification/logs
+    ports:
+      - "9999:80"
+    networks:
+      - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
 networks:
   traefik-public:
@@ -1152,3 +1176,6 @@ volumes:
   filebeat:
   grafana-elasticsearch-data:
   grafana-elasticsearch-config:
+
+  gamification-mongo-data:
+  gamification-engine-data:
