@@ -51,7 +51,7 @@ const ReactExampleComponent = ({ text }) => <div>
 Given the previous component, we could add a MUI button adding:
 
 ```javascript
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 
 const ReactExampleComponent = ({ text }) => {
   const handleClick = () => {
