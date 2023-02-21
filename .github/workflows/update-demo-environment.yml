@@ -18,8 +18,6 @@ jobs:
           username: ${{ secrets.DEMO_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            
-            
             git clone https://github.com/interlink-project/interlink-project.git ${{ secrets.PATH }}/interlink-project || true
             
             cd ${{ secrets.PATH }}/interlink-project/envs/demo

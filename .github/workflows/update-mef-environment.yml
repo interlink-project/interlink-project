@@ -19,40 +19,16 @@ jobs:
           username: ${{ secrets.MEF_USERNAME }}
           key: ${{ secrets.MEF_SSH_KEY }}
           script: |
-            export LOOMIO_SMTP_USERNAME=${{ secrets.LOOMIO_SMTP_USERNAME }}
-            export LOOMIO_AAC_APP_SECRET=${{ secrets.LOOMIO_AAC_APP_SECRET }}
-            export MAIL_PASSWORD=${{ secrets.MEF_MAIL_PASSWORD }}
-            export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.LOOMIO_SECRET_COOKIE_TOKEN }}
-            export LOOMIO_SMTP_PASSWORD=${{ secrets.LOOMIO_SMTP_PASSWORD }}        
-            export LOOMIO_DEVISE_SECRET=${{ secrets.LOOMIO_DEVISE_SECRET }}
-            export GRAFANA_USERNAME=${{ secrets.MEF_GRAFANA_USERNAME }}
-            export GRAFANA_PASSWORD=${{ secrets.MEF_GRAFANA_PASSWORD }}
-            export GOOGLE_PROJECT_ID=${{ secrets.MEF_GOOGLE_PROJECT_ID }}
-            export GOOGLE_PRIVATE_KEY_ID=${{ secrets.MEF_GOOGLE_PRIVATE_KEY_ID }}
-            export GOOGLE_PRIVATE_KEY=${{ secrets.MEF_GOOGLE_PRIVATE_KEY }}
-            export GOOGLE_CLIENT_EMAIL=${{ secrets.MEF_GOOGLE_CLIENT_EMAIL }}
-            export GOOGLE_CLIENT_ID=${{ secrets.MEF_GOOGLE_CLIENT_ID }}
-            export GOOGLE_CLIENT_X509=${{ secrets.MEF_GOOGLE_CLIENT_X509 }}
-            export POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }}
-            export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-            export ELASTIC_USERNAME=${{ secrets.ELASTIC_USERNAME }}
-            export ELASTIC_PASSWORD=${{ secrets.ELASTIC_PASSWORD }}
-            export MYSQL_USERNAME_MONITORING=${{ secrets.MYSQL_USERNAME_MONITORING }}
-            export MYSQL_PASSWORD_MONITORING=${{ secrets.MYSQL_PASSWORD_MONITORING }}
-            export DREMIO_USERNAME=${{ secrets.DREMIO_USERNAME }}
-            export DREMIO_PASSWORD=${{ secrets.DREMIO_PASSWORD }}
-            export DREMIO_EMAIL=${{ secrets.DREMIO_EMAIL }}
-            export KPIS_GOOGLE_PROJECT_ID=${{ secrets.KPIS_GOOGLE_PROJECT_ID }}
-            export KPIS_GOOGLE_PRIVATE_KEY_ID=${{ secrets.KPIS_GOOGLE_PRIVATE_KEY_ID }}
-            export KPIS_GOOGLE_PRIVATE_KEY=${{ secrets.KPIS_GOOGLE_PRIVATE_KEY }}
-            export KPIS_GOOGLE_CLIENT_EMAIL=${{ secrets.KPIS_GOOGLE_CLIENT_EMAIL }}
-            export KPIS_GOOGLE_CLIENT_ID=${{ secrets.KPIS_GOOGLE_CLIENT_ID }}
-            export KPIS_GOOGLE_CLIENT_X509=${{ secrets.KPIS_GOOGLE_CLIENT_X509 }}
-            export ENVIRONMENT=mef
-            git clone https://github.com/interlink-project/interlink-project.git /datadrive/data/interlink-project || true
-            cd /datadrive/data/interlink-project/envs/pilot-mef
+            git clone https://github.com/interlink-project/interlink-project.git ${{ secrets.PATH }}/interlink-project || true
+            
+            cd ${{ secrets.PATH }}/interlink-project/envs/pilot-mef
             git fetch --force --all --tags
-            git checkout origin/${{ github.ref_name }} || git checkout ${{ github.ref_name }}
+            git checkout --force origin/${{ github.ref_name }} || git checkout --force ${{ github.ref_name }}
+            
+            git restore .env
+            
+            echo "${{ secrets.SECRETS }}" >> .env
+            echo "${{ secrets.SECRETS }}" > secrets.env
             
             docker-compose pull
             docker network create traefik-public || true
@@ -82,6 +58,3 @@ jobs:
             docker-compose exec -T db psql -U postgres -d coproduction_production -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
             docker-compose exec -T db psql -U postgres -d catalogue_production -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;" 
             docker-compose exec -T db psql -U postgres -c "ALTER ROLE viewer WITH LOGIN;"
-            
-            cd /datadrive/data/interlink-project/grafana
-            python3 setup_dremio_grafana.py
