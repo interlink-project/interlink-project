@@ -234,7 +234,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-redis
     restart: unless-stopped
     networks:
-
+      - traefik-public
       - grafana-network
     environment:
       - TZ=${TZ}
@@ -908,6 +908,12 @@ services:
       ELASTIC_USERNAME: ${ELASTIC_USERNAME}
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
 
+      # Elasticsearch grafana
+      ELASTIC_GRAFANA_HOST: ${ELASTIC_GRAFANA_HOST}
+      ELASTIC_GRAFANA_PORT: ${ELASTIC_GRAFANA_PORT}
+      ELASTIC_GRAFANA_USERNAME: ${ELASTIC_GRAFANA_USERNAME}
+      ELASTIC_GRAFANA_PASSWORD: ${ELASTIC_GRAFANA_PASSWORD}
+
       # MySQL
       MYSQL_HOST_MONITORING: ${MYSQL_HOST_MONITORING}
       MYSQL_PORT_MONITORING: ${MYSQL_PORT_MONITORING}
@@ -1020,24 +1026,6 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-
-  loki:
-    image: interlinkproject/backend-monitoring:loki.${LOKI_VERSION}
-    container_name: ${PLATFORM_STACK_NAME}-loki
-    restart: unless-stopped
-    command: -config.file=/etc/loki/local-config.yaml
-    ports:
-      - "3100:3100"
-    volumes:
-      - loki-data:/loki
-    networks:
-      - grafana-network
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
-
   promtail:
     image: interlinkproject/backend-monitoring:promtail.${PROMTAIL_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-promtail
@@ -1078,27 +1066,78 @@ services:
       # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
       - --strict.perms=false
     links:
-      - elasticsearch:elasticsearch
+      - grafana-elasticsearch:grafana-elasticsearch
     networks:
       - grafana-network
       - traefik-public
 
-#  alertmanager:
-#    image: interlinkproject/backend-monitoring:alertmanager.${ALERTMANAGER_VERSION}
-#    container_name: ${PLATFORM_STACK_NAME}-alertmanager
-#    restart: unless-stopped
-#    ports:
-#      - "9093:9093"
-#    command:
-#      - '-config.file=/etc/alertmanager/config.yml'
-#      - '-storage.path=/alertmanager'
-#    networks:
-#      - grafana-network
-#    logging:
-#      driver: "json-file"
-#      options:
-#        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  grafana-elasticsearch:
+    image: elasticsearch:8.2.2
+    container_name: ${PLATFORM_STACK_NAME}-grafana-elasticsearch
+    restart: unless-stopped
+    environment:
+      - xpack.security.enabled=true
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_USERNAME=${ELASTIC_GRAFANA_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_GRAFANA_PASSWORD}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - grafana-network
+      - traefik-public
+    volumes:
+      - grafana-elasticsearch-data:/usr/share/elasticsearch/data
+      - grafana-elasticsearch-config:/usr/share/elasticsearch/config
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  # Gamification engine
+  gamification-mongo:
+    image: bitnami/mongodb:6.0.3
+    container_name: interlink-gamification-mongo
+    ports:
+      - "27017"
+    volumes:
+      - gamification-mongo-data:/data/db
+    networks:
+      - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  gamification-engine:
+    image: interlinkproject/interlink-gamification:${GAMIFICATION_VERSION}
+    container_name: interlink-gamification-engine
+    restart: unless-stopped
+    user: 1000:1000
+    environment:
+      - SERVER_PORT=${PORT}
+      - CONTEXT_PATH=/interlink-gamification
+      - IMPORT_DIR=/home/interlink-gamification
+      - SPRING_DATA_MONGODB_URL=mongodb://interlink-gamification-mongo:27017/${GAMIFICATION_DB}
+      - MONGO_DBNAME=${GAMIFICATION_DB}
+    env_file:
+      - .env
+    depends_on:
+      - gamification-mongo
+    volumes:
+      - gamification-engine-data:/home/interlink-gamification/logs
+    ports:
+      - "9999:80"
+    networks:
+      - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
 networks:
   traefik-public:
@@ -1134,6 +1173,9 @@ volumes:
   grafana-data:
   monitoringdb-data:
   prometheus-data:
-  loki-data:
   filebeat:
-#  alertmanager-data:
+  grafana-elasticsearch-data:
+  grafana-elasticsearch-config:
+
+  gamification-mongo-data:
+  gamification-engine-data:
