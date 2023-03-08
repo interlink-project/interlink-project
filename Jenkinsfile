@@ -200,7 +200,7 @@ pipeline {
 
 
                 sudo apt install python3-pip -y
-//                 pip3 install python-dotenv && python3 setup-dremio.py
+                pip3 install python-dotenv && python3 setup-dremio.py
                 docker-compose exec -T catalogue python /app/app/pre_start.py
                 docker-compose exec -T coproduction python /app/app/pre_start.py
                 # Apply last migrations (if they exist)
