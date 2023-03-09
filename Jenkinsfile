@@ -201,24 +201,13 @@ pipeline {
 
                 sudo apt install python3-pip -y
                 pip3 install python-dotenv && python3 setup-dremio.py
-                docker-compose exec -T catalogue python /app/app/pre_start.py
-                docker-compose exec -T coproduction python /app/app/pre_start.py
                 # Apply last migrations (if they exist)
-                docker-compose exec -T catalogue alembic upgrade head
-                docker-compose exec -T coproduction alembic upgrade head
-
-                # Seed the database (if objects already exist, initial_data.py script updates them)
-                docker-compose exec -T catalogue ./seed.sh
-                docker-compose exec -T coproduction ./seed.sh
-
-                # Give permissions to postgres user to access the database
-                docker-compose exec -T db psql -U postgres -c "CREATE ROLE viewer  with LOGIN ENCRYPTED PASSWORD 'viewer';" || true
-                docker-compose exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE coproduction_production TO viewer;"
-                docker-compose exec -T db psql -U postgres -c "GRANT CONNECT ON DATABASE catalogue_production TO viewer;"
-                docker-compose exec -T db psql -U postgres -c "GRANT USAGE ON SCHEMA public TO viewer;"
-                docker-compose exec -T db psql -U postgres -d coproduction_production -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;"
-                docker-compose exec -T db psql -U postgres -d catalogue_production -c "GRANT SELECT ON ALL TABLES IN SCHEMA public TO viewer;"
-                docker-compose exec -T db psql -U postgres -c "ALTER ROLE viewer WITH LOGIN;"
+                # and seed the database (if objects already exist, initial_data.py script updates them)
+                docker-compose exec -T catalogue python /app/app/pre_start.py && \
+                docker-compose exec -T catalogue alembic upgrade head && \
+                docker-compose exec -T catalogue ./seed.sh &
+                docker-compose exec -T coproduction alembic upgrade head && \
+                docker-compose exec -T coproduction ./seed.sh &
 
                 exit
 
