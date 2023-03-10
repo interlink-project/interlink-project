@@ -145,8 +145,8 @@ pipeline {
 
                 cd ${env.PATH}/interlink-project/envs/${configPath}
 
-                echo "${env.ENV}" >> .env
-                echo "${env.ENV}" > secrets.env
+                echo '${env.ENV}' >> .env
+                echo '${env.ENV}' > secrets.env
 
 
                 exit
