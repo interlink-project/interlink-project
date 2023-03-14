@@ -139,7 +139,7 @@ pipeline {
         steps {
             sh '''
                 cat << EOF >> env_file
-                $ENV
+                '$ENV'
                 EOF
             '''
 
