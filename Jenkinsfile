@@ -137,30 +137,16 @@ pipeline {
 
       stage('copy env file') {
         steps {
+            sh '''
+                cat << EOF >> env_file
+                $ENV
+                EOF
+            '''
+
           withVault([configuration: configuration, vaultSecrets: secrets]) {
             sshagent(credentials : ['id_rsa']) {
-            sh '''
-
-                ssh -o StrictHostKeyChecking=no -tt $SSH_USER@$SERVER_IP << EOF
-
-                cd $PATH/interlink-project/envs/${configPath}
-
-                cat << EOF >> .env
-                '$ENV'
-                EOF
-
-
-                cat << EOF >> secrets.env
-                '$ENV'
-                EOF
-
-
-                exit
-
-
-                EOF
-
-            '''
+                sh "scp -o StrictHostKeyChecking=no -tt ./env_file ${env.SSH_USER}@${env.SERVER_IP}:${env.PATH}/interlink-project/envs/${configPath}/secrets.env"
+                sh "scp -o StrictHostKeyChecking=no -tt ./env_file ${env.SSH_USER}@${env.SERVER_IP}:${env.PATH}/interlink-project/envs/${configPath}/.env"
             }
           }
         }
