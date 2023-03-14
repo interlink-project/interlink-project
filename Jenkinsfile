@@ -139,20 +139,23 @@ pipeline {
         steps {
           withVault([configuration: configuration, vaultSecrets: secrets]) {
             sshagent(credentials : ['id_rsa']) {
-            sh '''
+            sh """
 
-                ssh -o StrictHostKeyChecking=no -tt $SSH_USER@$SERVER_IP << EOF
+                ssh -o StrictHostKeyChecking=no -tt ${env.SSH_USER}@${env.SERVER_IP} << EOF
 
-                cd $PATH/interlink-project/envs/${configPath}
+                cd ${env.PATH}/interlink-project/envs/${configPath}
 
+                sh '''
                 cat << EOF >> .env
-                '$ENV'
+                $ENV
                 EOF
+                '''
 
-
+                sh '''
                 cat << EOF >> secrets.env
-                '$ENV'
+                $ENV
                 EOF
+                '''
 
 
                 exit
@@ -160,7 +163,7 @@ pipeline {
 
                 EOF
 
-            '''
+            """
             }
           }
         }
