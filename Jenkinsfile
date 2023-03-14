@@ -145,8 +145,8 @@ pipeline {
 
           withVault([configuration: configuration, vaultSecrets: secrets]) {
             sshagent(credentials : ['id_rsa']) {
-                sh 'scp -o StrictHostKeyChecking=no -tt ./env_file ${env.SSH_USER}@${env.SERVER_IP}:${env.PATH}/interlink-project/envs/${configPath}/secrets.env'
-                sh 'scp -o StrictHostKeyChecking=no -tt ./env_file ${env.SSH_USER}@${env.SERVER_IP}:${env.PATH}/interlink-project/envs/${configPath}/.env'
+                sh "scp -o StrictHostKeyChecking=no -tt ./env_file \"${env.SSH_USER}@${env.SERVER_IP}:${env.PATH}/interlink-project/envs/${configPath}/secrets.env\""
+                sh "scp -o StrictHostKeyChecking=no -tt ./env_file \"${env.SSH_USER}@${env.SERVER_IP}:${env.PATH}/interlink-project/envs/${configPath}/.env\""
             }
           }
         }
