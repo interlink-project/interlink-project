@@ -1132,6 +1132,11 @@ services:
       - gamification-engine-data:/home/interlink-gamification/logs
     ports:
       - "9999:80"
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${STACK_NAME?Variable not set}-interlink-gamification-http.rule=PathPrefix(`/interlink-gamification`)
+      - traefik.http.services.${STACK_NAME?Variable not set}-interlink-gamification.loadbalancer.server.port=${PORT}
     networks:
       - traefik-public
     logging:
