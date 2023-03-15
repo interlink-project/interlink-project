@@ -1139,9 +1139,10 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-interlink-gamification.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME}-interlink-gamification.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-interlink-gamification.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-interlink-gamification.rule=Host(`${DOMAIN}`) && PathPrefix(`/interlink-gamification`)
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-interlink-gamification.middlewares=interlink-gamification-stripprefix
-      - traefik.http.middlewares.interlink-gamification-stripprefix.stripprefix.prefixes=/interlink-gamification
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-interlink-gamification.rule=PathPrefix(`/interlink-gamification`)
+      # - traefik.http.routers.${PLATFORM_STACK_NAME}-interlink-gamification.rule=Host(`${DOMAIN}`) && PathPrefix(`/interlink-gamification`)
+      # - traefik.http.routers.${PLATFORM_STACK_NAME}-interlink-gamification.middlewares=interlink-gamification-stripprefix
+      # - traefik.http.middlewares.interlink-gamification-stripprefix.stripprefix.prefixes=/interlink-gamification
     networks:
       - traefik-public
     logging:
