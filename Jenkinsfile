@@ -84,7 +84,7 @@ def getEnvironmentInfo() {
             branch = 'master'
             break
     }
-    return [configPath, secrets]
+    return [configPath, secrets, branch]
 }
 
 
@@ -93,7 +93,7 @@ def getEnvironmentInfo() {
 
 def configuration = [vaultUrl: 'http://vault:8200',  vaultCredentialId: 'vault-approle', engineVersion: 2]
 
-(configPath, secrets) = getEnvironmentInfo()
+(configPath, secrets, branch) = getEnvironmentInfo()
 
 pipeline {
 
