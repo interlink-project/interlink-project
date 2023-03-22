@@ -802,10 +802,6 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-logging
     restart: unless-stopped
     environment:
-      - ELASTIC_HOST
-      - ELASTIC_PORT
-      - ELASTIC_USERNAME
-      - ELASTIC_PASSWORD
       - DOMAIN=${DOMAIN}
       - PORT=${PORT}
       - BASE_PATH=/logging
