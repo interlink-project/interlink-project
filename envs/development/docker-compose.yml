@@ -807,9 +807,10 @@ services:
       - BASE_PATH=/logging
       - TZ=${TZ}
       - WAITFORIT_TIMEOUT=120
-      - ELASTIC_HOST=${ELASTIC_HOST_USER_LOGGING}
-      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - ELASTIC_HOST=${ELASTIC_GRAFANA_HOST}
+      - ELASTIC_PORT=${ELASTIC_GRAFANA_PORT}
+      - ELASTIC_USERNAME=${ELASTIC_GRAFANA_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_GRAFANA_PASSWORD}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
