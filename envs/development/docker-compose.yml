@@ -823,7 +823,7 @@ services:
       - traefik.http.middlewares.logging-stripprefix.stripprefix.prefixes=/logging
     networks:
       - traefik-public
-    command: "wait-for-it --service ${ELASTIC_HOST}:${ELASTIC_PORT} -- uvicorn main:app --reload --host 0.0.0.0 --port ${PORT}"
+    command: "wait-for-it --service ${ELASTIC_GRAFANA_HOST}:${ELASTIC_GRAFANA_PORT} -- uvicorn main:app --reload --host 0.0.0.0 --port ${PORT}"
     logging:
       driver: "json-file"
       options:
