@@ -32,7 +32,9 @@ setup: ## Clones all components
 	cd .. && git clone https://github.com/interlink-project/interlinker-googledrive
 	cd .. && git clone https://github.com/interlink-project/interlinker-ceditor
 	# service augmenter and loomio
-  
+	
+	# gamification
+	cd .. && git clone https://github.com/interlink-project/interlink-gamification
 .PHONY: down
 down: ## Stops all containers and removes volumes
 	# platform components
@@ -48,6 +50,9 @@ down: ## Stops all containers and removes volumes
 
 	# Most of the times we only want to restart backend components because frontend lasts a lot to start in dev mode
 	cd ../frontend && make down
+
+	# gamification
+	cd ../interlink-gamification && make down
 	
 	cd ./envs/local && docker-compose down --remove-orphans
 	docker network rm traefik-public || true
@@ -68,6 +73,9 @@ start: down net ## Run containers (restarts them if already running)
 	cd ../interlinker-survey && make integrated
 	#cd ../interlinker-service-augmenter && make integrated
 
+	# gamification
+	cd ../interlink-gamification && make integrated
+
 	# Most of the times we only want to restart backend components because frontend lasts a lot to start in dev mode
 	cd ../frontend && make integrated
 
@@ -84,6 +92,9 @@ build: ## Build containers
 	cd ../interlinker-ceditor && make build
 	cd ../interlinker-googledrive && make build
 	cd ../interlinker-survey && make build
+
+	# gamification
+	cd ../interlink-gamification && make build
 
 	cd ../frontend && make build
 
@@ -110,6 +121,8 @@ restartcontainers: ## Run containers (restarts them if already running)
 	cd ../interlinker-googledrive && make integrated
 	cd ../interlinker-survey && make integrated
 	cd ../interlinker-ceditor && make integrated
+
+	cd ../interlink-gamification && make integrated
 
 	# Most of the times we only want to restart backend components because frontend lasts a lot to start in dev mode
 	# cd ../frontend && make integrated
