@@ -1050,6 +1050,9 @@ services:
     restart: unless-stopped
     user: root
     volumes:
+      - type: volume
+        source: filebeat-data
+        target: /usr/share/filebeat/data
       - type: bind
         source: /datadrive/docker/containers
         target: /var/lib/docker/containers
@@ -1183,7 +1186,7 @@ volumes:
   grafana-data:
   monitoringdb-data:
   prometheus-data:
-  filebeat:
+  filebeat-data:
   grafana-elasticsearch-data:
   grafana-elasticsearch-config:
 
