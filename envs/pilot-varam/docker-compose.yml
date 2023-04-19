@@ -998,6 +998,11 @@ services:
     user: root
     env_file:
       .env
+    environment:
+      ELASTIC_HOST: ${ELASTIC_GRAFANA_HOST}
+      ELASTIC_PORT: ${ELASTIC_GRAFANA_PORT}
+      ELASTIC_USERNAME: ${ELASTIC_GRAFANA_USERNAME}
+      ELASTIC:PASSWORD: ${ELASTIC_GRAFANA_PASSWORD}
     volumes:
       - type: volume
         source: filebeat-data
