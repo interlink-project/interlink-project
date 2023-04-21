@@ -41,6 +41,30 @@
 				"contrastText": "#ffffff",
 				"main": "#ff9800"
 			},
+			"high_contribution": {
+				"main": "#44C949",
+				"contrastText": "#000000"
+			},
+			"average_contribution": {
+				"main": "#FF7A00",
+				"contrastText": "#ffffff"
+			},
+			"low_contribution": {
+				"main": "#F44336",
+				"contrastText": "#ffffff"
+			},
+			"gold": {
+				"main": "#a57c00",
+				"contrastText": "#ffffff"
+			},
+			"silver": {
+				"main": "#c0c0c0",
+				"contrastText": "#000000"
+			},
+			"bronze": {
+				"main": "#88540b",
+				"contrastText": "#000000"
+			},
 			"progressBarColor": "#FFFFFF"
 		},
 		"dark": {
@@ -74,6 +98,30 @@
 			"warning": {
 				"contrastText": "#ffffff",
 				"main": "#ff9800"
+			},
+			"high_contribution": {
+				"main": "#44C949",
+				"contrastText": "#000000"
+			},
+			"average_contribution": {
+				"main": "#FF7A00",
+				"contrastText": "#ffffff"
+			},
+			"low_contribution": {
+				"main": "#F44336",
+				"contrastText": "#ffffff"
+			},
+			"gold": {
+				"main": "#a57c00",
+				"contrastText": "#ffffff"
+			},
+			"silver": {
+				"main": "#c0c0c0",
+				"contrastText": "#000000"
+			},
+			"bronze": {
+				"main": "#88540b",
+				"contrastText": "#000000"
 			},
 			"progressBarColor": "#d822a3"
 		}
