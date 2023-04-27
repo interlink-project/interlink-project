@@ -1027,7 +1027,7 @@ services:
       - traefik-public
 
   grafana-elasticsearch:
-    image: elasticsearch:8.2.2
+    image: elasticsearch:6.8.23
     container_name: ${PLATFORM_STACK_NAME}-grafana-elasticsearch
     restart: unless-stopped
     env_file:
