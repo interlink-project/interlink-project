@@ -1036,6 +1036,7 @@ services:
       - xpack.security.enabled=true
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
+    user: 1000:1000
     ulimits:
       memlock:
         soft: -1
