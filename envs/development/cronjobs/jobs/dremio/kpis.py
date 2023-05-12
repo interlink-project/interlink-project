@@ -14,112 +14,149 @@ one_month_before = d2.strftime("%Y-%m-%d")
 login()
 
 queries = [
-    # coproductionprocesses
+
+    #  COPRODUCTIONPROCESS
+
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A7: Number of coproduction processes",
         "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # Language es una palabra reservada en Dremio. Hay que ponerlo entre comillas dobles.
     {
         "name": "A7.1: Number of coproduction processes in english",
         "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'en'",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A7.2: Number of coproduction processes in latvian",
         "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'lv'",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A7.3: Number of coproduction processes in italian",
         "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'it'",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A7.4: Number of coproduction processes in spanish",
         "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'es'",
         "extract_count": True
     },
-    # permissions
+
+    # PERMISSIONS
+
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "Number of permissions",
         "sql": "SELECT COUNT(DISTINCT(permission.id)) FROM coproduction.public.permission",
         "extract_count": True
     },
-    # teams
+
+    # TEAMS
+
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A6: Number of teams",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "Average of members per team",
         "sql": "SELECT AVG(MEMBER_COUNT) FROM ( SELECT team_id, COUNT(*) as MEMBER_COUNT FROM  coproduction.public.association_user_team GROUP BY team_id )",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A6.1: Number of public administration teams",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team WHERE team.type LIKE 'public_administration'",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A6.2: Number of public administration teams involved in a coproductionprocess",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'public_administration'",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A6.3: Number of citizen teams",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team WHERE team.type LIKE 'citizen'",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A6.4: Number of citizen teams involved in a coproductionprocess",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'citizen'",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # Los tipos de TSO pueden ser 'Non profit organizations' and 'For profit organizations', por eso buscamos 'organization' en el tipo.
     {
         "name": "A6.5: Number of TSO teams",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team WHERE team.type LIKE '%organization%'",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A6.6: Number of TSO teams involved in a coproductionprocess",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE '%organization%'",
         "extract_count": True
     },
-    # organizations
+
+    # ORGANIZATIONS
+
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A27: Number of organizations",
         "sql": "SELECT COUNT(DISTINCT(organization.id)) FROM coproduction.public.organization",
         "extract_count": True
     },
-    # assets
+
+    # ASSETS
+
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A26: Number of assets",
         "sql": "SELECT COUNT(DISTINCT(asset.id)) FROM coproduction.public.asset",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A26.1: Number of external assets",
         "sql": "SELECT COUNT(DISTINCT(externalasset.id)) FROM coproduction.public.externalasset",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     {
         "name": "A26.2: Number of internal assets",
         "sql": "SELECT COUNT(DISTINCT(internalasset.id)) FROM coproduction.public.internalasset",
         "extract_count": True
     },
+
     # users
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # User es una palabra reservada en DREMIO, por eso la ponemos entre comillas dobles.
     {
         "name": "Number of users",
         "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\"",
         "extract_count": True
     },
+    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # Como existe una variable la consulta probada fué:
+    # SELECT COUNT(DISTINCT(user_id)) FROM elastic2.logs.log AS log WHERE log."timestamp" > '2023-04-12'
     {
         "name": "A8: Number of active users last month",
         "sql": f"SELECT COUNT(DISTINCT(user_id)) FROM elastic2.logs.log AS log WHERE log.\"timestamp\" > '{one_month_before}'",
         "extract_count": True
     },
+
     {
         "name": "A6: Number of public servants",
         "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\" INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT coproduction.public.team.id FROM coproduction.public.team WHERE team.type LIKE 'public_administration' )",
@@ -229,7 +266,7 @@ queries = [
         "sql": "SELECT COUNT(*) FROM( SELECT knowledgeinterlinker_name, softwareinterlinker_name, COUNT(DISTINCT(coproductionprocess_id)) AS IN_PROCESSES FROM elastic2.logs.log WHERE action LIKE 'CREATE' AND model LIKE 'ASSET' GROUP BY knowledgeinterlinker_name, softwareinterlinker_name ) WHERE IN_PROCESSES > 1",
         "extract_count": True
     },
-    
+
 ]
 
 print("Obtaining kpis on", str_date)
@@ -241,7 +278,8 @@ ENVIRONMENT = os.environ.get("PLATFORM_STACK_NAME")
 
 # send data to GoogleDrive
 try:
-    result = service.spreadsheets().values().get( spreadsheetId=sheet_id, range=f"{ENVIRONMENT}!A1:ZZ1").execute()
+    result = service.spreadsheets().values().get(spreadsheetId=sheet_id,
+                                                 range=f"{ENVIRONMENT}!A1:ZZ1").execute()
     header = result.get('values', [[]])[0]
 except:
     header = []
@@ -276,7 +314,8 @@ else:
         header
     )
     values_to_insert.append(
-        ["Last value"] + [f"=INDICE( FILTER( {char}3:{char} , NO( ESBLANCO( {char}3:{char} ) ) ) , FILAS( FILTER( {char}3:{char} , NO( ESBLANCO( {char}3:{char} ) ) ) ) )" for char in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
+        ["Last value"] +
+        [f"=INDICE( FILTER( {char}3:{char} , NO( ESBLANCO( {char}3:{char} ) ) ) , FILAS( FILTER( {char}3:{char} , NO( ESBLANCO( {char}3:{char} ) ) ) ) )" for char in "ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
     )
 
 # set each value of row depending on the index of the name of the kpi in the header
