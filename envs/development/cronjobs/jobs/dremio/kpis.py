@@ -140,7 +140,8 @@ queries = [
         "extract_count": True
     },
 
-    # users
+    # USERS
+
     # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
     # User es una palabra reservada en DREMIO, por eso la ponemos entre comillas dobles.
     {
