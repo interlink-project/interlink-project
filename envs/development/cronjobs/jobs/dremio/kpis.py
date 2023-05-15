@@ -17,32 +17,32 @@ queries = [
 
     #  COPRODUCTIONPROCESS
 
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A7: Number of coproduction processes",
         "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
-    # Language es una palabra reservada en Dremio. Hay que ponerlo entre comillas dobles.
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
+    # Language is a reserved word in Dremio. It must be enclosed in double inverted commas.
     {
         "name": "A7.1: Number of coproduction processes in english",
         "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'en'",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A7.2: Number of coproduction processes in latvian",
         "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'lv'",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A7.3: Number of coproduction processes in italian",
         "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'it'",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A7.4: Number of coproduction processes in spanish",
         "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.\"language\" LIKE 'es'",
@@ -51,7 +51,7 @@ queries = [
 
     # PERMISSIONS
 
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "Number of permissions",
         "sql": "SELECT COUNT(DISTINCT(permission.id)) FROM coproduction.public.permission",
@@ -60,50 +60,50 @@ queries = [
 
     # TEAMS
 
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A6: Number of teams",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "Average of members per team",
         "sql": "SELECT AVG(MEMBER_COUNT) FROM ( SELECT team_id, COUNT(*) as MEMBER_COUNT FROM  coproduction.public.association_user_team GROUP BY team_id )",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A6.1: Number of public administration teams",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team WHERE team.type LIKE 'public_administration'",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A6.2: Number of public administration teams involved in a coproductionprocess",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'public_administration'",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A6.3: Number of citizen teams",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team WHERE team.type LIKE 'citizen'",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A6.4: Number of citizen teams involved in a coproductionprocess",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'citizen'",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
-    # Los tipos de TSO pueden ser 'Non profit organizations' and 'For profit organizations', por eso buscamos 'organization' en el tipo.
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
+    # TSO types can be 'Non profit organisations' and 'For profit organisations', so we search for 'organisation' in type.
     {
         "name": "A6.5: Number of TSO teams",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team WHERE team.type LIKE '%organization%'",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A6.6: Number of TSO teams involved in a coproductionprocess",
         "sql": "SELECT COUNT(DISTINCT(team.id)) FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE '%organization%'",
@@ -112,7 +112,7 @@ queries = [
 
     # ORGANIZATIONS
 
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A27: Number of organizations",
         "sql": "SELECT COUNT(DISTINCT(organization.id)) FROM coproduction.public.organization",
@@ -121,19 +121,19 @@ queries = [
 
     # ASSETS
 
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A26: Number of assets",
         "sql": "SELECT COUNT(DISTINCT(asset.id)) FROM coproduction.public.asset",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A26.1: Number of external assets",
         "sql": "SELECT COUNT(DISTINCT(externalasset.id)) FROM coproduction.public.externalasset",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
     {
         "name": "A26.2: Number of internal assets",
         "sql": "SELECT COUNT(DISTINCT(internalasset.id)) FROM coproduction.public.internalasset",
@@ -142,15 +142,15 @@ queries = [
 
     # USERS
 
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
-    # User es una palabra reservada en DREMIO, por eso la ponemos entre comillas dobles.
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
+    # User is a reserved word in DREMIO, so we put it in double quotes.
     {
         "name": "Number of users",
         "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\"",
         "extract_count": True
     },
-    # 12/05/2023 CHECK DANIEL CORRE EN DEMO!!
-    # Como existe una variable la consulta probada fué:
+    # 12/05/2023 CHECK DANIEL RUN IN DEMO!!
+    # As there is a variable the query tested was:
     # SELECT COUNT(DISTINCT(user_id)) FROM elastic2.logs.log AS log WHERE log."timestamp" > '2023-04-12'
     {
         "name": "A8: Number of active users last month",
