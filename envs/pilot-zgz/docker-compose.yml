@@ -465,6 +465,7 @@ services:
       - BASE_PATH=/auth
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=users
+      - CLIENT_ID=${AAC_APP_KEY}
       - CLIENT_SECRET=${LOOMIO_AAC_APP_SECRET}
     env_file:
       - .env
