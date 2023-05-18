@@ -103,7 +103,7 @@ queries = [
     },
     {
         "name": "A6: Number of useres users involved in co-delivered services",
-        "sql": "SELECT COUNT(DISTINCT(association.user_id)) FROM coproduction.public."association_user_team" AS association INNER JOIN coproduction.public.team ON team.id = association.team_id AND team.id IN (SELECT permission.team_id FROM coproduction.public.permission INNER JOIN coproduction.public.phase ON phase.coproductionprocess_id = permission.coproductionprocess_id AND phase.is_part_of_codelivery='true')",
+        "sql": "SELECT COUNT(DISTINCT(association.user_id)) FROM coproduction.public.\"association_user_team\" AS association INNER JOIN coproduction.public.team ON team.id = association.team_id AND team.id IN (SELECT permission.team_id FROM coproduction.public.permission INNER JOIN coproduction.public.phase ON phase.coproductionprocess_id = permission.coproductionprocess_id AND phase.is_part_of_codelivery='true')",
         "extract_count": True
     },
     {
