@@ -248,6 +248,11 @@ queries = [
         "extract_count": True
     },
     {
+        "name": "A12.2. Number of public services that have cloned or derived from existing public services",
+        "sql": "SELECT COUNT(DISTINCT(id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.cloned_from_id IS NOT NULL",
+        "extract_count": True
+    },
+    {
         "name": "A12.3: List processes with teams with more than 1 user type indicating types of teams for each",
         "sql": "SELECT copro.id, COUNT(DISTINCT(team.type)) AS num_teams from coproduction.public.coproductionprocess AS copro INNER JOIN coproduction.public.permission AS permission ON permission.coproductionprocess_id = copro.id INNER JOIN coproduction.public.team AS team ON team.id = permission.team_id GROUP BY copro.id HAVING COUNT(DISTINCT(team.type)) > 1",
     },
@@ -293,12 +298,12 @@ queries = [
     },
     {
         "name": "A23: Number of success cases publicated",
-        "sql": "SELECT COUNT(DISTINCT(id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.is_part_of_publication = 'true'",
+        "sql": "select COUNT(DISTINCT(id)) from coproduction.public.story",
         "extract_count": True
     },
     {
         "name": "A24: Number of coproduction processes clonated from success cases",
-        "sql": "SELECT COUNT(DISTINCT(id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.is_part_of_publication = 'true'",
+        "sql": "SELECT COUNT(DISTINCT(id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.is_part_of_publication = 'true' AND coproductionprocess.cloned_from_id IS NOT NULL",
         "extract_count": True
     },
     {
