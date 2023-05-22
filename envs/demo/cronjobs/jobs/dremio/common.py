@@ -95,10 +95,11 @@ def run_queries(queries):
 
     iteration = 0
     while len(jobs) > 0 and iteration <= MAX_ITERATIONS:
-        time.sleep(10)
+        
 
         unfinished_jobs = []
         for job_data in jobs:
+            time.sleep(10)
             jobId = job_data.get("jobid")
             if queryJobStatus(jobId) == "COMPLETED":
                 print("Processing response of '", job_data.get("name"))
