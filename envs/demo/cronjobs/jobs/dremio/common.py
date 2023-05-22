@@ -73,7 +73,7 @@ def queryJobStatus(id):
 def getQueryResult(query):
     jobId = querySQL(query)
     while queryJobStatus(jobId) != "COMPLETED":
-        time.sleep(1)
+        time.sleep(10)
     return apiGet('job/{id}/results?offset={offset}&limit={limit}'.format(id=jobId, offset=0, limit=100))
 
 MAX_ITERATIONS = 10
@@ -94,8 +94,8 @@ def run_queries(queries):
         })
 
     iteration = 0
-    while len(jobs) > 0 and iteration <= 10:
-        time.sleep(1)
+    while len(jobs) > 0 and iteration <= MAX_ITERATIONS:
+        time.sleep(10)
 
         unfinished_jobs = []
         for job_data in jobs:
