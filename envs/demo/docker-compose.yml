@@ -244,7 +244,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   dremio:
-    image: dremio/dremio-oss:23.1
+    image: dremio/dremio-oss:24.0.0
     container_name: ${PLATFORM_STACK_NAME}-dremio
     restart: unless-stopped
     volumes:
