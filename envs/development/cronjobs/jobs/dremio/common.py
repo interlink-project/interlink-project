@@ -9,7 +9,8 @@ class Config():
     lastName = os.environ.get("DREMIO_USERNAME")
     password = os.environ.get("DREMIO_PASSWORD")
     email = os.environ.get("DREMIO_EMAIL", "interlink@admin.com")
-    dremioServer = "http://dremio:9047"
+    dremioServer = "http://{stack}-dremio:9047".format(stack=os.environ.get("PLATFORM_STACK_NAME"))
+    
     token = None
 
     def get_headers(self):
