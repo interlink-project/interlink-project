@@ -248,11 +248,6 @@ queries = [
         "extract_count": True
     },
     {
-        "name": "A12.2. Number of public services that have cloned or derived from existing public services",
-        "sql": "SELECT COUNT(DISTINCT(id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.cloned_from_id IS NOT NULL",
-        "extract_count": True
-    },
-    {
         "name": "A12.3: List processes with teams with more than 1 user type indicating types of teams for each",
         "sql": "SELECT copro.id, COUNT(DISTINCT(team.type)) AS num_teams from coproduction.public.coproductionprocess AS copro INNER JOIN coproduction.public.permission AS permission ON permission.coproductionprocess_id = copro.id INNER JOIN coproduction.public.team AS team ON team.id = permission.team_id GROUP BY copro.id HAVING COUNT(DISTINCT(team.type)) > 1",
     },
@@ -297,66 +292,46 @@ queries = [
         "extract_count": True
     },
     {
-        "name": "A23: Number of success cases publicated",
-        "sql": "select COUNT(DISTINCT(id)) from coproduction.public.story",
+        "name": "A2.2. Number of citizens involved in co-delivered services",
+        "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\" INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT team.id FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'citizen' INNER JOIN coproduction.public.organization ON team.organization_id = organization.id AND organization.id IN (SELECT coproductionprocess.organization_id FROM coproduction.public.coproductionprocess INNER JOIN coproduction.public.phase ON phase.coproductionprocess_id = coproductionprocess.id AND phase.is_part_of_codelivery='true' ) )",
+        "extract_count": True
+    },
+    
+    {
+        "name": "A1.6 Number of external software interlinkers",
+        "sql": "SELECT COUNT(*) FROM ( SELECT * FROM catalogue.public.interlinker INNER JOIN catalogue.public.externalsoftwareinterlinker ON interlinker.id=externalsoftwareinterlinker.id UNION SELECT * FROM catalogue.public.interlinker INNER JOIN catalogue.public.externalknowledgeinterlinker ON interlinker.id=externalknowledgeinterlinker.id)",
         "extract_count": True
     },
     {
-        "name": "A24: Number of coproduction processes clonated from success cases",
-        "sql": "SELECT COUNT(DISTINCT(id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.is_part_of_publication = 'true' AND coproductionprocess.cloned_from_id IS NOT NULL",
+        "name": "A9. Number of processes with teams of different stakeholders",
+        "sql": "SELECT COALESCE(SUM(counted_coprods),0) FROM (SELECT COUNT(DISTINCT coprod_id) AS counted_coprods  FROM ( SELECT DISTINCT coproductionprocess.id as coprod_id, team.id as team_id, team.type as team_type FROM coproduction.public.coproductionprocess, coproduction.public.team INNER JOIN coproduction.public.permission ON permission.coproductionprocess_id=coproductionprocess.id AND permission.team_id=team.id ORDER BY coproductionprocess.id ) GROUP BY coprod_id HAVING COUNT(DISTINCT team_type)>1)",
+        "extract_count": True
+    },
+    
+    {
+        "name": "A12: Number of coproduction processes involved in sustainability",
+        "sql": "SELECT COUNT(DISTINCT(coproductionprocess_id)) FROM ( SELECT coproductionprocess_id FROM Coproduction.public.asset INNER JOIN Coproduction.public.internalasset ON asset.id = internalasset.id WHERE knowledgeinterlinker_id in ( SELECT id FROM catalogue.public.interlinker WHERE is_sustainability_related = True ) UNION ALL SELECT coproductionprocess_id FROM Coproduction.public.asset INNER JOIN Coproduction.public.internalasset ON asset.id = internalasset.id WHERE softwareinterlinker_id in ( SELECT id FROM catalogue.public.interlinker WHERE is_sustainability_related = True ) UNION ALL SELECT coproductionprocess_id FROM Coproduction.public.asset INNER JOIN Coproduction.public.externalasset ON asset.id = externalasset.id WHERE externalinterlinker_id in ( SELECT id FROM catalogue.public.interlinker WHERE is_sustainability_related = True ) )",
+        "extract_count": True
+    },
+    
+    # coproductionprocesses
+    {
+        "name": "A7: Number of coproduction processes",
+        "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess",
+        "extract_count": True
+    },
+    
+    # permissions
+    {
+        "name": "Number of permissions",
+        "sql": "SELECT COUNT(DISTINCT(permission.id)) FROM coproduction.public.permission",
         "extract_count": True
     },
     {
-        "name": "A25: Number of incentivated processes",
-        "sql": "SELECT COUNT(DISTINCT(id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.game_id IS NOT NULL",
+        "name": "A8: Number of active users last month",
+        "sql": f"SELECT COUNT(DISTINCT(user_id)) FROM elastic2.logs.log AS log WHERE log.\"timestamp\" > '{one_month_before}'",
         "extract_count": True
     },
-    {   
-        "name": "A27: Number of claims",
-        "sql": "SELECT COUNT(DISTINCT(coproductionprocessnotification.id)) FROM coproduction.public.coproductionprocessnotification WHERE coproductionprocessnotification.claim_type = 'development'",
-        "extract_count": True
-    },
-    # {
-    #     "name": "A2.2. Number of citizens involved in co-delivered services",
-    #     "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\" INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT team.id FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'citizen' INNER JOIN coproduction.public.organization ON team.organization_id = organization.id AND organization.id IN (SELECT coproductionprocess.organization_id FROM coproduction.public.coproductionprocess INNER JOIN coproduction.public.phase ON phase.coproductionprocess_id = coproductionprocess.id AND phase.is_part_of_codelivery='true' ) )",
-    #     "extract_count": True
-    # },
-    
-    # {
-    #     "name": "A1.6 Number of external software interlinkers",
-    #     "sql": "SELECT COUNT(*) FROM ( SELECT * FROM catalogue.public.interlinker INNER JOIN catalogue.public.externalsoftwareinterlinker ON interlinker.id=externalsoftwareinterlinker.id UNION SELECT * FROM catalogue.public.interlinker INNER JOIN catalogue.public.externalknowledgeinterlinker ON interlinker.id=externalknowledgeinterlinker.id)",
-    #     "extract_count": True
-    # },
-    # {
-    #     "name": "A9. Number of processes with teams of different stakeholders",
-    #     "sql": "SELECT COALESCE(SUM(counted_coprods),0) FROM (SELECT COUNT(DISTINCT coprod_id) AS counted_coprods  FROM ( SELECT DISTINCT coproductionprocess.id as coprod_id, team.id as team_id, team.type as team_type FROM coproduction.public.coproductionprocess, coproduction.public.team INNER JOIN coproduction.public.permission ON permission.coproductionprocess_id=coproductionprocess.id AND permission.team_id=team.id ORDER BY coproductionprocess.id ) GROUP BY coprod_id HAVING COUNT(DISTINCT team_type)>1)",
-    #     "extract_count": True
-    # },
-    
-    # {
-    #     "name": "A12: Number of coproduction processes involved in sustainability",
-    #     "sql": "SELECT COUNT(DISTINCT(coproductionprocess_id)) FROM ( SELECT coproductionprocess_id FROM Coproduction.public.asset INNER JOIN Coproduction.public.internalasset ON asset.id = internalasset.id WHERE knowledgeinterlinker_id in ( SELECT id FROM catalogue.public.interlinker WHERE is_sustainability_related = True ) UNION ALL SELECT coproductionprocess_id FROM Coproduction.public.asset INNER JOIN Coproduction.public.internalasset ON asset.id = internalasset.id WHERE softwareinterlinker_id in ( SELECT id FROM catalogue.public.interlinker WHERE is_sustainability_related = True ) UNION ALL SELECT coproductionprocess_id FROM Coproduction.public.asset INNER JOIN Coproduction.public.externalasset ON asset.id = externalasset.id WHERE externalinterlinker_id in ( SELECT id FROM catalogue.public.interlinker WHERE is_sustainability_related = True ) )",
-    #     "extract_count": True
-    # },
-    
-    # # coproductionprocesses
-    # {
-    #     "name": "A7: Number of coproduction processes",
-    #     "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess",
-    #     "extract_count": True
-    # },
-    
-    # # permissions
-    # {
-    #     "name": "Number of permissions",
-    #     "sql": "SELECT COUNT(DISTINCT(permission.id)) FROM coproduction.public.permission",
-    #     "extract_count": True
-    # },
-    # {
-    #     "name": "A8: Number of active users last month",
-    #     "sql": f"SELECT COUNT(DISTINCT(user_id)) FROM elastic2.logs.log AS log WHERE log.\"timestamp\" > '{one_month_before}'",
-    #     "extract_count": True
-    # },
     
     
     

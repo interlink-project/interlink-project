@@ -244,7 +244,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   dremio:
-    image: dremio/dremio-oss:21.2
+    image: dremio/dremio-oss:24.0
     container_name: ${PLATFORM_STACK_NAME}-dremio
     restart: unless-stopped
     volumes:
@@ -465,6 +465,7 @@ services:
       - BASE_PATH=/auth
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=users
+      - CLIENT_ID=${AAC_APP_KEY}
       - CLIENT_SECRET=${LOOMIO_AAC_APP_SECRET}
     env_file:
       - .env
@@ -806,10 +807,10 @@ services:
       - BASE_PATH=/logging
       - TZ=${TZ}
       - WAITFORIT_TIMEOUT=120
-      - ELASTIC_HOST=${ELASTIC_GRAFANA_HOST}
-      - ELASTIC_PORT=${ELASTIC_GRAFANA_PORT}
-      - ELASTIC_USERNAME=${ELASTIC_GRAFANA_USERNAME}
-      - ELASTIC_PASSWORD=${ELASTIC_GRAFANA_PASSWORD}
+      - ELASTIC_HOST=${ELASTIC_HOST_USER_LOGGING}
+      - ELASTIC_PORT=${ELASTIC_PORT}
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -822,7 +823,7 @@ services:
       - traefik.http.middlewares.logging-stripprefix.stripprefix.prefixes=/logging
     networks:
       - traefik-public
-    command: "wait-for-it --service ${ELASTIC_GRAFANA_HOST}:${ELASTIC_GRAFANA_PORT} -- uvicorn main:app --reload --host 0.0.0.0 --port ${PORT}"
+    command: "wait-for-it --service ${ELASTIC_HOST_USER_LOGGING}:${ELASTIC_PORT} -- uvicorn main:app --reload --host 0.0.0.0 --port ${PORT}"
     logging:
       driver: "json-file"
       options:
