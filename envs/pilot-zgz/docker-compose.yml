@@ -749,7 +749,7 @@ services:
       - PROTOCOL=https://
       - BASE_PATH=
       - SCRIPT_NAME=
-      - DEBUG=True
+      - DEBUG=False
       - ELASTICSEARCH_INDEX=annotator
       - AUTH_ON=False
       - AUTHZ_ON=False
@@ -790,7 +790,7 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-augmenterservice.tls=true
       - traefik.http.services.${PLATFORM_STACK_NAME}-augmenterservice.loadbalancer.server.port=${PORT}
       - traefik.http.routers.${PLATFORM_STACK_NAME}-augmenterservice.rule=Host(`servicepedia.${DOMAIN}`)
-    command: gunicorn  --log-level debug --bind 0.0.0.0:80 --workers 1  --threads 100 "app.main:create_app()"
+    command: gunicorn  --log-level critical --bind 0.0.0.0:80 --workers 1  --threads 100 "app.main:create_app()"
     logging:
       driver: "json-file"
       options:
