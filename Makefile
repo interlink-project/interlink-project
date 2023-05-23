@@ -18,23 +18,22 @@ net: ## Creates needed network to communicate through different docker-compose f
 .PHONY: setup
 setup: ## Clones all components
 	# frontend
-	cd .. && git clone https://github.com/interlink-project/frontend
+	cd .. && git clone https://github.com/greengage-project/frontend
 
 	# platform components
-	cd .. && git clone https://github.com/interlink-project/backend-auth
-	cd .. && git clone https://github.com/interlink-project/backend-catalogue
-	cd .. && git clone https://github.com/interlink-project/backend-coproduction
-	cd .. && git clone https://github.com/interlink-project/backend-logging
-	cd .. && git clone https://github.com/interlink-project/interlinkers-data
+	cd .. && git clone https://github.com/greengage-project/backend-auth
+	cd .. && git clone https://github.com/greengage-project/backend-catalogue
+	cd .. && git clone https://github.com/greengage-project/backend-coproduction
+	cd .. && git clone https://github.com/greengage-project/backend-logging
 
 	# interlinkers
-	cd .. && git clone https://github.com/interlink-project/interlinker-survey
-	cd .. && git clone https://github.com/interlink-project/interlinker-googledrive
-	cd .. && git clone https://github.com/interlink-project/interlinker-ceditor
+	cd .. && git clone https://github.com/greengage-project/interlinker-survey
+	cd .. && git clone https://github.com/greengage-project/interlinker-googledrive
+	cd .. && git clone https://github.com/greengage-project/interlinker-ceditor
 	# service augmenter and loomio
 	
 	# gamification
-	cd .. && git clone https://github.com/interlink-project/interlink-gamification
+	cd .. && git clone https://github.com/greengage-project/interlink-gamification
 .PHONY: down
 down: ## Stops all containers and removes volumes
 	# platform components
