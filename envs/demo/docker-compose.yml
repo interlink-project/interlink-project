@@ -205,7 +205,7 @@ services:
     container_name: ${PLATFORM_STACK_NAME}-matomo
     restart: unless-stopped
     entrypoint: "/bin/bash"
-    command: ["/bin/bash"]
+    command: []
     volumes:
       - matomo-data:/bitnami/matomo
     env_file:
