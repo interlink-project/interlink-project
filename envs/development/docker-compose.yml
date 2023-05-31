@@ -211,8 +211,7 @@ services:
     networks:
 
       - traefik-public
-    stdin_open: true 
-    tty: true
+    
     depends_on:
       - mariadb
     labels:
