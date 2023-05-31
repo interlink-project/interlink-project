@@ -192,8 +192,6 @@ services:
       - mariadb-data:/var/lib/mysql
     env_file:
       - .env
-    environment:
-      - BITNAMI_DEBUG: "true"
     networks:
       - traefik-public
       - grafana-network
@@ -212,7 +210,6 @@ services:
       - .env
     networks:
       - traefik-public
-    stdin_open: true 
     tty: true
     depends_on:
       - mariadb
