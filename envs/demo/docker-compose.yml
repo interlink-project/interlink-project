@@ -201,7 +201,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   matomo:
-    image: bitnami/matomo:4.10.1
+    image: bitnami/matomo:4.14.2
     container_name: ${PLATFORM_STACK_NAME}-matomo
     restart: unless-stopped
     volumes:
