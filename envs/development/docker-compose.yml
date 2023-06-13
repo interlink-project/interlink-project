@@ -252,7 +252,7 @@ services:
       - dremio-data:/opt/dremio/data
     ports:
       - "9047:9047"   # UI (HTTP)
-      # - "31010:31010" # ODBC/JDBC clients
+      - "31010:31010" # ODBC/JDBC clients
       # - "2181:2181"   # ZooKeeper
       # - "45678:45678" # Inter-node communication
     labels:
