@@ -252,6 +252,7 @@ services:
       - dremio-data:/opt/dremio/data
     ports:
       - "9047:9047"   # UI (HTTP)
+      - "32010:32010" # Arrow Flight
       # - "31010:31010" # ODBC/JDBC clients
       # - "2181:2181"   # ZooKeeper
       # - "45678:45678" # Inter-node communication
@@ -278,8 +279,6 @@ services:
     restart: unless-stopped
     volumes:
       - db-data:${PGDATA}
-    ports:
-      - 5432:5432
     env_file:
       - .env
     environment:
