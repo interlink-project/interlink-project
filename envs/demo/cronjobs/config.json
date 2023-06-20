@@ -1,7 +1,12 @@
 [
     {
-        "schedule": "@every 24h",
+        "schedule": "@every 10m",
         "command": "cd /opt/jobs/dremio && python3 kpis.py",
+        "onstart": true
+    },
+    {
+        "schedule": "@every 1d",
+        "command": "# cd /opt/jobs && python3 backups.py",
         "onstart": true
     }
 ]
