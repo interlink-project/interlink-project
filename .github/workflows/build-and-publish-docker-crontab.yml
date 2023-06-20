@@ -1,12 +1,11 @@
 name: build-and-publish-docker-crontab
 
 on:
-
   workflow_dispatch:
 
   push:
     tags:
-      - '*'
+      - "*"
 
     branches:
       - "master"
@@ -35,7 +34,7 @@ jobs:
           context: ./docker/crontab
           push: true
           tags: |
-            interlinkproject/crontab:${{ github.ref_name }}
-            interlinkproject/crontab:${{ github.ref_name }}.${{ steps.date.outputs.date }}
-          cache-from: type=registry,ref=interlinkproject/crontab:buildcache
-          cache-to: type=registry,ref=interlinkproject/crontab:buildcache,mode=max
+            greengageproject/crontab:${{ github.ref_name }}
+            greengageproject/crontab:${{ github.ref_name }}.${{ steps.date.outputs.date }}
+          cache-from: type=registry,ref=greengageproject/crontab:buildcache
+          cache-to: type=registry,ref=greengageproject/crontab:buildcache,mode=max

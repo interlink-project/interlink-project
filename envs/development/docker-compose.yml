@@ -1,6 +1,5 @@
 version: "3.9"
 services:
-
   # Traefik Service
   proxy:
     image: traefik:v2.6.6
@@ -63,7 +62,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   crontab:
-    image: interlinkproject/crontab:master
+    image: greengageproject/crontab:master
     container_name: ${PLATFORM_STACK_NAME}-crontab
     restart: unless-stopped
     env_file:
@@ -103,37 +102,9 @@ services:
     networks:
       - traefik-public
 
-
-  portainer:
-    image: portainer/portainer-ce:2.11.1-alpine
-    container_name: ${PLATFORM_STACK_NAME}-portainer
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    networks:
-      - traefik-public
-    environment:
-      - TZ=${TZ}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - portainer-data:/data
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=traefik-public
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-portainer.entrypoints=websecure
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-portainer.tls.certresolver=letsencrypt
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-portainer.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-portainer.rule=Host(`portainer.${DOMAIN}`)
-      - traefik.http.services.${PLATFORM_STACK_NAME}-portainer.loadbalancer.server.port=9000
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
   # Frontend Service
   frontend:
-    image: interlinkproject/frontend:${FRONTEND_VERSION}
+    image: greengageproject/frontend:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend
     restart: unless-stopped
     volumes:
@@ -163,7 +134,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   frontend-docs:
-    image: interlinkproject/frontend-docs:${FRONTEND_VERSION}
+    image: greengageproject/frontend-docs:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend-docs
     restart: unless-stopped
     networks:
@@ -209,7 +180,6 @@ services:
     env_file:
       - .env
     networks:
-
       - traefik-public
     depends_on:
       - mariadb
@@ -250,7 +220,7 @@ services:
     volumes:
       - dremio-data:/opt/dremio/data
     ports:
-      - "9047:9047"   # UI (HTTP)
+      - "9047:9047" # UI (HTTP)
       # - "31010:31010" # ODBC/JDBC clients
       # - "2181:2181"   # ZooKeeper
       # - "45678:45678" # Inter-node communication
@@ -272,7 +242,7 @@ services:
 
   # Postgres Service
   db:
-    image: interlinkproject/postgres:${DB_VERSION}
+    image: greengageproject/postgres:${DB_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-db
     restart: unless-stopped
     volumes:
@@ -284,7 +254,7 @@ services:
       - PGUSER=${POSTGRES_USERNAME} # https://stackoverflow.com/questions/60193781/postgres-with-docker-compose-gives-fatal-role-root-does-not-exist-error
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -337,7 +307,7 @@ services:
 
   # Coproduction Service
   coproduction:
-    image: interlinkproject/backend-coproduction:${COPRODUCTION_VERSION}
+    image: greengageproject/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproduction
     restart: unless-stopped
     env_file:
@@ -381,10 +351,10 @@ services:
 
   # Coproduction Worker Service
   coproductionworker:
-    image: interlinkproject/backend-coproduction:${COPRODUCTION_VERSION}
+    image: greengageproject/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproductionworker
     restart: unless-stopped
-    command: [ "bash", "./worker-start.sh" ]
+    command: ["bash", "./worker-start.sh"]
     volumes:
       - coproduction-static:/app/static
     depends_on:
@@ -416,7 +386,7 @@ services:
 
   # Catalogue Service
   catalogue:
-    image: interlinkproject/backend-catalogue:${CATALOGUE_VERSION}
+    image: greengageproject/backend-catalogue:${CATALOGUE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-catalogue
     restart: unless-stopped
     volumes:
@@ -456,7 +426,7 @@ services:
 
   # Auth Service
   auth:
-    image: interlinkproject/backend-auth:${AUTH_VERSION}
+    image: greengageproject/backend-auth:${AUTH_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-auth
     restart: unless-stopped
     environment:
@@ -487,7 +457,7 @@ services:
 
   # Googledrive Interlinker
   googledrive:
-    image: interlinkproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
+    image: greengageproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-googledrive
     restart: unless-stopped
     environment:
@@ -523,7 +493,7 @@ services:
 
   # Survey Editor Interlinker
   surveyeditor:
-    image: interlinkproject/interlinker-surveyeditor:${SURVEYEDITOR_VERSION}
+    image: greengageproject/interlinker-surveyeditor:${SURVEYEDITOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-surveyeditor
     restart: unless-stopped
     environment:
@@ -553,7 +523,7 @@ services:
 
   # Ceditor Interlinker Service
   ceditor:
-    image: interlinkproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
+    image: greengageproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-ceditor
     restart: unless-stopped
     environment:
@@ -583,7 +553,7 @@ services:
 
   # Ceditor Interlinker Service etherpad
   etherpad:
-    image: interlinkproject/interlinker-ceditor:etherpad.${ETHERPAD_VERSION}
+    image: greengageproject/interlinker-ceditor:etherpad.${ETHERPAD_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-etherpad
     restart: on-failure
     environment:
@@ -620,7 +590,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomio:
-    image: interlinkproject/interlinker-loomio:${LOOMIO_VERSION}
+    image: greengageproject/interlinker-loomio:${LOOMIO_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomio
     restart: unless-stopped
     environment:
@@ -668,7 +638,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomioworker:
-    image: interlinkproject/interlinker-loomio:${LOOMIOWORKER_VERSION}
+    image: greengageproject/interlinker-loomio:${LOOMIOWORKER_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomioworker
     restart: unless-stopped
     environment:
@@ -730,7 +700,7 @@ services:
   # service augmenter
 
   augmenterservice:
-    image: interlinkproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
+    image: greengageproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-augmenterservice
     restart: always
     env_file:
@@ -796,8 +766,35 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  newelasticsearch:
+    image: elasticsearch:8.2.2
+    container_name: ${PLATFORM_STACK_NAME}-elasticsearch8
+    restart: unless-stopped
+    environment:
+      - xpack.security.enabled=true
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - traefik-public
+    volumes:
+      - newelasticsearch-data:/usr/share/elasticsearch/data
+      - newelasticsearch-config:/usr/share/elasticsearch/config
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
   logging:
-    image: interlinkproject/backend-logging:${LOGGING_VERSION}
+    image: greengageproject/backend-logging:${LOGGING_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-logging
     restart: unless-stopped
     environment:
@@ -823,33 +820,6 @@ services:
     networks:
       - traefik-public
     command: "wait-for-it --service ${ELASTIC_HOST_USER_LOGGING}:${ELASTIC_PORT} -- uvicorn main:app --reload --host 0.0.0.0 --port ${PORT}"
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
-  newelasticsearch:
-    image: elasticsearch:8.2.2
-    container_name: ${PLATFORM_STACK_NAME}-elasticsearch8
-    restart: unless-stopped
-    environment:
-      - xpack.security.enabled=true
-      - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms750m -Xmx750m
-      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
-    networks:
-      - traefik-public
-    volumes:
-      - newelasticsearch-data:/usr/share/elasticsearch/data
-      - newelasticsearch-config:/usr/share/elasticsearch/config
     logging:
       driver: "json-file"
       options:
@@ -882,7 +852,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   grafana:
-    image: interlinkproject/backend-monitoring:grafana.${GRAFANA_VERSION}
+    image: greengageproject/backend-monitoring:grafana.${GRAFANA_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-grafana
     restart: unless-stopped
     links:
@@ -911,26 +881,8 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-  monitoringdb:
-    image: mariadb:10.10.2
-    container_name: ${PLATFORM_STACK_NAME}-monitoringdb
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_MONITORING}
-      MYSQL_DATABASE: ${MYSQL_DATABASE_MONITORING}
-      MYSQL_USER: ${MYSQL_USERNAME_MONITORING}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD_MONITORING}
-    volumes:
-      - monitoringdb-data:/var/lib/mysql
-    networks:
-      - grafana-network
-      - traefik-public
-    logging:
-      driver: "json-file"
-      options:
-        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
   prometheus:
-    image: interlinkproject/backend-monitoring:prometheus.${PROMETHEUS_VERSION}
+    image: greengageproject/backend-monitoring:prometheus.${PROMETHEUS_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-prometheus
     restart: unless-stopped
     volumes:
@@ -968,7 +920,6 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-
   node-exporter:
     image: prom/node-exporter:v1.3.1
     container_name: ${PLATFORM_STACK_NAME}-monitoring_node_exporter
@@ -980,10 +931,10 @@ services:
       - /sys:/host/sys:ro
       - /:/rootfs:ro
     command:
-      - '--path.procfs=/host/proc'
-      - '--path.rootfs=/rootfs'
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      - "--path.procfs=/host/proc"
+      - "--path.rootfs=/rootfs"
+      - "--path.sysfs=/host/sys"
+      - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)"
     networks:
       - grafana-network
     logging:
@@ -991,13 +942,30 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  monitoringdb:
+    image: mariadb:10.10.2
+    container_name: ${PLATFORM_STACK_NAME}-monitoringdb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD_MONITORING}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_MONITORING}
+      MYSQL_USER: ${MYSQL_USERNAME_MONITORING}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD_MONITORING}
+    volumes:
+      - monitoringdb-data:/var/lib/mysql
+    networks:
+      - grafana-network
+      - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
   filebeat:
-    image: interlinkproject/backend-monitoring:filebeat.${FILEBEAT_VERSION}
+    image: greengageproject/backend-monitoring:filebeat.${FILEBEAT_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-filebeat
     restart: unless-stopped
     user: root
-    env_file:
-      .env
+    env_file: .env
     environment:
       ELASTIC_HOST: ${ELASTIC_GRAFANA_HOST}
       ELASTIC_PORT: ${ELASTIC_GRAFANA_PORT}
@@ -1030,8 +998,7 @@ services:
     image: elasticsearch:8.2.2
     container_name: ${PLATFORM_STACK_NAME}-grafana-elasticsearch
     restart: unless-stopped
-    env_file:
-      .env
+    env_file: .env
     environment:
       - xpack.security.enabled=true
       - discovery.type=single-node
@@ -1070,7 +1037,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   gamification-engine:
-    image: interlinkproject/interlink-gamification:${GAMIFICATION_VERSION}
+    image: greengageproject/interlink-gamification:${GAMIFICATION_VERSION}
     container_name: interlink-gamification-engine
     restart: unless-stopped
     user: 1000:1000
@@ -1105,6 +1072,54 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  keycloak-db:
+    image: postgres:13
+    container_name: ${PLATFORM_STACK_NAME}-keycloak-postgres
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    volumes:
+      - keycloak-db-data:/var/lib/postgresql/data
+    networks:
+      - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  keycloak:
+    image: jboss/keycloak:15.0.2
+    container_name: ${PLATFORM_STACK_NAME}-interlink-keycloak
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: keycloak-db
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      PROXY_ADDRESS_FORWARDING: "true"
+      # Para que Keycloak utilice el proxy inverso de Traefik
+      # Por lo general, es útil cuando se utiliza SSL
+    depends_on:
+      - keycloak-db
+
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.services.interlink-keycloak.loadbalancer.server.port=8080
+      - traefik.http.routers.interlink-keycloak.entrypoints=websecure
+      - traefik.http.routers.interlink-keycloak.tls.certresolver=letsencrypt
+      - traefik.http.routers.interlink-keycloak.tls=true
+      - traefik.http.routers.interlink-keycloak.rule=Host(`auth.${DOMAIN}`)
+      - traefik.http.middlewares.interlink-keycloak-headers.headers.customrequestheaders.X-Forwarded-Proto=https
+    networks:
+      - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 networks:
   traefik-public:
     external: true
@@ -1112,36 +1127,34 @@ networks:
     external: true
 
 volumes:
+  matomo-data:
+  mariadb-data:
+  monitoringdb-data:
+  newelasticsearch-data:
+  elasticsearch-data:
+  mongodb-data:
+  db-data:
+  dremio-data:
+  portainer-data:
+  auth-static:
+  coproduction-static:
+  catalogue-static:
   backups:
-
   loomio-uploads:
   loomio-storage:
   loomio-files:
   loomio-plugins:
   loomio-import:
   loomio-tmp:
-
-  db-data:
-  dremio-data:
-  portainer-data:
-  mongodb-data:
-  elasticsearch-data:
-  elasticsearch-config:
-  newelasticsearch-data:
   newelasticsearch-config:
-  auth-static:
-  coproduction-static:
-  catalogue-static:
-  matomo-data:
-  mariadb-data:
-
+  elasticsearch-config:
   grafana-dashboards:
   grafana-data:
-  monitoringdb-data:
   prometheus-data:
   filebeat-data:
   grafana-elasticsearch-data:
   grafana-elasticsearch-config:
-
   gamification-mongo-data:
   gamification-engine-data:
+  keycloak-db-data:
+  keycloak-data:

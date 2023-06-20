@@ -1,6 +1,5 @@
 version: "3.9"
 services:
-
   # Traefik Service
   proxy:
     image: traefik:v2.6.6
@@ -63,7 +62,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   crontab:
-    image: interlinkproject/crontab:master
+    image: greengageproject/crontab:master
     container_name: ${PLATFORM_STACK_NAME}-crontab
     restart: unless-stopped
     env_file:
@@ -103,7 +102,6 @@ services:
     networks:
       - traefik-public
 
-
   portainer:
     image: portainer/portainer-ce:2.11.1-alpine
     container_name: ${PLATFORM_STACK_NAME}-portainer
@@ -133,7 +131,7 @@ services:
 
   # Frontend Service
   frontend:
-    image: interlinkproject/frontend:${FRONTEND_VERSION}
+    image: greengageproject/frontend:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend
     restart: unless-stopped
     volumes:
@@ -163,7 +161,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   frontend-docs:
-    image: interlinkproject/frontend-docs:${FRONTEND_VERSION}
+    image: greengageproject/frontend-docs:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend-docs
     restart: unless-stopped
     networks:
@@ -209,7 +207,6 @@ services:
     env_file:
       - .env
     networks:
-
       - traefik-public
     depends_on:
       - mariadb
@@ -250,7 +247,7 @@ services:
     volumes:
       - dremio-data:/opt/dremio/data
     ports:
-      - "9047:9047"   # UI (HTTP)
+      - "9047:9047" # UI (HTTP)
       # - "31010:31010" # ODBC/JDBC clients
       # - "2181:2181"   # ZooKeeper
       # - "45678:45678" # Inter-node communication
@@ -272,7 +269,7 @@ services:
 
   # Postgres Service
   db:
-    image: interlinkproject/postgres:${DB_VERSION}
+    image: greengageproject/postgres:${DB_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-db
     restart: unless-stopped
     volumes:
@@ -284,7 +281,7 @@ services:
       - PGUSER=${POSTGRES_USERNAME} # https://stackoverflow.com/questions/60193781/postgres-with-docker-compose-gives-fatal-role-root-does-not-exist-error
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -337,7 +334,7 @@ services:
 
   # Coproduction Service
   coproduction:
-    image: interlinkproject/backend-coproduction:${COPRODUCTION_VERSION}
+    image: greengageproject/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproduction
     restart: unless-stopped
     env_file:
@@ -381,10 +378,10 @@ services:
 
   # Coproduction Worker Service
   coproductionworker:
-    image: interlinkproject/backend-coproduction:${COPRODUCTION_VERSION}
+    image: greengageproject/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproductionworker
     restart: unless-stopped
-    command: [ "bash", "./worker-start.sh" ]
+    command: ["bash", "./worker-start.sh"]
     volumes:
       - coproduction-static:/app/static
     depends_on:
@@ -416,7 +413,7 @@ services:
 
   # Catalogue Service
   catalogue:
-    image: interlinkproject/backend-catalogue:${CATALOGUE_VERSION}
+    image: greengageproject/backend-catalogue:${CATALOGUE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-catalogue
     restart: unless-stopped
     volumes:
@@ -456,7 +453,7 @@ services:
 
   # Auth Service
   auth:
-    image: interlinkproject/backend-auth:${AUTH_VERSION}
+    image: greengageproject/backend-auth:${AUTH_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-auth
     restart: unless-stopped
     environment:
@@ -487,7 +484,7 @@ services:
 
   # Googledrive Interlinker
   googledrive:
-    image: interlinkproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
+    image: greengageproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-googledrive
     restart: unless-stopped
     environment:
@@ -523,7 +520,7 @@ services:
 
   # Survey Editor Interlinker
   surveyeditor:
-    image: interlinkproject/interlinker-surveyeditor:${SURVEYEDITOR_VERSION}
+    image: greengageproject/interlinker-surveyeditor:${SURVEYEDITOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-surveyeditor
     restart: unless-stopped
     environment:
@@ -553,7 +550,7 @@ services:
 
   # Ceditor Interlinker Service
   ceditor:
-    image: interlinkproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
+    image: greengageproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-ceditor
     restart: unless-stopped
     environment:
@@ -583,7 +580,7 @@ services:
 
   # Ceditor Interlinker Service etherpad
   etherpad:
-    image: interlinkproject/interlinker-ceditor:etherpad.${ETHERPAD_VERSION}
+    image: greengageproject/interlinker-ceditor:etherpad.${ETHERPAD_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-etherpad
     restart: on-failure
     environment:
@@ -620,7 +617,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomio:
-    image: interlinkproject/interlinker-loomio:${LOOMIO_VERSION}
+    image: greengageproject/interlinker-loomio:${LOOMIO_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomio
     restart: unless-stopped
     environment:
@@ -668,7 +665,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomioworker:
-    image: interlinkproject/interlinker-loomio:${LOOMIOWORKER_VERSION}
+    image: greengageproject/interlinker-loomio:${LOOMIOWORKER_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomioworker
     restart: unless-stopped
     environment:
@@ -730,7 +727,7 @@ services:
   # service augmenter
 
   augmenterservice:
-    image: interlinkproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
+    image: greengageproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-augmenterservice
     restart: always
     env_file:
@@ -797,7 +794,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   logging:
-    image: interlinkproject/backend-logging:${LOGGING_VERSION}
+    image: greengageproject/backend-logging:${LOGGING_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-logging
     restart: unless-stopped
     environment:
@@ -882,7 +879,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   grafana:
-    image: interlinkproject/backend-monitoring:grafana.${GRAFANA_VERSION}
+    image: greengageproject/backend-monitoring:grafana.${GRAFANA_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-grafana
     restart: unless-stopped
     links:
@@ -930,7 +927,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   prometheus:
-    image: interlinkproject/backend-monitoring:prometheus.${PROMETHEUS_VERSION}
+    image: greengageproject/backend-monitoring:prometheus.${PROMETHEUS_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-prometheus
     restart: unless-stopped
     volumes:
@@ -968,7 +965,6 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-
   node-exporter:
     image: prom/node-exporter:v1.3.1
     container_name: ${PLATFORM_STACK_NAME}-monitoring_node_exporter
@@ -980,10 +976,10 @@ services:
       - /sys:/host/sys:ro
       - /:/rootfs:ro
     command:
-      - '--path.procfs=/host/proc'
-      - '--path.rootfs=/rootfs'
-      - '--path.sysfs=/host/sys'
-      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      - "--path.procfs=/host/proc"
+      - "--path.rootfs=/rootfs"
+      - "--path.sysfs=/host/sys"
+      - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)"
     networks:
       - grafana-network
     logging:
@@ -992,12 +988,11 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   filebeat:
-    image: interlinkproject/backend-monitoring:filebeat.${FILEBEAT_VERSION}
+    image: greengageproject/backend-monitoring:filebeat.${FILEBEAT_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-filebeat
     restart: unless-stopped
     user: root
-    env_file:
-      .env
+    env_file: .env
     environment:
       ELASTIC_HOST: ${ELASTIC_GRAFANA_HOST}
       ELASTIC_PORT: ${ELASTIC_GRAFANA_PORT}
@@ -1030,8 +1025,7 @@ services:
     image: elasticsearch:8.2.2
     container_name: ${PLATFORM_STACK_NAME}-grafana-elasticsearch
     restart: unless-stopped
-    env_file:
-      .env
+    env_file: .env
     environment:
       - xpack.security.enabled=true
       - discovery.type=single-node
@@ -1070,7 +1064,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   gamification-engine:
-    image: interlinkproject/interlink-gamification:${GAMIFICATION_VERSION}
+    image: greengageproject/interlink-gamification:${GAMIFICATION_VERSION}
     container_name: interlink-gamification-engine
     restart: unless-stopped
     user: 1000:1000

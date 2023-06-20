@@ -2,7 +2,7 @@ version: "3.9"
 services:
   db:
     container_name: internationalization-db
-    image: interlinkproject/postgres:master
+    image: greengageproject/postgres:master
     volumes:
       - idb-data:${PGDATA}
     env_file:
@@ -10,7 +10,7 @@ services:
     environment:
       - POSTGRES_MULTIPLE_DATABASES=weblate
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -25,13 +25,13 @@ services:
     container_name: internationalization-weblate
     image: weblate/weblate
     tmpfs:
-    - /app/cache
+      - /app/cache
     volumes:
-    - weblate-data:/app/data
+      - weblate-data:/app/data
     restart: always
     depends_on:
-    - db
-    - weblate-cache
+      - db
+      - weblate-cache
     environment:
       WEBLATE_ENABLE_HTTPS: 1
       WEBLATE_SITE_DOMAIN: ${DOMAIN}
@@ -77,21 +77,21 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-  
+
   weblate-cache:
     container_name: internationalization-cache
     image: redis:6-alpine
     restart: always
-    command: [redis-server, --save, '60', '1']
+    command: [redis-server, --save, "60", "1"]
     volumes:
-    - weblate-cache-data:/data
+      - weblate-cache-data:/data
     networks:
       - default
     logging:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-  
+
 networks:
   traefik-public:
     external: true

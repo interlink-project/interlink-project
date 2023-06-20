@@ -8,7 +8,7 @@ To start with, when changes are made to any of the components enumerated in the 
 
 Let's take backend-coproduction as an example:
 
-``` bash
+```bash
 name: build-and-publish-docker
 
 on:
@@ -34,10 +34,10 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            interlinkproject/backend-coproduction:${{ github.ref_name }}
-            interlinkproject/backend-coproduction:${{ github.ref_name }}.${{ steps.date.outputs.date }}
-          cache-from: type=registry,ref=interlinkproject/backend-coproduction:buildcache
-          cache-to: type=registry,ref=interlinkproject/backend-coproduction:buildcache,mode=max
+            greengageproject/backend-coproduction:${{ github.ref_name }}
+            greengageproject/backend-coproduction:${{ github.ref_name }}.${{ steps.date.outputs.date }}
+          cache-from: type=registry,ref=greengageproject/backend-coproduction:buildcache
+          cache-to: type=registry,ref=greengageproject/backend-coproduction:buildcache,mode=max
 
       - name: Trigger Dev Deployment
         uses: octokit/request-action@v2.x
@@ -50,16 +50,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.INTERLINK_PROJECT_GITHUB_TOKEN }}
 ```
+
 > "build-and-publish-docker" workflow in the backend-coproduction repository: [https://github.com/interlink-project/backend-coproduction/blob/master/.github/workflows/build-and-publish-docker.yml](https://github.com/interlink-project/backend-coproduction/blob/master/.github/workflows/build-and-publish-docker.yml)
 
 Update-dev-environment workflow, as well as the other workflows for the different environments (demo and pilots), is responsible for establishing an ssh connection to the server where the application is hosted and executing the commands needed to get the latest changes and start the docker services based on them.
 
 The triggers for the dev workflow are as follows:
 
-* **workflow_dispatch:** to manually trigger a workflow run using the GitHub API, GitHub CLI, or GitHub browser interface. 
-* **repository_dispatch:** use the GitHub API to trigger a webhook event called repository_dispatch when you want to trigger a workflow for activity that happens outside of GitHub or, as it happens in this case, from other repositories. (used by the other components, such as backend-coproduction, the example above)
-* **push:** Runs workflow when you push a commit or tag.
-* **release:** runs  workflow when release activity in your repository occurs.
+- **workflow_dispatch:** to manually trigger a workflow run using the GitHub API, GitHub CLI, or GitHub browser interface.
+- **repository_dispatch:** use the GitHub API to trigger a webhook event called repository_dispatch when you want to trigger a workflow for activity that happens outside of GitHub or, as it happens in this case, from other repositories. (used by the other components, such as backend-coproduction, the example above)
+- **push:** Runs workflow when you push a commit or tag.
+- **release:** runs workflow when release activity in your repository occurs.
 
 ```bash
 name: update-dev-environment
@@ -73,7 +74,7 @@ on:
 
   push:
     branches:
-      - "master"      
+      - "master"
     paths:
       - ".github/workflows/update-dev-environment.yml"
       - "envs/development/**"
@@ -98,7 +99,7 @@ jobs:
             export LOOMIO_AAC_APP_SECRET=${{ secrets.LOOMIO_AAC_APP_SECRET }}
             export MAIL_PASSWORD=${{ secrets.DEV_MAIL_PASSWORD }}
             export LOOMIO_SECRET_COOKIE_TOKEN=${{ secrets.LOOMIO_SECRET_COOKIE_TOKEN }}
-            export LOOMIO_SMTP_PASSWORD=${{ secrets.LOOMIO_SMTP_PASSWORD }}        
+            export LOOMIO_SMTP_PASSWORD=${{ secrets.LOOMIO_SMTP_PASSWORD }}
             export LOOMIO_DEVISE_SECRET=${{ secrets.LOOMIO_DEVISE_SECRET }}
             export LOOMIO_DEVISE_SECRET=${{ secrets.LOOMIO_DEVISE_SECRET }}
             (...)
@@ -119,14 +120,13 @@ jobs:
             # Apply last migrations (if they exist)
             docker-compose exec -T catalogue alembic upgrade head
             docker-compose exec -T coproduction alembic upgrade head
-            
+
             # Seed the database (if objects already exist, initial_data.py script updates them)
             docker-compose exec -T catalogue ./seed.sh
-            docker-compose exec -T coproduction ./seed.sh            
+            docker-compose exec -T coproduction ./seed.sh
 ```
+
 > Update-dev-environment workflow: [https://github.com/interlink-project/interlink-project/blob/master/.github/workflows/update-dev-environment.yml](https://github.com/interlink-project/interlink-project/blob/master/.github/workflows/update-dev-environment.yml)
-
-
 
 This way, every time a change is made to the master of any of the components, the dev environment is automatically updated (it takes about 3 minutes to generate the docker image and another 3 minutes to update the environment).
 
@@ -155,35 +155,36 @@ jobs:
           username: ${{ secrets.DEMO_USERNAME }}
           (...)
 ```
+
 > Update-demo-environment workflow: [https://github.com/interlink-project/interlink-project/blob/master/.github/workflows/update-demo-environment.yml](https://github.com/interlink-project/interlink-project/blob/master/.github/workflows/update-demo-environment.yml)
 
-
-One important consideration here is the ".env" file. As you can see in the docker-compose files, the versions of the services are defined by a variable. This variable is retrieved from the ".env" file. 
+One important consideration here is the ".env" file. As you can see in the docker-compose files, the versions of the services are defined by a variable. This variable is retrieved from the ".env" file.
 
 Fragment of the docker-compose used in ALL the environments:
+
 ```yaml
 version: "3.9"
 services:
     ...
 
   frontend:
-    image: interlinkproject/frontend:${FRONTEND_VERSION}
+    image: greengageproject/frontend:${FRONTEND_VERSION}
     ...
 
   googledrive:
-    image: interlinkproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
+    image: greengageproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
     ...
 
   ceditor:
-    image: interlinkproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
+    image: greengageproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
     ...
 
   augmenterservice:
-    image: interlinkproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
+    image: greengageproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
     ...
 
   logging:
-    image: interlinkproject/backend-logging:${LOGGING_VERSION}
+    image: greengageproject/backend-logging:${LOGGING_VERSION}
     ...
 ```
 
@@ -243,9 +244,7 @@ PROMTAIL_VERSION=v1.0.2
 FILEBEAT_VERSION=v1.0.2
 ```
 
-
-
-The string "master" (in dev) refers to the latest docker image available, while in demo, it refers to specific versions of each component. So, logically, every time the dev workflow is executed, the services will be started in their latest version, while it doesn't matter how many times or at what time the demo workflow is executed, as it will depend on the versions specified in the .env file. 
+The string "master" (in dev) refers to the latest docker image available, while in demo, it refers to specific versions of each component. So, logically, every time the dev workflow is executed, the services will be started in their latest version, while it doesn't matter how many times or at what time the demo workflow is executed, as it will depend on the versions specified in the .env file.
 
 Therefore, the following explains how to generate new versions (tags) of the components.
 
@@ -253,8 +252,7 @@ Therefore, the following explains how to generate new versions (tags) of the com
 
 Going back to the component workflow, like the backend-coproduction workflow presented above, it creates an image with the master name on each push of a commit, but in case of a tag push, it creates an image with the name assigned to the tag. This happens thanks to the ${{ github.ref_name }} variable.
 
-
-``` bash
+```bash
 name: build-and-publish-docker
 
 on:
@@ -274,15 +272,17 @@ on:
           file: Dockerfile
           push: true
           tags: |
-            interlinkproject/backend-coproduction:${{ github.ref_name }}
-            interlinkproject/backend-coproduction:${{ github.ref_name }}.${{ steps.date.outputs.date }}
-          cache-from: type=registry,ref=interlinkproject/backend-coproduction:buildcache
-          cache-to: type=registry,ref=interlinkproject/backend-coproduction:buildcache,mode=max
+            greengageproject/backend-coproduction:${{ github.ref_name }}
+            greengageproject/backend-coproduction:${{ github.ref_name }}.${{ steps.date.outputs.date }}
+          cache-from: type=registry,ref=greengageproject/backend-coproduction:buildcache
+          cache-to: type=registry,ref=greengageproject/backend-coproduction:buildcache,mode=max
     (...)
 ```
+
 > Backend-coproduction repository "build-and-publish-docker" workflow: [https://github.com/interlink-project/backend-coproduction/blob/master/.github/workflows/build-and-publish-docker.yml](https://github.com/interlink-project/backend-coproduction/blob/master/.github/workflows/build-and-publish-docker.yml)
 
 To create a tag in a given component:
+
 ```bash
 cd /backend-coproduction
 # check existent tags
@@ -294,8 +294,9 @@ git push origin v1.2.1
 ```
 
 Results:
-* Multiple tags for every component: [https://github.com/interlink-project/backend-coproduction/tags](https://github.com/interlink-project/backend-coproduction/tags)
-* Different docker images for each component: [https://hub.docker.com/r/interlinkproject/backend-coproduction/tags](https://hub.docker.com/r/interlinkproject/backend-coproduction/tags)
+
+- Multiple tags for every component: [https://github.com/interlink-project/backend-coproduction/tags](https://github.com/interlink-project/backend-coproduction/tags)
+- Different docker images for each component: [https://hub.docker.com/r/greengageproject/backend-coproduction/tags](https://hub.docker.com/r/greengageproject/backend-coproduction/tags)
 
 ## When to update demo and pilots
 
