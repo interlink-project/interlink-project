@@ -11,6 +11,7 @@ on:
       - "master"
     paths:
       - docker/crontab/**
+
 jobs:
   docker:
     runs-on: ubuntu-latest
