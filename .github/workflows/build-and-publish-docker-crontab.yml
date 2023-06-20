@@ -34,7 +34,7 @@ jobs:
           context: ./docker/crontab
           push: true
           tags: |
-            greengageproject/crontab:${{ github.ref_name }}
-            greengageproject/crontab:${{ github.ref_name }}.${{ steps.date.outputs.date }}
-          cache-from: type=registry,ref=greengageproject/crontab:buildcache
-          cache-to: type=registry,ref=greengageproject/crontab:buildcache,mode=max
+            projectgreengage/crontab:${{ github.ref_name }}
+            projectgreengage/crontab:${{ github.ref_name }}.${{ steps.date.outputs.date }}
+          cache-from: type=registry,ref=projectgreengage/crontab:buildcache
+          cache-to: type=registry,ref=projectgreengage/crontab:buildcache,mode=max

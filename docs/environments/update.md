@@ -34,10 +34,10 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            greengageproject/backend-coproduction:${{ github.ref_name }}
-            greengageproject/backend-coproduction:${{ github.ref_name }}.${{ steps.date.outputs.date }}
-          cache-from: type=registry,ref=greengageproject/backend-coproduction:buildcache
-          cache-to: type=registry,ref=greengageproject/backend-coproduction:buildcache,mode=max
+            projectgreengage/backend-coproduction:${{ github.ref_name }}
+            projectgreengage/backend-coproduction:${{ github.ref_name }}.${{ steps.date.outputs.date }}
+          cache-from: type=registry,ref=projectgreengage/backend-coproduction:buildcache
+          cache-to: type=registry,ref=projectgreengage/backend-coproduction:buildcache,mode=max
 
       - name: Trigger Dev Deployment
         uses: octokit/request-action@v2.x
@@ -168,23 +168,23 @@ services:
     ...
 
   frontend:
-    image: greengageproject/frontend:${FRONTEND_VERSION}
+    image: projectgreengage/frontend:${FRONTEND_VERSION}
     ...
 
   googledrive:
-    image: greengageproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
+    image: projectgreengage/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
     ...
 
   ceditor:
-    image: greengageproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
+    image: projectgreengage/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
     ...
 
   augmenterservice:
-    image: greengageproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
+    image: projectgreengage/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
     ...
 
   logging:
-    image: greengageproject/backend-logging:${LOGGING_VERSION}
+    image: projectgreengage/backend-logging:${LOGGING_VERSION}
     ...
 ```
 
@@ -272,10 +272,10 @@ on:
           file: Dockerfile
           push: true
           tags: |
-            greengageproject/backend-coproduction:${{ github.ref_name }}
-            greengageproject/backend-coproduction:${{ github.ref_name }}.${{ steps.date.outputs.date }}
-          cache-from: type=registry,ref=greengageproject/backend-coproduction:buildcache
-          cache-to: type=registry,ref=greengageproject/backend-coproduction:buildcache,mode=max
+            projectgreengage/backend-coproduction:${{ github.ref_name }}
+            projectgreengage/backend-coproduction:${{ github.ref_name }}.${{ steps.date.outputs.date }}
+          cache-from: type=registry,ref=projectgreengage/backend-coproduction:buildcache
+          cache-to: type=registry,ref=projectgreengage/backend-coproduction:buildcache,mode=max
     (...)
 ```
 
@@ -296,7 +296,7 @@ git push origin v1.2.1
 Results:
 
 - Multiple tags for every component: [https://github.com/interlink-project/backend-coproduction/tags](https://github.com/interlink-project/backend-coproduction/tags)
-- Different docker images for each component: [https://hub.docker.com/r/greengageproject/backend-coproduction/tags](https://hub.docker.com/r/greengageproject/backend-coproduction/tags)
+- Different docker images for each component: [https://hub.docker.com/r/projectgreengage/backend-coproduction/tags](https://hub.docker.com/r/projectgreengage/backend-coproduction/tags)
 
 ## When to update demo and pilots
 

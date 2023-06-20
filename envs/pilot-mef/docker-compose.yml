@@ -62,7 +62,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   crontab:
-    image: greengageproject/crontab:master
+    image: projectgreengage/crontab:master
     container_name: ${PLATFORM_STACK_NAME}-crontab
     restart: unless-stopped
     env_file:
@@ -131,7 +131,7 @@ services:
 
   # Frontend Service
   frontend:
-    image: greengageproject/frontend:${FRONTEND_VERSION}
+    image: projectgreengage/frontend:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend
     restart: unless-stopped
     volumes:
@@ -161,7 +161,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   frontend-docs:
-    image: greengageproject/frontend-docs:${FRONTEND_VERSION}
+    image: projectgreengage/frontend-docs:${FRONTEND_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-frontend-docs
     restart: unless-stopped
     networks:
@@ -269,7 +269,7 @@ services:
 
   # Postgres Service
   db:
-    image: greengageproject/postgres:${DB_VERSION}
+    image: projectgreengage/postgres:${DB_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-db
     restart: unless-stopped
     volumes:
@@ -334,7 +334,7 @@ services:
 
   # Coproduction Service
   coproduction:
-    image: greengageproject/backend-coproduction:${COPRODUCTION_VERSION}
+    image: projectgreengage/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproduction
     restart: unless-stopped
     env_file:
@@ -378,7 +378,7 @@ services:
 
   # Coproduction Worker Service
   coproductionworker:
-    image: greengageproject/backend-coproduction:${COPRODUCTION_VERSION}
+    image: projectgreengage/backend-coproduction:${COPRODUCTION_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-coproductionworker
     restart: unless-stopped
     command: ["bash", "./worker-start.sh"]
@@ -413,7 +413,7 @@ services:
 
   # Catalogue Service
   catalogue:
-    image: greengageproject/backend-catalogue:${CATALOGUE_VERSION}
+    image: projectgreengage/backend-catalogue:${CATALOGUE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-catalogue
     restart: unless-stopped
     volumes:
@@ -453,7 +453,7 @@ services:
 
   # Auth Service
   auth:
-    image: greengageproject/backend-auth:${AUTH_VERSION}
+    image: projectgreengage/backend-auth:${AUTH_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-auth
     restart: unless-stopped
     environment:
@@ -484,7 +484,7 @@ services:
 
   # Googledrive Interlinker
   googledrive:
-    image: greengageproject/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
+    image: projectgreengage/interlinker-googledrive:${GOOGLEDRIVE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-googledrive
     restart: unless-stopped
     environment:
@@ -520,7 +520,7 @@ services:
 
   # Survey Editor Interlinker
   surveyeditor:
-    image: greengageproject/interlinker-surveyeditor:${SURVEYEDITOR_VERSION}
+    image: projectgreengage/interlinker-surveyeditor:${SURVEYEDITOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-surveyeditor
     restart: unless-stopped
     environment:
@@ -550,7 +550,7 @@ services:
 
   # Ceditor Interlinker Service
   ceditor:
-    image: greengageproject/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
+    image: projectgreengage/interlinker-ceditor:ceditor.${CEDITOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-ceditor
     restart: unless-stopped
     environment:
@@ -580,7 +580,7 @@ services:
 
   # Ceditor Interlinker Service etherpad
   etherpad:
-    image: greengageproject/interlinker-ceditor:etherpad.${ETHERPAD_VERSION}
+    image: projectgreengage/interlinker-ceditor:etherpad.${ETHERPAD_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-etherpad
     restart: on-failure
     environment:
@@ -617,7 +617,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomio:
-    image: greengageproject/interlinker-loomio:${LOOMIO_VERSION}
+    image: projectgreengage/interlinker-loomio:${LOOMIO_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomio
     restart: unless-stopped
     environment:
@@ -665,7 +665,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   loomioworker:
-    image: greengageproject/interlinker-loomio:${LOOMIOWORKER_VERSION}
+    image: projectgreengage/interlinker-loomio:${LOOMIOWORKER_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-loomioworker
     restart: unless-stopped
     environment:
@@ -727,7 +727,7 @@ services:
   # service augmenter
 
   augmenterservice:
-    image: greengageproject/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
+    image: projectgreengage/publicservice-servicepedia:augmenterservice.${AUGMENTERSERVICE_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-augmenterservice
     restart: always
     env_file:
@@ -794,7 +794,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   logging:
-    image: greengageproject/backend-logging:${LOGGING_VERSION}
+    image: projectgreengage/backend-logging:${LOGGING_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-logging
     restart: unless-stopped
     environment:
@@ -879,7 +879,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   grafana:
-    image: greengageproject/backend-monitoring:grafana.${GRAFANA_VERSION}
+    image: projectgreengage/backend-monitoring:grafana.${GRAFANA_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-grafana
     restart: unless-stopped
     links:
@@ -927,7 +927,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   prometheus:
-    image: greengageproject/backend-monitoring:prometheus.${PROMETHEUS_VERSION}
+    image: projectgreengage/backend-monitoring:prometheus.${PROMETHEUS_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-prometheus
     restart: unless-stopped
     volumes:
@@ -988,7 +988,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   filebeat:
-    image: greengageproject/backend-monitoring:filebeat.${FILEBEAT_VERSION}
+    image: projectgreengage/backend-monitoring:filebeat.${FILEBEAT_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-filebeat
     restart: unless-stopped
     user: root
@@ -1064,7 +1064,7 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   gamification-engine:
-    image: greengageproject/interlink-gamification:${GAMIFICATION_VERSION}
+    image: projectgreengage/interlink-gamification:${GAMIFICATION_VERSION}
     container_name: interlink-gamification-engine
     restart: unless-stopped
     user: 1000:1000

@@ -2,7 +2,7 @@ version: "3.9"
 services:
   db:
     container_name: internationalization-db
-    image: greengageproject/postgres:master
+    image: projectgreengage/postgres:master
     volumes:
       - idb-data:${PGDATA}
     env_file:

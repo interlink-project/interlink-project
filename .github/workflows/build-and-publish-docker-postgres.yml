@@ -34,7 +34,7 @@ jobs:
           context: ./docker/postgres
           push: true
           tags: |
-            greengageproject/postgres:${{ github.ref_name }}
-            greengageproject/postgres:${{ github.ref_name }}.${{ steps.date.outputs.date }}
-          cache-from: type=registry,ref=greengageproject/postgres:buildcache
-          cache-to: type=registry,ref=greengageproject/postgres:buildcache,mode=max
+            projectgreengage/postgres:${{ github.ref_name }}
+            projectgreengage/postgres:${{ github.ref_name }}.${{ steps.date.outputs.date }}
+          cache-from: type=registry,ref=projectgreengage/postgres:buildcache
+          cache-to: type=registry,ref=projectgreengage/postgres:buildcache,mode=max
