@@ -1,1 +1,0 @@
-Weblate stack only deployed in demo environment
