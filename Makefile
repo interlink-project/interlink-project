@@ -78,6 +78,25 @@ start: down net ## Run containers (restarts them if already running)
 	# Most of the times we only want to restart backend components because frontend lasts a lot to start in dev mode
 	cd ../frontend && make integrated
 
+.PHONY: pull
+pull: down ## Pulls all components
+	# platform components
+	cd ../backend-auth && git pull
+	cd ../backend-catalogue && git pull
+	cd ../backend-coproduction && git pull
+	cd ../backend-logging && git pull
+
+	# interlinkers
+	cd ../interlinker-ceditor && git pull
+	cd ../interlinker-googledrive && git pull
+	cd ../interlinker-survey && git pull
+
+	# gamification
+	cd ../interlink-gamification && git pull
+
+	# Most of the times we only want to restart backend components because frontend lasts a lot to start in dev mode
+	cd ../frontend && git pull
+
 .PHONY: build
 build: ## Build containers
 	cd ./envs/local && docker-compose build
