@@ -19,19 +19,20 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             git clone https://github.com/interlink-project/interlink-project.git ${{ secrets.PATH }}/interlink-project || true
-            
+
             cd ${{ secrets.PATH }}/interlink-project/envs/demo
             git fetch --force --all --tags
             git checkout --force origin/${{ github.ref_name }} || git checkout --force ${{ github.ref_name }}
-            
+
             git restore .env
-            
+
             echo "${{ secrets.SECRETS }}" >> .env
             echo "${{ secrets.SECRETS }}" > secrets.env
-            
+
             docker-compose pull
             docker network create traefik-public || true
             docker network create grafana-network || true
+            source ~/.zshrc
             docker-compose up -d
             sleep 10
 
@@ -44,8 +45,7 @@ jobs:
             # Apply last migrations (if they exist)
             docker-compose exec -T catalogue alembic upgrade head
             docker-compose exec -T coproduction alembic upgrade head
-            
+
             # Seed the database (if objects already exist, initial_data.py script updates them)
             docker-compose exec -T catalogue ./seed.sh
             docker-compose exec -T coproduction ./seed.sh
-            
