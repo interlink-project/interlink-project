@@ -1,0 +1,180 @@
+services:
+  grafana:
+    image: grafana/grafana:8.5.1
+    container_name: ${STACK_NAME}-grafana
+
+    restart: unless-stopped
+    links:
+      - prometheus:prometheus
+      - loki:loki
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - grafana-dashboards:/var/lib/grafana
+      - grafana-data:/etc/grafana/
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${STACK_NAME}-grafana.rule=Host(`${DOMAIN}`) && PathPrefix(`/monitoring`)
+      - traefik.http.routers.${STACK_NAME}-grafana.service=${STACK_NAME}-grafana
+      - traefik.http.services.${STACK_NAME}-grafana.loadbalancer.server.port=3000
+      - traefik.http.routers.${STACK_NAME}-grafana.middlewares=${STACK_NAME}-grafana-stripprefix
+      - traefik.http.middlewares.${STACK_NAME}-grafana-stripprefix.stripprefix.prefixes=/monitoring
+    networks:
+      - traefik-public
+      - grafana-network
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  prometheus:
+    image: prom/prometheus:v2.35.0
+    container_name: ${STACK_NAME}-prometheus
+
+    restart: unless-stopped
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus-data:/prometheus
+    expose:
+      - 9090
+    ports:
+      - "9090:9090"
+    links:
+      - cadvisor:cadvisor
+      - node-exporter:node-exporter
+    networks:
+      - grafana-network
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  cadvisor:
+    image: google/cadvisor:v0.33.0
+    container_name: ${STACK_NAME}-monitoring_cadvisor
+
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - ${DOCKER_PATH}:/var/lib/docker:ro
+      - ${DOCKER_PATH}/containers:${DOCKER_PATH}/containers:ro
+    expose:
+      - 8080
+    networks:
+      - grafana-network
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  node-exporter:
+    image: prom/node-exporter:v1.3.1
+    container_name: ${STACK_NAME}-monitoring_node_exporter
+
+    restart: unless-stopped
+    expose:
+      - 9100
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - grafana-network
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  loki:
+    image: grafana/loki:main-58718a5
+    container_name: ${STACK_NAME}-loki
+
+    restart: unless-stopped
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki/loki-local-config.yml:/etc/loki/local-config.yaml
+      - loki-data:/loki
+    networks:
+      - grafana-network
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  promtail:
+    image: grafana/promtail:main-58718a5
+    container_name: ${STACK_NAME}-promtail
+
+    restart: unless-stopped
+    command: -config.file=/etc/promtail/config.yml
+    volumes:
+      - ./promtail/promtail-config.yml:/etc/promtail/config.yml
+      - /var/log:/var/log
+      - ${DOCKER_PATH}/containers:${DOCKER_PATH}/containers:ro
+    links:
+      - loki:loki
+    networks:
+      - grafana-network
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  filebeat:
+    image: "docker.elastic.co/beats/filebeat:8.2.2"
+    container_name: ${STACK_NAME}-filebeat
+    user: root
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - type: bind
+        source: ${DOCKER_PATH}/containers
+        target: ${DOCKER_PATH}/containers
+        read_only: true
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+    command:
+      # Log to stderr.
+      - -e
+      # Disable config file permissions checks. Allows mounting
+      # 'config/filebeat.yml' even if it's not owned by root.
+      # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
+      - --strict.perms=false
+    links:
+      - newelasticsearch:newelasticsearch
+    networks:
+      - grafana-network
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
+  grafana-network:
+
+volumes:
+  db-data:
+  newelasticsearch-data:
+  newelasticsearch-config:
+  portainer-data:
+  mongodb-data:
+
+  grafana-dashboards:
+  grafana-data:
+  prometheus-data:
+  loki-data:
+  filebeat:

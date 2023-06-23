@@ -1,0 +1,242 @@
+version: "3.7"
+services:
+  proxy:
+    container_name: traefik
+    image: traefik:v2.2
+    networks:
+      - traefik-public
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "80:80"
+      - "8090:8080"
+    command:
+      # Enable Docker in Traefik, so that it reads labels from Docker services
+      - --providers.docker
+      # Do not expose all Docker services, only the ones explicitly exposed
+      - --providers.docker.exposedbydefault=false
+      # Disable Docker Swarm mode for local development
+      # - --providers.docker.swarmmode
+      # Enable the access log, with HTTP requests
+      - --accesslog
+      # Enable the Traefik log, for configurations and errors
+      - --log
+      # Enable the Dashboard and API
+      - --api
+      # Enable the Dashboard and API in insecure mode for local development
+      - --api.insecure=true
+    labels:
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${STACK_NAME?Variable not set}-traefik-public-http.rule=Host(`${DOMAIN?Variable not set}`)
+      - traefik.http.services.${STACK_NAME?Variable not set}-traefik-public.loadbalancer.server.port=80
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  
+  portainer:
+    # https://rafrasenberg.com/posts/docker-container-management-with-traefik-v2-and-portainer/
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    # command: --admin-password "${PORTAINER_PASSWORD}"
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 9000:9000
+    environment:
+      - TZ=${TZ}
+    networks:
+      - traefik-public
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer-data:/data
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${STACK_NAME?Variable not set}-portainer-http.rule=PathPrefix(`/portainer`)
+      - traefik.http.services.${STACK_NAME?Variable not set}-portainer.loadbalancer.server.port=9000
+      - traefik.http.routers.${STACK_NAME?Variable not set}-portainer-http.middlewares=portainer-stripprefix
+      - traefik.http.middlewares.portainer-stripprefix.stripprefix.prefixes=/portainer
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  db:
+    container_name: db
+    image: postgres-integrated
+    build:
+      context: ../../docker/postgres
+      dockerfile: Dockerfile
+    #volumes:
+    #  - app-db-data:/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    volumes:
+      - db-data:${PGDATA}
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - PGUSER=${POSTGRES_USER} # https://stackoverflow.com/questions/60193781/postgres-with-docker-compose-gives-fatal-role-root-does-not-exist-error
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - traefik-public
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  # pgadmin:
+  #   container_name: pgadmin
+  #   image: dpage/pgadmin4
+  #   ports:
+  #     - "5050:5050"
+  #   depends_on:
+  #     - db
+  #   env_file:
+  #     - .env
+  #   networks:
+  #     - traefik-public
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  mongodb:
+    image: bitnami/mongodb:6.0.3
+    container_name: mongodb
+    env_file:
+      - .env
+    healthcheck:
+      test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin -u root -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - traefik-public
+    volumes:
+      - mongodb-data:/bitnami/mongodb
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  # mongo-express:
+  #   image: mongo-express
+  #   container_name: mongo-gui
+  #   ports:
+  #     - 8081:8081
+  #   environment:
+  #     ME_CONFIG_OPTIONS_EDITORTHEME: 3024-night
+  #     ME_CONFIG_MONGODB_SERVER: mongodb
+  #     ME_CONFIG_MONGODB_PORT: 27017
+  #     ME_CONFIG_BASICAUTH_USERNAME: ${MONGOEXPRESS_USERNAME}
+  #     ME_CONFIG_BASICAUTH_PASSWORD: ${MONGOEXPRESS_PASSWORD}
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_ROOT_USER}
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_ROOT_PASSWORD}
+  #     TZ: ${TZ}
+  #   depends_on:
+  #     - mongodb
+  #   networks:
+  #     - traefik-public
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  elasticsearch:
+    image: elasticsearch:6.8.23
+    container_name: elasticsearch
+    environment:
+      - xpack.security.enabled=true
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - traefik-public
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+      - elasticsearch-config:/usr/share/elasticsearch/config
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  newelasticsearch:
+    image: elasticsearch:8.2.2
+    container_name: newelasticsearch
+    environment:
+      - xpack.security.enabled=true
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms750m -Xmx750m
+      - ELASTIC_USERNAME=${ELASTIC_USERNAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - traefik-public
+    volumes:
+      - newelasticsearch-data:/usr/share/elasticsearch/data
+      - newelasticsearch-config:/usr/share/elasticsearch/config
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+  # dremio:
+  #   container_name: dremio
+  #   restart: always
+  #   image: dremio/dremio-oss:21.2
+  #   # volumes:
+  #   #   - dremio-data:/opt/dremio/data
+  #   networks:
+  #     - traefik-public
+  #   ports:
+  #     - "9047:9047"   # UI (HTTP)
+  #     # - "31010:31010" # ODBC/JDBC clients
+  #     # - "2181:2181"   # ZooKeeper
+  #     # - "45678:45678" # Inter-node communication
+  #   labels:
+  #     - traefik.enable=true
+  #     - traefik.docker.network=traefik-public
+  #     - traefik.http.routers.${STACK_NAME?Variable not set}-dremio-http.rule=PathPrefix(`/dremio`)
+  #     - traefik.http.services.${STACK_NAME?Variable not set}-dremio.loadbalancer.server.port=9047
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+networks:
+  traefik-public:
+    external: true
+
+volumes:
+  db-data:
+  rabbitmq-data:
+  newelasticsearch-data:
+  newelasticsearch-config:
+  elasticsearch-data:
+  elasticsearch-config:
+  portainer-data:
+  mongodb-data:
+  dremio-data:
