@@ -1,6 +1,9 @@
 SHELL := /bin/bash
 # include .env
 # export $(shell sed 's/=.*//' .env)
+include envIronmentDefine.mk
+
+
 
 ifeq (service,$(firstword $(MAKECMDGOALS)))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -157,3 +160,9 @@ diagrams: ## Test containers
 	mkdir -p images/docker-composes
 	sh diagrams.sh 
 	find .. -maxdepth 1 -name "*.docker-compose.png" -exec mv -f {} ./docs/source/components/docker-composes \;
+
+.PHONY: envvars
+envvars: check_variables_coproduction check_variables_auth check_variables_catalogue check_variables_googledrive ## Check if all needed environment variables are defined
+
+.PHONY: envvarsclear
+envvarsclear: clean ## Delete all secrets files
