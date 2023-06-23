@@ -33,7 +33,7 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-  
+
   portainer:
     # https://rafrasenberg.com/posts/docker-container-management-with-traefik-v2-and-portainer/
     image: portainer/portainer-ce:latest
@@ -82,7 +82,7 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
       - PGUSER=${POSTGRES_USER} # https://stackoverflow.com/questions/60193781/postgres-with-docker-compose-gives-fatal-role-root-does-not-exist-error
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
+      test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -226,6 +226,63 @@ services:
   #     options:
   #       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  keycloak:
+    image: jboss/keycloak:16.1.1
+    container_name: keycloak
+    env_file:
+      - .env
+    environment:
+      - KEYCLOAK_USER=${KEYCLOAK_USER}
+      - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
+      - DB_VENDOR=postgres
+      - DB_ADDR=keycloak_db
+      - DB_DATABASE=${KEYCLOAK_DB_DATABASE}
+      - DB_USER=${KEYCLOAK_DB_USER}
+      - DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+      - PROXY_ADDRESS_FORWARDING=true
+      - TZ=${TZ}
+    networks:
+      - traefik-public
+    ports:
+      - "8081:8080"
+    depends_on:
+      - keycloak_db
+    volumes:
+      - keycloak-data:/opt/jboss/keycloak/standalone/data
+    labels:
+      # URL: auth1.${DOMAIN?Variable not set} in traefik-public network
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${STACK_NAME?Variable not set}-keycloak-http.rule=Host(`auth1.${DOMAIN?Variable not set}`)
+      - traefik.http.services.${STACK_NAME?Variable not set}-keycloak.loadbalancer.server.port=8080
+      - traefik.http.routers.${STACK_NAME?Variable not set}-keycloak-http.middlewares=keycloak-stripprefix
+      - traefik.http.middlewares.keycloak-stripprefix.stripprefix.prefixes=/auth1
+
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  keycloak_db:
+    image: postgres:13.4
+    container_name: keycloak_db
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${KEYCLOAK_DB_USER}
+      - POSTGRES_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+      - POSTGRES_DB=${KEYCLOAK_DB_DATABASE}
+    networks:
+      - traefik-public
+    volumes:
+      - keycloak-data:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=false
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
 networks:
   traefik-public:
     external: true
@@ -240,3 +297,4 @@ volumes:
   portainer-data:
   mongodb-data:
   dremio-data:
+  keycloak-data:
