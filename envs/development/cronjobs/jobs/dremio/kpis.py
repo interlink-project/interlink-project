@@ -88,7 +88,7 @@ queries = [
     },
     {
         "name": "A3: Number of INTERLINKERs used with flag is_sustainabilty related",
-        "sql": "SELECT * FROM elastic2.logs.log WHERE softwareinterlinker_id IN (SELECT id FROM catalogue.public.interlinker WHERE interlinker.is_sustainability_related='true') OR knowledgeinterlinker_id IN (SELECT id FROM catalogue.public.interlinker WHERE interlinker.is_sustainability_related='true')",
+        "sql": "SELECT COUNT(*) FROM elastic2.logs.log WHERE softwareinterlinker_id IN (SELECT id FROM catalogue.public.interlinker WHERE interlinker.is_sustainability_related='true') OR knowledgeinterlinker_id IN (SELECT id FROM catalogue.public.interlinker WHERE interlinker.is_sustainability_related='true')",
         "extract_count": True
     },
     {
