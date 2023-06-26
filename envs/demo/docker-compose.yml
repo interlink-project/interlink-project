@@ -1110,8 +1110,8 @@ services:
     image: jboss/keycloak:16.1.1
     container_name: ${PLATFORM_STACK_NAME}-keycloak
     environment:
-      - KEYCLOAK_USER=${POSTGRES_USERNAME}
-      - KEYCLOAK_PASSWORD=${POSTGRES_PASSWORD}
+      - KEYCLOAK_USER=${KEYCLOAK_USER}
+      - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
       - DB_VENDOR=postgres
       - DB_ADDR=db
       - DB_DATABASE=keycloak_production
@@ -1125,10 +1125,12 @@ services:
       - keycloak-data:/opt/jboss/keycloak/standalone/data
     labels:
       - traefik.enable=true
-      - traefik.http.routers.keycloak.rule=Host(`auth1.demo.13-50-150-58.nip.io`)
+      - traefik.http.routers.keycloak.rule=Host(`auth1.${DOMAIN}`)
       - traefik.http.routers.keycloak.entrypoints=websecure
       - traefik.http.routers.keycloak.tls.certresolver=letsencrypt
       - traefik.http.services.keycloak.loadbalancer.server.port=8080
+      - traefik.http.routers.keycloak.middlewares=keycloak-stripprefix
+      - traefik.http.middlewares.keycloak-stripprefix.stripprefix.prefixes=/auth1
     networks:
       - traefik-public
     logging:

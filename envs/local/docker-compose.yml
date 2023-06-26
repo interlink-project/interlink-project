@@ -250,13 +250,12 @@ services:
     volumes:
       - keycloak-data:/opt/jboss/keycloak/standalone/data
     labels:
-      # URL: auth1.${DOMAIN?Variable not set} in traefik-public network
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.routers.${STACK_NAME?Variable not set}-keycloak-http.rule=Host(`auth1.${DOMAIN?Variable not set}`)
+      - traefik.http.routers.${STACK_NAME?Variable not set}-keycloak-http.rule=Host(`auth.${DOMAIN?Variable not set}`)
       - traefik.http.services.${STACK_NAME?Variable not set}-keycloak.loadbalancer.server.port=8080
       - traefik.http.routers.${STACK_NAME?Variable not set}-keycloak-http.middlewares=keycloak-stripprefix
-      - traefik.http.middlewares.keycloak-stripprefix.stripprefix.prefixes=/auth1
+      - traefik.http.middlewares.keycloak-stripprefix.stripprefix.prefixes=/auth
 
     logging:
       driver: "json-file"
