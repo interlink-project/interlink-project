@@ -1118,8 +1118,8 @@ services:
     env_file:
       - .env
     environment:
-      - POSTGRES_USER=${KEYCLOAK_DB_USER}
-      - POSTGRES_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+      - POSTGRES_USER=${KEYCLOAK_USER}
+      - POSTGRES_PASSWORD=${KEYCLOAK_PASSWORD}
       - POSTGRES_DB=${KEYCLOAK_DB_DATABASE}
     networks:
       - traefik-public
@@ -1135,27 +1135,32 @@ services:
   keycloak:
     image: jboss/keycloak:16.1.1
     container_name: ${PLATFORM_STACK_NAME}-keycloak
+    env_file:
+      - .env
     environment:
       - KEYCLOAK_USER=${KEYCLOAK_USER}
       - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
       - DB_VENDOR=postgres
       - DB_ADDR=keycloak_db
       - DB_DATABASE=${KEYCLOAK_DB_DATABASE}
-      - DB_USER=${POSTGRES_USERNAME}
-      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_USER=${KEYCLOAK_USER}
+      - DB_PASSWORD=${KEYCLOAK_PASSWORD}
       - PROXY_ADDRESS_FORWARDING=true
       - TZ=${TZ}
     depends_on:
       - keycloak_db
     volumes:
       - keycloak-data:/opt/jboss/keycloak/standalone/data
+    ports:
+      - "8081:8080"
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-keycloak-http.rule=Host(`auth1.${NIPDOMAIN?Variable not set}`)
-      - traefik.http.services.${PLATFORM_STACK_NAME?Variable not set}-keycloak.loadbalancer.server.port=8080
-      - traefik.http.routers.${PLATFORM_STACK_NAME?Variable not set}-keycloak-http.middlewares=keycloak-stripprefix
-      - traefik.http.middlewares.keycloak-stripprefix.stripprefix.prefixes=/auth1
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.entrypoints=websecure
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.tls.certresolver=letsencrypt
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.tls=true
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.rule=Host(`${NIPDOMAIN}`)
+
     networks:
       - traefik-public
     logging:
