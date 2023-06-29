@@ -1112,6 +1112,26 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+  keycloak_db:
+    image: postgres:13.4
+    container_name: keycloak_db
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${KEYCLOAK_DB_USER}
+      - POSTGRES_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+      - POSTGRES_DB=${KEYCLOAK_DB_DATABASE}
+    networks:
+      - traefik-public
+    volumes:
+      - keycloak-data:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=false
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
   keycloak:
     image: jboss/keycloak:16.1.1
     container_name: ${PLATFORM_STACK_NAME}-keycloak
@@ -1119,14 +1139,14 @@ services:
       - KEYCLOAK_USER=${KEYCLOAK_USER}
       - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
       - DB_VENDOR=postgres
-      - DB_ADDR=db
+      - DB_ADDR=keycloak_db
       - DB_DATABASE=keycloak_demo
       - DB_USER=${POSTGRES_USERNAME}
       - DB_PASSWORD=${POSTGRES_PASSWORD}
       - PROXY_ADDRESS_FORWARDING=true
       - TZ=${TZ}
     depends_on:
-      - db
+      - keycloak_db
     volumes:
       - keycloak-data:/opt/jboss/keycloak/standalone/data
     labels:
