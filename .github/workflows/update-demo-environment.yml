@@ -28,6 +28,7 @@ jobs:
 
             echo "${{ secrets.SECRETS }}" >> .env
             echo "${{ secrets.SECRETS }}" > secrets.env
+            source ~/.zshrc
 
             docker-compose pull
             docker network create traefik-public || true
