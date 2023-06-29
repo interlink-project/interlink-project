@@ -1,7 +1,6 @@
 SHELL := /bin/bash
 # include .env
 # export $(shell sed 's/=.*//' .env)
-include envIronmentDefine.mk
 
 
 
@@ -161,8 +160,10 @@ diagrams: ## Test containers
 	sh diagrams.sh 
 	find .. -maxdepth 1 -name "*.docker-compose.png" -exec mv -f {} ./docs/source/components/docker-composes \;
 
-.PHONY: envvars
-envvars: check_variables_coproduction check_variables_auth check_variables_catalogue check_variables_googledrive ## Check if all needed environment variables are defined
+.PHONY: envVariables
+envVariables: ## Configures environment variables
+	python config_env_variables.py
 
-.PHONY: envvarsclear
-envvarsclear: clean ## Delete all secrets files
+.PHONY: clearEnvs
+clearEnvs: ## Clears environment variables
+	python config_env_variables.py --clear

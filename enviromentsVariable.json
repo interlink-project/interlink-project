@@ -1,0 +1,197 @@
+[
+  {
+    "varName": "KEYCLOAK_CLIENT_ID",
+    "description": "The client id of the keycloak client",
+    "fileName": ".secrets",
+    "folders": [
+      {
+        "folderName": "interlinker-survey",
+        "required": true
+      },
+      {
+        "folderName": "backend-auth",
+        "required": true
+      },
+      {
+        "folderName": "backend-catalogue",
+        "required": true
+      },
+      {
+        "folderName": "backend-coproduction",
+        "required": true
+      },
+      {
+        "folderName": "interlinker-ceditor",
+        "required": true
+      },
+      {
+        "folderName": "interlinker-googledrive",
+        "required": true
+      },
+      {
+        "folderName": "interlinker-survey",
+        "required": true
+      }
+    ]
+  },
+  {
+    "varName": "KEYCLOAK_CLIENT_SECRET",
+    "description": "The client secret of the keycloak client",
+    "fileName": ".secrets",
+    "folders": [
+      {
+        "folderName": "interlinker-survey",
+        "required": true
+      },
+      {
+        "folderName": "backend-auth",
+        "required": true
+      },
+      {
+        "folderName": "backend-catalogue",
+        "required": true
+      },
+      {
+        "folderName": "backend-coproduction",
+        "required": true
+      },
+      {
+        "folderName": "interlinker-ceditor",
+        "required": true
+      },
+      {
+        "folderName": "interlinker-googledrive",
+        "required": true
+      },
+      {
+        "folderName": "interlinker-survey",
+        "required": true
+      }
+    ]
+  },
+  {
+    "varName": "KEYCLOAK_REALM",
+    "description": "The keycloak realm",
+    "fileName": ".secrets",
+    "folders": [
+      {
+        "folderName": "interlinker-survey",
+        "required": true
+      },
+      {
+        "folderName": "backend-auth",
+        "required": true
+      },
+      {
+        "folderName": "backend-catalogue",
+        "required": true
+      },
+      {
+        "folderName": "backend-coproduction",
+        "required": true
+      },
+      {
+        "folderName": "interlinker-ceditor",
+        "required": true
+      },
+      {
+        "folderName": "interlinker-googledrive",
+        "required": true
+      },
+      {
+        "folderName": "interlinker-survey",
+        "required": true
+      }
+    ]
+  },
+  {
+    "varName": "KEYCLOAK_URL_REALM",
+    "description": "The keycloak url realm (e.g. http://auth1.localhost/auth/realms/greengage)",
+    "fileName": ".secrets",
+    "folders": [
+      {
+        "folderName": "interlinker-survey",
+        "required": true
+      },
+      {
+        "folderName": "backend-auth",
+        "required": true
+      },
+      {
+        "folderName": "backend-catalogue",
+        "required": true
+      },
+      {
+        "folderName": "backend-coproduction",
+        "required": true
+      },
+      {
+        "folderName": "interlinker-ceditor",
+        "required": true
+      },
+      {
+        "folderName": "interlinker-googledrive",
+        "required": true
+      },
+      {
+        "folderName": "interlinker-survey",
+        "required": true
+      }
+    ]
+  },
+  {
+    "varName": "GOOGLE_PROJECT_ID",
+    "description": "The google project id for google drive",
+    "fileName": ".secrets",
+    "folders": [
+      {
+        "folderName": "interlinker-googledrive",
+        "required": true
+      }
+    ]
+  },
+  {
+    "varName": "GOOGLE_PRIVATE_KEY",
+    "description": "The google private key for google drive",
+    "fileName": ".secrets",
+    "folders": [
+      {
+        "folderName": "interlinker-googledrive",
+        "required": true
+      }
+    ]
+  },
+  {
+    "varName": "GOOGLE_PRIVATE_KEY_ID",
+    "description": "The google private key ID for google drive",
+    "fileName": ".secrets",
+    "folders": [
+      {
+        "folderName": "interlinker-googledrive",
+        "required": true
+      }
+    ]
+  },
+  {
+    "varName": "GOOGLE_CLIENT_EMAIL",
+    "description": "The google client email for google drive",
+    "fileName": ".secrets",
+    "folders": [
+      {
+        "folderName": "interlinker-googledrive",
+        "required": true
+      }
+    ]
+  },
+  {
+    "varName": "GOOGLE_CLIENT_ID",
+    "description": "The google client id for google drive",
+    "fileName": ".secrets",
+    "folders": [
+      {
+        "folderName": "interlinker-googledrive",
+        "required": true
+      }
+    ]
+  }
+]
