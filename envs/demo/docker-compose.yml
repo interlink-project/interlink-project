@@ -1140,7 +1140,7 @@ services:
       - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
       - DB_VENDOR=postgres
       - DB_ADDR=keycloak_db
-      - DB_DATABASE=keycloak_demo
+      - DB_DATABASE=${KEYCLOAK_DB_DATABASE}
       - DB_USER=${POSTGRES_USERNAME}
       - DB_PASSWORD=${POSTGRES_PASSWORD}
       - PROXY_ADDRESS_FORWARDING=true
