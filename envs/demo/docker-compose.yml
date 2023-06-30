@@ -290,6 +290,10 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    environment:
+      - MONGODB_USERNAME=${MONGODB_USERNAME}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
+      - MONGODB_DATABASE=${MONGODB_DATABASE}
     healthcheck:
       test: echo 'db.runCommand({serverStatus:1}).ok' | mongosh admin -u $MONGODB_ROOT_USERNAME -p $MONGODB_ROOT_PASSWORD --quiet | grep 1
       interval: 10s
@@ -808,7 +812,7 @@ services:
 
   logging:
     image: projectgreengage/backend-logging:${LOGGING_VERSION}
-    container_name: ${PLATFORM_STACK_NAME}-logging
+    container_name: logging
     restart: unless-stopped
     environment:
       - DOMAIN=${DOMAIN}
@@ -1131,7 +1135,7 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-
+  
   keycloak:
     image: jboss/keycloak:16.1.1
     container_name: ${PLATFORM_STACK_NAME}-keycloak
@@ -1151,7 +1155,7 @@ services:
       - keycloak_db
     volumes:
       - keycloak-data:/opt/jboss/keycloak/standalone/data
-    ports:
+    ports: 
       - "8081:8080"
     labels:
       - traefik.enable=true
@@ -1159,7 +1163,7 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.rule=Host(`${NIPDOMAIN}`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.rule=Host(`auth1.${NIPDOMAIN}`)
 
     networks:
       - traefik-public
