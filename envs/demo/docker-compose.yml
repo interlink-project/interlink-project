@@ -230,7 +230,7 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.rule=Host(`dremio.${NIPDOMAIN}`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-dremio.rule=Host(`dremio.${DOMAIN}`)
       - traefik.http.services.${PLATFORM_STACK_NAME}-dremio.loadbalancer.server.port=9047
     networks:
       - traefik-public
@@ -355,7 +355,7 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     extra_hosts:
-      - "${NIPDOMAIN}:172.17.0.1"
+      - "${DOMAIN}:172.17.0.1"
 
   # Coproduction Worker Service
   coproductionworker:
@@ -433,7 +433,7 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     extra_hosts:
-      - "${NIPDOMAIN}:172.17.0.1"
+      - "${DOMAIN}:172.17.0.1"
 
   # Auth Service
   auth:
@@ -466,7 +466,7 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     extra_hosts:
-      - "${NIPDOMAIN}:172.17.0.1"
+      - "${DOMAIN}:172.17.0.1"
 
   # Googledrive Interlinker
   googledrive:
@@ -504,7 +504,7 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     extra_hosts:
-      - "${NIPDOMAIN}:172.17.0.1"
+      - "${DOMAIN}:172.17.0.1"
 
   # Survey Editor Interlinker
   surveyeditor:
@@ -566,7 +566,7 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     extra_hosts:
-      - "${NIPDOMAIN}:172.17.0.1"
+      - "${DOMAIN}:172.17.0.1"
 
   # Ceditor Interlinker Service etherpad
   etherpad:
@@ -646,7 +646,7 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-loomio.middlewares=iframeHeaders
       - traefik.http.routers.${PLATFORM_STACK_NAME}-loomio.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-loomio.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-loomio.rule=Host(`loomio.${NIPDOMAIN}`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-loomio.rule=Host(`loomio.${DOMAIN}`)
     networks:
       - traefik-public
     logging:
@@ -691,9 +691,9 @@ services:
     restart: unless-stopped
     environment:
       - REDIS_URL=redis://redis:6379
-      - VIRTUAL_HOST=channels.loomio.${NIPDOMAIN}
-      - SITE_NAME=channels.loomio.${NIPDOMAIN}
-      - LETSENCRYPT_HOST=channels.loomio.${NIPDOMAIN}
+      - VIRTUAL_HOST=channels.loomio.${DOMAIN}
+      - SITE_NAME=channels.loomio.${DOMAIN}
+      - LETSENCRYPT_HOST=channels.loomio.${DOMAIN}
       - LETSENCRYPT_EMAIL=apps@interlink-project.eu
     env_file:
       - .env
@@ -706,7 +706,7 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-loomiochannels.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME}-loomiochannels.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-loomiochannels.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-loomiochannels.rule=Host(`channels.loomio.${NIPDOMAIN}`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-loomiochannels.rule=Host(`channels.loomio.${DOMAIN}`)
     networks:
       - traefik-public
     logging:
@@ -726,7 +726,7 @@ services:
       - traefik-public
     environment:
       # TODO: verify secrets
-      - VIRTUAL_HOST=servicepedia.${NIPDOMAIN}
+      - VIRTUAL_HOST=servicepedia.${DOMAIN}
       - ELASTICSEARCH_URL=http://newelasticsearch:9200
       - SURVEYINTERLINK_URL=https://${DOMAIN}/surveyeditor
       - AUTHINTERLINK_URL=https://${DOMAIN}/auth
@@ -776,7 +776,7 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-augmenterservice.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-augmenterservice.tls=true
       - traefik.http.services.${PLATFORM_STACK_NAME}-augmenterservice.loadbalancer.server.port=${PORT}
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-augmenterservice.rule=Host(`servicepedia.${NIPDOMAIN}`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-augmenterservice.rule=Host(`servicepedia.${DOMAIN}`)
     command: gunicorn  --log-level debug --bind 0.0.0.0:80 --workers 1  --threads 100 "app.main:create_app()"
     logging:
       driver: "json-file"
@@ -1108,7 +1108,7 @@ services:
       - portainer-data:/data
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.portainer.rule=Host(`portainer.${NIPDOMAIN?Variable not set}`)"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN?Variable not set}`)"
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.routers.portainer.tls.certresolver=myresolver"
     logging:
@@ -1135,7 +1135,7 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
-  
+
   keycloak:
     image: jboss/keycloak:16.1.1
     container_name: ${PLATFORM_STACK_NAME}-keycloak
@@ -1155,7 +1155,7 @@ services:
       - keycloak_db
     volumes:
       - keycloak-data:/opt/jboss/keycloak/standalone/data
-    ports: 
+    ports:
       - "8081:8080"
     labels:
       - traefik.enable=true
@@ -1163,7 +1163,7 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.rule=Host(`auth1.${NIPDOMAIN}`)
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-keycloak.rule=Host(`auth1.${DOMAIN}`)
 
     networks:
       - traefik-public
