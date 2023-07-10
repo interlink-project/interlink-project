@@ -1,11 +1,11 @@
 {
   "logos": {
-    "dashboard_navbar_light": "logo-light.svg",
-    "dashboard_navbar_dark": "logo-light.svg",
-    "home_light": "logo-dark.svg",
-    "home_dark": "logo-light.svg",
-    "landing_light": "logo-dark.svg",
-    "landing_dark": "logo-light.svg"
+    "dashboard_navbar_light": "logo-light.png",
+    "dashboard_navbar_dark": "logo-light.png",
+    "home_light": "logo-dark.png",
+    "home_dark": "logo-light.png",
+    "landing_light": "logo-dark.png",
+    "landing_dark": "logo-light.png"
   },
   "palette": {
     "light": {
@@ -22,11 +22,11 @@
       },
       "primary": {
         "contrastText": "#ffffff",
-        "main": "#0f97c7"
+        "main": "#006E5E"
       },
       "secondary": {
         "contrastText": "#ffffff",
-        "main": "#aa00de"
+        "main": "#9CAE53"
       },
       "success": {
         "contrastText": "#ffffff",
@@ -34,14 +34,26 @@
         "secondary": "#0ca811"
       },
       "text": {
-        "primary": "#172b4d",
+        "primary": "#707E85",
         "secondary": "#6b778c"
       },
       "warning": {
         "contrastText": "#ffffff",
         "main": "#ff9800"
       },
-      "progressBarColor": "#d822a3"
+      "high_contribution": {
+        "main": "#44C949",
+        "contrastText": "#000000"
+      },
+      "average_contribution": {
+        "main": "#FF7A00",
+        "contrastText": "#ffffff"
+      },
+      "low_contribution": {
+        "main": "#F44336",
+        "contrastText": "#ffffff"
+      },
+      "progressBarColor": "#9CAE53"
     },
     "dark": {
       "background": {
@@ -55,11 +67,11 @@
       },
       "primary": {
         "contrastText": "#ffffff",
-        "main": "#0f97c7"
+        "main": "#006E5E"
       },
       "secondary": {
         "contrastText": "#000000",
-        "main": "#aa00de"
+        "main": "#9CAE53"
       },
       "success": {
         "contrastText": "#ffffff",
@@ -74,7 +86,19 @@
         "contrastText": "#ffffff",
         "main": "#ff9800"
       },
-      "progressBarColor": "#d822a3"
+      "high_contribution": {
+        "main": "#44C949",
+        "contrastText": "#000000"
+      },
+      "average_contribution": {
+        "main": "#FF7A00",
+        "contrastText": "#ffffff"
+      },
+      "low_contribution": {
+        "main": "#F44336",
+        "contrastText": "#ffffff"
+      },
+      "progressBarColor": "#9CAE53"
     }
   }
 }
