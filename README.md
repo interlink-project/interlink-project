@@ -18,12 +18,11 @@
   </p>
 </div>
 
-
 <!-- ABOUT THE PROJECT -->
+
 ## About the project
 
 This project is intended to be the orquestrator of the different environments.
-
 
 ## Documentation
 
@@ -32,14 +31,14 @@ This project is intended to be the orquestrator of the different environments.
 https://github.com/interlink-project/frontend/tree/master/docs
 
 Deployed in:
-* https://dev.interlink-project.eu/docs/en/
-* https://dev.interlink-project.eu/docs/es/
-* https://dev.interlink-project.eu/docs/it/
-* https://dev.interlink-project.eu/docs/lv/
 
+- https://demo.greengage-project.eu/docs/en/
+- https://ec.greengage-project.eu/docs/en/
 
 ### Technical docs of interlink:
 
-Documentation files: https://github.com/interlink-project/interlink-project/tree/master/docs
+Documentation files: https://github.com/Greengage-project/interlink-project/tree/master/docs
 
+  <!--
 Deployed in: https://interlink-project.github.io/interlink-project/
+-->
