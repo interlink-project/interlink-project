@@ -357,6 +357,97 @@ queries = [
     #     "sql": f"SELECT COUNT(DISTINCT(user_id)) FROM elastic2.logs.log AS log WHERE log.\"timestamp\" > '{one_month_before}'",
     #     "extract_count": True
     # },    
+    ,
+    {
+        "name": "A29.1: Actions performed over a task: Create task",
+        "sql": "SELECT COUNT(action) FROM elastic2.logs.log WHERE model='TASK' AND action='CREATE'",
+        "extract_count": True,
+    },
+    {
+        "name": "A29.2: Actions performed over a task: Delete task",
+        "sql": "SELECT COUNT(action) FROM elastic2.logs.log WHERE model='TASK' AND action='DISABLE' OR action='DELETE'",
+        "extract_count": True,
+    },
+    {
+        "name": "A29.3: Actions performed over a task: Update task",
+        "sql": "SELECT COUNT(action) FROM elastic2.logs.log WHERE model='TASK' AND action='UPDATE'",
+        "extract_count": True,
+    },
+    {
+        "name": "A30.1: Actions performed over a resource: Create resource",
+        "sql": "SELECT COUNT(*) FROM elastic2.logs.log WHERE model='ASSET' AND action='CREATE'",
+        "extract_count": True,
+    },
+    {
+        "name": "A30.2: Actions performed over a resource: Delete resource",
+        "sql": "SELECT COUNT(*) FROM elastic2.logs.log WHERE model='ASSET' AND action='DELETE'",
+        "extract_count": True,
+    },
+    {
+        "name": "A30.3: Actions performed over a resource: Get resource",
+        "sql": "SELECT COUNT(*) FROM elastic2.logs.log WHERE model='ASSET' AND action='GET'",
+        "extract_count": True,
+    },
+    {
+        "name": "A30.4: Actions performed over a resource: Claim resource",
+        "sql": "Select COUNT(*) from coproduction.public.coproductionprocessnotification WHERE coproductionprocessnotification.claim_type = 'development'",
+        "extract_count": True,
+    },
+    {
+        "name": "A31: Objectives finished",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.objective WHERE progress = 100",
+        "extract_count": True,
+    },
+    {
+        "name": "A32: Tasks created",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.task",
+        "extract_count": True,
+    },
+    {
+        "name": "A33: Percentage of projects conlcuded",
+        "sql": "SELECT (finished_coprods*1.0/all_coprods*1.0)*100 from (SELECT COUNT(*) as finished_coprods FROM coproduction.public.coproductionprocess WHERE status='finished'), (SELECT COUNT(*) as all_coprods FROM coproduction.public.coproductionprocess)",
+        "extract_count": True,
+    },
+    {
+        "name": "A33.1: Projects concluded",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE status='finished'",
+        "extract_count": True,
+    },
+    {
+        "name": "A33.2: Projects in progress",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE status='in_progress'",
+        "extract_count": True,
+    },
+    {
+        "name": "A34.1: Resources created by in-progress coprods",
+        "sql": "SELECT COUNT(DISTINCT(asset.id)) from coproduction.public.coproductionprocess AS copro INNER JOIN coproduction.public.asset AS asset ON copro.id = asset.coproductionprocess_id WHERE copro.status = 'in_progress'",
+        "extract_count": True,
+    },
+    {
+        "name": "A34.2: Resources created by concluded coprods",
+        "sql": "SELECT COUNT(DISTINCT(asset.id)) from coproduction.public.coproductionprocess AS copro INNER JOIN coproduction.public.asset AS asset ON copro.id = asset.coproductionprocess_id WHERE copro.status = 'finished'",
+        "extract_count": True,
+    },
+    {
+        "name": "A35.1: Creation of phases/objectives/tasks",
+        "sql": "SELECT COUNT(*) FROM elastic2.logs.log WHERE action='CREATE' AND (model='PHASE' or model='OBJECTIVE' or model='TASK')",
+        "extract_count": True,
+    },
+    {
+        "name": "A34.2: Deletion of phases/objectives/tasks",
+        "sql": "SELECT COUNT(*) FROM elastic2.logs.log WHERE (action='DELETE' or action='DISABLE') AND (model='PHASE' or model='OBJECTIVE' or model='TASK')",
+        "extract_count": True,
+    },
+    {
+        "name": "A35.1: Projects with modification",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE id NOT IN (SELECT DISTINCT(coproductionprocess_id) FROM elastic2.logs.log WHERE ((action='DELETE' or action='DISABLE' or action='CREATE') AND (model='PHASE' or model='OBJECTIVE' or model='TASk')))",
+        "extract_count": True,
+    },
+    {
+        "name": "A35.2: Projects without modification",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE id IN (SELECT DISTINCT(coproductionprocess_id) FROM elastic2.logs.log WHERE ((action='DELETE' or action='DISABLE' or action='CREATE') AND (model='PHASE' or model='OBJECTIVE' or model='TASk')))",
+        "extract_count": True,
+    }
 ]
 
 print("Obtaining kpis on", str_date)
