@@ -61,6 +61,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   crontab:
     image: interlinkproject/crontab:master
@@ -130,6 +132,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Frontend Service
   frontend:
@@ -161,6 +165,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   frontend-docs:
     image: interlinkproject/frontend-docs:${FRONTEND_VERSION}
@@ -182,6 +188,9 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
+
 
   mariadb:
     image: mariadb:10.11
@@ -199,6 +208,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   matomo:
     image: bitnami/matomo:4.14.2-debian-11-r16
@@ -228,6 +239,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Redis Service
   redis:
@@ -243,6 +256,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   dremio:
     image: dremio/dremio-oss:24.0
@@ -271,6 +286,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Postgres Service
   db:
@@ -297,6 +314,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
     command: postgres -N 500
 
   # PGAdmin (do not expose)
@@ -336,6 +355,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Coproduction Service
   coproduction:
@@ -380,6 +401,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Coproduction Worker Service
   coproductionworker:
@@ -415,6 +438,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Catalogue Service
   catalogue:
@@ -455,6 +480,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Auth Service
   auth:
@@ -486,6 +513,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Googledrive Interlinker
   googledrive:
@@ -522,6 +551,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Survey Editor Interlinker
   surveyeditor:
@@ -552,6 +583,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Ceditor Interlinker Service
   ceditor:
@@ -582,6 +615,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Ceditor Interlinker Service etherpad
   etherpad:
@@ -620,6 +655,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   loomio:
     image: interlinkproject/interlinker-loomio:${LOOMIO_VERSION}
@@ -668,6 +705,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   loomioworker:
     image: interlinkproject/interlinker-loomio:${LOOMIOWORKER_VERSION}
@@ -699,6 +738,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   loomiochannels:
     image: loomio/loomio_channel_server:latest
@@ -728,6 +769,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # service augmenter
 
@@ -797,6 +840,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   logging:
     image: interlinkproject/backend-logging:${LOGGING_VERSION}
@@ -829,6 +874,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   newelasticsearch:
     image: elasticsearch:8.2.2
@@ -856,6 +903,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   elasticsearch:
     container_name: ${PLATFORM_STACK_NAME}-elasticsearch6
@@ -882,6 +931,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   grafana:
     image: interlinkproject/backend-monitoring:grafana.${GRAFANA_VERSION}
@@ -912,6 +963,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   monitoringdb:
     image: mariadb:10.10.2
@@ -930,6 +983,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   prometheus:
     image: interlinkproject/backend-monitoring:prometheus.${PROMETHEUS_VERSION}
@@ -950,6 +1005,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   cadvisor:
     image: google/cadvisor:v0.33.0
@@ -969,6 +1026,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
 
   node-exporter:
@@ -992,6 +1051,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   filebeat:
     image: interlinkproject/backend-monitoring:filebeat.${FILEBEAT_VERSION}
@@ -1055,6 +1116,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Gamification engine
   gamification-mongo:
@@ -1070,6 +1133,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   gamification-engine:
     image: interlinkproject/interlink-gamification:${GAMIFICATION_VERSION}
@@ -1106,6 +1171,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   traefik-public:
