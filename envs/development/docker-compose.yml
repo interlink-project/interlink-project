@@ -897,9 +897,6 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.50'
-          memory: 500M
-        reservations:
           cpus: '0.25'
           memory: 20gb
     networks:
@@ -933,9 +930,6 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.50'
-          memory: 500M
-        reservations:
           cpus: '0.25'
           memory: 20gb
     networks:
@@ -1125,9 +1119,6 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.50'
-          memory: 500M
-        reservations:
           cpus: '0.25'
           memory: 20gb
 
