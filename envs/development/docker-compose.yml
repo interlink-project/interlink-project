@@ -889,11 +889,19 @@ services:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     ulimits:
       memlock:
-        soft: -1
-        hard: -1
+        soft: 20000
+        hard: 20000
       nofile:
         soft: 65536
         hard: 65536
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
+        reservations:
+          cpus: '0.25'
+          memory: 20gb
     networks:
       - traefik-public
     volumes:
@@ -917,11 +925,19 @@ services:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     ulimits:
       memlock:
-        soft: -1
-        hard: -1
+        soft: 20000
+        hard: 20000
       nofile:
         soft: 65536
         hard: 65536
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
+        reservations:
+          cpus: '0.25'
+          memory: 20gb
     networks:
       - traefik-public
     volumes:
@@ -1101,11 +1117,21 @@ services:
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
     ulimits:
       memlock:
-        soft: -1
-        hard: -1
+        soft: 20000
+        hard: 20000
       nofile:
         soft: 65536
         hard: 65536
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
+        reservations:
+          cpus: '0.25'
+          memory: 20gb
+
+
     networks:
       - grafana-network
       - traefik-public
