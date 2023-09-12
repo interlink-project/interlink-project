@@ -898,7 +898,7 @@ services:
       resources:
         limits:
           cpus: '0.25'
-          memory: 20gb
+          memory: 5gb
     networks:
       - traefik-public
     volumes:
@@ -931,7 +931,7 @@ services:
       resources:
         limits:
           cpus: '0.25'
-          memory: 20gb
+          memory: 5gb
     networks:
       - traefik-public
     volumes:
@@ -1120,7 +1120,7 @@ services:
       resources:
         limits:
           cpus: '0.25'
-          memory: 20gb
+          memory: 5gb
 
 
     networks:
