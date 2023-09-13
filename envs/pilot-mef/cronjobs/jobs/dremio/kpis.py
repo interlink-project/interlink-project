@@ -357,7 +357,6 @@ queries = [
     #     "sql": f"SELECT COUNT(DISTINCT(user_id)) FROM elastic2.logs.log AS log WHERE log.\"timestamp\" > '{one_month_before}'",
     #     "extract_count": True
     # },    
-    ,
     {
         "name": "A29.1: Actions performed over a task: Create task",
         "sql": "SELECT COUNT(action) FROM elastic2.logs.log WHERE model='TASK' AND action='CREATE'",

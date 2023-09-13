@@ -74,13 +74,6 @@ queries = [
         "sql": "SELECT COUNT(DISTINCT(nested.user_id)) FROM (SELECT permission.coproductionprocess_id AS coproductionprocess_id, U.id as user_id FROM coproduction.public.\"user\" AS U INNER JOIN coproduction.public.\"association_user_team\" AS association_u_t ON U.id = association_u_t.user_id INNER JOIN coproduction.public.permission AS permission ON permission.team_id = association_u_t.team_id INNER JOIN coproduction.public.coproductionprocess AS coproductionprocess ON coproductionprocess.id = permission.coproductionprocess_id) nested",
         "extract_count": True
     },
-    # 
-    # {
-    #      Its calculated with the above and the below queries
-    #     "name": "A2.1. Number of users involved in co-designed services",
-    #     "sql": "SELECT COUNT(DISTINCT(nested.user_id)) FROM (SELECT permission.coproductionprocess_id AS coproductionprocess_id, U.id as user_id FROM coproduction.public.\"user\" AS U INNER JOIN coproduction.public.\"association_user_team\" AS association_u_t ON U.id = association_u_t.user_id INNER JOIN coproduction.public.permission AS permission ON permission.team_id = association_u_t.team_id INNER JOIN coproduction.public.coproductionprocess AS coproductionprocess ON coproductionprocess.id = permission.coproductionprocess_id) nested",
-    #     "extract_count": True
-    # },
     {
         "name": "A2.2. Number of users involved in co-delivered services",
         "sql": "SELECT COUNT(DISTINCT(nested.user_id)) FROM (SELECT permission.coproductionprocess_id AS coproductionprocess_id, U.id as user_id FROM coproduction.public.\"user\" AS U INNER JOIN coproduction.public.\"association_user_team\" AS association_u_t ON U.id = association_u_t.user_id INNER JOIN coproduction.public.permission AS permission ON permission.team_id = association_u_t.team_id INNER JOIN coproduction.public.coproductionprocess AS coproductionprocess ON coproductionprocess.id = permission.coproductionprocess_id) nested INNER JOIN coproduction.public.phase as phase ON nested.coproductionprocess_id = phase.coproductionprocess_id WHERE is_part_of_codelivery = 'true'",

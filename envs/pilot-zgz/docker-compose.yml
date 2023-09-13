@@ -61,6 +61,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   crontab:
     image: interlinkproject/crontab:master
@@ -130,6 +132,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Frontend Service
   frontend:
@@ -161,6 +165,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   frontend-docs:
     image: interlinkproject/frontend-docs:${FRONTEND_VERSION}
@@ -182,9 +188,12 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
+
 
   mariadb:
-    image: mariadb:10.10.2
+    image: mariadb:10.11
     container_name: ${PLATFORM_STACK_NAME}-mariadb
     restart: unless-stopped
     command: --max-allowed-packet=64MB
@@ -199,9 +208,11 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   matomo:
-    image: bitnami/matomo:4.10.1
+    image: bitnami/matomo:4.14.2-debian-11-r16
     container_name: ${PLATFORM_STACK_NAME}-matomo
     restart: unless-stopped
     volumes:
@@ -211,6 +222,7 @@ services:
     networks:
 
       - traefik-public
+
     depends_on:
       - mariadb
     labels:
@@ -227,6 +239,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Redis Service
   redis:
@@ -242,6 +256,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   dremio:
     image: dremio/dremio-oss:24.0
@@ -251,7 +267,8 @@ services:
       - dremio-data:/opt/dremio/data
     ports:
       - "9047:9047"   # UI (HTTP)
-      # - "31010:31010" # ODBC/JDBC clients
+      - "32010:32010" # Arrow Flight
+      - "31010:31010" # ODBC/JDBC clients
       # - "2181:2181"   # ZooKeeper
       # - "45678:45678" # Inter-node communication
     labels:
@@ -269,6 +286,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Postgres Service
   db:
@@ -295,6 +314,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
     command: postgres -N 500
 
   # PGAdmin (do not expose)
@@ -334,6 +355,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Coproduction Service
   coproduction:
@@ -378,6 +401,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Coproduction Worker Service
   coproductionworker:
@@ -413,6 +438,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Catalogue Service
   catalogue:
@@ -453,6 +480,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Auth Service
   auth:
@@ -465,7 +494,6 @@ services:
       - BASE_PATH=/auth
       - MONGODB_URL=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}?retryWrites=true&w=majority
       - COLLECTION_NAME=users
-      - CLIENT_ID=${AAC_APP_KEY}
       - CLIENT_SECRET=${LOOMIO_AAC_APP_SECRET}
     env_file:
       - .env
@@ -485,6 +513,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Googledrive Interlinker
   googledrive:
@@ -521,6 +551,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Survey Editor Interlinker
   surveyeditor:
@@ -551,6 +583,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Ceditor Interlinker Service
   ceditor:
@@ -581,6 +615,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Ceditor Interlinker Service etherpad
   etherpad:
@@ -619,6 +655,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   loomio:
     image: interlinkproject/interlinker-loomio:${LOOMIO_VERSION}
@@ -667,6 +705,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   loomioworker:
     image: interlinkproject/interlinker-loomio:${LOOMIOWORKER_VERSION}
@@ -698,6 +738,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   loomiochannels:
     image: loomio/loomio_channel_server:latest
@@ -727,6 +769,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # service augmenter
 
@@ -750,7 +794,7 @@ services:
       - PROTOCOL=https://
       - BASE_PATH=
       - SCRIPT_NAME=
-      - DEBUG=False
+      - DEBUG=True
       - ELASTICSEARCH_INDEX=annotator
       - AUTH_ON=False
       - AUTHZ_ON=False
@@ -791,11 +835,13 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-augmenterservice.tls=true
       - traefik.http.services.${PLATFORM_STACK_NAME}-augmenterservice.loadbalancer.server.port=${PORT}
       - traefik.http.routers.${PLATFORM_STACK_NAME}-augmenterservice.rule=Host(`servicepedia.${DOMAIN}`)
-    command: gunicorn  --log-level critical --bind 0.0.0.0:80 --workers 1  --threads 100 "app.main:create_app()"
+    command: gunicorn  --log-level debug --bind 0.0.0.0:80 --workers 1  --threads 100 "app.main:create_app()"
     logging:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   logging:
     image: interlinkproject/backend-logging:${LOGGING_VERSION}
@@ -828,6 +874,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   newelasticsearch:
     image: elasticsearch:8.2.2
@@ -841,11 +889,16 @@ services:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     ulimits:
       memlock:
-        soft: -1
-        hard: -1
+        soft: 20000
+        hard: 20000
       nofile:
         soft: 65536
         hard: 65536
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 5gb
     networks:
       - traefik-public
     volumes:
@@ -855,6 +908,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   elasticsearch:
     container_name: ${PLATFORM_STACK_NAME}-elasticsearch6
@@ -867,11 +922,16 @@ services:
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     ulimits:
       memlock:
-        soft: -1
-        hard: -1
+        soft: 20000
+        hard: 20000
       nofile:
         soft: 65536
         hard: 65536
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 5gb
     networks:
       - traefik-public
     volumes:
@@ -881,6 +941,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   grafana:
     image: interlinkproject/backend-monitoring:grafana.${GRAFANA_VERSION}
@@ -911,6 +973,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   monitoringdb:
     image: mariadb:10.10.2
@@ -929,6 +993,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   prometheus:
     image: interlinkproject/backend-monitoring:prometheus.${PROMETHEUS_VERSION}
@@ -949,6 +1015,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   cadvisor:
     image: google/cadvisor:v0.33.0
@@ -968,6 +1036,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
 
   node-exporter:
@@ -991,6 +1061,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   filebeat:
     image: interlinkproject/backend-monitoring:filebeat.${FILEBEAT_VERSION}
@@ -1039,11 +1111,18 @@ services:
       - ES_JAVA_OPTS=-Xms750m -Xmx750m
     ulimits:
       memlock:
-        soft: -1
-        hard: -1
+        soft: 20000
+        hard: 20000
       nofile:
         soft: 65536
         hard: 65536
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 5gb
+
+
     networks:
       - grafana-network
       - traefik-public
@@ -1054,6 +1133,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   # Gamification engine
   gamification-mongo:
@@ -1069,6 +1150,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   gamification-engine:
     image: interlinkproject/interlink-gamification:${GAMIFICATION_VERSION}
@@ -1105,6 +1188,8 @@ services:
       driver: "json-file"
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   traefik-public:
