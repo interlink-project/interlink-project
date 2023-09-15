@@ -964,8 +964,8 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-grafana.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME}-grafana.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-grafana.tls=true
-      - traefik.http.routers.${PLATFORM_STACK_NAME}-grafana.middlewares=${PLATFORM_STACK_NAME}-grafana-stripprefix
-      - traefik.http.middlewares.${PLATFORM_STACK_NAME}-grafana-stripprefix.stripprefix.prefixes=/monitoring
+#      - traefik.http.routers.${PLATFORM_STACK_NAME}-grafana.middlewares=${PLATFORM_STACK_NAME}-grafana-stripprefix
+#      - traefik.http.middlewares.${PLATFORM_STACK_NAME}-grafana-stripprefix.stripprefix.prefixes=/monitoring
     networks:
       - traefik-public
       - grafana-network
