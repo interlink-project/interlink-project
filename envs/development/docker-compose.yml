@@ -1137,9 +1137,10 @@ services:
         source: /var/run/docker.sock
         target: /var/run/docker.sock
         read_only: true
-    command:
+    configs:
       # set config path
-      - --config /.curator/config.yml /.curator/actionfile.yml
+      - /.curator/config.yml
+      - /.curator/actionfile.yml
     networks:
       - grafana-network
     logging:
