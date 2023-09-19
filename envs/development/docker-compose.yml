@@ -1126,20 +1126,9 @@ services:
     image: interlinkproject/backend-monitoring:curator.${CURATOR_VERSION}
     container_name: ${PLATFORM_STACK_NAME}-curator
     restart: unless-stopped
-    user: root
     env_file:
       .env
-    volumes:
-      - type: volume
-        source: curator-config
-        target: /.curator
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
-        read_only: true
-    configs:
-      # set config path
-      - /.curator/config.yml
+    command:
       - /.curator/actionfile.yml
     networks:
       - grafana-network
@@ -1242,7 +1231,6 @@ volumes:
   filebeat-data:
   grafana-elasticsearch-data:
   grafana-elasticsearch-config:
-  curator-config:
 
   gamification-mongo-data:
   gamification-engine-data:
