@@ -81,7 +81,7 @@ def getEnvironmentInfo() {
                     ]
                 ],
             ]
-            branch = 'master'
+            branch = env.BRANCH_NAME
             break
     }
     return [configPath, secrets, branch]
