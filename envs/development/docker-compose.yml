@@ -1122,13 +1122,26 @@ services:
           cpus: '0.25'
           memory: 5gb
 
-
+  curator:
+    image: interlinkproject/backend-monitoring:curator.${CURATOR_VERSION}
+    container_name: ${PLATFORM_STACK_NAME}-curator
+    restart: unless-stopped
+    user: root
+    env_file:
+      .env
+    volumes:
+      - type: volume
+        source: curator-config
+        target: /.curator
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+    command:
+      # set config path
+      - --config /.curator/config.yml /.curator/actionfile.yml
     networks:
       - grafana-network
-      - traefik-public
-    volumes:
-      - grafana-elasticsearch-data:/usr/share/elasticsearch/data
-      - grafana-elasticsearch-config:/usr/share/elasticsearch/config
     logging:
       driver: "json-file"
       options:
@@ -1228,6 +1241,7 @@ volumes:
   filebeat-data:
   grafana-elasticsearch-data:
   grafana-elasticsearch-config:
+  curator-config:
 
   gamification-mongo-data:
   gamification-engine-data:
