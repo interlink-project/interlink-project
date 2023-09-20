@@ -1233,8 +1233,6 @@ volumes:
   monitoringdb-data:
   prometheus-data:
   filebeat-data:
-  grafana-elasticsearch-data:
-  grafana-elasticsearch-config:
 
   gamification-mongo-data:
   gamification-engine-data:
