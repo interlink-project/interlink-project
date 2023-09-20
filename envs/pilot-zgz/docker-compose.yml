@@ -220,9 +220,7 @@ services:
     env_file:
       - .env
     networks:
-
       - traefik-public
-
     depends_on:
       - mariadb
     labels:
@@ -964,8 +962,8 @@ services:
       - traefik.http.routers.${PLATFORM_STACK_NAME}-grafana.entrypoints=websecure
       - traefik.http.routers.${PLATFORM_STACK_NAME}-grafana.tls.certresolver=letsencrypt
       - traefik.http.routers.${PLATFORM_STACK_NAME}-grafana.tls=true
-#      - traefik.http.routers.${PLATFORM_STACK_NAME}-grafana.middlewares=${PLATFORM_STACK_NAME}-grafana-stripprefix
-#      - traefik.http.middlewares.${PLATFORM_STACK_NAME}-grafana-stripprefix.stripprefix.prefixes=/monitoring
+      - traefik.http.routers.${PLATFORM_STACK_NAME}-grafana.middlewares=${PLATFORM_STACK_NAME}-grafana-stripprefix
+      - traefik.http.middlewares.${PLATFORM_STACK_NAME}-grafana-stripprefix.stripprefix.prefixes=/monitoring
     networks:
       - traefik-public
       - grafana-network
@@ -1089,8 +1087,6 @@ services:
         target: /var/run/docker.sock
         read_only: true
     command:
-      # Log to stderr.
-      - -e
       # Disable config file permissions checks. Allows mounting
       # 'config/filebeat.yml' even if it's not owned by root.
       # see: https://www.elastic.co/guide/en/beats/libbeat/current/config-file-permissions.html
@@ -1121,14 +1117,33 @@ services:
         limits:
           cpus: '0.25'
           memory: 5gb
-
-
     networks:
       - grafana-network
       - traefik-public
     volumes:
       - grafana-elasticsearch-data:/usr/share/elasticsearch/data
       - grafana-elasticsearch-config:/usr/share/elasticsearch/config
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
+
+  curator:
+    image: interlinkproject/backend-monitoring:curator.${CURATOR_VERSION}
+    container_name: ${PLATFORM_STACK_NAME}-curator
+    restart: unless-stopped
+    env_file:
+      .env
+    environment:
+      ELASTIC_HOST: http://${ELASTIC_GRAFANA_HOST}:${ELASTIC_GRAFANA_PORT}
+      ELASTIC_USERNAME: ${ELASTIC_GRAFANA_USERNAME}
+      ELASTIC:PASSWORD: ${ELASTIC_GRAFANA_PASSWORD}
+    command:
+      - /.curator/actionfile.yml
+    networks:
+      - grafana-network
     logging:
       driver: "json-file"
       options:

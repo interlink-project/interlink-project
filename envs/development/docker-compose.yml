@@ -220,9 +220,7 @@ services:
     env_file:
       - .env
     networks:
-
       - traefik-public
-    
     depends_on:
       - mariadb
     labels:
