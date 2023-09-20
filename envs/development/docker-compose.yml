@@ -1121,6 +1121,16 @@ services:
           memory: 5gb
     networks:
       - grafana-network
+      - traefik-public
+    volumes:
+      - grafana-elasticsearch-data:/usr/share/elasticsearch/data
+      - grafana-elasticsearch-config:/usr/share/elasticsearch/config
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+        max-size: "10m"
+        max-file: "3"
 
   curator:
     image: interlinkproject/backend-monitoring:curator.${CURATOR_VERSION}
@@ -1233,6 +1243,8 @@ volumes:
   monitoringdb-data:
   prometheus-data:
   filebeat-data:
+  grafana-elasticsearch-data:
+  grafana-elasticsearch-config:
 
   gamification-mongo-data:
   gamification-engine-data:
