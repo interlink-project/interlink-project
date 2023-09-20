@@ -1121,6 +1121,8 @@ services:
         limits:
           cpus: '0.25'
           memory: 5gb
+    networks:
+      - grafana-network
 
   curator:
     image: interlinkproject/backend-monitoring:curator.${CURATOR_VERSION}
