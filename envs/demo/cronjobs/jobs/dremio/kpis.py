@@ -226,7 +226,7 @@ queries = [
     },
     {
         "name": "A10: Number of shared services between PAs and citizens that were co-produced through INTERLINK platform",
-        "sql": "SELECT COUNT(id) FROM(SELECT id, count(type) as type from (SELECT coprod.id, team.type FROM coproduction.public.coproductionprocess AS coprod INNER JOIN coproduction.public.permission AS permissio ON permission.coproductionprocess_id = coprod.id INNER JOIN coproduction.public.team AS team ON team.id = permission.team_id GROUP BY coprod.id, team.type HAVING team.type = 'public_administration' OR team.type = 'citizen') GROUP BY id having type > 1)",
+        "sql": "SELECT COUNT(id) FROM(SELECT id, count(type) as type from (SELECT coprod.id, team.type FROM coproduction.public.coproductionprocess AS coprod INNER JOIN coproduction.public.permission AS permission ON permission.coproductionprocess_id = coprod.id INNER JOIN coproduction.public.team AS team ON team.id = permission.team_id GROUP BY coprod.id, team.type HAVING team.type = 'public_administration' OR team.type = 'citizen') GROUP BY id having type > 1)",
         "extract_count": True
     },
     {
@@ -405,17 +405,17 @@ queries = [
     },
     {
         "name": "A40.1:	Functionality by type of user (ADMIN): Create",
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE roles_text LIKE '%administrator%' AND log.action='CREATE')",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE roles_text LIKE '%administrator%' AND log.action='CREATE')",
         "extract_count": True,
     },
     {
         "name": "A40.2:	Functionality by type of user (ADMIN): Delete",
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE roles_text LIKE '%administrator%' AND log.action='DELETE')",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE roles_text LIKE '%administrator%' AND log.action='DELETE')",
         "extract_count": True,
     },
     {
         "name": "A40.3:	Functionality by type of user (ADMIN): Get",
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE roles_text LIKE '%administrator%' AND log.action='GET')",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='GET')",
         "extract_count": True,
     },
     {
@@ -425,17 +425,17 @@ queries = [
     },
     {
         "name": "A40.5:	Functionality by type of user (ALL): Create",
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE log.action='CREATE')",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='CREATE')",
         "extract_count": True,
     },
     {
         "name": "A40.6:	Functionality by type of user (ALL): Delete",
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE log.action='DELETE')",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='DELETE')",
         "extract_count": True,
     },
     {
         "name": "A40.7:	Functionality by type of user (ALL): Get",
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE log.action='GET')",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='GET')",
         "extract_count": True,
     },
     {
