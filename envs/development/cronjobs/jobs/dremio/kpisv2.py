@@ -81,7 +81,7 @@ queries = [
     },
     {
         "name": "A3: Number of INTERLINKERs used with flag is_sustainabilty related",
-        "sql": "SELECT * FROM elastic2.logs.log WHERE softwareinterlinker_id IN (SELECT id FROM catalogue.public.interlinker WHERE interlinker.is_sustainability_related='true') OR knowledgeinterlinker_id IN (SELECT id FROM catalogue.public.interlinker WHERE interlinker.is_sustainability_related='true')",
+        "sql": "SELECT COUNT(*) FROM elastic2.logs.log WHERE softwareinterlinker_id IN (SELECT id FROM catalogue.public.interlinker WHERE interlinker.is_sustainability_related='true') OR knowledgeinterlinker_id IN (SELECT id FROM catalogue.public.interlinker WHERE interlinker.is_sustainability_related='true')",
         "extract_count": True
     },
     {
@@ -103,7 +103,7 @@ queries = [
         "name": "A6.1: Number of users involved in a coproductionprocess",
         "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\" INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT team.id FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id)",
         "extract_count": True
-    },    
+    },
     {
         "name": "A6.2: Number of citizens",
         "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\" INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT coproduction.public.team.id FROM coproduction.public.team WHERE team.type LIKE 'citizen' )",
@@ -118,7 +118,7 @@ queries = [
         "name": "A6.4: Number of public servants",
         "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\" INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT coproduction.public.team.id FROM coproduction.public.team WHERE team.type LIKE 'public_administration' )",
         "extract_count": True
-    }, 
+    },
     {
         "name": "A6.5: Number of public servants involved in a coproductionprocess",
         "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\" INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT team.id FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'public_administration' )",
@@ -189,7 +189,6 @@ queries = [
         "sql": "SELECT COUNT(DISTINCT(organization.id)) FROM coproduction.public.organization INNER JOIN coproduction.public.team ON team.organization_id = organization.id AND team.type LIKE '%organization%' AND team.id IN (SELECT permission.team_id FROM coproduction.public.permission INNER JOIN coproduction.public.phase ON phase.coproductionprocess_id = permission.coproductionprocess_id AND phase.is_part_of_codelivery='true' )",
         "extract_count": True
     },
-    # A7.10 missing
     {
         "name": "A8: Number of new co-delivered processes",
         "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.id IN (SELECT coproductionprocess_id FROM coproduction.public.phase WHERE is_part_of_codelivery='true')",
@@ -227,7 +226,7 @@ queries = [
     },
     {
         "name": "A10: Number of shared services between PAs and citizens that were co-produced through INTERLINK platform",
-        "sql": "SELECT COUNT(id) FROM(SELECT id, count(type) as type from (SELECT coprod.id, team.type FROM coproduction.public.coproductionprocess AS coprod INNER JOIN coproduction.public.permission AS permissio ON permission.coproductionprocess_id = coprod.id INNER JOIN coproduction.public.team AS team ON team.id = permission.team_id GROUP BY coprod.id, team.type HAVING team.type = 'public_administration' OR team.type = 'citizen') GROUP BY id having type > 1)",
+        "sql": "SELECT COUNT(id) FROM(SELECT id, count(type) as type from (SELECT coprod.id, team.type FROM coproduction.public.coproductionprocess AS coprod INNER JOIN coproduction.public.permission AS permission ON permission.coproductionprocess_id = coprod.id INNER JOIN coproduction.public.team AS team ON team.id = permission.team_id GROUP BY coprod.id, team.type HAVING team.type = 'public_administration' OR team.type = 'citizen') GROUP BY id having type > 1)",
         "extract_count": True
     },
     {
@@ -237,7 +236,12 @@ queries = [
     },
     {
         "name": "A12: Number of shared services between PAs and private companies that were co-produced through INTERLINK platform",
-        "sql": "SELECT COUNT(id) FROM(SELECT id, count(type) as type from (SELECT coprod.id, team.type FROM coproduction.public.coproductionprocess AS coprod INNER JOIN coproduction.public.permission AS permissio ON permission.coproductionprocess_id = coprod.id INNER JOIN coproduction.public.team AS team ON team.id = permission.team_id GROUP BY coprod.id, team.type HAVING team.type = 'public_administration' OR team.type = 'citizen') GROUP BY id having type > 1)",
+        "sql": "SELECT COUNT(id) FROM(SELECT id, count(type) as type from (SELECT coprod.id, team.type FROM coproduction.public.coproductionprocess AS coprod INNER JOIN coproduction.public.permission AS permission ON permission.coproductionprocess_id = coprod.id INNER JOIN coproduction.public.team AS team ON team.id = permission.team_id GROUP BY coprod.id, team.type HAVING team.type = 'public_administration' OR team.type = 'citizen') GROUP BY id having type > 1)",
+        "extract_count": True
+    },
+    {
+        "name": "A12.2. Number of public services that have cloned or derived from existing public services",
+        "sql": "SELECT COUNT(DISTINCT(id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.cloned_from_id IS NOT NULL",
         "extract_count": True
     },
     {
@@ -285,44 +289,23 @@ queries = [
         "extract_count": True
     },
     {
-        "name": "A2.2. Number of citizens involved in co-delivered services",
-        "sql": "SELECT COUNT(DISTINCT(\"user\".id)) FROM coproduction.public.\"user\" INNER JOIN coproduction.public.association_user_team ON coproduction.public.\"user\".id = coproduction.public.association_user_team.user_id AND coproduction.public.association_user_team.team_id IN ( SELECT team.id FROM coproduction.public.team INNER JOIN coproduction.public.permission ON permission.team_id = team.id AND team.type LIKE 'citizen' INNER JOIN coproduction.public.organization ON team.organization_id = organization.id AND organization.id IN (SELECT coproductionprocess.organization_id FROM coproduction.public.coproductionprocess INNER JOIN coproduction.public.phase ON phase.coproductionprocess_id = coproductionprocess.id AND phase.is_part_of_codelivery='true' ) )",
-        "extract_count": True
-    },
-    
-    {
-        "name": "A1.6 Number of external software interlinkers",
-        "sql": "SELECT COUNT(*) FROM ( SELECT * FROM catalogue.public.interlinker INNER JOIN catalogue.public.externalsoftwareinterlinker ON interlinker.id=externalsoftwareinterlinker.id UNION SELECT * FROM catalogue.public.interlinker INNER JOIN catalogue.public.externalknowledgeinterlinker ON interlinker.id=externalknowledgeinterlinker.id)",
+        "name": "A23: Number of success cases publicated",
+        "sql": "select COUNT(DISTINCT(id)) from coproduction.public.story",
         "extract_count": True
     },
     {
-        "name": "A9. Number of processes with teams of different stakeholders",
-        "sql": "SELECT COALESCE(SUM(counted_coprods),0) FROM (SELECT COUNT(DISTINCT coprod_id) AS counted_coprods  FROM ( SELECT DISTINCT coproductionprocess.id as coprod_id, team.id as team_id, team.type as team_type FROM coproduction.public.coproductionprocess, coproduction.public.team INNER JOIN coproduction.public.permission ON permission.coproductionprocess_id=coproductionprocess.id AND permission.team_id=team.id ORDER BY coproductionprocess.id ) GROUP BY coprod_id HAVING COUNT(DISTINCT team_type)>1)",
-        "extract_count": True
-    },
-    
-    {
-        "name": "A12: Number of coproduction processes involved in sustainability",
-        "sql": "SELECT COUNT(DISTINCT(coproductionprocess_id)) FROM ( SELECT coproductionprocess_id FROM Coproduction.public.asset INNER JOIN Coproduction.public.internalasset ON asset.id = internalasset.id WHERE knowledgeinterlinker_id in ( SELECT id FROM catalogue.public.interlinker WHERE is_sustainability_related = True ) UNION ALL SELECT coproductionprocess_id FROM Coproduction.public.asset INNER JOIN Coproduction.public.internalasset ON asset.id = internalasset.id WHERE softwareinterlinker_id in ( SELECT id FROM catalogue.public.interlinker WHERE is_sustainability_related = True ) UNION ALL SELECT coproductionprocess_id FROM Coproduction.public.asset INNER JOIN Coproduction.public.externalasset ON asset.id = externalasset.id WHERE externalinterlinker_id in ( SELECT id FROM catalogue.public.interlinker WHERE is_sustainability_related = True ) )",
-        "extract_count": True
-    },
-    
-    # coproductionprocesses
-    {
-        "name": "A7: Number of coproduction processes",
-        "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess",
-        "extract_count": True
-    },
-    
-    # permissions
-    {
-        "name": "Number of permissions",
-        "sql": "SELECT COUNT(DISTINCT(permission.id)) FROM coproduction.public.permission",
+        "name": "A24: Number of coproduction processes clonated from success cases",
+        "sql": "SELECT COUNT(DISTINCT(id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.is_part_of_publication = 'true' AND coproductionprocess.cloned_from_id IS NOT NULL",
         "extract_count": True
     },
     {
-        "name": "A8: Number of active users last month",
-        "sql": f"SELECT COUNT(DISTINCT(user_id)) FROM elastic2.logs.log AS log WHERE log.\"timestamp\" > '{one_month_before}'",
+        "name": "A25: Number of incentivated processes",
+        "sql": "SELECT COUNT(DISTINCT(id)) FROM coproduction.public.coproductionprocess WHERE coproductionprocess.game_id IS NOT NULL",
+        "extract_count": True
+    },
+    {
+        "name": "A27: Number of claims",
+        "sql": "SELECT COUNT(DISTINCT(coproductionprocessnotification.id)) FROM coproduction.public.coproductionprocessnotification WHERE coproductionprocessnotification.claim_type = 'development'",
         "extract_count": True
     },
     {
@@ -422,17 +405,29 @@ queries = [
     },
     {
         "name": "A40.1:	Functionality by type of user (ADMIN): Create",
+<<<<<<< HEAD
         "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE roles_text LIKE '%administrator%' AND log.action='CREATE')",
+=======
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE roles_text LIKE '%administrator%' AND log.action='CREATE')",
+>>>>>>> master
         "extract_count": True,
     },
     {
         "name": "A40.2:	Functionality by type of user (ADMIN): Delete",
+<<<<<<< HEAD
         "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE roles_text LIKE '%administrator%' AND log.action='DELETE')",
+=======
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE roles_text LIKE '%administrator%' AND log.action='DELETE')",
+>>>>>>> master
         "extract_count": True,
     },
     {
         "name": "A40.3:	Functionality by type of user (ADMIN): Get",
+<<<<<<< HEAD
         "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE roles_text LIKE '%administrator%' AND log.action='GET')",
+=======
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='GET')",
+>>>>>>> master
         "extract_count": True,
     },
     {
@@ -442,17 +437,29 @@ queries = [
     },
     {
         "name": "A40.5:	Functionality by type of user (ALL): Create",
+<<<<<<< HEAD
         "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE log.action='CREATE')",
+=======
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='CREATE')",
+>>>>>>> master
         "extract_count": True,
     },
     {
         "name": "A40.6:	Functionality by type of user (ALL): Delete",
+<<<<<<< HEAD
         "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE log.action='DELETE')",
+=======
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='DELETE')",
+>>>>>>> master
         "extract_count": True,
     },
     {
         "name": "A40.7:	Functionality by type of user (ALL): Get",
+<<<<<<< HEAD
         "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE log.action='GET')",
+=======
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='GET')",
+>>>>>>> master
         "extract_count": True,
     },
     {
