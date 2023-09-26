@@ -401,21 +401,65 @@ queries = [
         "extract_count": True,
     },
     {
-        "name": "A34.2: Deletion of phases/objectives/tasks",
+        "name": "A35.2: Deletion of phases/objectives/tasks",
         "sql": "SELECT COUNT(*) FROM elastic2.logs.log WHERE (action='DELETE' or action='DISABLE') AND (model='PHASE' or model='OBJECTIVE' or model='TASK')",
         "extract_count": True,
     },
     {
-        "name": "A35.1: Projects with modification",
+        "name": "A36.1: Projects with modification",
         "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE id NOT IN (SELECT DISTINCT(coproductionprocess_id) FROM elastic2.logs.log WHERE ((action='DELETE' or action='DISABLE' or action='CREATE') AND (model='PHASE' or model='OBJECTIVE' or model='TASk')))",
         "extract_count": True,
     },
     {
-        "name": "A35.2: Projects without modification",
+        "name": "A36.2: Projects without modification",
         "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE id IN (SELECT DISTINCT(coproductionprocess_id) FROM elastic2.logs.log WHERE ((action='DELETE' or action='DISABLE' or action='CREATE') AND (model='PHASE' or model='OBJECTIVE' or model='TASk')))",
         "extract_count": True,
+    },
+    {
+        "name": "A38.1: Amount of knowledge resources created from template",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.internalasset WHERe internalasset.knowledgeinterlinker_id IS NOT NULL",
+        "extract_count": True,
+    },
+    {
+        "name": "A40.1:	Functionality by type of user (ADMIN): Create",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE roles_text LIKE '%administrator%' AND log.action='CREATE')",
+        "extract_count": True,
+    },
+    {
+        "name": "A40.2:	Functionality by type of user (ADMIN): Delete",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE roles_text LIKE '%administrator%' AND log.action='DELETE')",
+        "extract_count": True,
+    },
+    {
+        "name": "A40.3:	Functionality by type of user (ADMIN): Get",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE roles_text LIKE '%administrator%' AND log.action='GET')",
+        "extract_count": True,
+    },
+    {
+        "name": "A40.4:	Functionality by type of user (ADMIN): Claim",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocessnotification AS claims INNER JOIN coproduction.public.coproductionprocess_administrators AS admins ON claims.user_id = admins.user_id AND claims.coproductionprocess_id = admins.coproductionprocess_id AND claim_type = 'development'",
+        "extract_count": True,
+    },
+    {
+        "name": "A40.5:	Functionality by type of user (ALL): Create",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE log.action='CREATE')",
+        "extract_count": True,
+    },
+    {
+        "name": "A40.6:	Functionality by type of user (ALL): Delete",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE log.action='DELETE')",
+        "extract_count": True,
+    },
+    {
+        "name": "A40.7:	Functionality by type of user (ALL): Get",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE log.action='GET')",
+        "extract_count": True,
+    },
+    {
+        "name": "A40.8:	Functionality by type of user (ALL): Claim",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocessnotification AS claims WHERE claim_type = 'development'",
+        "extract_count": True,
     }
-    
     
 ]
 
