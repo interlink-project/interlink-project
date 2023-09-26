@@ -405,29 +405,17 @@ queries = [
     },
     {
         "name": "A40.1:	Functionality by type of user (ADMIN): Create",
-<<<<<<< HEAD
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE roles_text LIKE '%administrator%' AND log.action='CREATE')",
-=======
         "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE roles_text LIKE '%administrator%' AND log.action='CREATE')",
->>>>>>> master
         "extract_count": True,
     },
     {
         "name": "A40.2:	Functionality by type of user (ADMIN): Delete",
-<<<<<<< HEAD
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE roles_text LIKE '%administrator%' AND log.action='DELETE')",
-=======
         "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE roles_text LIKE '%administrator%' AND log.action='DELETE')",
->>>>>>> master
         "extract_count": True,
     },
     {
         "name": "A40.3:	Functionality by type of user (ADMIN): Get",
-<<<<<<< HEAD
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE roles_text LIKE '%administrator%' AND log.action='GET')",
-=======
         "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='GET')",
->>>>>>> master
         "extract_count": True,
     },
     {
@@ -437,29 +425,17 @@ queries = [
     },
     {
         "name": "A40.5:	Functionality by type of user (ALL): Create",
-<<<<<<< HEAD
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE log.action='CREATE')",
-=======
         "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='CREATE')",
->>>>>>> master
         "extract_count": True,
     },
     {
         "name": "A40.6:	Functionality by type of user (ALL): Delete",
-<<<<<<< HEAD
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE log.action='DELETE')",
-=======
         "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='DELETE')",
->>>>>>> master
         "extract_count": True,
     },
     {
         "name": "A40.7:	Functionality by type of user (ALL): Get",
-<<<<<<< HEAD
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM log WHERE log.action='GET')",
-=======
         "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='GET')",
->>>>>>> master
         "extract_count": True,
     },
     {
