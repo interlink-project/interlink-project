@@ -236,7 +236,7 @@ queries = [
     },
     {
         "name": "A12: Number of shared services between PAs and private companies that were co-produced through INTERLINK platform",
-        "sql": "SELECT COUNT(id) FROM(SELECT id, count(type) as type from (SELECT coprod.id, team.type FROM coproduction.public.coproductionprocess AS coprod INNER JOIN coproduction.public.permission AS permissio ON permission.coproductionprocess_id = coprod.id INNER JOIN coproduction.public.team AS team ON team.id = permission.team_id GROUP BY coprod.id, team.type HAVING team.type = 'public_administration' OR team.type = 'citizen') GROUP BY id having type > 1)",
+        "sql": "SELECT COUNT(id) FROM(SELECT id, count(type) as type from (SELECT coprod.id, team.type FROM coproduction.public.coproductionprocess AS coprod INNER JOIN coproduction.public.permission AS permission ON permission.coproductionprocess_id = coprod.id INNER JOIN coproduction.public.team AS team ON team.id = permission.team_id GROUP BY coprod.id, team.type HAVING team.type = 'public_administration' OR team.type = 'citizen') GROUP BY id having type > 1)",
         "extract_count": True
     },
     {
