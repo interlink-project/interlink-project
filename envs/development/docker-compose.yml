@@ -88,7 +88,6 @@ services:
       - ./cronjobs/entrypoint.sh:/entrypoint.sh
       - ./cronjobs/jobs:/opt/jobs
       # Volumes to be backup
-      - matomo-data:/opt/volumes/matomo-data
       - mariadb-data:/opt/volumes/mariadb-data
       - monitoringdb-data:/opt/volumes/monitoringdb-data
       - newelasticsearch-data:/opt/volumes/newelasticsearch-data
