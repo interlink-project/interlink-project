@@ -299,11 +299,10 @@ services:
       - redisnet
     ports:
       - "5000:5000"
-
     depends_on:
       - ckandb
       - solr
-      - redis
+      - redisckan
     volumes:
       - ckan_storage:/var/lib/ckan
     restart: unless-stopped
@@ -377,8 +376,7 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "http://solr:8983/solr/"]
+
     ports:
       - "8983:8983"
     labels:
@@ -393,8 +391,8 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-  redis:
-    container_name: redis
+  redisckan:
+    container_name: redisckan
     image: redis:6
     env_file:
       - .env
