@@ -289,6 +289,8 @@ services:
       dockerfile: Dockerfile
       args:
         - TZ=${TZ}
+    env_file:
+      - .env
     networks:
       - traefik-public
       - ckannet
@@ -297,6 +299,7 @@ services:
       - redisnet
     ports:
       - "5000:5000"
+
     depends_on:
       - ckandb
       - solr
@@ -304,15 +307,6 @@ services:
     volumes:
       - ckan_storage:/var/lib/ckan
     restart: unless-stopped
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "-qO",
-          "/dev/null",
-          "http://ckan.${DOMAIN?Variable not set}/api/3/action/status_show",
-        ]
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik-public
@@ -327,13 +321,15 @@ services:
 
   datapusher:
     container_name: datapusher
+    env_file:
+      - .env
     networks:
       - ckannet
       - dbnet
     image: ckan/ckan-base-datapusher:0.0.20
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8800"]
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://datapusher:8800"]
     ports:
       - "8800:8800"
 
@@ -349,14 +345,16 @@ services:
       - POSTGRES_USER=${POSTGRES_USER_CKAN_DB}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_CKAN_DB}
       - POSTGRES_DB=${POSTGRES_DB_CKAN}
-      - CKAN_DB_USER
-      - CKAN_DB_PASSWORD
-      - CKAN_DB
-      - DATASTORE_READONLY_USER
-      - DATASTORE_READONLY_PASSWORD
-      - DATASTORE_DB
+      - CKAN_DB_USER=${CKAN_DB_USER}
+      - CKAN_DB_PASSWORD=${CKAN_DB_PASSWORD}
+      - CKAN_DB=${CKAN_DB}
+      - DATASTORE_READONLY_USER=${DATASTORE_READONLY_USER}
+      - DATASTORE_READONLY_PASSWORD=${DATASTORE_READONLY_PASSWORD}
+      - DATASTORE_DB=${DATASTORE_DB}
     volumes:
       - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     restart: unless-stopped
     healthcheck:
       test:
@@ -377,17 +375,36 @@ services:
     volumes:
       - solr_data:/var/solr
     restart: unless-stopped
+    env_file:
+      - .env
     healthcheck:
-      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8983/solr/"]
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://solr:8983/solr/"]
+    ports:
+      - "8983:8983"
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik-public
+      - traefik.http.routers.${STACK_NAME?Variable not set}-solr-http.rule=Host(`solr.${DOMAIN?Variable not set}`)
+      - traefik.http.services.${STACK_NAME?Variable not set}-solr.loadbalancer.server.port=8983
+      - traefik.http.routers.${STACK_NAME?Variable not set}-solr-http.middlewares=solr-stripprefix
+      - traefik.http.middlewares.solr-stripprefix.stripprefix.prefixes=/solr
+    logging:
+      driver: "json-file"
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   redis:
     container_name: redis
     image: redis:6
+    env_file:
+      - .env
     networks:
       - redisnet
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "-e", "QUIT"]
+    ports:
+      - "6379:6379"
 
 networks:
   traefik-public:
