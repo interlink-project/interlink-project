@@ -196,7 +196,7 @@ queries = [
     },
     {
         "name": "A8.1: Number of new co-produced processes",
-        "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess",
+        "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess  WHERE coproductionprocess.status IS NOT NULL",
         "extract_count": True
     },
     {
@@ -221,7 +221,7 @@ queries = [
     },
     {
         "name": "A9: Number of active users per co-produced service per month",
-        "sql": "SELECT SUM(users) FROM(SELECT COUNT(DISTINCT(user_id)) AS users FROM coproduction.public.coproductionprocessnotification)",
+        "sql": "SELECT COUNT(DISTINCT(log.user_id)) FROM elastic2.logs.log WHERE EXTRACT(MONTH FROM log.\"timestamp\") = EXTRACT(MONTH FROM CURRENT_DATE)",
         "extract_count": True
     },
     {
@@ -260,17 +260,17 @@ queries = [
     },
     {
         "name": "A17: Number of resources",
-        "sql": "SELECT COUNT(DISTINCT(asset.id)) FROM coproduction.public.asset",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.asset AS asset INNER JOIN coproduction.public.coproductionprocess AS copro ON asset.coproductionprocess_id = copro.id WHERE copro.status IS NOT NULL",
         "extract_count": True
     },
     {
         "name": "A18: Number of external resources",
-        "sql": "SELECT COUNT(DISTINCT(externalasset.id)) FROM coproduction.public.externalasset",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.asset AS asset INNER JOIN coproduction.public.coproductionprocess AS copro ON asset.coproductionprocess_id = copro.id WHERE copro.status IS NOT NULL AND asset.type = 'externalasset'",
         "extract_count": True
     },
     {
         "name": "A19: Number of internal resources",
-        "sql": "SELECT COUNT(DISTINCT(internalasset.id)) FROM coproduction.public.internalasset",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.asset AS asset INNER JOIN coproduction.public.coproductionprocess AS copro ON asset.coproductionprocess_id = copro.id WHERE copro.status IS NOT NULL AND asset.type = 'internalasset'",
         "extract_count": True
     },
     {
@@ -307,6 +307,11 @@ queries = [
         "name": "A27: Number of claims",
         "sql": "SELECT COUNT(DISTINCT(coproductionprocessnotification.id)) FROM coproduction.public.coproductionprocessnotification WHERE coproductionprocessnotification.claim_type = 'development'",
         "extract_count": True
+    },
+    {
+        "name": "A29: Number of total tasks",
+        "sql": "SELECT COUNT(DISTINCT(id)) from coproduction.public.task",
+        "extract_count": True,
     },
     {
         "name": "A29.1: Actions performed over a task: Create task",
@@ -390,12 +395,12 @@ queries = [
     },
     {
         "name": "A36.1: Projects with modification",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE id NOT IN (SELECT DISTINCT(coproductionprocess_id) FROM elastic2.logs.log WHERE ((action='DELETE' or action='DISABLE' or action='CREATE') AND (model='PHASE' or model='OBJECTIVE' or model='TASk')))",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE id NOT IN (SELECT DISTINCT(coproductionprocess_id) FROM elastic2.logs.log WHERE ((action='DELETE' or action='DISABLE' or action='CREATE') AND (model='PHASE' or model='OBJECTIVE' or model='TASK')))",
         "extract_count": True,
     },
     {
         "name": "A36.2: Projects without modification",
-        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE id IN (SELECT DISTINCT(coproductionprocess_id) FROM elastic2.logs.log WHERE ((action='DELETE' or action='DISABLE' or action='CREATE') AND (model='PHASE' or model='OBJECTIVE' or model='TASk')))",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE id IN (SELECT DISTINCT(coproductionprocess_id) FROM elastic2.logs.log WHERE ((action='DELETE' or action='DISABLE' or action='CREATE') AND (model='PHASE' or model='OBJECTIVE' or model='TASK')))",
         "extract_count": True,
     },
     {
@@ -415,7 +420,7 @@ queries = [
     },
     {
         "name": "A40.3:	Functionality by type of user (ADMIN): Get",
-        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE log.action='GET')",
+        "sql": "SELECT COUNT(*) FROM (SELECT CAST(convert_from(convert_to(roles, 'JSON'), 'UTF8') as VARCHAR) roles_text FROM elastic2.logs.log WHERE roles_text LIKE '%administrator%' AND log.action='GET')",
         "extract_count": True,
     },
     {
@@ -441,6 +446,11 @@ queries = [
     {
         "name": "A40.8:	Functionality by type of user (ALL): Claim",
         "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocessnotification AS claims WHERE claim_type = 'development'",
+        "extract_count": True,
+    },
+    {
+        "name": "A41:	Number of co-production processed declared as OPEN",
+        "sql": "SELECT COUNT(*) FROM coproduction.public.coproductionprocess WHERE is_public = 'true'",
         "extract_count": True,
     }
 ]
