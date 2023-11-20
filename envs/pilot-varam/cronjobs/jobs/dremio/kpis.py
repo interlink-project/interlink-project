@@ -196,7 +196,7 @@ queries = [
     },
     {
         "name": "A8.1: Number of new co-produced processes",
-        "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess",
+        "sql": "SELECT COUNT(DISTINCT(coproductionprocess.id)) FROM coproduction.public.coproductionprocess  WHERE coproductionprocess.status IS NOT NULL",
         "extract_count": True
     },
     {
