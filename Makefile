@@ -122,10 +122,10 @@ restartcontainers: ## Run containers (restarts them if already running)
 	cd ../interlinker-survey && make integrated
 	cd ../interlinker-ceditor && make integrated
 
-	cd ../interlink-gamification && make integrated
+	#cd ../interlink-gamification && make integrated
 
 	# Most of the times we only want to restart backend components because frontend lasts a lot to start in dev mode
-	# cd ../frontend && make integrated
+	cd ../frontend && make integrated
 
 .PHONY: restart
 restart: restartcontainers applymigrations seed ## Run containers (restarts them if already running)	
